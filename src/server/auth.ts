@@ -4,10 +4,9 @@ import {
 	type NextAuthOptions,
 	type DefaultSession,
 } from 'next-auth';
-import DiscordProvider from 'next-auth/providers/discord';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { env } from '~/env.mjs';
 import { prisma } from '~/server/db';
+import Credentials from 'next-auth/providers/credentials';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -19,15 +18,40 @@ declare module 'next-auth' {
 	interface Session extends DefaultSession {
 		user: {
 			id: string;
+			name?: string | null;
+			email?: string | null;
+			image?: string | null;
+			username?: string | null;
 			// ...other properties
 			// role: UserRole;
-		} & DefaultSession['user'];
+		};
+		// expires: ISODateString;
 	}
 
-	// interface User {
-	//   // ...other properties
-	//   // role: UserRole;
-	// }
+	interface User {
+		id: string;
+		name?: string | null;
+		email?: string | null;
+		image?: string | null;
+		username?: string | null;
+		// ...other properties
+		// role: UserRole;
+	}
+}
+
+declare module 'next-auth/jwt' {
+	interface JWT {
+		user: {
+			id: string;
+			name?: string | null;
+			email?: string | null;
+			image?: string | null;
+			username?: string | null;
+			// ...other properties
+			// role: UserRole;
+		};
+		// expires: ISODateString;
+	}
 }
 
 /**
@@ -37,19 +61,50 @@ declare module 'next-auth' {
  */
 export const authOptions: NextAuthOptions = {
 	callbacks: {
-		session: ({ session, user }) => ({
-			...session,
-			user: {
-				...session.user,
-				id: user.id,
-			},
-		}),
+		jwt: ({ token, user }) => {
+			if (user) {
+				token.user = user;
+			}
+			return token;
+		},
+		session: ({ session, token }) => {
+			session.user = token.user;
+			return session;
+		},
+		redirect({ url, baseUrl }) {
+			if (url.startsWith('/')) return `${baseUrl}${url}`;
+			else if (new URL(url).origin === baseUrl) return url;
+			return baseUrl;
+		},
 	},
 	adapter: PrismaAdapter(prisma),
 	providers: [
-		DiscordProvider({
-			clientId: env.DISCORD_CLIENT_ID,
-			clientSecret: env.DISCORD_CLIENT_SECRET,
+		Credentials({
+			name: 'Credentials',
+			credentials: {
+				username: {
+					label: 'Username',
+					type: 'text',
+					placeholder: 'jsmith',
+				},
+				password: { label: 'Password', type: 'password' },
+			},
+			async authorize(credentials) {
+				const user = await prisma.user.findUnique({
+					where: {
+						username: credentials?.username,
+					},
+				});
+				if (user) {
+					console.log('User with ${credentials.username} was found.');
+					return user;
+				} else {
+					console.log(
+						'No user was found with the ${credentials.username} username.',
+					);
+					return null;
+				}
+			},
 		}),
 		/**
 		 * ...add more providers here.
@@ -61,6 +116,13 @@ export const authOptions: NextAuthOptions = {
 		 * @see https://next-auth.js.org/providers/github
 		 */
 	],
+	session: {
+		maxAge: 60 * 60, // session,jwt will last for 1 hour
+		strategy: 'jwt',
+	},
+	pages: {
+		signIn: '/auth/signin',
+	},
 };
 
 /**

@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "pretty",
+			"problemMatcher": [],
+			"label": "npm: pretty",
+			"detail": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\""
+		}
+	]
+}

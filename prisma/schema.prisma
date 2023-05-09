@@ -33,7 +33,7 @@ model User {
 }
 
 // create a table for work out
-model Workout {
+model WorkoutSession {
     id          String     @id @default(cuid())
     createdAt   DateTime   @default(now())
     updatedAt   DateTime   @updatedAt
@@ -53,6 +53,6 @@ model Exercise {
     description String?
     // many to one relationship
     // many exercises can belong to one workout
-    workout     Workout  @relation(fields: [workoutId], references: [id])
+    workoutSession    WorkoutSession  @relation(fields: [workoutId], references: [id])
     workoutId   String
 }
