@@ -5,7 +5,7 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Launch via NPM",
+			"name": "debug: npm run dev",
 			"request": "launch",
 			"runtimeArgs": ["run-script", "dev"],
 			"runtimeExecutable": "npm",

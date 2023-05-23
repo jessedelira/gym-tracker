@@ -11,11 +11,11 @@ const NavBar: React.FC<NavBarProps> = ({ sessionData }) => {
 	const router = useRouter();
 
 	// When using an external URL with next/image, you need to add the domain to the next.config.js file and you will also have to create a loader for the image
-	// const profileIconLoader = () => {
-	// 	if (!sessionData?.user.username)
-	// 		return 'https://robohash.org/anonymouse';
-	// 	return `https://robohash.org/${sessionData.user.username}`;
-	// };
+	const profileIconLoader = () => {
+		if (!sessionData?.user.username)
+			return 'https://robohash.org/anonymouse';
+		return `https://robohash.org/${sessionData.user.username}`;
+	};
 
 	return (
 		// create a NavBar component with tailwind styling that matches the design of index page
@@ -50,14 +50,14 @@ const NavBar: React.FC<NavBarProps> = ({ sessionData }) => {
 					className=" rounded-full bg-black/10 px-3 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 					onClick={() => void router.push('/user/settings')}
 				>
-					{/* <Image
+					<Image
 						priority
 						src={profileIconLoader()}
 						alt="Settings Icon"
 						width={25}
 						height={25}
 						className="rounded-full"
-					/> */}
+					/>
 				</button>
 				<button
 					className=" rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"

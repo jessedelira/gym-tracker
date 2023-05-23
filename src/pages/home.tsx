@@ -2,7 +2,6 @@ import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import NavBar from '~/components/navbar';
 
 const Home: NextPage = () => {

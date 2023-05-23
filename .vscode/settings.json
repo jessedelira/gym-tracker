@@ -2,9 +2,11 @@
 	"cSpell.words": [
 		"jsmith",
 		"nextjs",
+		"signin",
 		"superjson",
 		"tailwindcss",
 		"tanstack",
 		"trpc"
-	]
+	],
+	"testing.automaticallyOpenPeekView": "never"
 }

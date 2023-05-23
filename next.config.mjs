@@ -18,5 +18,14 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  images: {
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: 'robohash.org',
+				pathname: '/**',
+			},
+		],
+	},
 };
 export default config;
