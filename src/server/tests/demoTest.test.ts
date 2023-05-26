@@ -21,5 +21,6 @@ describe('example test', () => {
 		const example = await caller.example.hello(input);
 
 		expect(example).toMatchObject({ greeting: 'Hello test' });
-	});``
+	});
+	``;
 });
