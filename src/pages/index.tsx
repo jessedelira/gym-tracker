@@ -65,7 +65,7 @@ const AuthShowcase: React.FC<AuthShowcaseProps> = ({ sessionData }) => {
 						? () => void signOut()
 						: () =>
 								void signIn('credential', {
-									callbackUrl: 'http://localhost:3000/home',
+									callbackUrl: '${process.env.NEXTAUTH_URL}/home',
 								})
 				}
 			>
