@@ -3,6 +3,7 @@ import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { env } from '~/utils/environment';
 interface NavBarProps {
 	sessionData: Session | null;
 }
@@ -62,7 +63,7 @@ const NavBar: React.FC<NavBarProps> = ({ sessionData }) => {
 				<button
 					className=" rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 					onClick={() =>
-						void signOut({ callbackUrl: '${process.env.NEXTAUTH_URL}' })
+						void signOut({ callbackUrl: `${env.NEXTAUTH_URL}` })
 					}
 				>
 					Sign Out
