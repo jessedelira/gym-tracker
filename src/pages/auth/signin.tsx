@@ -4,7 +4,6 @@ import type {
 	NextPage,
 } from 'next';
 import { getCsrfToken, signIn } from 'next-auth/react';
-import { env } from '~/utils/environment';
 
 interface SignInProps {
 	csrfToken: InferGetServerSidePropsType<
@@ -22,8 +21,7 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 		).value;
 		e.preventDefault();
 		await signIn('credentials', {
-
-			callbackUrl: `${env.NEXTAUTH_URL}/home`,
+			callBackUrl: `${process.env.NEXTAUTH_URL ? process.env.NEXTAUTH_URL : ''}` + '/home',
 			csrfToken,
 			username: username,
 			password: password,

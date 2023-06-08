@@ -7,7 +7,6 @@ import { api } from '~/utils/api';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { type Session } from 'next-auth/core/types';
-import { env } from '~/utils/environment';
 
 const Home: NextPage = () => {
 	const { data: sessionData, status } = useSession();
@@ -47,6 +46,8 @@ interface AuthShowcaseProps {
 }
 
 const AuthShowcase: React.FC<AuthShowcaseProps> = ({ sessionData }) => {
+	
+
 	return (
 		<div className="flex flex-col items-center justify-center gap-4">
 			<p className="text-center text-2xl text-black">
@@ -66,7 +67,7 @@ const AuthShowcase: React.FC<AuthShowcaseProps> = ({ sessionData }) => {
 						? () => void signOut()
 						: () =>
 								void signIn('credential', {
-									callbackUrl: `${env.NEXTAUTH_URL}/home`,
+									callbackUrl: `${process.env.NEXTAUTH_URL ? process.env.NEXTAUTH_URL : ''}` + '/home',
 								})
 				}
 			>
