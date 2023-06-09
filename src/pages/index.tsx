@@ -66,9 +66,7 @@ const AuthShowcase: React.FC<AuthShowcaseProps> = ({ sessionData }) => {
 					sessionData
 						? () => void signOut()
 						: () =>
-								void signIn('credential', {
-									callbackUrl: `${process.env.NEXTAUTH_URL ? process.env.NEXTAUTH_URL : ''}` + '/home',
-								})
+								void signIn('credential')
 				}
 			>
 				{sessionData ? 'Sign out' : 'Sign in'}
