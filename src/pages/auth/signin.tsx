@@ -21,7 +21,7 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 		).value;
 		e.preventDefault();
 		await signIn('credentials', {
-			callbackUrl: 'http://localhost:3000/home',
+			callBackUrl: `${process.env.NEXTAUTH_URL ? process.env.NEXTAUTH_URL : ''}` + '/home',
 			csrfToken,
 			username: username,
 			password: password,

@@ -9,7 +9,7 @@ A simple app to track your gym workouts, built with Next.js, Prisma, and MySQL.
 5. Create gym_tracker database in MySQL db instance in Docker
 6. Create .env at root of project and add the following:
 ```
-DATABASE_URL="mysql://root:password@localhost:3306/test"
+DATABASE_URL="mysql://root:password@localhost:3306/gym_tracker"
 
 NEXTAUTH_URL="http://localhost:3000"
 ```

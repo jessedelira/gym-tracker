@@ -6,6 +6,7 @@ import {
 } from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { prisma } from '~/server/db';
+import bcrypt from 'bcrypt';
 import Credentials from 'next-auth/providers/credentials';
 
 /**
@@ -90,19 +91,22 @@ export const authOptions: NextAuthOptions = {
 				password: { label: 'Password', type: 'password' },
 			},
 			async authorize(credentials) {
-				const user = await prisma.user.findUnique({
+				const userFoundByUsername = await prisma.user.findUnique({
 					where: {
 						username: credentials?.username,
 					},
 				});
-				if (user) {
-					console.log('User with ${credentials.username} was found.');
-					return user;
+
+				const doesInputPwMatchEncryptedPw = bcrypt.compareSync(
+					credentials?.password as 'string | Buffer',
+					userFoundByUsername?.password as 'string',
+				);
+
+				if (doesInputPwMatchEncryptedPw && userFoundByUsername) {
+					return userFoundByUsername;
 				} else {
-					console.log(
-						'No user was found with the ${credentials.username} username.',
-					);
-					return null;
+					console.log('User not found');
+					throw new Error('User now found');
 				}
 			},
 		}),

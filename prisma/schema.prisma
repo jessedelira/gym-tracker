@@ -18,12 +18,6 @@ datasource db {
 // Notes:
 // String types is limited to 191 characters when using MySQL
 
-model Example {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 model User {
   id            String    @id @default(cuid())
   dateCreated   DateTime  @default(now())

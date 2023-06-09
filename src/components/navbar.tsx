@@ -3,13 +3,13 @@ import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+
 interface NavBarProps {
 	sessionData: Session | null;
 }
 
 const NavBar: React.FC<NavBarProps> = ({ sessionData }) => {
 	const router = useRouter();
-
 	// When using an external URL with next/image, you need to add the domain to the next.config.js file and you will also have to create a loader for the image
 	const profileIconLoader = () => {
 		if (!sessionData?.user.username)
@@ -62,7 +62,7 @@ const NavBar: React.FC<NavBarProps> = ({ sessionData }) => {
 				<button
 					className=" rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 					onClick={() =>
-						void signOut({ callbackUrl: 'http://localhost:3000/' })
+						void signOut({ callbackUrl: `${process.env.NEXTAUTH_URL ? process.env.NEXTAUTH_URL : ''}`  })
 					}
 				>
 					Sign Out
