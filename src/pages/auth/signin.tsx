@@ -21,7 +21,7 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 		).value;
 		e.preventDefault();
 		await signIn('credentials', {
-			callbackUrl: '/home',
+			callbackUrl: '/',
 			csrfToken,
 			username: username,
 			password: password,
