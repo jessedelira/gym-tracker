@@ -24,7 +24,7 @@ const Home: NextPage = () => {
 	} else {
 		return (
 			<>
-				<NavBar sessionData={sessionData}></NavBar>
+				<NavBar sessionData={sessionData ? sessionData : null}></NavBar>
 				<main className="fit-h-screen flex flex-col items-center justify-center bg-white">
 					This is an update :)
 					<div className="flex flex-col items-center justify-center gap-4"></div>
