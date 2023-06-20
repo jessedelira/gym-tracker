@@ -26,7 +26,7 @@ const Home: NextPage = () => {
 			<>
 				<NavBar sessionData={sessionData}></NavBar>
 				<main className="fit-h-screen flex flex-col items-center justify-center bg-white">
-					{/* create div with center the image on the screen */}
+					This is an update :)
 					<div className="flex flex-col items-center justify-center gap-4"></div>
 				</main>
 			</>
