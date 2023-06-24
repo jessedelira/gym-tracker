@@ -5,13 +5,12 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "debug: npm run dev",
+			"name": "debug",
 			"request": "launch",
 			"runtimeArgs": ["run-script", "dev"],
 			"runtimeExecutable": "npm",
 			"skipFiles": ["<node_internals>/**"],
-			"type": "node",
-			"console": "internalConsole"
+			"type": "node"
 		}
 	]
 }

@@ -20,5 +20,4 @@ describe('example Router', () => {
 			expect(example).toMatchObject({ greeting: 'Hello test' });
 		});
 	});
-    
 });
