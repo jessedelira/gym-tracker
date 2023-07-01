@@ -4,7 +4,6 @@ import {
 	type NextAuthOptions,
 	type DefaultSession,
 } from 'next-auth';
-import { log } from 'console';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { prisma } from '~/server/db';
 import bcrypt from 'bcrypt';
