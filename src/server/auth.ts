@@ -23,6 +23,8 @@ declare module 'next-auth' {
 			email?: string | null;
 			image?: string | null;
 			username?: string | null;
+			firstName?: string | null;
+			lastName?: string | null;
 			// ...other properties
 			// role: UserRole;
 		};
@@ -35,6 +37,8 @@ declare module 'next-auth' {
 		email?: string | null;
 		image?: string | null;
 		username?: string | null;
+		firstName?: string | null;
+		lastName?: string | null;
 		// ...other properties
 		// role: UserRole;
 	}

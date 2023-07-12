@@ -4,6 +4,7 @@ import type {
 	NextPage,
 } from 'next';
 import { getCsrfToken, signIn } from 'next-auth/react';
+import Link from 'next/link';
 
 interface SignInProps {
 	csrfToken: InferGetServerSidePropsType<
@@ -53,6 +54,9 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 						type="submit"
 					>
 						Sign In
+					</button>
+					<button className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20">
+						<Link href="/">Back</Link>
 					</button>
 				</form>
 			</div>
