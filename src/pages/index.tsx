@@ -26,7 +26,7 @@ const Home: NextPage = () => {
 		return (
 			<>
 				<main className="flex min-h-screen flex-col items-center justify-center bg-white">
-					<h1 className="text-center text-2xl text-black">
+					<h1 className="text-center text-2xl text-black mb-5">
 						Gym Tracker 🏋️
 					</h1>
 					<AuthShowcase sessionData={sessionData}></AuthShowcase>
@@ -45,16 +45,6 @@ interface AuthShowcaseProps {
 const AuthShowcase: React.FC<AuthShowcaseProps> = ({ sessionData }) => {
 	return (
 		<div className="flex flex-col items-center justify-center gap-4">
-			<p className="text-center text-2xl text-black">
-				{sessionData && (
-					<span>Logged in as {sessionData.user?.email}</span>
-				)}
-			</p>
-			<p className="text-center text-2xl text-black">
-				{sessionData && (
-					<span> The session expires at - {sessionData.expires}</span>
-				)}
-			</p>
 			<button
 				className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 				onClick={
