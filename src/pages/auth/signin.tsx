@@ -42,12 +42,14 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 						placeholder="Username"
 						id="username"
 						className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+						required
 					/>
 					<input
 						type="password"
 						placeholder="Password"
 						id="password"
 						className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+						required
 					/>
 					<button
 						className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"

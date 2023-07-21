@@ -125,7 +125,7 @@ export const authOptions: NextAuthOptions = {
 		 */
 	],
 	session: {
-		maxAge: 60 * 60, // session,jwt will last for 1 hour
+		maxAge: 60 * 60 * 24, // session,jwt will last for 24 hour
 		strategy: 'jwt',
 	},
 	pages: {

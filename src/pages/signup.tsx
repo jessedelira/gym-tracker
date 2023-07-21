@@ -1,22 +1,38 @@
 import { type NextPage } from 'next';
 import Link from 'next/link';
 import { type FormEvent } from 'react';
+import Modal from '~/components/modal';
+import { api } from '~/utils/api';
 
 const SignUp: NextPage = () => {
-	function handleSubmit(e: FormEvent<HTMLFormElement>) {
-		e.preventDefault();
+	const createUserMutation = api.user.createUser.useMutation();
+
+	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		const username = (
 			document.getElementById('username') as HTMLInputElement
 		).value;
 		const password = (
 			document.getElementById('password') as HTMLInputElement
 		).value;
-		console.log(username, password);
-	}
+		const firstName = (
+			document.getElementById('firstName') as HTMLInputElement
+		).value;
+		const lastName = (
+			document.getElementById('lastName') as HTMLInputElement
+		).value;
+		e.preventDefault();
+		const createUserData = {
+			username: username,
+			password: password,
+			firstName: firstName,
+			lastName: lastName,
+		};
+		createUserMutation.mutate(createUserData);
+	};
 
 	return (
 		<>
-			<main className="flex items-center justify-center h-screen">
+			<main className="flex h-screen items-center justify-center">
 				<div className="flex flex-col items-center justify-center gap-4">
 					<h1 className="text-2xl text-black">Create Account</h1>
 					<form
@@ -35,18 +51,31 @@ const SignUp: NextPage = () => {
 							id="password"
 							className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 						/>
+						<input
+							type="text"
+							placeholder="First Name"
+							id="firstName"
+							className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+						/>
+						<input
+							type="text"
+							placeholder="Last Name"
+							id="lastName"
+							className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+						/>
+
 						<button
 							className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 							type="submit"
 						>
 							Sign Up
 						</button>
-						
 					</form>
-                    <button className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20">
-							<Link href="/">Back</Link>
-						</button>
+					<button className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20">
+						<Link href="/">Back</Link>
+					</button>
 				</div>
+				<Modal showModal={false}></Modal>
 			</main>
 		</>
 	);

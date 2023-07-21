@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import NavBar from '~/components/navbar';
+import { api } from '~/utils/api';
 
 const Home: NextPage = () => {
 	const { data: sessionData, status } = useSession();
@@ -19,6 +20,7 @@ const Home: NextPage = () => {
 		}
 	}, [status, router]);
 
+	// Render
 	if (isLoading) {
 		return <></>;
 	} else {
