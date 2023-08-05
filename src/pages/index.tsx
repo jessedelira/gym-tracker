@@ -26,7 +26,7 @@ const Home: NextPage = () => {
 		return (
 			<>
 				<main className="flex min-h-screen flex-col items-center justify-center bg-white">
-					<h1 className="text-center text-2xl text-black mb-5">
+					<h1 className="mb-5 text-center text-2xl text-black">
 						Gym Tracker 🏋️
 					</h1>
 					<AuthShowcase sessionData={sessionData}></AuthShowcase>
