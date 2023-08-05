@@ -1,11 +1,13 @@
 import { type NextPage } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { type FormEvent } from 'react';
-import Modal from '~/components/modal';
+
 import { api } from '~/utils/api';
 
 const SignUp: NextPage = () => {
 	const createUserMutation = api.user.createUser.useMutation();
+	const router = useRouter();
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		const username = (
@@ -20,7 +22,7 @@ const SignUp: NextPage = () => {
 		const lastName = (
 			document.getElementById('lastName') as HTMLInputElement
 		).value;
-		e.preventDefault();
+
 		const createUserData = {
 			username: username,
 			password: password,
@@ -28,6 +30,8 @@ const SignUp: NextPage = () => {
 			lastName: lastName,
 		};
 		createUserMutation.mutate(createUserData);
+		void router.push('auth/signin');
+		e.preventDefault();
 	};
 
 	return (
@@ -75,7 +79,6 @@ const SignUp: NextPage = () => {
 						<Link href="/">Back</Link>
 					</button>
 				</div>
-				<Modal showModal={false}></Modal>
 			</main>
 		</>
 	);

@@ -57,10 +57,10 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 					>
 						Sign In
 					</button>
-					<button className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20">
-						<Link href="/">Back</Link>
-					</button>
 				</form>
+				<button className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20">
+					<Link href="/">Back</Link>
+				</button>
 			</div>
 		</div>
 	);
