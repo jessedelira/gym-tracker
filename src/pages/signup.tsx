@@ -1,15 +1,21 @@
+import { create } from 'domain';
 import { type NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { type FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
+import { boolean } from 'zod';
+import AccountCreatedModal from '~/components/accountCreatedModal';
 
 import { api } from '~/utils/api';
 
 const SignUp: NextPage = () => {
 	const createUserMutation = api.user.createUser.useMutation();
 	const router = useRouter();
+	const [showModal, setShowModal] = useState(false);
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+
 		const username = (
 			document.getElementById('username') as HTMLInputElement
 		).value;
@@ -29,13 +35,17 @@ const SignUp: NextPage = () => {
 			firstName: firstName,
 			lastName: lastName,
 		};
-		createUserMutation.mutate(createUserData);
-		void router.push('auth/signin');
-		e.preventDefault();
+		createUserMutation.mutate(createUserData, {
+			onSuccess: () => {
+				setShowModal(true);
+			},
+		});
 	};
 
 	return (
 		<>
+			{showModal && <AccountCreatedModal></AccountCreatedModal>}
+
 			<main className="flex h-screen items-center justify-center">
 				<div className="flex flex-col items-center justify-center gap-4">
 					<h1 className="text-2xl text-black">Create Account</h1>
@@ -48,12 +58,14 @@ const SignUp: NextPage = () => {
 							placeholder="Username"
 							id="username"
 							className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+							required
 						/>
 						<input
 							type="password"
 							placeholder="Password"
 							id="password"
 							className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+							required
 						/>
 						<input
 							type="text"
@@ -75,9 +87,13 @@ const SignUp: NextPage = () => {
 							Sign Up
 						</button>
 					</form>
-					<button className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20">
-						<Link href="/">Back</Link>
-					</button>
+
+					<Link
+						href="/"
+						className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+					>
+						Back
+					</Link>
 				</div>
 			</main>
 		</>
