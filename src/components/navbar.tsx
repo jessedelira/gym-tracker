@@ -7,18 +7,6 @@ interface NavBarProps {
 }
 
 const NavBar: React.FC<NavBarProps> = ({ sessionData }) => {
-	const getDate = (): string => {
-		const date = new Date();
-		const day = date.getDate();
-		// get the name of the current month short
-		const monthName = date.toLocaleString('default', { month: 'short' });
-		// get name of current day, short version
-		const dayName = date.toLocaleString('default', { weekday: 'short' });
-		// format the dat to be "day number day name month year"
-
-		return ` ${dayName} ${monthName} ${day}`;
-	};
-
 	return (
 		<nav className="flex h-[4rem] w-full flex-row items-center justify-between border-b-4 border-b-black bg-white">
 			<div className="flex flex-row items-center justify-between gap-4">
@@ -44,7 +32,6 @@ const NavBar: React.FC<NavBarProps> = ({ sessionData }) => {
 				<p className="text-1xl text-center text-black">
 					Welcome, {sessionData?.user?.firstName}
 				</p>
-				
 			</div>
 
 			<div className="flex flex-row items-center justify-between gap-4">
