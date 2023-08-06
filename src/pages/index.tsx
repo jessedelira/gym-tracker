@@ -1,9 +1,6 @@
 import { type NextPage } from 'next';
-import Head from 'next/head';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
-
-import { api } from '~/utils/api';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { type Session } from 'next-auth/core/types';
@@ -29,10 +26,10 @@ const Home: NextPage = () => {
 		return (
 			<>
 				<main className="flex min-h-screen flex-col items-center justify-center bg-white">
-					<h1 className="text-center text-2xl text-black">
-						Gym Tracker 🏋️
+					<h1 className="mb-5 text-center text-2xl text-black">
+						Gym Tracker
 					</h1>
-					<AuthShowcase sessionData={sessionData}></AuthShowcase>
+					<AuthDisplay sessionData={sessionData}></AuthDisplay>
 				</main>
 			</>
 		);
@@ -45,37 +42,27 @@ interface AuthShowcaseProps {
 	sessionData: Session | null;
 }
 
-const AuthShowcase: React.FC<AuthShowcaseProps> = ({ sessionData }) => {
-	
-
+const AuthDisplay: React.FC<AuthShowcaseProps> = () => {
 	return (
-		<div className="flex flex-col items-center justify-center gap-4">
-			<p className="text-center text-2xl text-black">
-				{sessionData && (
-					<span>Logged in as {sessionData.user?.email}</span>
-				)}
-			</p>
-			<p className="text-center text-2xl text-black">
-				{sessionData && (
-					<span> The session expires at - {sessionData.expires}</span>
-				)}
-			</p>
-			<button
-				className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
-				onClick={
-					sessionData
-						? () => void signOut()
-						: () =>
-								void signIn('credential')
-				}
-			>
-				{sessionData ? 'Sign out' : 'Sign in'}
-			</button>
-			<Link href="/signup">
-				<p className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20">
-					Sign Up
-				</p>
-			</Link>
-		</div>
+		<>
+			<div className="flex flex-col items-center justify-center gap-4">
+				<button
+					className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+					onClick={() => void signIn('credential')}
+				>
+					Sign In
+				</button>
+			</div>
+			<div className="inline-flex">
+				<div>Don&apos;t have an account? </div>
+
+				<Link
+					href="/signup"
+					className="ml-1 cursor-pointer text-blue-500 hover:underline"
+				>
+					Sign up
+				</Link>
+			</div>
+		</>
 	);
 };

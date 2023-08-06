@@ -1,6 +1,6 @@
 import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import NavBar from '~/components/navbar';
 
@@ -19,14 +19,15 @@ const Home: NextPage = () => {
 		}
 	}, [status, router]);
 
+	// Render
 	if (isLoading) {
 		return <></>;
 	} else {
 		return (
 			<>
-				<NavBar sessionData={sessionData}></NavBar>
+				<NavBar sessionData={sessionData ? sessionData : null}></NavBar>
 				<main className="fit-h-screen flex flex-col items-center justify-center bg-white">
-					{/* create div with center the image on the screen */}
+					Welcome, {sessionData?.user?.firstName}
 					<div className="flex flex-col items-center justify-center gap-4"></div>
 				</main>
 			</>

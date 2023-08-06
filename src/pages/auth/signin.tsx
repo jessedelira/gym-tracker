@@ -4,6 +4,7 @@ import type {
 	NextPage,
 } from 'next';
 import { getCsrfToken, signIn } from 'next-auth/react';
+import Link from 'next/link';
 
 interface SignInProps {
 	csrfToken: InferGetServerSidePropsType<
@@ -21,7 +22,7 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 		).value;
 		e.preventDefault();
 		await signIn('credentials', {
-			callbackUrl: '/home',
+			callbackUrl: '/',
 			csrfToken,
 			username: username,
 			password: password,
@@ -41,12 +42,14 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 						placeholder="Username"
 						id="username"
 						className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+						required
 					/>
 					<input
 						type="password"
 						placeholder="Password"
 						id="password"
 						className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+						required
 					/>
 					<button
 						className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
@@ -55,6 +58,13 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 						Sign In
 					</button>
 				</form>
+
+				<Link
+					href="/"
+					className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+				>
+					Back
+				</Link>
 			</div>
 		</div>
 	);
