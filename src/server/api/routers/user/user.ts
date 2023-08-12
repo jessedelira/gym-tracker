@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
 import { PrismaClient } from '@prisma/client';
-import { Performance } from 'perf_hooks';
 import { hash } from 'bcrypt';
 
 const prisma = new PrismaClient();
