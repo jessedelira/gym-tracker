@@ -19,13 +19,12 @@ datasource db {
 // String types is limited to 191 characters when using MySQL
 
 model User {
-  id            String    @id @default(cuid())
-  dateCreated   DateTime  @default(now())
-  username      String    @unique
-  password      String
-  firstName     String
-  lastName      String
-
+  id          String   @id @default(cuid())
+  dateCreated DateTime @default(now())
+  username    String   @unique
+  password    String
+  firstName   String
+  lastName    String
 }
 
 model WorkoutSession {
@@ -33,7 +32,11 @@ model WorkoutSession {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   name        String
-  description String? 
+  description String?
+  workout     Workout  @relation(fields: [workoutId], references: [id])
+  workoutId   String
+
+  @@index([workoutId])
 }
 
 model Exercise {
@@ -44,10 +47,12 @@ model Exercise {
 }
 
 model Workout {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  exercise    Exercise @relation(fields: [exerciseId], references: [id])
-  exerciseId String
+  id             String           @id @default(cuid())
+  reps           Int
+  sets           Int
+  exercise       Exercise         @relation(fields: [exerciseId], references: [id])
+  exerciseId     String
+  WorkoutSession WorkoutSession[]
+
   @@index([exerciseId])
 }

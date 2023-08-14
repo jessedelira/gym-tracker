@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 const seedExercises = async () => {
-	// TODO: make sure ou ha
 	await prisma.exercise.upsert({
 		where: { name: 'Bench Press' },
 		update: {},
