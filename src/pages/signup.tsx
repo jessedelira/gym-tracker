@@ -1,16 +1,12 @@
-import { create } from 'domain';
 import { type NextPage } from 'next';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useState, type FormEvent } from 'react';
-import { boolean } from 'zod';
 import AccountCreatedModal from '~/components/accountCreatedModal';
 
 import { api } from '~/utils/api';
 
 const SignUp: NextPage = () => {
 	const createUserMutation = api.user.createUser.useMutation();
-	const router = useRouter();
 	const [showModal, setShowModal] = useState(false);
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

@@ -2,6 +2,7 @@ import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import CurrentWorkoutDisplay from '~/components/currentWorkoutDisplay';
 import NavBar from '~/components/navbar';
 
 const Home: NextPage = () => {
@@ -28,7 +29,7 @@ const Home: NextPage = () => {
 				<NavBar sessionData={sessionData ? sessionData : null}></NavBar>
 				<main className="fit-h-screen flex flex-col items-center justify-center bg-white">
 					Welcome, {sessionData?.user?.firstName}
-					<div className="flex flex-col items-center justify-center gap-4"></div>
+					<CurrentWorkoutDisplay></CurrentWorkoutDisplay>
 				</main>
 			</>
 		);
