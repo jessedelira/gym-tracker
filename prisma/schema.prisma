@@ -12,47 +12,57 @@ datasource db {
   // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
   // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
   url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  relationMode = "foreignKeys" // Able to use this since DB is run using AWS RDS
 }
 
 // Notes:
 // String types is limited to 191 characters when using MySQL
 
 model User {
-  id          String   @id @default(cuid())
-  dateCreated DateTime @default(now())
-  username    String   @unique
+  id          String    @id @default(cuid())
+  dateCreated DateTime  @default(now())
+  username    String    @unique
   password    String
   firstName   String
   lastName    String
+  routines    Routine[]
 }
 
-model WorkoutSession {
-  id          String   @id @default(cuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model Routine {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
   name        String
   description String?
-  workout     Workout  @relation(fields: [workoutId], references: [id])
-  workoutId   String
-
-  @@index([workoutId])
+  sessions    Session[]
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
 }
 
+model Session {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  name        String
+  description String?
+  workouts    Workout[]
+  routine     Routine   @relation(fields: [routineId], references: [id])
+  routineId   String
+}
+
+model Workout {
+  id         String   @id @default(cuid())
+  reps       Int
+  sets       Int
+  weight     Int
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+  exerciseId String
+  session    Session  @relation(fields: [sessionId], references: [id])
+  sessionId  String
+}
+
+// This will be autopolulated with a list of exercises
 model Exercise {
   id          String    @id @default(cuid())
   name        String    @unique
   description String?   @db.VarChar(300)
-  Workout     Workout[]
-}
-
-model Workout {
-  id             String           @id @default(cuid())
-  reps           Int
-  sets           Int
-  exercise       Exercise         @relation(fields: [exerciseId], references: [id])
-  exerciseId     String
-  WorkoutSession WorkoutSession[]
-
-  @@index([exerciseId])
+  workouts    Workout[]
 }
