@@ -8,7 +8,7 @@
 	"scripts": {
 		"build": "next build",
 		"dev": "next dev",
-		"postinstall": "prisma generate && prisma migrate deploy && npx primsa db seed",
+		"postinstall": "prisma generate && prisma migrate deploy && primsa db seed",
 		"lint": "next lint && ",
 		"start": "next start",
 		"pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\"",
