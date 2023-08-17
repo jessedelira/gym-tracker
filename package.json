@@ -8,7 +8,7 @@
 	"scripts": {
 		"build": "next build",
 		"dev": "next dev",
-		"postinstall": "prisma generate",
+		"postinstall": "prisma generate && prisma migrate deploy && npx primsa db seed",
 		"lint": "next lint && ",
 		"start": "next start",
 		"pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\"",
@@ -30,7 +30,9 @@
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"superjson": "1.12.2",
-		"zod": "^3.21.4"
+		"zod": "^3.21.4",
+		"ts-node": "^10.9.1",
+		"prisma": "^5.1.1"
 	},
 	"devDependencies": {
 		"@prisma/client": "^5.1.1",
@@ -47,9 +49,7 @@
 		"postcss": "^8.4.21",
 		"prettier": "^2.8.6",
 		"prettier-plugin-tailwindcss": "^0.2.6",
-		"prisma": "^5.1.1",
 		"tailwindcss": "^3.3.0",
-		"ts-node": "^10.9.1",
 		"typescript": "^5.0.2",
 		"vitest": "^0.31.0"
 	},
