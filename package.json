@@ -8,8 +8,8 @@
 	"scripts": {
 		"build": "next build",
 		"dev": "next dev",
-		"postinstall": "prisma generate",
-		"lint": "next lint",
+		"postinstall": "prisma generate && primsa migrate deploy && npx prisma db seed",
+		"lint": "next lint && ",
 		"start": "next start",
 		"pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\"",
 		"test": "npx vitest"
