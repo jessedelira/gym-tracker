@@ -3,13 +3,12 @@
 	"version": "0.1.0",
 	"private": true,
 	"prisma": {
-		"seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
-		
+		"seed": "tsx prisma/seed.ts"
 	},
 	"scripts": {
 		"build": "next build",
 		"dev": "next dev",
-		"postinstall": "prisma generate && prisma migrate deploy && npm run printNode",
+		"postinstall": "prisma generate && prisma migrate deploy && prisma db seed",
 		"lint": "next lint",
 		"start": "next start",
 		"pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\"",
@@ -26,17 +25,17 @@
 		"@trpc/react-query": "^10.18.0",
 		"@trpc/server": "^10.18.0",
 		"@types/bcrypt": "^5.0.0",
+		"@types/node": "^18.15.5",
 		"bcrypt": "^5.1.0",
 		"next": "^13.4.6",
 		"next-auth": "^4.21.0",
+		"prisma": "^5.1.1",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"superjson": "1.12.2",
-		"zod": "^3.21.4",
-		"ts-node": "^10.9.1",
-		"prisma": "^5.1.1",
-		"@types/node": "^18.15.5",
-		"typescript": "^5.0.2"
+		"tsx": "^3.12.7",
+		"typescript": "^5.0.2",
+		"zod": "^3.21.4"
 	},
 	"devDependencies": {
 		"@prisma/client": "^5.1.1",

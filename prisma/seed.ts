@@ -7,7 +7,6 @@ const prisma = new PrismaClient();
 const main = async () => {
 	await seedUsers();
 	await seedExercises();
-	console.log('The seed was successful!');
 };
 
 main()
