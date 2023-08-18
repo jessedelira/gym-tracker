@@ -14,7 +14,7 @@
 		"start": "next start",
 		"pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\"",
 		"test": "npx vitest",
-		"printNode": "echo node --version"
+		"printNode": "node --version"
 	},
 	"dependencies": {
 		"@next-auth/prisma-adapter": "^1.0.5",
