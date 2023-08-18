@@ -2,17 +2,15 @@
 	"name": "gym-tracker",
 	"version": "0.1.0",
 	"private": true,
-	"prisma": {
-		"seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
-	},
 	"scripts": {
 		"build": "next build",
 		"dev": "next dev",
-		"postinstall": "prisma generate && prisma migrate deploy && ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts",
+		"postinstall": "prisma generate && prisma migrate deploy && npm run seed",
 		"lint": "next lint && ",
 		"start": "next start",
 		"pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\"",
-		"test": "npx vitest"
+		"test": "npx vitest",
+		"seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
 	},
 	"dependencies": {
 		"@next-auth/prisma-adapter": "^1.0.5",
