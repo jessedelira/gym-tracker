@@ -1,4 +1,3 @@
-import { createId } from '@paralleldrive/cuid2';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
