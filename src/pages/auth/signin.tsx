@@ -1,11 +1,22 @@
-import type { InferGetServerSidePropsType, NextPage } from 'next';
-import { signIn } from 'next-auth/react';
+import type {
+	GetServerSidePropsContext,
+	InferGetServerSidePropsType,
+	NextPage,
+} from 'next';
+import { getCsrfToken, signIn } from 'next-auth/react';
 import Link from 'next/link';
-import { type getServerSideProps } from './getServerSideProps';
+
+const GetServerSideProps = async (context: GetServerSidePropsContext) => {
+	return {
+		props: {
+			csrfToken: await getCsrfToken(context),
+		},
+	};
+};
 
 interface SignInProps {
 	csrfToken: InferGetServerSidePropsType<
-		typeof getServerSideProps
+		typeof GetServerSideProps
 	>['csrfToken'];
 }
 

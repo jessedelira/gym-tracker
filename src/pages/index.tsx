@@ -20,7 +20,7 @@ const Home: NextPage = () => {
 	}, [status, router]);
 
 	if (isLoading) {
-		return (<></>);
+		return <></>;
 	} else {
 		return (
 			<>
