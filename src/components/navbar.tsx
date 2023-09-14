@@ -1,10 +1,7 @@
-import { type Session } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
+import type NavBarProps from '~/interfaces/navBarProps';
 
-interface NavBarProps {
-	sessionData: Session | null;
-}
 
 const NavBar: React.FC<NavBarProps> = () => {
 	return (
@@ -29,7 +26,7 @@ const NavBar: React.FC<NavBarProps> = () => {
 			</div>
 
 			<div className="flex flex-row items-center justify-between gap-1">
-				<Link href="/settings" className="ml-3 rounded-full text-5xl">
+				<Link href="/account" className="ml-3 rounded-full text-5xl">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
