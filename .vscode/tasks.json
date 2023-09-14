@@ -14,14 +14,6 @@
 			"problemMatcher": [],
 			"label": "npm: lint",
 			"detail": "next lint"
-		},
-		{
-			"type": "npm",
-			"script": "test",
-			"group": "test",
-			"problemMatcher": [],
-			"label": "npm: test",
-			"detail": "npx vitest"
 		}
 	]
 }

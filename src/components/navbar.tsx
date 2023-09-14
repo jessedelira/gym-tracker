@@ -1,20 +1,12 @@
 import { type Session } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
-import { useState } from 'react';
 
 interface NavBarProps {
 	sessionData: Session | null;
 }
 
 const NavBar: React.FC<NavBarProps> = () => {
-	const [showModal, setShowModal] = useState(false);
-
-	const handlePencilClick = () => {
-		setShowModal(true);
-		console.log('hello');
-	};
-
 	return (
 		<nav className="flex h-[4rem] w-full flex-row items-center justify-between border-b-4 border-b-black bg-white">
 			<div className="flex flex-row items-center justify-between gap-1">
@@ -61,10 +53,7 @@ const NavBar: React.FC<NavBarProps> = () => {
 			</div>
 
 			<div className="flex flex-row items-center justify-between gap-1">
-				<button
-					className="ml-3 rounded-full text-5xl"
-					onClick={() => handlePencilClick()}
-				>
+				<button className="ml-3 rounded-full text-5xl">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
