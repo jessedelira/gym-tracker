@@ -10,7 +10,7 @@ const seedUsers = async () => {
 	});
 
 	if (result) {
-		console.log('Users already seeded')
+		console.log('Users already seeded');
 		return;
 	} else {
 		await prisma.user.create({
