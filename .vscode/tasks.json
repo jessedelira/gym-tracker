@@ -3,7 +3,7 @@
 	"tasks": [
 		{
 			"type": "npm",
-			"script": "pretty",
+			"script": "format",
 			"problemMatcher": [],
 			"label": "npm: pretty",
 			"detail": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\""
