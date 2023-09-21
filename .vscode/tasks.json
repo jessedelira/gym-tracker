@@ -5,15 +5,8 @@
 			"type": "npm",
 			"script": "format",
 			"problemMatcher": [],
-			"label": "npm: pretty",
+			"label": "npm: format",
 			"detail": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\""
-		},
-		{
-			"type": "npm",
-			"script": "lint",
-			"problemMatcher": [],
-			"label": "npm: lint",
-			"detail": "next lint"
 		}
 	]
 }

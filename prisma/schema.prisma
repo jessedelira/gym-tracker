@@ -59,7 +59,6 @@ model Workout {
   sessionId  String
 }
 
-// This will be autopolulated with a list of exercises
 model Exercise {
   id          String    @id @default(cuid())
   name        String    @unique
