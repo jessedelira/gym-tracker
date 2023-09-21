@@ -44,7 +44,7 @@ const NavBar: React.FC<NavBarProps> = () => {
 			</div>
 
 			<div className="flex flex-row items-center justify-between gap-1">
-				<Link href="/account" className="ml-3 rounded-full text-5xl">
+				<Link href="/settings" className="ml-3 rounded-full text-5xl">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
