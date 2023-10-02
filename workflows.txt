@@ -1,4 +1,0 @@
-Creating a routine Workflow
-- Give a name for the routine
-- Select the type of routine
-- Selected dates for a route
