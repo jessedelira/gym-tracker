@@ -2,13 +2,13 @@
 
 A gym tracking application to track your gym workouts, sessions, and progress!
 
-## Setup
+## Development Setup
 
 1. Clone the repo
-2. Install [Docker](https://docker.com), if you don't have it already. Have it running in the background
-3. Run `$docker run --name gym-tracker-db -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql` to start the database
-4. Create gym_tracker database in MySQL db instance in Docker
-5. Create .env at root of project and add the following:
+2. Install [Docker](https://docker.com), if you don't have it already.
+4. Run `$docker run --name gym-tracker-db -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql` to start the database
+5. Create gym_tracker database in MySQL db instance in Docker
+6. Create .env at root of project and add the following:
    - Use this command: ```$ openssl rand -base64 32``` to create a NEXTAUTH_SECRET env var
 ```
 DATABASE_URL="mysql://root:password@localhost:3306/gym_tracker"
