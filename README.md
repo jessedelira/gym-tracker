@@ -1,6 +1,6 @@
-# Gym Tracker
+# Gym Tracker 💪
 
-A simple app to track your gym workouts, built with Next.js, Prisma, and MySQL.
+A gym tracking application to track your gym workouts, sessions, and progress!
 
 ## Setup
 
