@@ -2,6 +2,14 @@
 
 A gym tracking application to track your gym workouts, sessions, and progress!
 
+## Contributing
+
+If you'd like to contribute, please fork the repository and use a feature branch. Pull requests are warmly welcome.
+
+## Links
+
+- Project homepage: https://gym-tracker.app/
+
 ## Development Setup
 
 1. Clone the repo
