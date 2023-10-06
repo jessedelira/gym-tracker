@@ -10,6 +10,12 @@ If you'd like to contribute, please fork the repository and use a feature branch
 
 - Project homepage: https://gym-tracker.app/
 
+## Deployment
+
+Feel free to deploy however you would like if you don't want to use gym-tracker.app, what is reccomended though for deployment is Vercel. Their services are fantastic to use and free under a hobby account.
+
+If you want to have steps in the README for how to deploy using vercel create an issue and someone can add those steps here.
+
 ## Development Setup
 
 1. Clone the repo
