@@ -19,3 +19,9 @@ NEXTAUTH_URL="http://localhost:3000"
 6. Run `$npm install` at root of project to install the dependencies
     - This will kick off the postinstall script, which will run `$npx prisma migrate dev` to create the database tables
 7. Finally, run `$npm run dev` to start the server
+
+## Warnings
+
+- ```warn Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload```
+    - This is a known issue with Next.js and Fast Refresh. It's not a problem with the app, but rather a problem with Next.js. See [here](
+        https://github.com/vercel/next.js/issues/40184#issuecomment-1328881068) for more info.

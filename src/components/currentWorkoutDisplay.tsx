@@ -27,6 +27,15 @@ const CurrentWorkoutDisplay: React.FC = () => {
 		},
 	];
 
+	const handleCheckboxChange = (
+		event: React.ChangeEvent<HTMLInputElement>,
+	) => {
+		console.log(event.target.checked);
+		console.log(event.target.value);
+
+		// how to get data of the specific workout that was checked?
+	};
+
 	return (
 		<div>
 			Today&apos;s Workout
@@ -36,6 +45,7 @@ const CurrentWorkoutDisplay: React.FC = () => {
 						<input
 							type="checkbox"
 							className="form-checkbox mr-2 h-5 w-5 text-blue-600"
+							onChange={handleCheckboxChange}
 						/>
 						<div>
 							<p className="font-bold">{workout.name}</p>

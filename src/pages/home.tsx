@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import CurrentWorkoutDisplay from '~/components/currentWorkoutDisplay';
-import NavBar from '~/components/navbar';
+import Layout from '~/components/layout';
 
 const Home: NextPage = () => {
 	const { data: sessionData, status } = useSession();
@@ -20,18 +20,15 @@ const Home: NextPage = () => {
 		}
 	}, [status, router]);
 
-	// Render
 	if (isLoading) {
 		return <></>;
 	} else {
 		return (
-			<>
-				<NavBar sessionData={sessionData ? sessionData : null}></NavBar>
-				<main className="fit-h-screen flex flex-col items-center justify-center bg-white">
-					Welcome, {sessionData?.user?.firstName}
-					<CurrentWorkoutDisplay></CurrentWorkoutDisplay>
-				</main>
-			</>
+			<Layout sessionData={sessionData ? sessionData : null}>
+				<p>Welcome, {sessionData?.user?.firstName}</p>
+
+				<CurrentWorkoutDisplay></CurrentWorkoutDisplay>
+			</Layout>
 		);
 	}
 };

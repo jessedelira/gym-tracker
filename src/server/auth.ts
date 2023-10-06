@@ -107,6 +107,7 @@ export const authOptions: NextAuthOptions = {
 				);
 
 				if (doesInputPwMatchEncryptedPw && userFoundByUsername) {
+					console.log('User found');
 					return userFoundByUsername;
 				} else {
 					console.log('User not found');
