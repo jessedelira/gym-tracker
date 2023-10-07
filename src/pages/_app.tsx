@@ -13,12 +13,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
 	return (
 		<SessionProvider session={session}>
-			<Head>
-        <title>My Page Title</title>
-        <meta name="description" content="My page description" />
-		<link rel="manifest" href="/manifest.json"></link>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
 			<Component {...pageProps} />
 		</SessionProvider>
 	);
