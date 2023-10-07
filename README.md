@@ -69,12 +69,12 @@ This is a list things you need to use the Gym Tracker.
     $ docker run --name gym-tracker-db -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql
     ```
 3. Use your database management tool of choice to create the database
+
     ```sh
     CREATE DATABASE gym_tracker;
     ```
+
 4. Create .env at root of project and add the following:
-    - Use this command: `$ openssl rand -base64 32` to create a NEXTAUTH_SECRET env var
-5. Create .env at root of project and add the following:
 
     - Use this command: `$ openssl rand -base64 32` to create a NEXTAUTH_SECRET env var
 
@@ -84,9 +84,9 @@ This is a list things you need to use the Gym Tracker.
       NEXTAUTH_URL="http://localhost:3000"
     ```
 
-6. Run `$ npm install` at root of project to install the dependencies
+5. Run `$ npm install` at root of project to install the dependencies
     - This will kick off the postinstall script, which will run `$ npx prisma migrate dev` to create the database tables and populate the database with seed data
-7. Finally, run `$ npm run dev` to start the server
+6. Finally, run `$ npm run dev` to start the server
 
 ### Warnings
 
