@@ -93,24 +93,6 @@ This is a list things you need to use the Gym Tracker.
 -   `warn Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload`
     -   This is a known issue with Next.js and Fast Refresh. It's not a problem with the app, but rather a problem with Next.js. See [here](https://github.com/vercel/next.js/issues/40184#issuecomment-1328881068) for more info.
 
-### Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-## Roadmap
-
--   [x] Add Changelog
--   [x] Add back to top links
--   [ ] Add Additional Templates w/ Examples
--   [ ] Add "components" document to easily copy & paste sections of the readme
--   [ ] Multi-language Support
-    -   [ ] Chinese
-    -   [ ] Spanish
-
-See the [open issues](https://github.com/jessedelira/gym-tracker/issues) for a full list of proposed features (and known issues).
-
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
