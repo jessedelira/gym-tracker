@@ -1,12 +1,41 @@
-# Gym Tracker 💪
+<div align="center">
+  <a href="https://gym-tracker.app">
+    <img
+      src="./public/flexed_biceps_3d_default.png"
+      alt="Flexed Muscles"
+      height="64"
+    />
+  </a>
+  <h3>
+    <b>
+      Gym Tracker
+    </b>
+  </h3>
+  <b>
+    Open Source Fitness Tracking Application
+  </b>
+  <p>
 
-## About The Project
+![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen?logo=github) ![Website](https://img.shields.io/website?url=https%3A%2F%2Fgym-tracker.app&logo)
+![stars](https://img.shields.io/github/stars/jessedelira/gym-tracker)
+
+
+  </p>
+  <p>
+    <sub>
+      Built with ❤︎ by
+      <a href="https://github.com/hoppscotch/hoppscotch/graphs/contributors">
+        contributors
+      </a>
+    </sub>
+  </p>
+</div>
 
 Gym Tracker is a fitness tracking application to track your workouts, fitness goals, and progress!
 
 ### Reason behind the project
 
-I created this project to help escape fumbling with Excel spreadsheets or Apple notes while at the gym. I wanted something that I can just pull up and check off the exercises that I completed based on the type of workout I was doing.
+I created this project to help escape fumbling with Excel spreadsheets and editing Apple notes while at the gym. I wanted something that was simple to use while AT th gym, but also had the functionality that I wanted when I wasn't actively working out.
 
 ### Built With
 
