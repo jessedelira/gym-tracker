@@ -24,7 +24,7 @@
   <p>
     <sub>
       Built with ❤︎ by
-      <a href="https://github.com/hoppscotch/hoppscotch/graphs/contributors">
+      <a href="https://github.com/jessedelira/gym-tracker/graphs/contributors">
         contributors
       </a>
     </sub>
