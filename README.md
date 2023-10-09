@@ -95,11 +95,17 @@ This is a list things you need to use the Gym Tracker.
 
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
 Jesse De Lira - jessedelira1@gmail.com
+
+## Acknowledgments
+
+-   [Choose an Open Source License](https://choosealicense.com)
+-   [Img Shields](https://shields.io)
+-   [Heroicons](https://heroicons.com/)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
