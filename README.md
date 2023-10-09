@@ -12,7 +12,7 @@
     </b>
   </h3>
   <b>
-    Open Source Fitness Tracking Application
+    Open-source Fitness Tracking Application
   </b>
   <p>
 
