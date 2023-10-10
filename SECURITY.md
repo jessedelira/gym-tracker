@@ -1,6 +1,6 @@
 # Security Policy
 
-## Supported Doamins
+## Supported Domains
 
 The only production domains that are used for Gym Tracker are as follows:
 - https://gym-tracker.app
