@@ -32,19 +32,30 @@ const Settings: NextPage = () => {
 					<input
 						className="mt-4 rounded-md bg-black px-4 py-2 text-white"
 						placeholder="First Name"
+						value={sessionData?.user.firstName ?? 'Loading...'}
 					></input>
 					<input
 						className="mt-4 rounded-md bg-black px-4 py-2 text-white"
 						placeholder="Last Name"
+						value={sessionData?.user.lastName ?? 'Loading...'}
 					></input>
 					<input
 						className="mt-4 rounded-md bg-black px-4 py-2 text-white"
 						placeholder="Username"
+						value={sessionData?.user.username ?? 'Loading...'}
 					></input>
 					<input
 						className="mt-4 rounded-md bg-black px-4 py-2 text-white"
 						placeholder="Password"
-					></input>
+					></input>	
+					<div className="mt-4 grid grid-col-2 gap-1">
+						<button className="rounded-md bg-black px-4 py-2 text-white">
+							Submit
+						</button>
+						<button className="rounded-md bg-black px-4 py-2 text-white">
+							Cancel{' '}
+						</button>
+					</div>
 				</div>
 			</>
 		);
