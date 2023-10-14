@@ -4,6 +4,7 @@ import { useState, type FormEvent } from 'react';
 import AccountCreatedModal from '~/components/accountCreatedModal';
 
 import { api } from '~/utils/api';
+import { getFirstNameInputElement, getLastNameInputElement, getPasswordInputElement, getUsernameInputElement } from '~/utils/documentUtils';
 
 const SignUp: NextPage = () => {
 	const createUserMutation = api.user.createUser.useMutation();
@@ -12,18 +13,10 @@ const SignUp: NextPage = () => {
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const username = (
-			document.getElementById('username') as HTMLInputElement
-		).value;
-		const password = (
-			document.getElementById('password') as HTMLInputElement
-		).value;
-		const firstName = (
-			document.getElementById('firstName') as HTMLInputElement
-		).value;
-		const lastName = (
-			document.getElementById('lastName') as HTMLInputElement
-		).value;
+		const username = getUsernameInputElement(document).value;
+		const password = getPasswordInputElement(document).value;
+		const firstName = getFirstNameInputElement(document).value;
+		const lastName = getLastNameInputElement(document).value;
 
 		const createUserData = {
 			username: username,
