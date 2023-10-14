@@ -56,7 +56,7 @@ const Settings: NextPage = () => {
 			<>
 				<NavBar sessionData={sessionData}></NavBar>
 				<div className="flex flex-col items-center justify-center">
-					<h1 className="text-2xl font-bold">Account Settings</h1>
+					<h1 className="text-2xl font-bold">Settings</h1>
 					<h2 className="text-1xl font-bold">Personal Information</h2>
 					<div className="mat-4 grid grid-cols-2 gap-1">
 						<div className="mat-4 grid grid-cols-1 gap-1">
