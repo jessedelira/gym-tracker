@@ -76,7 +76,7 @@ const Settings: NextPage = () => {
 						placeholder="Password"
 					></input> */}
 					{dataChangeInForm ? (
-						<div className="mt-4 grid grid-col-2 gap-1">
+						<div className="mt-4 grid grid-cols-2 gap-1">
 							<button className="rounded-md bg-black px-4 py-2 text-white">Save</button>
 							<button className="rounded-md bg-black px-4 py-2 text-white" onClick={handleCancelClicked}>Cancel</button>
 						</div>
