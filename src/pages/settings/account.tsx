@@ -1,4 +1,3 @@
-import { User } from '@prisma/client';
 import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
@@ -13,7 +12,6 @@ import {
 const Settings: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
-	const [userDto, setUserDto] = useState<User>();
 	const [dataChangeInForm, setDataChangeInForm] = useState(false);
 	const router = useRouter();
 
@@ -55,9 +53,11 @@ const Settings: NextPage = () => {
 		return (
 			<>
 				<NavBar sessionData={sessionData}></NavBar>
-				<div className="flex flex-col items-center justify-center">
-					<h1 className="text-2xl font-bold">Settings</h1>
-					<h2 className="text-1xl font-bold">Personal Information</h2>
+				<div className="flex flex-col">
+					<h1 className="text-3xl font-bold pl-2">Settings</h1>
+					
+					<h2 className="text-2xl font-bold pl-2">Personal Information</h2>
+					
 					<div className="mat-4 grid grid-cols-2 gap-5 ">
 						<div className="mat-4 grid grid-cols-1 pl-2">
 							<label className="block font-bold">
