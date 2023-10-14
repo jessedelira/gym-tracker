@@ -58,14 +58,14 @@ const Settings: NextPage = () => {
 				<div className="flex flex-col items-center justify-center">
 					<h1 className="text-2xl font-bold">Settings</h1>
 					<h2 className="text-1xl font-bold">Personal Information</h2>
-					<div className="mat-4 grid grid-cols-2 gap-5 pl-2">
-						<div className="mat-4 grid grid-cols-1">
+					<div className="mat-4 grid grid-cols-2 gap-5 ">
+						<div className="mat-4 grid grid-cols-1 pl-2">
 							<label className="block font-bold">
 								First Name
 							</label>
 							<input
 								id="firstName"
-								className=" rounded-md bg-black px-4 py-2 text-white"
+								className=" rounded-md bg-gray-300 px-4 py-2 text-white"
 								placeholder="First Name"
 								defaultValue={
 									sessionData?.user.firstName ?? 'Loading...'
@@ -81,7 +81,7 @@ const Settings: NextPage = () => {
 
 							<input
 								id="lastName"
-								className=" rounded-md bg-black px-4 py-2 text-white"
+								className=" rounded-md bg-gray-300 px-4 py-2 text-white"
 								placeholder="Last Name"
 								defaultValue={
 									sessionData?.user.lastName ?? 'Loading...'
@@ -90,26 +90,32 @@ const Settings: NextPage = () => {
 							></input>
 						</div>
 					</div>
-					<input
-						id="username"
-						className="mt-4 rounded-md bg-black px-4 py-2 text-white"
-						placeholder="Username"
-						defaultValue={
-							sessionData?.user.username ?? 'Loading...'
-						}
-						onChange={handleInputChange}
-					></input>
+					<div className="mat-4 grid grid-cols-1">
+						<label className="block font-bold">Username</label>
+						<input
+							id="username"
+							className="mt-4 rounded-md bg-gray-300 px-4 py-2 text-white"
+							placeholder="Username"
+							defaultValue={
+								sessionData?.user.username ?? 'Loading...'
+							}
+							onChange={handleInputChange}
+						></input>
+					</div>
 					{/* <input
 						className="mt-4 rounded-md bg-black px-4 py-2 text-white"
 						placeholder="Password"
 					></input> */}
 					{dataChangeInForm ? (
 						<div className="mt-4 grid grid-cols-2 gap-1">
-							<button className="rounded-md bg-black px-4 py-2 text-white">
+							<button
+								className="rounded-md bg-green-700 px-4 py-2 text-white"
+								onClick={handleSaveClicked}
+							>
 								Save
 							</button>
 							<button
-								className="rounded-md bg-black px-4 py-2 text-white"
+								className="rounded-md bg-red-700 px-4 py-2 text-white"
 								onClick={handleCancelClicked}
 							>
 								Cancel
