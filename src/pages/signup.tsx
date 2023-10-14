@@ -4,7 +4,12 @@ import { useState, type FormEvent } from 'react';
 import AccountCreatedModal from '~/components/accountCreatedModal';
 
 import { api } from '~/utils/api';
-import { getFirstNameInputElement, getLastNameInputElement, getPasswordInputElement, getUsernameInputElement } from '~/utils/documentUtils';
+import {
+	getFirstNameInputElement,
+	getLastNameInputElement,
+	getPasswordInputElement,
+	getUsernameInputElement,
+} from '~/utils/documentUtils';
 
 const SignUp: NextPage = () => {
 	const createUserMutation = api.user.createUser.useMutation();
