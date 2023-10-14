@@ -58,14 +58,14 @@ const Settings: NextPage = () => {
 				<div className="flex flex-col items-center justify-center">
 					<h1 className="text-2xl font-bold">Settings</h1>
 					<h2 className="text-1xl font-bold">Personal Information</h2>
-					<div className="mat-4 grid grid-cols-2 gap-1">
-						<div className="mat-4 grid grid-cols-1 gap-1">
+					<div className="mat-4 grid grid-cols-2 gap-5 pl-2">
+						<div className="mat-4 grid grid-cols-1">
 							<label className="block font-bold">
 								First Name
 							</label>
 							<input
 								id="firstName"
-								className="mt-1 rounded-md bg-black px-4 py-2 text-white"
+								className=" rounded-md bg-black px-4 py-2 text-white"
 								placeholder="First Name"
 								defaultValue={
 									sessionData?.user.firstName ?? 'Loading...'
@@ -74,14 +74,14 @@ const Settings: NextPage = () => {
 							></input>
 						</div>
 
-						<div className="mat-4 grid grid-cols-1 gap-1">
+						<div className="mat-4 grid grid-cols-1 gap-1 pr-2">
 							<label className="block font-bold">
 								First Name
 							</label>
 
 							<input
 								id="lastName"
-								className="mt-1 rounded-md bg-black px-4 py-2 text-white"
+								className=" rounded-md bg-black px-4 py-2 text-white"
 								placeholder="Last Name"
 								defaultValue={
 									sessionData?.user.lastName ?? 'Loading...'
