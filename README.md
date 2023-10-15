@@ -77,6 +77,11 @@ Feel free to deploy however you would like if you don't want to use gym-tracker.
 
 If you want to have steps in the README for how to deploy using vercel create an issue and someone can add those steps here.
 
+### Links
+
+[Preview Deployments](https://github.com/jessedelira/gym-tracker/deployments/Preview)
+[Production Deployments](https://github.com/jessedelira/gym-tracker/deployments/Production)
+
 ## Getting Started
 
 This is an example of how you may give instructions on setting up your project locally.
