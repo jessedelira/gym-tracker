@@ -25,6 +25,7 @@ declare module 'next-auth' {
 			username?: string | null;
 			firstName?: string | null;
 			lastName?: string | null;
+			dateCreated?: Date | null;
 			// ...other properties
 			// role: UserRole;
 		};
@@ -39,6 +40,7 @@ declare module 'next-auth' {
 		username?: string | null;
 		firstName?: string | null;
 		lastName?: string | null;
+		dateCreated?: Date | null;
 		// ...other properties
 		// role: UserRole;
 	}
