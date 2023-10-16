@@ -3,8 +3,8 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import NavBar from '~/components/navbar';
-import Account from './account';
-import { getMonthDDCommaYYYY, getYYYY } from '~/utils/dateUtils';
+import { getMonthDDCommaYYYY } from '~/utils/dateUtils';
+import Link from 'next/link';
 
 const Settings: NextPage = () => {
 	const { data: sessionData, status } = useSession();
@@ -30,8 +30,7 @@ const Settings: NextPage = () => {
 				{/* name and 'member since xyx' */}
 
 				<div className="flex items-center ">
-
-					<div className='pl-4 mt-4'>
+					<div className="mt-4 pl-4">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -47,12 +46,35 @@ const Settings: NextPage = () => {
 							/>
 						</svg>
 					</div>
-					<div className="ml-4 grid grid-cols-1 mt-4">
-						<h1 className='text-2xl'>
-							{sessionData?.user.firstName} {sessionData?.user.lastName}
+					<div className="ml-4 mt-4 grid grid-cols-1">
+						<h1 className="text-2xl">
+							{sessionData?.user.firstName}{' '}
+							{sessionData?.user.lastName}
 						</h1>
-						<h2 className='text-l'>Member since {getMonthDDCommaYYYY(sessionData?.user.dateCreated)}</h2>
+						<h2 className="text-l">
+							Member since{' '}
+							{getMonthDDCommaYYYY(sessionData?.user.dateCreated)}
+						</h2>
 					</div>
+				</div>
+
+				<div className="rounded-md border-2 border-slate-400 ml-4 mr-4 bg-gray-100">
+					{/* link to Account */}
+					<Link href="/settings/account" className="text-2xl block border-b-2 border-black">
+						Account
+					</Link>
+					<Link href="/settings/appearance" className="text-2xl block border-b-2 border-black">
+						Appearance
+					</Link>
+					<Link href="/settings/location" className="text-2xl block border-b-2 border-black">
+						Location & Language
+					</Link>
+					<Link href="/settings/notifications" className="text-2xl block border-b-2 border-black">
+						Notifications
+					</Link>
+					<Link href="/settings/delete" className="text-2xl block border-b-2 ">
+						Account Deletion
+					</Link>
 				</div>
 
 				{/* Account */}
