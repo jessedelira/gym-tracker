@@ -54,10 +54,12 @@ const Account: NextPage = () => {
 			<>
 				<NavBar sessionData={sessionData}></NavBar>
 				<div className="flex flex-col">
-					<h1 className="text-3xl font-bold pl-2">Settings</h1>
-					
-					<h2 className="text-2xl font-bold pl-2">Personal Information</h2>
-					
+					<h1 className="pl-2 text-3xl font-bold">Settings</h1>
+
+					<h2 className="pl-2 text-2xl font-bold">
+						Personal Information
+					</h2>
+
 					<div className="mat-4 grid grid-cols-2 gap-5 ">
 						<div className="mat-4 grid grid-cols-1 pl-2">
 							<label className="block font-bold">
