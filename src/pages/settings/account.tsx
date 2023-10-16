@@ -9,7 +9,7 @@ import {
 	getUsernameInputElement,
 } from '~/utils/documentUtils';
 
-const Settings: NextPage = () => {
+const Account: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
 	const [dataChangeInForm, setDataChangeInForm] = useState(false);
@@ -128,4 +128,4 @@ const Settings: NextPage = () => {
 	}
 };
 
-export default Settings;
+export default Account;
