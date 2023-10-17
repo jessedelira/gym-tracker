@@ -58,30 +58,52 @@ const Settings: NextPage = () => {
 					</div>
 				</div>
 
-				<div className="rounded-md border-2 border-slate-400 ml-4 mr-4 bg-gray-100">
-					{/* link to Account */}
-					<Link href="/settings/account" className="text-2xl block border-b-2 border-black">
-						Account
-					</Link>
-					<Link href="/settings/appearance" className="text-2xl block border-b-2 border-black">
+				<div className="ml-4 mr-4 rounded-md border-2 mt-5 border-slate-400 bg-gray-100">
+					<div className=''>
+						<Link
+							href="/settings/account"
+							className="block border-b-2 border-black text-2xl"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 20 20"
+								fill="currentColor"
+								className="h-5 w-5"
+							>
+								<path
+									fill-rule="evenodd"
+									d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-5.5-2.5a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zM10 12a5.99 5.99 0 00-4.793 2.39A6.483 6.483 0 0010 16.5a6.483 6.483 0 004.793-2.11A5.99 5.99 0 0010 12z"
+									clip-rule="evenodd"
+								/>
+							</svg>
+							Account
+						</Link>
+					</div>
+					<Link
+						href="/settings/appearance"
+						className="block border-b-2 border-black text-2xl"
+					>
 						Appearance
 					</Link>
-					<Link href="/settings/location" className="text-2xl block border-b-2 border-black">
+					<Link
+						href="/settings/location"
+						className="block border-b-2 border-black text-2xl"
+					>
 						Location & Language
 					</Link>
-					<Link href="/settings/notifications" className="text-2xl block border-b-2 border-black">
+					<Link
+						href="/settings/notifications"
+						className="block border-b-2 border-black text-2xl"
+					>
 						Notifications
 					</Link>
-					<Link href="/settings/delete" className="text-2xl block border-b-2 ">
+					<Link
+						href="/settings/delete"
+						className="block border-b-2 text-2xl "
+					>
 						Account Deletion
 					</Link>
 				</div>
-
-				{/* Account */}
-				{/* Appearance */}
-				{/* Location & Language */}
-				{/* Notifications */}
-				{/* Account Deletion RED*/}
 			</>
 		);
 	}
