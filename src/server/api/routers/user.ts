@@ -65,9 +65,9 @@ export const userRouter = createTRPCRouter({
 					username: input.existingUsername,
 				},
 				data: {
-
 					firstName: input.newFirstName,
 					lastName: input.newLastName,
+					username: input.newUsername,
 				},
 			});
 
