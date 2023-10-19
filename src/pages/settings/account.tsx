@@ -40,7 +40,7 @@ const Account: NextPage = () => {
 		const newLastName = getLastNameInputElement(document).value;
 
 		const updatedUserData = {
-			existingUsername: existingUsername,
+			id: existingUsername,
 			newUsername: newUsername,
 			newFirstName: newFirstName,
 			newLastName: newLastName,
@@ -52,7 +52,7 @@ const Account: NextPage = () => {
 			},
 		});
 
-		await getSession();
+		
 	};
 
 	useEffect(() => {
