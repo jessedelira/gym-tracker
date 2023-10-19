@@ -93,10 +93,10 @@ const Account: NextPage = () => {
 						</div>
 					</div>
 					<div className="mat-4 grid grid-cols-1">
-						<label className="block font-bold">Username</label>
+						<label className="block pl-2 font-bold">Username</label>
 						<input
 							id="username"
-							className="mt-4 rounded-md bg-gray-300 px-4 py-2 text-white"
+							className="mx-2 mt-4 rounded-md bg-gray-300 py-2 text-white"
 							placeholder="Username"
 							defaultValue={
 								sessionData?.user.username ?? 'Loading...'
@@ -104,10 +104,7 @@ const Account: NextPage = () => {
 							onChange={handleInputChange}
 						></input>
 					</div>
-					{/* <input
-						className="mt-4 rounded-md bg-black px-4 py-2 text-white"
-						placeholder="Password"
-					></input> */}
+
 					{dataChangeInForm ? (
 						<div className="mt-4 grid grid-cols-2 gap-1">
 							<button
