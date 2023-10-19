@@ -53,7 +53,7 @@ export const userRouter = createTRPCRouter({
 	updateUser: protectedProcedure
 		.input(
 			z.object({
-				existingUsername: z.string(),
+				id: z.string(),
 				newUsername: z.string(),
 				newFirstName: z.string(),
 				newLastName: z.string(),
@@ -62,7 +62,7 @@ export const userRouter = createTRPCRouter({
 		.mutation(async ({ input }) => {
 			const updatedUser = await prisma.user.update({
 				where: {
-					username: input.existingUsername,
+					id: input.id,
 				},
 				data: {
 					firstName: input.newFirstName,
