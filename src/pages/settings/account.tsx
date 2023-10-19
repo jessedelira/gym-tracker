@@ -96,7 +96,7 @@ const Account: NextPage = () => {
 						<label className="block pl-2 font-bold">Username</label>
 						<input
 							id="username"
-							className="mx-2 mt-4 rounded-md bg-gray-300 py-2 text-white"
+							className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-white"
 							placeholder="Username"
 							defaultValue={
 								sessionData?.user.username ?? 'Loading...'
