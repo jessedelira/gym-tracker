@@ -60,7 +60,7 @@ const Account: NextPage = () => {
 	};
 
 	const changeSession = async () => {
-		await update({ teeth: 'hi bye GUY' }).then(() => {
+		await update({}).then(() => {
 			console.log('Session updated');
 		});
 	};
