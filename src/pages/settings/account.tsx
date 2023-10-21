@@ -60,12 +60,6 @@ const Account: NextPage = () => {
 	};
 
 	const changeSession = async () => {
-		// if(sessionData?.user === undefined) {
-		// 	return;
-		// }
-		// else {
-		// 	sessionData.user.firstName = "New First Name";
-		// }
 		await update({ teeth: 'hi bye GUY' }).then(() => {
 			console.log('Session updated');
 		});
