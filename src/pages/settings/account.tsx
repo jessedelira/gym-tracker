@@ -48,11 +48,10 @@ const Account: NextPage = () => {
 			};
 
 			updateUserMutation.mutate(updatedUserData, {
-				onSuccess:  () => {
+				onSuccess: () => {
 					setDataChangeInForm(false);
 				},
 			});
-
 		}
 	};
 
