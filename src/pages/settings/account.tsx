@@ -1,7 +1,8 @@
 import { type NextPage } from 'next';
-import { getSession, useSession } from 'next-auth/react';
+import { Session } from 'next-auth';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { type FormEvent  , useEffect, useState } from 'react';
+import { type FormEvent, useEffect, useState } from 'react';
 import NavBar from '~/components/navbar';
 import { api } from '~/utils/api';
 import {
@@ -11,7 +12,7 @@ import {
 } from '~/utils/documentUtils';
 
 const Account: NextPage = () => {
-	const { data: sessionData, status } = useSession();
+	const { data: sessionData, status, update } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
 	const [dataChangeInForm, setDataChangeInForm] = useState(false);
 	const router = useRouter();
@@ -31,28 +32,43 @@ const Account: NextPage = () => {
 			sessionData?.user.username ?? 'Loading...';
 	};
 
-	const handleSaveClicked = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
+	const handleSaveClicked = (e: FormEvent<HTMLFormElement>) => {
+		if (sessionData) {
+			e.preventDefault();
 
-		const existingUsername = sessionData?.user.username as string;
-		const newUsername = getUsernameInputElement(document).value;
-		const newFirstName = getFirstNameInputElement(document).value;
-		const newLastName = getLastNameInputElement(document).value;
+			const newUsername = getUsernameInputElement(document).value;
+			const newFirstName = getFirstNameInputElement(document).value;
+			const newLastName = getLastNameInputElement(document).value;
 
-		const updatedUserData = {
-			id: existingUsername,
-			newUsername: newUsername,
-			newFirstName: newFirstName,
-			newLastName: newLastName,
-		};
+			const updatedUserData = {
+				id: sessionData.user.id,
+				newUsername: newUsername,
+				newFirstName: newFirstName,
+				newLastName: newLastName,
+			};
 
-		updateUserMutation.mutate(updatedUserData, {
-			onSuccess: () => {
-				setDataChangeInForm(false);
-			},
+			updateUserMutation.mutate(updatedUserData, {
+				onSuccess: () => {
+					setDataChangeInForm(false);
+				},
+			});
+		}
+	};
+
+	const logSession = () => {
+		console.log(sessionData);
+	};
+
+	const changeSession = async () => {
+		// if(sessionData?.user === undefined) {
+		// 	return;
+		// }
+		// else {
+		// 	sessionData.user.firstName = "New First Name";
+		// }
+		await update({ teeth: 'hi bye GUY' }).then(() => {
+			console.log('Session updated');
 		});
-
-		
 	};
 
 	useEffect(() => {
@@ -144,6 +160,21 @@ const Account: NextPage = () => {
 							</div>
 						) : null}
 					</form>
+
+					<button
+						onClick={logSession}
+						className="ml-2 mt-4 rounded-md bg-red-700 px-4 py-2 text-white"
+					>
+						Log Session
+					</button>
+					<button
+						// TODO: Address this issue with TypesScript
+						// eslint-disable-next-line @typescript-eslint/no-misused-promises
+						onClick={changeSession}
+						className="ml-2 mt-4 rounded-md bg-red-700 px-4 py-2 text-white"
+					>
+						Update Session
+					</button>
 				</div>
 			</>
 		);

@@ -3,11 +3,13 @@ import {
 	getServerSession,
 	type NextAuthOptions,
 	type DefaultSession,
+	User,
 } from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { prisma } from '~/server/db';
 import bcrypt from 'bcrypt';
 import Credentials from 'next-auth/providers/credentials';
+import { AdapterUser } from 'next-auth/adapters';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -68,10 +70,32 @@ declare module 'next-auth/jwt' {
  */
 export const authOptions: NextAuthOptions = {
 	callbacks: {
-		jwt: ({ token, user }) => {
+		jwt: ({ token, user, trigger }) => {
 			if (user) {
 				token.user = user;
 			}
+			if (trigger === 'update') {
+				// query the db then get the user user?????
+				console.log('update user callback');
+				const updatedUser = prisma.user.findUnique({
+					where: {
+						id: token.user.id,
+					},
+				});
+
+				const newJWTUser = {
+					id: 'bruh',
+					name: 'bruh',
+					email: 'bruh',
+					image: 'bruh',
+					username: 'bruh',
+				} as User | AdapterUser;
+
+				token.user = newJWTUser;
+
+				// set usersomething here
+			}
+
 			return token;
 		},
 		session: ({ session, token }) => {
@@ -109,10 +133,8 @@ export const authOptions: NextAuthOptions = {
 				);
 
 				if (doesInputPwMatchEncryptedPw && userFoundByUsername) {
-					console.log('User found');
 					return userFoundByUsername;
 				} else {
-					console.log('User not found');
 					throw new Error('User now found');
 				}
 			},
