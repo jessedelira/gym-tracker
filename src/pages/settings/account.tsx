@@ -48,10 +48,11 @@ const Account: NextPage = () => {
 			};
 
 			updateUserMutation.mutate(updatedUserData, {
-				onSuccess: () => {
+				onSuccess:  () => {
 					setDataChangeInForm(false);
 				},
 			});
+
 		}
 	};
 
@@ -113,7 +114,7 @@ const Account: NextPage = () => {
 
 							<div className="mat-4 grid grid-cols-1 gap-1 pr-2">
 								<label className="block font-bold">
-									First Name
+									Last Name
 								</label>
 
 								<input
