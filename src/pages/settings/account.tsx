@@ -47,19 +47,13 @@ const Account: NextPage = () => {
 				newLastName: newLastName,
 			};
 
-			updateUserMutation.mutate(updatedUserData, {
+			await updateUserMutation.mutateAsync(updatedUserData, {
 				onSuccess: () => {
 					setDataChangeInForm(false);
 				},
 			});
-
-			await changeSession();
 		}
 		await changeSession();
-	};
-
-	const logSession = () => {
-		console.log(sessionData);
 	};
 
 	const changeSession = async () => {
