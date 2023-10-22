@@ -32,7 +32,7 @@ const Account: NextPage = () => {
 			sessionData?.user.username ?? 'Loading...';
 	};
 
-	const handleSaveClicked = (e: FormEvent<HTMLFormElement>) => {
+	const handleSaveClicked = async (e: FormEvent<HTMLFormElement>) => {
 		if (sessionData) {
 			e.preventDefault();
 
@@ -52,7 +52,10 @@ const Account: NextPage = () => {
 					setDataChangeInForm(false);
 				},
 			});
+
+			// await changeSession();
 		}
+		await changeSession();
 	};
 
 	const logSession = () => {
@@ -155,7 +158,7 @@ const Account: NextPage = () => {
 						) : null}
 					</form>
 
-					<button
+					{/* <button
 						onClick={logSession}
 						className="ml-2 mt-4 rounded-md bg-red-700 px-4 py-2 text-white"
 					>
@@ -168,7 +171,7 @@ const Account: NextPage = () => {
 						className="ml-2 mt-4 rounded-md bg-red-700 px-4 py-2 text-white"
 					>
 						Update Session
-					</button>
+					</button> */}
 				</div>
 			</>
 		);
