@@ -53,7 +53,7 @@ const Account: NextPage = () => {
 				},
 			});
 
-			// await changeSession();
+			await changeSession();
 		}
 		await changeSession();
 	};
