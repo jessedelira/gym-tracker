@@ -23,7 +23,6 @@ const Create: NextPage = () => {
 		return <></>;
 	} else {
 		return (
-			// create three buttons: create workout, create exercise, create routine with tailwind css
 			<>
 				<NavBar sessionData={sessionData}></NavBar>
 				<div className="flex flex-col items-center justify-center">

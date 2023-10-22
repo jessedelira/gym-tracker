@@ -150,21 +150,6 @@ const Account: NextPage = () => {
 							</div>
 						) : null}
 					</form>
-
-					{/* <button
-						onClick={logSession}
-						className="ml-2 mt-4 rounded-md bg-red-700 px-4 py-2 text-white"
-					>
-						Log Session
-					</button>
-					<button
-						// TODO: Address this issue with TypesScript
-						// eslint-disable-next-line @typescript-eslint/no-misused-promises
-						onClick={changeSession}
-						className="ml-2 mt-4 rounded-md bg-red-700 px-4 py-2 text-white"
-					>
-						Update Session
-					</button> */}
 				</div>
 			</>
 		);
