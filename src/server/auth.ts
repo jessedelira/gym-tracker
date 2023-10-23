@@ -3,11 +3,13 @@ import {
 	getServerSession,
 	type NextAuthOptions,
 	type DefaultSession,
+	type User,
 } from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { prisma } from '~/server/db';
 import bcrypt from 'bcrypt';
 import Credentials from 'next-auth/providers/credentials';
+import { type AdapterUser } from 'next-auth/adapters';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -25,6 +27,7 @@ declare module 'next-auth' {
 			username?: string | null;
 			firstName?: string | null;
 			lastName?: string | null;
+			dateCreated?: Date | null;
 			// ...other properties
 			// role: UserRole;
 		};
@@ -39,6 +42,7 @@ declare module 'next-auth' {
 		username?: string | null;
 		firstName?: string | null;
 		lastName?: string | null;
+		dateCreated?: Date | null;
 		// ...other properties
 		// role: UserRole;
 	}
@@ -66,9 +70,28 @@ declare module 'next-auth/jwt' {
  */
 export const authOptions: NextAuthOptions = {
 	callbacks: {
-		jwt: ({ token, user }) => {
+		jwt: async ({ token, user, trigger }) => {
 			if (user) {
 				token.user = user;
+			}
+			if (trigger === 'update') {
+				// Note: Prisma calls must always be awaited.
+				const updatedUser = await prisma.user.findUnique({
+					where: {
+						id: token.user.id,
+					},
+				});
+
+				if (updatedUser) {
+					const newJWTUser: User | AdapterUser = {
+						id: updatedUser.id,
+						dateCreated: updatedUser.dateCreated,
+						firstName: updatedUser.firstName,
+						lastName: updatedUser.lastName,
+						username: updatedUser.username,
+					};
+					token.user = newJWTUser;
+				}
 			}
 			return token;
 		},
@@ -107,10 +130,8 @@ export const authOptions: NextAuthOptions = {
 				);
 
 				if (doesInputPwMatchEncryptedPw && userFoundByUsername) {
-					console.log('User found');
 					return userFoundByUsername;
 				} else {
-					console.log('User not found');
 					throw new Error('User now found');
 				}
 			},
