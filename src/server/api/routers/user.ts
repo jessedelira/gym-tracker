@@ -50,24 +50,24 @@ export const userRouter = createTRPCRouter({
 			return user;
 		}),
 
-	// TODO: add encrypted password to this
 	updateUser: protectedProcedure
 		.input(
 			z.object({
-				username: z.string(),
-				firstName: z.string(),
-				password: z.string(),
-				lastName: z.string(),
+				id: z.string(),
+				newUsername: z.string(),
+				newFirstName: z.string(),
+				newLastName: z.string(),
 			}),
 		)
 		.mutation(async ({ input }) => {
 			const updatedUser = await prisma.user.update({
 				where: {
-					username: input.username,
+					id: input.id,
 				},
 				data: {
-					firstName: input.firstName,
-					lastName: input.lastName,
+					firstName: input.newFirstName,
+					lastName: input.newLastName,
+					username: input.newUsername,
 				},
 			});
 

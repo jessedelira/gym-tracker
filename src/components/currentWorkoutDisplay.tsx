@@ -32,8 +32,6 @@ const CurrentWorkoutDisplay: React.FC = () => {
 	) => {
 		console.log(event.target.checked);
 		console.log(event.target.value);
-
-		// how to get data of the specific workout that was checked?
 	};
 
 	return (
