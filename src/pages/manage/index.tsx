@@ -53,27 +53,58 @@ const Manage: NextPage = () => {
 						<h2 className="text-l">Strength Training </h2>
 					</div>
 				</div>
-				<div className="flex flex-col items-center justify-center">
-					<h3 className="text-2xl font-semibold">Select type to Create/Edit/View</h3>
-					{/* create three link tags that are in a flex of column 2 by 2 with grey and white text */}
-					<div className="mat-4 grid grid-cols-1 gap-5 mx-2">
-						<Link href="/manage/create/workout" className="bg-gray-300 rounded-md px-4 py-2 text-white text-xl font-semibold">
-							Workouts
-							<p className='font-normal text-base'>
-								A workout is a collection of exercises that you do in a single session.
+				<div className="flex flex-col items-center justify-center mt-6">
+					<div className="mat-4 mx-2 grid grid-cols-1 gap-5">
+						<Link
+							href="/manage/create/workout"
+							className="rounded-md bg-gray-300 px-4 py-2 text-xl font-semibold text-white"
+						>
+							Manage Workouts
+							<p className="text-base font-normal">
+								A workout is a collection of exercises that you
+								do in a single session.
 							</p>
 						</Link>
-						<Link href="/manage/create/exercise" className="bg-gray-300 rounded-md px-4 py-2 text-white text-xl font-semibold">
-							Session
-							<p className='font-normal text-base'>
-								A session is a collection of workouts that you do in a single day.
+						<Link
+							href="/manage/create/exercise"
+							className="rounded-md bg-gray-300 px-4 py-2 text-xl font-semibold text-white"
+						>
+							Manage Sessions
+							<p className="text-base font-normal">
+								A session is a collection of workouts that you
+								do in a single day.
 							</p>
 						</Link>
-						<Link href="/manage/create/routine" className="bg-gray-300 rounded-md px-4 py-2 text-white text-xl font-semibold">
-							Routine
-							<p className='font-normal text-base'>
-								A routine is a collection of sessions that you do in a single week.
-							</p>
+						<Link
+							href="/create/routine"
+							className="rounded-md bg-gray-300 px-4 py-2 text-xl font-semibold text-white  "
+						>
+							<div className="flex">
+								<div className="w-90">
+									Manage Routines
+									<p className="text-base font-normal">
+										A routine is a collection of sessions
+										that you do in a single week.
+									</p>
+								</div>
+
+								<div className="w-5 pt-6">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										strokeWidth="1.5"
+										stroke="currentColor"
+										className="h-6 w-6"
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											d="M8.25 4.5l7.5 7.5-7.5 7.5"
+										/>
+									</svg>
+								</div>
+							</div>
 						</Link>
 					</div>
 				</div>
