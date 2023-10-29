@@ -1,60 +1,131 @@
-import { type NextPage } from "next";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import NavBar from "~/components/navbar";
+import { type NextPage } from 'next';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import NavBar from '~/components/navbar';
 
 const Routines: NextPage = () => {
-    const { data: sessionData, status } = useSession();
-    const [isLoading, setIsLoading] = useState(true);
-    const router = useRouter();
+	const { data: sessionData, status } = useSession();
+	const [isLoading, setIsLoading] = useState(true);
+	const router = useRouter();
+	const currentRoutine = 'Strength Training';
 
-    useEffect(() => {
-        if (status === "unauthenticated") {
-            void router.push("/");
-        } else if (status === "loading") {
-            setIsLoading(true);
-        } else {
-            setIsLoading(false);
-        }
-    }, [status, router]);
+	useEffect(() => {
+		if (status === 'unauthenticated') {
+			void router.push('/');
+		} else if (status === 'loading') {
+			setIsLoading(true);
+		} else {
+			setIsLoading(false);
+		}
+	}, [status, router]);
 
-    if(isLoading) {
-        return(<>
-        </>);
-    } else {
+	if (isLoading) {
+		return <></>;
+	} else {
+		return (
+			<>
+				<NavBar sessionData={sessionData}></NavBar>
+				<div className="grid grid-cols-1">
+					<h1 className="pl-2 pt-3 text-2xl font-bold">
+						Manage Routines
+					</h1>
+					<div className="flex">
+						<p className="w-120 pl-2 pt-1 text-xl">
+							Current Routine: {currentRoutine}
+						</p>
+						<Link href="/create/routine" className="ml-10 pt-1.5">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								strokeWidth={1.5}
+								stroke="currentColor"
+								className="h-6 w-6 rounded-md bg-slate-300 "
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M12 4.5v15m7.5-7.5h-15"
+								/>
+							</svg>
+						</Link>
+					</div>
+				</div>
 
-    return (
-        <>
-            <NavBar sessionData={sessionData}></NavBar>
-            <div className="flex items-center">
-                <div className="mt-4 pl-4">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="h-12 w-12"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"
-                        />
-                    </svg>
-                </div>
-                <div className="ml-4 mt
-                -4 grid grid-cols-1">
-                    <h1 className="text-2xl">Active Routine</h1>
-                    <h2 className="text-l">Strength Training </h2>
-                </div>
-            </div>
+				<div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+					<table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+						<thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+							<tr>
+								<th scope="col" className="px-6 py-3">
+									Routine
+								</th>
+								<th scope="col" className="px-6 py-3">
+									<span className="sr-only">Edit</span>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
+								<th
+									scope="row"
+									className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+								>
+									Apple MacBook Pro 17
+								</th>
+								<td className="px-6 py-4 text-right">
+									<a
+										href="#"
+										className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+									>
+										Edit
+									</a>
+								</td>
+							</tr>
+							<tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
+								<th
+									scope="row"
+									className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+								>
+									Microsoft Surface Pro
+								</th>
 
-        
-        </>);
-    }
-}
+								<td className="px-6 py-4 text-right">
+									<a
+										href="#"
+										className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+									>
+										Edit
+									</a>
+								</td>
+							</tr>
+							<tr className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600">
+								<th
+									scope="row"
+									className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+								>
+									Magic Mouse 2
+									<p className="text-xs">
+										This is the descriptoin
+									</p>
+								</th>
 
+								<td className="px-6 py-4 text-right">
+									<a
+										href="#"
+										className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+									>
+										Edit
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</>
+		);
+	}
+};
 
 export default Routines;
