@@ -1,3 +1,4 @@
+import { Routine } from '@prisma/client';
 import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -10,6 +11,51 @@ const Routines: NextPage = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
 	const currentRoutine = 'Strength Training';
+
+    const mockRoutineData: Routine[] = [
+        {
+            id: '1',
+            name: 'Strength Training',
+            description: 'This is the description for the strength training routine',
+            userId: '1',
+            createdAt: new Date(),
+            isActive: true,
+        },
+        {
+            id: '2',
+            name: 'Cardio Training',
+            description: 'This is the description for the cardio training routine',
+            userId: '1',
+            createdAt: new Date(),
+            isActive: false
+        },
+        {
+            id: '3',
+            name: 'Yoga Training',
+            description: 'This is the description for the yoga training routine',
+            userId: '1',
+            createdAt: new Date(),
+            isActive: false
+        },
+        {
+            id: '4',
+            name: 'Pilates Training',
+            description: 'This is the description for the pilates training routine',
+            userId: '1',
+            createdAt: new Date(),
+            isActive: false
+        },
+        {
+            id: '5',
+            name: 'Crossfit Training',
+            description: 'This is the description for the crossfit training routine',
+            userId: '1',
+            createdAt: new Date(),
+            isActive: false
+        },
+ 
+        
+    ];
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -54,7 +100,7 @@ const Routines: NextPage = () => {
 					</div>
 				</div>
 
-				<div className="relative overflow-x-auto shadow-md sm:rounded-lg mx-2 rounded-md">
+				<div className="relative mx-2 overflow-x-auto rounded-md shadow-md sm:rounded-lg">
 					<table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
 						<thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
 							<tr>
@@ -67,8 +113,7 @@ const Routines: NextPage = () => {
 							</tr>
 						</thead>
 						<tbody>
-							
-							<tr className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600">
+							{/* <tr className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600">
 								<th
 									scope="row"
 									className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
@@ -87,7 +132,29 @@ const Routines: NextPage = () => {
 										Edit
 									</a>
 								</td>
-							</tr>
+							</tr> */}
+                            {mockRoutineData.map((routine) => (
+                                <tr key={routine.id} className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600">
+                                    <th
+                                        scope="row"
+                                        className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+                                    >
+                                        {routine.name}
+                                        <p className="text-xs">
+                                            {routine.description}
+                                        </p>
+                                    </th>
+
+                                    <td className="px-6 py-4 text-right">
+                                        <a
+                                            href="#"
+                                            className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                                        >
+                                            Edit
+                                        </a>
+                                    </td>
+                                </tr>
+                            ))}
 						</tbody>
 					</table>
 				</div>
