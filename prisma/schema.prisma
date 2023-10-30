@@ -32,7 +32,7 @@ model User {
 model Routine {
   id               String    @id @default(cuid())
   createdAt        DateTime  @default(now())
-  name             String
+  name             String    @unique
   shortDescription String    @db.VarChar(40)
   description      String?
   isActive         Boolean   @default(false)
