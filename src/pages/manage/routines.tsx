@@ -171,7 +171,7 @@ const Routines: NextPage = () => {
 		return (
 			<>
 				<NavBar sessionData={sessionData}></NavBar>
-				<div className="grid grid-cols-1">
+				<div className="grid grid-cols-1 mb-2">
 					<h1 className="pl-2 pt-3 text-2xl font-bold">
 						Manage Routines
 					</h1>
@@ -186,7 +186,7 @@ const Routines: NextPage = () => {
 								viewBox="0 0 24 24"
 								strokeWidth={1.5}
 								stroke="currentColor"
-								className="h-6 w-6 rounded-md bg-slate-300 "
+								className="h-6 w-6 rounded-md bg-blue-200 "
 							>
 								<path
 									strokeLinecap="round"
@@ -243,7 +243,7 @@ const Routines: NextPage = () => {
 
 				<div className="mx-2 h-96 overflow-x-auto overflow-y-auto rounded-md shadow-md sm:rounded-lg">
 					<table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-						<thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+						<thead className="bg-gray-200 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
 							<tr>
 								<th scope="col" className="px-6 py-3">
 									Routine
