@@ -1,4 +1,4 @@
-import { Routine } from '@prisma/client';
+import { type Routine } from '@prisma/client';
 import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -63,6 +63,96 @@ const Routines: NextPage = () => {
 			createdAt: new Date(),
 			isActive: true,
 		},
+		{
+			id: '6',
+			name: 'Swimming Training',
+			description:
+				'This is the description for the swimming training routine',
+			shortDescription: 'Prep for the zombie apocalypse',
+			userId: '1',
+			createdAt: new Date(),
+			isActive: true,
+		},
+		{
+			id: '7',
+			name: 'Cycling Training',
+			description:
+				'This is the description for the cycling training routine',
+			shortDescription: 'Prep for the zombie apocalypse',
+			userId: '1',
+			createdAt: new Date(),
+			isActive: true,
+		},
+		{
+			id: '8',
+			name: 'Hiking Training',
+			description:
+				'This is the description for the hiking training routine',
+			shortDescription: 'Prep for the zombie apocalypse',
+			userId: '1',
+			createdAt: new Date(),
+			isActive: true,
+		},
+		{
+			id: '9',
+			name: 'Rock Climbing Training',
+			description:
+				'This is the description for the rock climbing training routine',
+			shortDescription: 'Prep for the zombie apocalypse',
+			userId: '1',
+			createdAt: new Date(),
+			isActive: false,
+		},
+		{
+			id: '10',
+			name: 'Weight Lifting Training',
+			description:
+				'This is the description for the weight lifting training routine',
+			shortDescription: 'Prep for the zombie apocalypse',
+			userId: '1',
+			createdAt: new Date(),
+			isActive: false,
+		},
+		{
+			id: '11',
+			name: 'Crossfit Training',
+			description:
+				'This is the description for the crossfit training routine',
+			shortDescription: 'Prep for the zombie apocalypse',
+			userId: '1',
+			createdAt: new Date(),
+			isActive: false,
+		},
+		{
+			id: '12',
+			name: 'HIIT Training',
+			description:
+				'This is the description for the HIIT training routine',
+			shortDescription: 'Prep for the zombie apocalypse',
+			userId: '1',
+			createdAt: new Date(),
+			isActive: false,
+		},
+		{
+			id: '13',
+			name: 'Boxing Training',
+			description:
+				'This is the description for the boxing training routine',
+			shortDescription: 'Prep for the zombie apocalypse',
+			userId: '1',
+			createdAt: new Date(),
+			isActive: false,
+		},
+		{
+			id: '14',
+			name: 'Kickboxing Training',
+			description:
+				'This is the description for the kickboxing training routine',
+			shortDescription: 'Prep for the zombie apocalypse',
+			userId: '1',
+			createdAt: new Date(),
+			isActive: false,
+		},
 	];
 
 	useEffect(() => {
@@ -108,7 +198,7 @@ const Routines: NextPage = () => {
 					</div>
 				</div>
 
-				<div className="relative mx-2 overflow-x-auto rounded-md shadow-md sm:rounded-lg">
+				{/* <div className="relative mx-2 overflow-x-auto rounded-md shadow-md sm:rounded-lg">
 					<table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
 						<thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
 							<tr>
@@ -137,7 +227,49 @@ const Routines: NextPage = () => {
 									</th>
 
 									<td className="px-6 py-4 text-right"> 
-									{/* This is going to have to be a grid with two columns one being a filled in start and the other a pencil */}
+								
+										<a
+											href="#"
+											className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+										>
+											Edit
+										</a>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div> */}
+
+				<div className="mx-2 h-96 overflow-x-auto overflow-y-auto rounded-md shadow-md sm:rounded-lg">
+					<table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+						<thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+							<tr>
+								<th scope="col" className="px-6 py-3">
+									Routine
+								</th>
+								<th scope="col" className="px-6 py-3">
+									<span className="sr-only">Edit</span>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{mockRoutineData.map((routine) => (
+								<tr
+									key={routine.id}
+									className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600"
+								>
+									<th
+										scope="row"
+										className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+									>
+										{routine.name}
+										<p className="text-xs">
+											{routine.shortDescription}
+										</p>
+									</th>
+
+									<td className="px-6 py-4 text-right">
 										<a
 											href="#"
 											className="font-medium text-blue-600 hover:underline dark:text-blue-500"
