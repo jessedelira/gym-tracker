@@ -12,50 +12,58 @@ const Routines: NextPage = () => {
 	const router = useRouter();
 	const currentRoutine = 'Strength Training';
 
-    const mockRoutineData: Routine[] = [
-        {
-            id: '1',
-            name: 'Strength Training',
-            description: 'This is the description for the strength training routine',
-            userId: '1',
-            createdAt: new Date(),
-            isActive: true,
-        },
-        {
-            id: '2',
-            name: 'Cardio Training',
-            description: 'This is the description for the cardio training routine',
-            userId: '1',
-            createdAt: new Date(),
-            isActive: false
-        },
-        {
-            id: '3',
-            name: 'Yoga Training',
-            description: 'This is the description for the yoga training routine',
-            userId: '1',
-            createdAt: new Date(),
-            isActive: false
-        },
-        {
-            id: '4',
-            name: 'Pilates Training',
-            description: 'This is the description for the pilates training routine',
-            userId: '1',
-            createdAt: new Date(),
-            isActive: false
-        },
-        {
-            id: '5',
-            name: 'Crossfit Training',
-            description: 'This is the description for the crossfit training routine',
-            userId: '1',
-            createdAt: new Date(),
-            isActive: false
-        },
- 
-        
-    ];
+	const mockRoutineData: Routine[] = [
+		{
+			id: '1',
+			name: 'Strength Training',
+			description:
+				'This is the description for the strength training routine',
+			shortDescription: 'Prep for the zombie apocalypse',
+			userId: '1',
+			createdAt: new Date(),
+			isActive: true,
+		},
+		{
+			id: '2',
+			name: 'Cardio Training',
+			description:
+				'This is the description for the cardio training routine',
+			shortDescription: 'Prep for the zombie apocalypse',
+			userId: '1',
+			createdAt: new Date(),
+			isActive: true,
+		},
+		{
+			id: '3',
+			name: 'Yoga Training',
+			description:
+				'This is the description for the yoga training routine',
+			shortDescription: 'Prep for the zombie apocalypse',
+			userId: '1',
+			createdAt: new Date(),
+			isActive: true,
+		},
+		{
+			id: '4',
+			name: 'Meditation Training',
+			description:
+				'This is the description for the meditation training routine',
+			shortDescription: 'Prep for the zombie apocalypse',
+			userId: '1',
+			createdAt: new Date(),
+			isActive: true,
+		},
+		{
+			id: '5',
+			name: 'Running Training',
+			description:
+				'This is the description for the running training routine',
+			shortDescription: 'Prep for the zombie apocalypse',
+			userId: '1',
+			createdAt: new Date(),
+			isActive: true,
+		},
+	];
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -113,48 +121,31 @@ const Routines: NextPage = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{/* <tr className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600">
-								<th
-									scope="row"
-									className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+							{mockRoutineData.map((routine) => (
+								<tr
+									key={routine.id}
+									className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600"
 								>
-									Magic Mouse 2
-									<p className="text-xs">
-										This is the descriptoin
-									</p>
-								</th>
-
-								<td className="px-6 py-4 text-right">
-									<a
-										href="#"
-										className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+									<th
+										scope="row"
+										className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
 									>
-										Edit
-									</a>
-								</td>
-							</tr> */}
-                            {mockRoutineData.map((routine) => (
-                                <tr key={routine.id} className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600">
-                                    <th
-                                        scope="row"
-                                        className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
-                                    >
-                                        {routine.name}
-                                        <p className="text-xs">
-                                            {routine.description}
-                                        </p>
-                                    </th>
+										{routine.name}
+										<p className="text-xs">
+											{routine.description}
+										</p>
+									</th>
 
-                                    <td className="px-6 py-4 text-right">
-                                        <a
-                                            href="#"
-                                            className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                                        >
-                                            Edit
-                                        </a>
-                                    </td>
-                                </tr>
-                            ))}
+									<td className="px-6 py-4 text-right">
+										<a
+											href="#"
+											className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+										>
+											Edit
+										</a>
+									</td>
+								</tr>
+							))}
 						</tbody>
 					</table>
 				</div>
