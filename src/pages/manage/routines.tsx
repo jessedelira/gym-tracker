@@ -132,11 +132,12 @@ const Routines: NextPage = () => {
 									>
 										{routine.name}
 										<p className="text-xs">
-											{routine.description}
+											{routine.shortDescription}
 										</p>
 									</th>
 
-									<td className="px-6 py-4 text-right">
+									<td className="px-6 py-4 text-right"> 
+									{/* This is going to have to be a grid with two columns one being a filled in start and the other a pencil */}
 										<a
 											href="#"
 											className="font-medium text-blue-600 hover:underline dark:text-blue-500"
