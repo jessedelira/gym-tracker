@@ -177,7 +177,7 @@ const Routines: NextPage = () => {
 					</h1>
 					<div className="flex">
 						<p className="w-120 pl-2 pt-1 text-xl">
-							Current Routine: {currentRoutine}
+							Active Routine: {currentRoutine}
 						</p>
 						<Link href="/create/routine" className="ml-10 pt-1.5">
 							<svg
@@ -197,49 +197,6 @@ const Routines: NextPage = () => {
 						</Link>
 					</div>
 				</div>
-
-				{/* <div className="relative mx-2 overflow-x-auto rounded-md shadow-md sm:rounded-lg">
-					<table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-						<thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
-							<tr>
-								<th scope="col" className="px-6 py-3">
-									Routine
-								</th>
-								<th scope="col" className="px-6 py-3">
-									<span className="sr-only">Edit</span>
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							{mockRoutineData.map((routine) => (
-								<tr
-									key={routine.id}
-									className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600"
-								>
-									<th
-										scope="row"
-										className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
-									>
-										{routine.name}
-										<p className="text-xs">
-											{routine.shortDescription}
-										</p>
-									</th>
-
-									<td className="px-6 py-4 text-right"> 
-								
-										<a
-											href="#"
-											className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-										>
-											Edit
-										</a>
-									</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
-				</div> */}
 
 				<div className="mx-2 h-96 overflow-x-auto overflow-y-auto rounded-md shadow-md sm:rounded-lg">
 					<table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
