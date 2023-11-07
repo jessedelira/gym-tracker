@@ -171,7 +171,7 @@ const Routines: NextPage = () => {
 		return (
 			<>
 				<NavBar sessionData={sessionData}></NavBar>
-				<div className="grid grid-cols-1 mb-2">
+				<div className="mb-2 grid grid-cols-1">
 					<h1 className="pl-2 pt-3 text-2xl font-bold">
 						Manage Routines
 					</h1>

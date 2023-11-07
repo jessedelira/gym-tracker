@@ -84,8 +84,8 @@ const Routine: NextPage = () => {
 						Routine Information
 					</h2>
 					<form onSubmit={(e) => void handleSaveClicked(e)}>
-						<div className="mat-4 grid grid-cols-2 gap-5 ">
-							<div className="mat-4 grid grid-cols-1 pl-2">
+						<div className="mat-4 flex">
+							<div className="mat-4 w-18 mr-2 grid grid-cols-1 pl-2">
 								<label className="block font-bold">
 									Routine Name
 								</label>
@@ -95,6 +95,17 @@ const Routine: NextPage = () => {
 									placeholder="Name"
 									onChange={handleInputChange}
 								></input>
+							</div>
+							<div className="mat-4 mr-2  grid w-16 grid-cols-1 pl-2">
+								<label className="block font-bold">
+									Active?
+								</label>
+								<input
+									type="radio"
+									id="routineName"
+									className="rounded-md bg-gray-300 px-4 py-2 text-white"
+									onChange={handleInputChange}
+								/>
 							</div>
 						</div>
 						<div className="mat-4 grid grid-cols-1">
