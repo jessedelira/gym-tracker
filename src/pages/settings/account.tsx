@@ -2,6 +2,7 @@ import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { type FormEvent, useEffect, useState } from 'react';
+import Spinner from '~/components/Spinner';
 import NavBar from '~/components/navbar';
 import { api } from '~/utils/api';
 import {
@@ -72,7 +73,7 @@ const Account: NextPage = () => {
 	}, [status, router]);
 
 	if (isLoading) {
-		return <></>;
+		return <Spinner/>
 	} else {
 		return (
 			<>
