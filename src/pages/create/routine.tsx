@@ -96,17 +96,6 @@ const Routine: NextPage = () => {
 									onChange={handleInputChange}
 								></input>
 							</div>
-							<div className="mat-4 mr-2  grid w-16 grid-cols-1 pl-2">
-								<label className="block font-bold">
-									Active?
-								</label>
-								<input
-									type="radio"
-									id="routineName"
-									className="rounded-md bg-gray-300 px-4 py-2 text-white"
-									onChange={handleInputChange}
-								/>
-							</div>
 						</div>
 						<div className="mat-4 grid grid-cols-1">
 							<label className="block pl-2 font-bold">
