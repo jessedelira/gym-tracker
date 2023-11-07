@@ -3,6 +3,7 @@ import NavBar from '~/components/navbar';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Spinner from '~/components/Spinner';
 
 const Create: NextPage = () => {
 	const { data: sessionData, status } = useSession();
@@ -20,7 +21,7 @@ const Create: NextPage = () => {
 	}, [status, router]);
 
 	if (isLoading) {
-		return <></>;
+		return <Spinner />;
 	} else {
 		return (
 			<>
