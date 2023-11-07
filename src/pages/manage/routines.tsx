@@ -179,7 +179,7 @@ const Routines: NextPage = () => {
 						<p className="w-120 pl-2 pt-1 text-xl">
 							Active Routine: {currentRoutine}
 						</p>
-						<Link href="/create/routine" className="ml-10 pt-1.5">
+						<Link href="/create/routine" className="ml-14 pt-1.5">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
