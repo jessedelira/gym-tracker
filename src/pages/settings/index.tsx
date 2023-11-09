@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import NavBar from '~/components/navbar';
 import { getMonthDDCommaYYYY } from '~/utils/dateUtils';
 import Link from 'next/link';
+import Spinner from '~/components/Spinner';
 
 const Settings: NextPage = () => {
 	const { data: sessionData, status } = useSession();
@@ -22,7 +23,7 @@ const Settings: NextPage = () => {
 	}, [status, router, sessionData?.user]);
 
 	if (isLoading) {
-		return <></>;
+		return <Spinner />;
 	} else {
 		return (
 			<>
@@ -96,14 +97,16 @@ const Settings: NextPage = () => {
 						<div className="flex h-8 border-b-[0.5px] border-black">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 20 20"
-								fill="currentColor"
+								fill="none"
+								viewBox="0 0 24 24"
+								strokeWidth="1.5"
+								stroke="currentColor"
 								className="ml-0.5 h-9 w-7 flex-none pb-1"
 							>
 								<path
-									fillRule="evenodd"
-									d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-5.5-2.5a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zM10 12a5.99 5.99 0 00-4.793 2.39A6.483 6.483 0 0010 16.5a6.483 6.483 0 004.793-2.11A5.99 5.99 0 0010 12z"
-									clipRule="evenodd"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802"
 								/>
 							</svg>
 							<p className="h-9 w-14 flex-initial  pl-3 text-2xl">
