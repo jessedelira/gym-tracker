@@ -7,6 +7,8 @@ import { api } from '~/utils/api';
 import {
 	getFirstNameInputElement,
 	getLastNameInputElement,
+	getRoutineDescriptionInputElement,
+	getRoutineNameInputElement,
 	getUsernameInputElement,
 } from '~/utils/documentUtils';
 
@@ -15,7 +17,7 @@ const Routine: NextPage = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [dataChangeInForm, setDataChangeInForm] = useState(false);
 	const router = useRouter();
-	const updateUserMutation = api.user.updateUser.useMutation();
+	const createRoutineMutation = api.routine.createRoutine.useMutation();
 
 	const handleInputChange = () => {
 		setDataChangeInForm(true);
@@ -23,30 +25,26 @@ const Routine: NextPage = () => {
 
 	const handleCancelClicked = () => {
 		setDataChangeInForm(false);
-		getFirstNameInputElement(document).value =
-			sessionData?.user.firstName ?? 'Loading...';
-		getLastNameInputElement(document).value =
-			sessionData?.user.lastName ?? 'Loading...';
-		getUsernameInputElement(document).value =
-			sessionData?.user.username ?? 'Loading...';
+		getRoutineNameInputElement(document).value = '';
+		getRoutineDescriptionInputElement(document).value = '';
 	};
 
 	const handleSaveClicked = async (e: FormEvent<HTMLFormElement>) => {
 		if (sessionData) {
 			e.preventDefault();
 
-			const newUsername = getUsernameInputElement(document).value;
-			const newFirstName = getFirstNameInputElement(document).value;
-			const newLastName = getLastNameInputElement(document).value;
+			const newRoutineName = getRoutineNameInputElement(document).value;
+			const newRoutineDescription =
+				getRoutineDescriptionInputElement(document).value;
+			
 
-			const updatedUserData = {
-				id: sessionData.user.id,
-				newUsername: newUsername,
-				newFirstName: newFirstName,
-				newLastName: newLastName,
+			const createRoutineData = {
+				name: newRoutineName,
+				description: newRoutineDescription,
+				userId: sessionData.user.id,
 			};
 
-			await updateUserMutation.mutateAsync(updatedUserData, {
+			await createRoutineMutation.mutateAsync(createRoutineData, {
 				onSuccess: () => {
 					setDataChangeInForm(false);
 				},
@@ -102,7 +100,7 @@ const Routine: NextPage = () => {
 								Description
 							</label>
 							<textarea
-								id="description"
+								id="routineDescription"
 								className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-white"
 								placeholder="Description"
 								onChange={handleInputChange}
