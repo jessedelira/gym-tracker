@@ -42,17 +42,10 @@ const Routine: NextPage = () => {
 
 			await createRoutineMutation.mutateAsync(createRoutineData, {
 				onSuccess: () => {
-					setDataChangeInForm(false);
+					void router.push('/manage/routines');
 				},
 			});
 		}
-		await changeSession();
-	};
-
-	const changeSession = async () => {
-		await update({}).then(() => {
-			console.log('Session updated');
-		});
 	};
 
 	useEffect(() => {
