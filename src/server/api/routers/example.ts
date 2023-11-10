@@ -18,12 +18,4 @@ export const exampleRouter = createTRPCRouter({
 	getSecretMessage: protectedProcedure.query(() => {
 		return 'you can now see this secret message!';
 	}),
-
-	newProd: publicProcedure
-		.input(z.object({ valueChosen: z.number() }))
-		.query(({ input }) => {
-			console.log(input);
-			console.log('Great way to put this would be');
-			return 'This is great';
-		}),
 });
