@@ -5,11 +5,8 @@ import { type FormEvent, useEffect, useState } from 'react';
 import NavBar from '~/components/navbar';
 import { api } from '~/utils/api';
 import {
-	getFirstNameInputElement,
-	getLastNameInputElement,
 	getRoutineDescriptionInputElement,
 	getRoutineNameInputElement,
-	getUsernameInputElement,
 } from '~/utils/documentUtils';
 
 const Routine: NextPage = () => {
