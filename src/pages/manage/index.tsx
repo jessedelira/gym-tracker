@@ -10,10 +10,6 @@ const Manage: NextPage = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
 
-	const handleClick = () => {
-		console.log('Test');
-	};
-
 	useEffect(() => {
 		if (status === 'unauthenticated') {
 			void router.push('/');
