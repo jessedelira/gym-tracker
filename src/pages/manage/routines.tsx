@@ -4,13 +4,24 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import Spinner from '~/components/Spinner';
 import NavBar from '~/components/navbar';
+import { api } from '~/utils/api';
 
 const Routines: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
 	const currentRoutine = 'Strength Training';
+	let routineData: Routine[] = [];
+	if (sessionData) {
+		const getRoutineQuery = api.routine.getRoutines.useQuery({
+			userId: sessionData?.user.id,
+		});
+		if (getRoutineQuery.status === 'success') {
+			routineData = getRoutineQuery.data;
+		}
+	}
 
 	const mockRoutineData: Routine[] = [
 		{
@@ -72,7 +83,7 @@ const Routines: NextPage = () => {
 			name: 'Cycling Training',
 			description:
 				'This is the description for the cycling training routine',
-		
+
 			userId: '1',
 			createdAt: new Date(),
 			isActive: true,
@@ -82,7 +93,7 @@ const Routines: NextPage = () => {
 			name: 'Hiking Training',
 			description:
 				'This is the description for the hiking training routine',
-			
+
 			userId: '1',
 			createdAt: new Date(),
 			isActive: true,
@@ -92,7 +103,7 @@ const Routines: NextPage = () => {
 			name: 'Rock Climbing Training',
 			description:
 				'This is the description for the rock climbing training routine',
-			
+
 			userId: '1',
 			createdAt: new Date(),
 			isActive: false,
@@ -102,7 +113,7 @@ const Routines: NextPage = () => {
 			name: 'Weight Lifting Training',
 			description:
 				'This is the description for the weight lifting training routine',
-			
+
 			userId: '1',
 			createdAt: new Date(),
 			isActive: false,
@@ -112,7 +123,7 @@ const Routines: NextPage = () => {
 			name: 'Crossfit Training',
 			description:
 				'This is the description for the crossfit training routine',
-			
+
 			userId: '1',
 			createdAt: new Date(),
 			isActive: false,
@@ -122,7 +133,7 @@ const Routines: NextPage = () => {
 			name: 'HIIT Training',
 			description:
 				'This is the description for the HIIT training routine',
-			
+
 			userId: '1',
 			createdAt: new Date(),
 			isActive: false,
@@ -132,7 +143,7 @@ const Routines: NextPage = () => {
 			name: 'Boxing Training',
 			description:
 				'This is the description for the boxing training routine',
-			
+
 			userId: '1',
 			createdAt: new Date(),
 			isActive: false,
@@ -142,7 +153,7 @@ const Routines: NextPage = () => {
 			name: 'Kickboxing Training',
 			description:
 				'This is the description for the kickboxing training routine',
-			
+
 			userId: '1',
 			createdAt: new Date(),
 			isActive: false,
@@ -205,31 +216,39 @@ const Routines: NextPage = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{mockRoutineData.map((routine) => (
-								<tr
-									key={routine.id}
-									className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600"
-								>
-									<th
-										scope="row"
-										className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+							{routineData.length > 0 ? (
+								routineData.map((routine) => (
+									<tr
+										key={routine.id}
+										className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600"
 									>
-										{routine.name}
-										<p className="text-xs">
-											{routine.description?.substring(0,40)}...
-										</p>
-									</th>
-
-									<td className="px-6 py-4 text-right">
-										<a
-											href="#"
-											className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+										<th
+											scope="row"
+											className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
 										>
-											Edit
-										</a>
-									</td>
-								</tr>
-							))}
+											{routine.name}
+											<p className="text-xs">
+												{routine.description?.substring(
+													0,
+													40,
+												)}
+												...
+											</p>
+										</th>
+
+										<td className="px-6 py-4 text-right">
+											<a
+												href="#"
+												className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+											>
+												Edit
+											</a>
+										</td>
+									</tr>
+								))
+							) : (
+								<Spinner />
+							)}
 						</tbody>
 					</table>
 				</div>
