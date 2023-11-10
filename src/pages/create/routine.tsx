@@ -33,7 +33,6 @@ const Routine: NextPage = () => {
 			const newRoutineName = getRoutineNameInputElement(document).value;
 			const newRoutineDescription =
 				getRoutineDescriptionInputElement(document).value;
-			
 
 			const createRoutineData = {
 				name: newRoutineName,
