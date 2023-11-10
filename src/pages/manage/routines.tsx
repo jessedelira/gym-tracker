@@ -18,7 +18,6 @@ const Routines: NextPage = () => {
 			name: 'Strength Training',
 			description:
 				'This is the description for the strength training routine',
-			shortDescription: 'Prep for the zombie apocalypse',
 			userId: '1',
 			createdAt: new Date(),
 			isActive: true,
@@ -28,7 +27,6 @@ const Routines: NextPage = () => {
 			name: 'Cardio Training',
 			description:
 				'This is the description for the cardio training routine',
-			shortDescription: 'Prep for the zombie apocalypse',
 			userId: '1',
 			createdAt: new Date(),
 			isActive: true,
@@ -38,7 +36,6 @@ const Routines: NextPage = () => {
 			name: 'Yoga Training',
 			description:
 				'This is the description for the yoga training routine',
-			shortDescription: 'Prep for the zombie apocalypse',
 			userId: '1',
 			createdAt: new Date(),
 			isActive: true,
@@ -48,7 +45,6 @@ const Routines: NextPage = () => {
 			name: 'Meditation Training',
 			description:
 				'This is the description for the meditation training routine',
-			shortDescription: 'Prep for the zombie apocalypse',
 			userId: '1',
 			createdAt: new Date(),
 			isActive: true,
@@ -58,7 +54,6 @@ const Routines: NextPage = () => {
 			name: 'Running Training',
 			description:
 				'This is the description for the running training routine',
-			shortDescription: 'Prep for the zombie apocalypse',
 			userId: '1',
 			createdAt: new Date(),
 			isActive: true,
@@ -68,7 +63,6 @@ const Routines: NextPage = () => {
 			name: 'Swimming Training',
 			description:
 				'This is the description for the swimming training routine',
-			shortDescription: 'Prep for the zombie apocalypse',
 			userId: '1',
 			createdAt: new Date(),
 			isActive: true,
@@ -78,7 +72,7 @@ const Routines: NextPage = () => {
 			name: 'Cycling Training',
 			description:
 				'This is the description for the cycling training routine',
-			shortDescription: 'Prep for the zombie apocalypse',
+		
 			userId: '1',
 			createdAt: new Date(),
 			isActive: true,
@@ -88,7 +82,7 @@ const Routines: NextPage = () => {
 			name: 'Hiking Training',
 			description:
 				'This is the description for the hiking training routine',
-			shortDescription: 'Prep for the zombie apocalypse',
+			
 			userId: '1',
 			createdAt: new Date(),
 			isActive: true,
@@ -98,7 +92,7 @@ const Routines: NextPage = () => {
 			name: 'Rock Climbing Training',
 			description:
 				'This is the description for the rock climbing training routine',
-			shortDescription: 'Prep for the zombie apocalypse',
+			
 			userId: '1',
 			createdAt: new Date(),
 			isActive: false,
@@ -108,7 +102,7 @@ const Routines: NextPage = () => {
 			name: 'Weight Lifting Training',
 			description:
 				'This is the description for the weight lifting training routine',
-			shortDescription: 'Prep for the zombie apocalypse',
+			
 			userId: '1',
 			createdAt: new Date(),
 			isActive: false,
@@ -118,7 +112,7 @@ const Routines: NextPage = () => {
 			name: 'Crossfit Training',
 			description:
 				'This is the description for the crossfit training routine',
-			shortDescription: 'Prep for the zombie apocalypse',
+			
 			userId: '1',
 			createdAt: new Date(),
 			isActive: false,
@@ -128,7 +122,7 @@ const Routines: NextPage = () => {
 			name: 'HIIT Training',
 			description:
 				'This is the description for the HIIT training routine',
-			shortDescription: 'Prep for the zombie apocalypse',
+			
 			userId: '1',
 			createdAt: new Date(),
 			isActive: false,
@@ -138,7 +132,7 @@ const Routines: NextPage = () => {
 			name: 'Boxing Training',
 			description:
 				'This is the description for the boxing training routine',
-			shortDescription: 'Prep for the zombie apocalypse',
+			
 			userId: '1',
 			createdAt: new Date(),
 			isActive: false,
@@ -148,7 +142,7 @@ const Routines: NextPage = () => {
 			name: 'Kickboxing Training',
 			description:
 				'This is the description for the kickboxing training routine',
-			shortDescription: 'Prep for the zombie apocalypse',
+			
 			userId: '1',
 			createdAt: new Date(),
 			isActive: false,
@@ -222,7 +216,7 @@ const Routines: NextPage = () => {
 									>
 										{routine.name}
 										<p className="text-xs">
-											{routine.shortDescription}
+											{routine.description?.substring(0,40)}...
 										</p>
 									</th>
 
