@@ -1,8 +1,5 @@
 import { z } from 'zod';
-import {
-	createTRPCRouter,
-	protectedProcedure,
-} from '~/server/api/trpc';
+import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -25,6 +22,18 @@ export const routineRouter = createTRPCRouter({
 				},
 			});
 
-            return createdRoutine;
+			return createdRoutine;
+		}),
+
+	getRoutines: protectedProcedure
+		.input(z.object({ userId: z.string() }))
+		.query(({ input }) => {
+			const routines = prisma.routine.findMany({
+				where: {
+					userId: input.userId,
+				},
+			});
+
+			return routines;
 		}),
 });
