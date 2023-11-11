@@ -36,4 +36,17 @@ export const routineRouter = createTRPCRouter({
 
 			return routines;
 		}),
+
+	getActiveRoutine: protectedProcedure
+		.input(z.object({ userId: z.string() }))
+		.query(({ input }) => {
+			const routine = prisma.routine.findFirst({
+				where: {
+					userId: input.userId,
+					isActive: true,
+				},
+			});
+
+			return routine;
+		}),
 });
