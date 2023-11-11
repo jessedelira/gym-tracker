@@ -1,9 +1,8 @@
 import { type NextPage } from 'next';
-import NavBar from '~/components/navbar';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
+
 
 const Session: NextPage = () => {
 	const { data: sessionData, status } = useSession();
@@ -25,7 +24,7 @@ const Session: NextPage = () => {
 	} else {
 		return (
 			<>
-				<h1>Create Workout Page</h1>
+				<h1>Create Session Page</h1>
 			</>
 		);
 	}
