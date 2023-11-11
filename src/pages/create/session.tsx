@@ -3,7 +3,6 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
-
 const Session: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
