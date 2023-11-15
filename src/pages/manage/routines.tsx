@@ -40,7 +40,7 @@ const Routines: NextPage = () => {
 					</h1>
 					<div className="flex gap-32">
 						{activeRoutineData ? (
-							<p className="w-120 pl-2 pt-1 text-xl flex-initial w-48">
+							<p className="w-120 w-48 flex-initial pl-2 pt-1 text-xl">
 								Active Routine: {activeRoutineData.name}
 							</p>
 						) : (
@@ -49,7 +49,10 @@ const Routines: NextPage = () => {
 							</p>
 						)}
 
-						<Link href="/create/routine" className=" pt-1.5 flex-none w-2">
+						<Link
+							href="/create/routine"
+							className=" w-2 flex-none pt-1.5"
+						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
