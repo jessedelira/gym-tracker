@@ -9,11 +9,11 @@
 			"detail": "Format code"
 		},
 		{
-            "label": "Start Gym Tracker DB",
-            "type": "shell",
-            "command": "docker start gym-tracker-db",
-            "problemMatcher": [],
+			"label": "Start Gym Tracker DB",
+			"type": "shell",
+			"command": "docker start gym-tracker-db",
+			"problemMatcher": [],
 			"detail": "Start Gym Tracker MYSQL DB container in Docker"
-        }
+		}
 	]
 }
