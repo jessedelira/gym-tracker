@@ -9,6 +9,13 @@ import { hash } from 'bcrypt';
 
 const prisma = new PrismaClient();
 
+interface UserDto {
+	id: string;
+	username: string;
+	firstName: string;
+	lastName: string;
+}
+
 export const userRouter = createTRPCRouter({
 	createUser: publicProcedure
 		.input(
@@ -71,6 +78,13 @@ export const userRouter = createTRPCRouter({
 				},
 			});
 
-			return updatedUser;
+			const userDto: UserDto = {
+				id: updatedUser.id,
+				username: updatedUser.username,
+				firstName: updatedUser.firstName,
+				lastName: updatedUser.lastName,
+			};
+
+			return userDto;
 		}),
 });
