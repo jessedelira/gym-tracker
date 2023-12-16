@@ -53,7 +53,7 @@ const Routines: NextPage = () => {
 						
 						<Link
 							href="/create/routine"
-							className="h-8 w-8 flex-none pt-1.5 mr-2"
+							className="h-7 w-7 flex-none pt-1.5 mr-2"
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +61,7 @@ const Routines: NextPage = () => {
 								viewBox="0 0 24 24"
 								strokeWidth={1.5}
 								stroke="currentColor"
-								className="h-8 w-8 rounded-md bg-blue-200"
+								className="h-7 w-7 rounded-md bg-blue-200"
 							>
 								<path
 									strokeLinecap="round"
