@@ -53,7 +53,7 @@ const Routines: NextPage = () => {
 						
 						<Link
 							href="/create/routine"
-							className="h-7 w-7 flex-none pt-1.5 mr-2"
+							className="h-7 w-7 flex-none mr-2"
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
