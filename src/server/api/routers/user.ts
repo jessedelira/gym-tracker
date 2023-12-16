@@ -29,7 +29,7 @@ export const userRouter = createTRPCRouter({
 		.mutation(async ({ input }) => {
 			const hashedPassword = await hash(input.password, 10);
 
-			const createdUser = prisma.user.create({
+			const createdUser = await prisma.user.create({
 				data: {
 					username: input.username,
 					password: hashedPassword,
@@ -38,7 +38,14 @@ export const userRouter = createTRPCRouter({
 				},
 			});
 
-			return createdUser;
+			const userDto: UserDto = {
+				id: createdUser.id,
+				username: createdUser.username,
+				firstName: createdUser.firstName,
+				lastName: createdUser.lastName,
+			};
+
+			return userDto;
 		}),
 
 	getUser: protectedProcedure
@@ -54,7 +61,14 @@ export const userRouter = createTRPCRouter({
 				throw new Error('User not found');
 			}
 
-			return user;
+			const userDto: UserDto = {
+				id: user.id,
+				username: user.username,
+				firstName: user.firstName,
+				lastName: user.lastName,
+			};
+
+			return userDto;
 		}),
 
 	updateUser: protectedProcedure
