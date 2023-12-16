@@ -38,9 +38,9 @@ const Routines: NextPage = () => {
 					<h1 className="pl-2 pt-3 text-2xl font-bold">
 						Manage Routines
 					</h1>
-					<div className="flex gap-32">
+					<div className="flex justify-between ">
 						{activeRoutineData ? (
-							<p className="w-120 w-48 flex-initial pl-2 pt-1 text-xl">
+							<p className="w-120 w-48 flex-initial pl-2 pt-1 text-s">
 								Active Routine: {activeRoutineData.name}
 							</p>
 						) : (
@@ -49,9 +49,11 @@ const Routines: NextPage = () => {
 							</p>
 						)}
 
+
+						
 						<Link
 							href="/create/routine"
-							className=" w-2 flex-none pt-1.5"
+							className="h-6 w-6 flex-none pt-1.5 mr-2"
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +61,7 @@ const Routines: NextPage = () => {
 								viewBox="0 0 24 24"
 								strokeWidth={1.5}
 								stroke="currentColor"
-								className="h-6 w-6 rounded-md bg-blue-200 "
+								className="h-6 w-6 rounded-md bg-blue-200"
 							>
 								<path
 									strokeLinecap="round"
@@ -68,6 +70,9 @@ const Routines: NextPage = () => {
 								/>
 							</svg>
 						</Link>
+
+
+
 					</div>
 				</div>
 
@@ -115,6 +120,7 @@ const Routines: NextPage = () => {
 
 											<td className="grid grid-cols-2 px-6 py-4 text-right">
 												{routine.isActive ? (
+													// Case when routine is active
 													<a
 														href="#"
 														className="font-medium text-yellow-400 hover:underline dark:text-yellow-400"
@@ -135,6 +141,7 @@ const Routines: NextPage = () => {
 														</svg>
 													</a>
 												) : (
+													// Case when routine is not active
 													<svg
 														xmlns="http://www.w3.org/2000/svg"
 														viewBox="0 0 24 24"

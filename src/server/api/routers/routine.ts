@@ -24,7 +24,7 @@ export const routineRouter = createTRPCRouter({
 
 			return createdRoutine;
 		}),
-
+ 
 	getRoutines: protectedProcedure
 		.input(z.object({ userId: z.string() }))
 		.query(({ input }) => {
