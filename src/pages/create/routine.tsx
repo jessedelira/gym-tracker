@@ -81,6 +81,7 @@ const Routine: NextPage = () => {
 									className=" rounded-md bg-gray-300 px-4 py-2 text-white"
 									placeholder="Name"
 									onChange={handleInputChange}
+									required
 								></input>
 							</div>
 						</div>
@@ -93,6 +94,7 @@ const Routine: NextPage = () => {
 								className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-white"
 								placeholder="Description"
 								onChange={handleInputChange}
+								required
 							></textarea>
 						</div>
 
