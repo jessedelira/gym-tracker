@@ -24,7 +24,7 @@ export const routineRouter = createTRPCRouter({
 
 			return createdRoutine;
 		}),
- 
+
 	getRoutines: protectedProcedure
 		.input(z.object({ userId: z.string() }))
 		.query(({ input }) => {
@@ -39,10 +39,36 @@ export const routineRouter = createTRPCRouter({
 
 	getActiveRoutine: protectedProcedure
 		.input(z.object({ userId: z.string() }))
-		.query(({ input }) => {
-			const routine = prisma.routine.findFirst({
+		.query(async ({ input }) => {
+			const routine = await prisma.routine.findFirst({
 				where: {
 					userId: input.userId,
+					isActive: true,
+				},
+			});
+
+			return routine;
+		}),
+
+	setActiveRoutine: protectedProcedure
+		.input(z.object({ routineId: z.string() }))
+		.mutation(async ({ input }) => {
+			// Set all routines to inactive
+			await prisma.routine.updateMany({
+				where: {
+					isActive: true,
+				},
+				data: {
+					isActive: false,
+				},
+			});
+
+			// Set the selected routine to active
+			const routine = await prisma.routine.update({
+				where: {
+					id: input.routineId,
+				},
+				data: {
 					isActive: true,
 				},
 			});
