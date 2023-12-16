@@ -123,9 +123,7 @@ const Routines: NextPage = () => {
 
 											<td className="grid grid-cols-2 px-6 py-4 text-right">
 												{routine.isActive ? (
-													<button
-														className="font-medium text-yellow-400 hover:underline dark:text-yellow-400"
-													>
+													<button className="font-medium text-yellow-400 hover:underline dark:text-yellow-400">
 														<svg
 															xmlns="http://www.w3.org/2000/svg"
 															fill="none"
