@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import NavBar from '~/components/navbar';
 import { getMonthDDCommaYYYY } from '~/utils/dateUtils';
 import Link from 'next/link';
-import Spinner from '~/components/spinner';
+import Spinner from '~/components/Spinner';
 
 const Settings: NextPage = () => {
 	const { data: sessionData, status } = useSession();
