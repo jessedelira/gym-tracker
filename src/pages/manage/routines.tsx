@@ -64,8 +64,13 @@ const Routines: NextPage = () => {
 					</h1>
 					<div className="flex justify-between ">
 						{activeRoutine ? (
-							<p className="w-120 text-s w-48 flex-initial pl-2 pt-1">
-								Active Routine: {activeRoutine.name}
+							<p className="w-120 text-s w-96 flex-initial pl-2 pt-1">
+								Active Routine:{' '}
+								{activeRoutine.name &&
+									(activeRoutine.name.length > 30
+										? activeRoutine.name.substring(0, 30) +
+										  '...'
+										: activeRoutine.name)}
 							</p>
 						) : (
 							<p className="w-120 pl-2 pt-1 text-xl">
@@ -101,7 +106,7 @@ const Routines: NextPage = () => {
 						button to create one!
 					</h2>
 				) : (
-					<div className="mx-2 h-96 overflow-y-auto rounded-md shadow-md sm:rounded-lg">
+					<div className="mx-2 h-186 overflow-y-auto rounded-md shadow-md sm:rounded-lg">
 						<table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
 							<thead className="bg-gray-200 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
 								<tr>
@@ -128,18 +133,18 @@ const Routines: NextPage = () => {
 												<p className="text-xs">
 													{routine.description &&
 														(routine.description
-															?.length > 40
+															?.length > 35
 															? routine.description?.substring(
-																0,
-																40,
-															) + '...'
+																	0,
+																	35,
+															  ) + '...'
 															: routine.description)}
 												</p>
 											</th>
 
 											<td className="grid grid-cols-2 px-6 py-4 text-right">
 												{activeRoutine &&
-													routine.id ===
+												routine.id ===
 													activeRoutine.id ? (
 													<button className="font-medium text-yellow-400 hover:underline dark:text-yellow-400">
 														<GoldStar />
