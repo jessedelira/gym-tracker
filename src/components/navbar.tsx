@@ -4,7 +4,7 @@ import type NavBarProps from '~/interfaces/navBarProps';
 
 const NavBar: React.FC<NavBarProps> = () => {
 	return (
-		<nav className="flex h-[4rem] w-full flex-row items-center justify-between border-b-2 border-b-black bg-white">
+		<nav className="flex h-[4rem] w-full flex-row items-center justify-between sticky bottom-0 border-t-2 border-t-black bg-white">
 			<div className="flex flex-row items-center justify-between gap-1">
 				<Link href="/home" className="ml-3 rounded-full text-5xl">
 					<svg
