@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 const Session: NextPage = () => {
-	const { data: sessionData, status } = useSession();
+	const { status } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
 
