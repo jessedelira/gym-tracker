@@ -106,7 +106,7 @@ const Routines: NextPage = () => {
 						button to create one!
 					</h2>
 				) : (
-					<div className="mx-2 h-186 overflow-y-auto rounded-md shadow-md sm:rounded-lg">
+					<div className="mx-2 overflow-y-auto rounded-md shadow-md sm:rounded-lg">
 						<table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
 							<thead className="bg-gray-200 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
 								<tr>
