@@ -10,7 +10,7 @@ import {
 } from '~/utils/documentUtils';
 
 const Routine: NextPage = () => {
-	const { data: sessionData, status, update } = useSession();
+	const { data: sessionData, status } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
 	const [dataChangeInForm, setDataChangeInForm] = useState(false);
 	const router = useRouter();
