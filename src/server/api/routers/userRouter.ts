@@ -9,6 +9,13 @@ import { hash } from 'bcrypt';
 
 const prisma = new PrismaClient();
 
+interface UserDto {
+	id: string;
+	username: string;
+	firstName: string;
+	lastName: string;
+}
+
 export const userRouter = createTRPCRouter({
 	createUser: publicProcedure
 		.input(
@@ -22,7 +29,7 @@ export const userRouter = createTRPCRouter({
 		.mutation(async ({ input }) => {
 			const hashedPassword = await hash(input.password, 10);
 
-			const createdUser = prisma.user.create({
+			const createdUser = await prisma.user.create({
 				data: {
 					username: input.username,
 					password: hashedPassword,
@@ -31,7 +38,14 @@ export const userRouter = createTRPCRouter({
 				},
 			});
 
-			return createdUser;
+			const userDto: UserDto = {
+				id: createdUser.id,
+				username: createdUser.username,
+				firstName: createdUser.firstName,
+				lastName: createdUser.lastName,
+			};
+
+			return userDto;
 		}),
 
 	getUser: protectedProcedure
@@ -47,7 +61,14 @@ export const userRouter = createTRPCRouter({
 				throw new Error('User not found');
 			}
 
-			return user;
+			const userDto: UserDto = {
+				id: user.id,
+				username: user.username,
+				firstName: user.firstName,
+				lastName: user.lastName,
+			};
+
+			return userDto;
 		}),
 
 	updateUser: protectedProcedure
@@ -71,6 +92,13 @@ export const userRouter = createTRPCRouter({
 				},
 			});
 
-			return updatedUser;
+			const userDto: UserDto = {
+				id: updatedUser.id,
+				username: updatedUser.username,
+				firstName: updatedUser.firstName,
+				lastName: updatedUser.lastName,
+			};
+
+			return userDto;
 		}),
 });

@@ -17,3 +17,15 @@ export const getPasswordInputElement = (doc: Document): HTMLInputElement => {
 	const password = doc.getElementById('password');
 	return password as HTMLInputElement;
 };
+
+export const getRoutineNameInputElement = (doc: Document): HTMLInputElement => {
+	const routineName = doc.getElementById('routineName');
+	return routineName as HTMLInputElement;
+};
+
+export const getRoutineDescriptionInputElement = (
+	doc: Document,
+): HTMLInputElement => {
+	const routineDescription = doc.getElementById('routineDescription');
+	return routineDescription as HTMLInputElement;
+};
