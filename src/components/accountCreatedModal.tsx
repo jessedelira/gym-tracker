@@ -4,7 +4,7 @@ import React from 'react';
 const AccountCreatedModal: React.FC = () => {
 	return (
 		<>
-			<div className="fixed inset-0 flex items-center justify-center">
+			<div className="fixed inset-0 z-10 flex items-center justify-center">
 				<div className="absolute inset-0 bg-black opacity-50"></div>
 				<div className="z-10 max-w-[23rem] rounded-lg bg-white p-8">
 					<h1 className="text-center text-2xl text-black">
