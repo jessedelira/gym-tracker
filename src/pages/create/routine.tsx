@@ -2,6 +2,7 @@ import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { type FormEvent, useEffect, useState } from 'react';
+import Layout from '~/components/layout';
 import NavBar from '~/components/navbar';
 import { api } from '~/utils/api';
 import {
@@ -63,7 +64,7 @@ const Routine: NextPage = () => {
 	} else {
 		return (
 			<>
-				<NavBar sessionData={sessionData}></NavBar>
+				<Layout sessionData={sessionData}>
 				<div className="flex flex-col">
 					<h1 className="pl-2 text-3xl font-bold">Create</h1>
 
@@ -116,6 +117,7 @@ const Routine: NextPage = () => {
 						) : null}
 					</form>
 				</div>
+				</Layout>
 			</>
 		);
 	}
