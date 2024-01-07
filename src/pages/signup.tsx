@@ -29,6 +29,7 @@ const SignUp: NextPage = () => {
 			firstName: firstName,
 			lastName: lastName,
 		};
+
 		createUserMutation.mutate(createUserData, {
 			onSuccess: () => {
 				setShowModal(true);
