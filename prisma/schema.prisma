@@ -46,8 +46,8 @@ model Session {
   name        String
   description String?
   workouts    Workout[]
-  routine     Routine             @relation(fields: [routineId], references: [id])
-  routineId   String
+  routine     Routine?             @relation(fields: [routineId], references: [id])
+  routineId   String?
   days        SessionDaysActive[]
 }
 
