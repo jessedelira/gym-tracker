@@ -1,5 +1,6 @@
 import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Layout from '~/components/layout';
@@ -23,17 +24,37 @@ const Sessions: NextPage = () => {
 		return <>j;lkjklj;</>;
 	} else {
 		return (
-		<>
-			<Layout sessionData={sessionData}>
-				<div className="mb-2 grid grid-cols-1">
-					<h1 className="pl-2 pt-3 text-2xl font-bold">
-						Manage Sessions
-					</h1>
-				</div>
-				
-			</Layout>
-		</>
-		)
+			<>
+				<Layout sessionData={sessionData}>
+					<div className="mb-2 grid grid-cols-1">
+						<h1 className="pl-2 pt-3 text-2xl font-bold">
+							Manage Sessions
+						</h1>
+					</div>
+					<div className="flex justify-between ">
+						<Link
+							href="/create/session"
+							className="mr-2 h-7 w-7 flex-none"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								strokeWidth={1.5}
+								stroke="currentColor"
+								className="h-7 w-7 rounded-md bg-blue-200"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M12 4.5v15m7.5-7.5h-15"
+								/>
+							</svg>
+						</Link>
+					</div>
+				</Layout>
+			</>
+		);
 	}
 };
 
