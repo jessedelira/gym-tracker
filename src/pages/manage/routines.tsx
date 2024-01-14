@@ -4,7 +4,6 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import NavBar from '~/components/navbar';
 import { api } from '~/utils/api';
 import GoldStar from '~/components/goldStar';
 import GreyStar from '~/components/greyStar';
