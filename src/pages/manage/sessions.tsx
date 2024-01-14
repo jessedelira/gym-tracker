@@ -1,4 +1,4 @@
-import { NextPage } from 'next';
+import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -20,8 +20,9 @@ const Sessions: NextPage = () => {
 	}, [status, router]);
 
 	if (isLoading) {
-		return <></>;
+		return <>j;lkjklj;</>;
 	} else {
+		return (
 		<>
 			<Layout sessionData={sessionData}>
 				<div className="mb-2 grid grid-cols-1">
@@ -29,18 +30,10 @@ const Sessions: NextPage = () => {
 						Manage Sessions
 					</h1>
 				</div>
-				<div className="mb-2 grid grid-cols-1">
-					<h2 className="pl-2 pt-3 text-xl font-bold">
-						Active Session
-					</h2>
-				</div>
-				<div className="mb-2 grid grid-cols-1">
-					<h2 className="pl-2 pt-3 text-xl font-bold">
-						Past Sessions
-					</h2>
-				</div>
+				
 			</Layout>
-		</>;
+		</>
+		)
 	}
 };
 
