@@ -76,7 +76,7 @@ const Sessions: NextPage = () => {
 	const activeRoutine = routineData[0];
 
 	if (isLoading) {
-		return <>j;lkjklj;</>;
+		return <></>;
 	} else {
 		return (
 			<>
