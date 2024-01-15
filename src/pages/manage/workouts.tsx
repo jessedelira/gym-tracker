@@ -2,6 +2,7 @@ import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import Layout from '~/components/layout';
 
 const Workouts: NextPage = () => {
 	const { data: sessionData, status } = useSession();
@@ -16,12 +17,18 @@ const Workouts: NextPage = () => {
 		} else {
 			setIsLoading(false);
 		}
-	});
+	}, [status, router]);
 
 	if (isLoading) {
 		return <></>;
 	} else {
-		return <>Hello World</>;
+		return (
+			<>
+				<Layout sessionData={sessionData}>
+					<h1>Workouts</h1>
+				</Layout>
+			</>
+		);
 	}
 };
 
