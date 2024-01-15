@@ -23,15 +23,15 @@ const Session: NextPage = () => {
 	const handleSaveClicked = (e: FormEvent<HTMLFormElement>) => {
 		console.log(e);
 		e.preventDefault();
-	}
+	};
 
 	const handleInputChange = () => {
-		setDataChangeInForm(true)
-	}
+		setDataChangeInForm(true);
+	};
 
 	const handleCancelClicked = () => {
 		setDataChangeInForm(false);
-	}
+	};
 
 	if (isLoading) {
 		return <></>;

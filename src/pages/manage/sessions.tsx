@@ -74,13 +74,10 @@ const Sessions: NextPage = () => {
 	];
 
 	const activeRoutine = routineData[0];
-		
 
 	if (isLoading) {
 		return <>j;lkjklj;</>;
 	} else {
-		
-
 		return (
 			<>
 				<Layout sessionData={sessionData}>
