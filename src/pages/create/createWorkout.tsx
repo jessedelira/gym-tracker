@@ -14,7 +14,7 @@ const Workout: NextPage = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [dataChangeInForm, setDataChangeInForm] = useState(false);
 	const router = useRouter();
-	// const exerciseQuery = api.
+	const exercises = api.exercise.getAllExercises.useQuery();
 
 	const handleInputChange = () => {
 		setDataChangeInForm(true);
@@ -62,6 +62,16 @@ const Workout: NextPage = () => {
 							<div className="mat-4 flex">
 								<div className="mat-4 w-18 mr-2 grid grid-cols-1 pl-2">
 									{/* Drop down with all of the exercises in the database */}
+									<select className="rounded-md bg-gray-300 px-4 py-2 text-white" >
+										{
+											exercises ? (
+												exercises.data?.map((exercise) => (
+													<option key={exercise.id} value={exercise.id}>
+														{exercise.name}
+													</option>
+												))
+											): null }
+									</select>
 								</div>
 							</div>
 							<div className="mat-4 grid grid-cols-1">
