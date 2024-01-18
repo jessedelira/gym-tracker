@@ -20,6 +20,8 @@ const Sessions: NextPage = () => {
 		}
 	}, [status, router]);
 
+
+
 	const routineData = [
 		{
 			id: '1',
@@ -72,8 +74,6 @@ const Sessions: NextPage = () => {
 			description: 'This is the tenth routine',
 		},
 	];
-
-	const activeRoutine = routineData[0];
 
 	if (isLoading) {
 		return <></>;
