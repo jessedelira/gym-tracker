@@ -29,7 +29,7 @@ const Workouts: NextPage = () => {
 			weight: 100,
 			exerciseId: '1',
 			sessionId: '1',
-		}
+		},
 	];
 
 	const workoutData = [
@@ -40,23 +40,20 @@ const Workouts: NextPage = () => {
 		},
 	];
 
-
 	if (isLoading) {
 		return <></>;
 	} else {
 		return (
 			<>
 				<Layout sessionData={sessionData}>
-				<div className="mb-2 grid grid-cols-1">
+					<div className="mb-2 grid grid-cols-1">
 						<h1 className="pl-2 pt-3 text-2xl font-bold">
 							Manage Workouts
 						</h1>
 					</div>
-					<div className="flex justify-center mb-2">
-						<Link
-							href="/create/workout"
-						>
-							<button className='bg-lime-300 rounded-md h-9 w-64'>
+					<div className="mb-2 flex justify-center">
+						<Link href="/create/workout">
+							<button className="h-9 w-64 rounded-md bg-lime-300">
 								New Workout
 							</button>
 						</Link>

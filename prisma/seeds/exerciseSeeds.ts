@@ -155,8 +155,6 @@ const seedExercises = async () => {
 					'The dumbbell crunch is a great exercise for building strength and size in your abs.',
 			},
 		});
-
-		
 	}
 };
 

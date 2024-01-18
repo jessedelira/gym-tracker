@@ -20,8 +20,6 @@ const Sessions: NextPage = () => {
 		}
 	}, [status, router]);
 
-
-
 	const routineData = [
 		{
 			id: '1',
