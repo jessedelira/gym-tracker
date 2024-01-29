@@ -61,7 +61,9 @@ const Workout: NextPage = () => {
 						<form onSubmit={(e) => void handleSaveClicked(e)}>
 							<div className="mat-4 flex">
 								<div className="mat-4 w-18 mr-2 grid grid-cols-1 pl-2">
-									{/* Drop down with all of the exercises in the database */}
+								<label className="block pl-2 font-bold">
+										Exercise
+									</label>
 									<select className="rounded-md bg-gray-300 px-4 py-2 text-white">
 										{exercises
 											? exercises.data?.map(
@@ -76,6 +78,18 @@ const Workout: NextPage = () => {
 											  )
 											: null}
 									</select>
+								</div>
+								<div className="mat-4 grid grid-cols-1">
+									<label className="block pl-2 font-bold">
+										Weight (lbs)
+									</label>
+									<input
+										id="reps"
+										className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-white"
+										placeholder="3"
+										onChange={handleInputChange}
+										required
+									></input>
 								</div>
 							</div>
 							<div className="mat-4 grid grid-cols-1">
@@ -93,18 +107,6 @@ const Workout: NextPage = () => {
 							<div className="mat-4 grid grid-cols-1">
 								<label className="block pl-2 font-bold">
 									Sets
-								</label>
-								<input
-									id="reps"
-									className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-white"
-									placeholder="3"
-									onChange={handleInputChange}
-									required
-								></input>
-							</div>
-							<div className="mat-4 grid grid-cols-1">
-								<label className="block pl-2 font-bold">
-									Weight (lbs)
 								</label>
 								<input
 									id="reps"
