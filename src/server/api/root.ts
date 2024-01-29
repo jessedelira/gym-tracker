@@ -11,7 +11,7 @@ import { exerciseRouter } from './routers/exerciseRouter';
 export const appRouter = createTRPCRouter({
 	user: userRouter,
 	routine: routineRouter,
-	exercise: exerciseRouter
+	exercise: exerciseRouter,
 });
 
 // export type definition of API

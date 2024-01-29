@@ -1,6 +1,6 @@
 import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { type FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '~/components/layout';
 import {
@@ -62,29 +62,57 @@ const Workout: NextPage = () => {
 							<div className="mat-4 flex">
 								<div className="mat-4 w-18 mr-2 grid grid-cols-1 pl-2">
 									{/* Drop down with all of the exercises in the database */}
-									<select className="rounded-md bg-gray-300 px-4 py-2 text-white" >
-										{
-											exercises ? (
-												exercises.data?.map((exercise) => (
-													<option key={exercise.id} value={exercise.id}>
-														{exercise.name}
-													</option>
-												))
-											): null }
+									<select className="rounded-md bg-gray-300 px-4 py-2 text-white">
+										{exercises
+											? exercises.data?.map(
+													(exercise) => (
+														<option
+															key={exercise.id}
+															value={exercise.id}
+														>
+															{exercise.name}
+														</option>
+													),
+											  )
+											: null}
 									</select>
 								</div>
 							</div>
 							<div className="mat-4 grid grid-cols-1">
 								<label className="block pl-2 font-bold">
-									Description
+									Reps
 								</label>
-								<textarea
-									id="routineDescription"
+								<input
+									id="reps"
 									className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-white"
-									placeholder="Description"
+									placeholder="3"
 									onChange={handleInputChange}
 									required
-								></textarea>
+								></input>
+							</div>
+							<div className="mat-4 grid grid-cols-1">
+								<label className="block pl-2 font-bold">
+									Sets
+								</label>
+								<input
+									id="reps"
+									className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-white"
+									placeholder="3"
+									onChange={handleInputChange}
+									required
+								></input>
+							</div>
+							<div className="mat-4 grid grid-cols-1">
+								<label className="block pl-2 font-bold">
+									Weight (lbs)
+								</label>
+								<input
+									id="reps"
+									className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-white"
+									placeholder="3"
+									onChange={handleInputChange}
+									required
+								></input>
 							</div>
 
 							{dataChangeInForm ? (
