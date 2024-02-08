@@ -61,7 +61,7 @@ const Workout: NextPage = () => {
 						<form onSubmit={(e) => void handleSaveClicked(e)}>
 							<div className="mat-4 flex">
 								<div className="mat-4 w-18 mr-2 grid grid-cols-1 pl-2">
-								<label className="block pl-2 font-bold">
+									<label className="block pl-2 font-bold">
 										Exercise
 									</label>
 									<select className="rounded-md bg-gray-300 px-4 py-2 text-white">
