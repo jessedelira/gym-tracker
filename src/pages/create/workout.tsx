@@ -120,6 +120,7 @@ const Workout: NextPage = () => {
 									required
 								></input>
 							</div>
+							{/* TODO: Add the input for the session you are going to add the workout to */}
 
 							{dataChangeInForm ? (
 								<div className="mt-4 grid grid-cols-2 gap-1">
