@@ -35,7 +35,7 @@ const Sessions: NextPage = () => {
 			id: '3',
 			name: 'Routine 3',
 			description: 'This is the third routine',
-		}
+		},
 	];
 
 	if (isLoading) {

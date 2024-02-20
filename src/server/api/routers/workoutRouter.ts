@@ -14,16 +14,16 @@ export const workoutRouter = createTRPCRouter({
 				sets: z.number(),
 			}),
 		)
-.mutation(({ input }) => {
-    const createdWorkout = primsa.workout.create({
-        data: {
-            exerciseId: input.exerciseId,
-            weight: input.weight,
-            reps: input.reps,
-            sets: input.sets,
-            sessionId: 'your-session-id', // Add the sessionId property here
-        },
-    });
-    return createdWorkout;
-}),
+		.mutation(({ input }) => {
+			const createdWorkout = primsa.workout.create({
+				data: {
+					exerciseId: input.exerciseId,
+					weight: input.weight,
+					reps: input.reps,
+					sets: input.sets,
+					sessionId: 'your-session-id', // Add the sessionId property here
+				},
+			});
+			return createdWorkout;
+		}),
 });
