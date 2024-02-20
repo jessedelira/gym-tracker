@@ -64,7 +64,11 @@ const Workout: NextPage = () => {
 									<label className="block pl-2 font-bold">
 										Exercise
 									</label>
-									<select className="rounded-md bg-gray-300 px-4 py-2 text-white">
+									<select
+										id="exerciseId"
+										required
+										className="rounded-md bg-gray-300 px-4 py-2 text-white"
+									>
 										{exercises
 											? exercises.data?.map(
 													(exercise) => (
@@ -84,7 +88,7 @@ const Workout: NextPage = () => {
 										Weight (lbs)
 									</label>
 									<input
-										id="reps"
+										id="weightLbs"
 										className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-white"
 										placeholder="3"
 										onChange={handleInputChange}
