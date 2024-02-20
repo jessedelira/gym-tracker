@@ -20,7 +20,7 @@ const Sessions: NextPage = () => {
 		}
 	}, [status, router]);
 
-	const routineData = [
+	const sessions = [
 		{
 			id: '1',
 			name: 'Routine 1',
@@ -35,42 +35,7 @@ const Sessions: NextPage = () => {
 			id: '3',
 			name: 'Routine 3',
 			description: 'This is the third routine',
-		},
-		{
-			id: '4',
-			name: 'Routine 4',
-			description: 'This is the fourth routine',
-		},
-		{
-			id: '5',
-			name: 'Routine 5',
-			description: 'This is the fifth routine',
-		},
-		{
-			id: '6',
-			name: 'Routine 6',
-			description: 'This is the sixth routine',
-		},
-		{
-			id: '7',
-			name: 'Routine 7',
-			description: 'This is the seventh routine',
-		},
-		{
-			id: '8',
-			name: 'Routine 8',
-			description: 'This is the eighth routine',
-		},
-		{
-			id: '9',
-			name: 'Routine 9',
-			description: 'This is the ninth routine',
-		},
-		{
-			id: '10',
-			name: 'Routine 10',
-			description: 'This is the tenth routine',
-		},
+		}
 	];
 
 	if (isLoading) {
@@ -84,28 +49,14 @@ const Sessions: NextPage = () => {
 							Manage Sessions
 						</h1>
 					</div>
-					<div className="flex justify-between ">
-						<Link
-							href="/create/session"
-							className="mr-2 h-7 w-7 flex-none"
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								viewBox="0 0 24 24"
-								strokeWidth={1.5}
-								stroke="currentColor"
-								className="h-7 w-7 rounded-md bg-blue-200"
-							>
-								<path
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									d="M12 4.5v15m7.5-7.5h-15"
-								/>
-							</svg>
+					<div className="mb-2 flex justify-center">
+						<Link href="/create/session">
+							<button className="h-9 w-64 rounded-md bg-lime-300">
+								New Session
+							</button>
 						</Link>
 					</div>
-					{routineData && routineData.length === 0 ? (
+					{sessions && sessions.length === 0 ? (
 						<h2 className="ml-2">
 							You have not created a routine yet, press the blue
 							plus button to create one!
@@ -126,8 +77,8 @@ const Sessions: NextPage = () => {
 									</tr>
 								</thead>
 								<tbody>
-									{routineData &&
-										routineData.map((routine) => (
+									{sessions &&
+										sessions.map((routine) => (
 											<tr
 												key={routine.id}
 												className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600"
