@@ -3,11 +3,16 @@ import { useSession } from 'next-auth/react';
 import { type FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '~/components/layout';
+import Link from 'next/link';
+import GoBack from '~/components/goBack';
+import { api } from '~/utils/api';
+import { getSessionNameInputElement } from '~/utils/documentUtils';
 
 const Session: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
 	const [dataChangeInForm, setDataChangeInForm] = useState(false);
+	const sessionMutation = api.session.createSession.useMutation();
 	const router = useRouter();
 
 	useEffect(() => {
@@ -21,8 +26,13 @@ const Session: NextPage = () => {
 	}, [status, router]);
 
 	const handleSaveClicked = (e: FormEvent<HTMLFormElement>) => {
-		console.log(e);
-		e.preventDefault();
+		if (sessionData) {
+			e.preventDefault();
+
+			const newSessionName = getSessionNameInputElement(document).value;
+
+
+		}
 	};
 
 	const handleInputChange = () => {
@@ -40,8 +50,12 @@ const Session: NextPage = () => {
 			<>
 				<Layout sessionData={sessionData}>
 					<div className="flex flex-col">
-						<h1 className="pl-2 text-3xl font-bold">Create</h1>
-
+						<div className="pl-4 flex flex-row">
+							<Link href="/manage/sessions">
+								<GoBack />
+							</Link>
+							<h1 className="pl-2 text-3xl font-bold">Create</h1>
+						</div>
 						<h2 className="pl-2 text-2xl font-bold">
 							Session Information
 						</h2>
@@ -52,7 +66,7 @@ const Session: NextPage = () => {
 										Session Name
 									</label>
 									<input
-										id="routineName"
+										id="sessionName"
 										className=" rounded-md bg-gray-300 px-4 py-2 text-white"
 										placeholder="Name"
 										onChange={handleInputChange}
@@ -65,12 +79,84 @@ const Session: NextPage = () => {
 									Description
 								</label>
 								<textarea
-									id="routineDescription"
+									id="sessionDescription"
 									className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-white"
 									placeholder="Description"
 									onChange={handleInputChange}
 									required
 								></textarea>
+							</div>
+
+							{/* create multi-select of the days of the week checkboxs */}
+							<div className="mat-4 grid grid-cols-1">
+								<label className="block pl-2 font-bold">
+									Day of the Week
+								</label>
+								<div className="grid grid-cols-3">
+									<label className="block pl-2">
+										<input
+											id="sunday-select"
+											type="checkbox"
+											className="mr-2"
+											onChange={handleInputChange}
+										/>
+										Sunday
+									</label>
+									<label className="block pl-2">
+										<input
+											id="monday-select"
+											type="checkbox"
+											className="mr-2"
+											onChange={handleInputChange}
+										/>
+										Monday
+									</label>
+									<label className="block pl-2">
+										<input
+											id="tuesday-select"
+											type="checkbox"
+											className="mr-2"
+											onChange={handleInputChange}
+										/>
+										Tuesday
+									</label>
+									<label className="block pl-2">
+										<input
+											id="wednesday-select"	
+											type="checkbox"
+											className="mr-2"
+											onChange={handleInputChange}
+										/>
+										Wednesday
+									</label>
+									<label className="block pl-2">
+										<input
+											id="thursday-select"
+											type="checkbox"
+											className="mr-2"
+											onChange={handleInputChange}
+										/>
+										Thursday
+									</label>
+									<label className="block pl-2">
+										<input
+											id="friday-select"
+											type="checkbox"
+											className="mr-2"
+											onChange={handleInputChange}
+										/>
+										Friday
+									</label>
+									<label className="block pl-2">
+										<input
+											id="saturday-select"
+											type="checkbox"
+											className="mr-2"
+											onChange={handleInputChange}
+										/>
+										Saturday
+									</label>
+								</div>
 							</div>
 
 							{dataChangeInForm ? (
