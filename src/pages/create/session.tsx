@@ -6,7 +6,11 @@ import Layout from '~/components/layout';
 import Link from 'next/link';
 import GoBack from '~/components/goBack';
 import { api } from '~/utils/api';
-import { getSessionNameInputElement } from '~/utils/documentUtils';
+import {
+	getDaysSelected,
+	getSessionDescriptionInputElement,
+	getSessionNameInputElement,
+} from '~/utils/documentUtils';
 
 const Session: NextPage = () => {
 	const { data: sessionData, status } = useSession();
@@ -31,12 +35,15 @@ const Session: NextPage = () => {
 			e.preventDefault();
 
 			const newSessionName = getSessionNameInputElement(document).value;
+			const newSessionDescription =
+				getSessionDescriptionInputElement(document).value;
+			const daysSelected = getDaysSelected(document);
 
 			const createSessionData = {
-				name: 'testName',
-				description: 'testDescription',
+				name: newSessionName,
+				description: newSessionDescription,
 				userId: sessionData.user.id,
-				days: ['mon', 'tue', 'wed'],
+				days: daysSelected,
 			};
 
 			await createSessionMutation.mutateAsync(createSessionData, {

@@ -1,5 +1,4 @@
 import { type NextPage } from 'next';
-import NavBar from '~/components/navbar';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';

@@ -23,21 +23,20 @@ export const sessionRouter = createTRPCRouter({
 					userId: input.userId,
 				},
 			});
-			console.log('createdSession', createdSession);
 
-			// Create the SessionDayActive record (mon, tue, wed, thu, fri, sat, sun)
-			input.days.forEach((day) => {
-				const createdSessionDayActive = primsa.sessionDaysActive.create(
-					{
+			console.log('input.days', input.days);
+			console.log('sessionId', createdSession.id);
+
+			await Promise.all(
+				input.days.map(async (day) => {
+					await primsa.sessionDaysActive.create({
 						data: {
 							day: day,
 							sessionId: createdSession.id,
 						},
-					},
-				);
-
-				console.log('createdSessionDayActive', createdSessionDayActive);
-			});
+					});
+				}),
+			);
 
 			return createdSession;
 		}),
@@ -54,7 +53,6 @@ export const sessionRouter = createTRPCRouter({
 					userId: input.userId,
 				},
 			});
-			console.log('sessions', sessions);
 			return sessions;
 		}),
 });

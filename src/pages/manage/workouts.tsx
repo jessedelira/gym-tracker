@@ -1,15 +1,18 @@
-import { Workout } from '@prisma/client';
 import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Layout from '~/components/layout';
+import { api } from '~/utils/api';
 
 const Workouts: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
+	const { data: allWorkouts } = api.workout.getAllWorkouts.useQuery({
+		userId: sessionData?.user.id ?? '',
+	});
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -20,25 +23,6 @@ const Workouts: NextPage = () => {
 			setIsLoading(false);
 		}
 	}, [status, router]);
-
-	const testWorkoutData: Workout[] = [
-		{
-			id: '1',
-			reps: 10,
-			sets: 3,
-			weight: 100,
-			exerciseId: '1',
-			sessionId: '1',
-		},
-	];
-
-	const workoutData = [
-		{
-			id: '1',
-			name: 'Routine 1',
-			description: 'This is the first routine',
-		},
-	];
 
 	if (isLoading) {
 		return <></>;
@@ -58,7 +42,7 @@ const Workouts: NextPage = () => {
 							</button>
 						</Link>
 					</div>
-					{workoutData && workoutData.length === 0 ? (
+					{allWorkouts && allWorkouts.length === 0 ? (
 						<h2 className="ml-2">
 							You have not created a routine yet, press the blue
 							plus button to create one!
@@ -79,27 +63,17 @@ const Workouts: NextPage = () => {
 									</tr>
 								</thead>
 								<tbody>
-									{workoutData &&
-										workoutData.map((routine) => (
+									{allWorkouts &&
+										allWorkouts.map((workout) => (
 											<tr
-												key={routine.id}
+												key={workout.id}
 												className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600"
 											>
 												<th
 													scope="row"
 													className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
 												>
-													{routine.name}
-													<p className="text-xs">
-														{routine.description &&
-															(routine.description
-																?.length > 35
-																? routine.description?.substring(
-																		0,
-																		35,
-																  ) + '...'
-																: routine.description)}
-													</p>
+													{workout.id}
 												</th>
 												<td className="grid grid-cols-2 px-6 py-4 text-right">
 													<svg

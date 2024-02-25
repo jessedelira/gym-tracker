@@ -12,6 +12,8 @@ export const workoutRouter = createTRPCRouter({
 				weight: z.number(),
 				reps: z.number(),
 				sets: z.number(),
+				sessionId: z.string(),
+				userId: z.string(),
 			}),
 		)
 		.mutation(({ input }) => {
@@ -21,9 +23,25 @@ export const workoutRouter = createTRPCRouter({
 					weight: input.weight,
 					reps: input.reps,
 					sets: input.sets,
-					sessionId: 'your-session-id', // Add the sessionId property here
+					sessionId: input.sessionId,
+					userId: input.userId,
 				},
 			});
 			return createdWorkout;
+		}),
+
+	getAllWorkouts: protectedProcedure
+		.input(
+			z.object({
+				userId: z.string(),
+			}),
+		)
+		.query(async ({ input }) => {
+			const workouts = await primsa.workout.findMany({
+				where: {
+					userId: input.userId,
+				},
+			});
+			return workouts;
 		}),
 });
