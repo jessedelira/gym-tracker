@@ -1,4 +1,4 @@
-import { PrismaClient, SessionDaysActive } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
 
@@ -9,6 +9,7 @@ export const sessionRouter = createTRPCRouter({
 		.input(
 			z.object({
 				name: z.string(),
+				userId: z.string(),
 				description: z.string(),
 				days: z.string().array(),
 			}),
@@ -19,6 +20,7 @@ export const sessionRouter = createTRPCRouter({
 				data: {
 					name: input.name,
 					description: input.description,
+					userId: input.userId,
 				},
 			});
 			console.log('createdSession', createdSession);
@@ -38,5 +40,21 @@ export const sessionRouter = createTRPCRouter({
 			});
 
 			return createdSession;
+		}),
+
+	getAllSessions: protectedProcedure
+		.input(
+			z.object({
+				userId: z.string(),
+			}),
+		)
+		.query(async ({ input }) => {
+			const sessions = await primsa.session.findMany({
+				where: {
+					userId: input.userId,
+				},
+			});
+			console.log('sessions', sessions);
+			return sessions;
 		}),
 });

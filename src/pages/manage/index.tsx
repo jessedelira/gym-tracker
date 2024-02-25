@@ -5,11 +5,16 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '~/components/layout';
+import { api } from '~/utils/api';
 
 const Manage: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
+
+	const { data: activeRoutineData } = api.routine.getActiveRoutine.useQuery({
+		userId: sessionData?.user.id || '',
+	});
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -47,7 +52,10 @@ const Manage: NextPage = () => {
 						</div>
 						<div className="ml-4 mt-4 grid grid-cols-1">
 							<h1 className="text-2xl">Active Routine</h1>
-							<h2 className="text-l">Strength Training </h2>
+							<h2 className="text-l">
+								{activeRoutineData?.name ??
+									'No active routine selected'}
+							</h2>
 						</div>
 					</div>
 					<div className="mt-6 flex flex-col items-center justify-center">

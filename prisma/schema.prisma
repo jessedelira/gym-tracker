@@ -26,18 +26,20 @@ model User {
   firstName   String
   lastName    String
   routines    Routine[]
+  sessions    Session[]
+  workouts    Workout[]
 }
 
 // Routine will be based on a weekly basis, only one will be active at a time
 model Routine {
-  id               String    @id @default(cuid())
-  createdAt        DateTime  @default(now())
-  name             String    @unique
-  description      String?
-  isActive         Boolean   @default(false)
-  sessions         Session[]
-  user             User      @relation(fields: [userId], references: [id])
-  userId           String
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  name        String    @unique
+  description String?
+  isActive    Boolean   @default(false)
+  sessions    Session[]
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
 }
 
 model Session {
@@ -46,9 +48,11 @@ model Session {
   name        String
   description String?
   workouts    Workout[]
-  routine     Routine?             @relation(fields: [routineId], references: [id])
+  routine     Routine?            @relation(fields: [routineId], references: [id])
   routineId   String?
   days        SessionDaysActive[]
+  user        User                @relation(fields: [userId], references: [id])
+  userId      String
 }
 
 model SessionDaysActive {
@@ -67,6 +71,8 @@ model Workout {
   exerciseId String
   session    Session  @relation(fields: [sessionId], references: [id])
   sessionId  String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
 }
 
 model Exercise {

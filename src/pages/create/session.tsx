@@ -12,8 +12,9 @@ const Session: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
 	const [dataChangeInForm, setDataChangeInForm] = useState(false);
-	const sessionMutation = api.session.createSession.useMutation();
 	const router = useRouter();
+
+	const createSessionMutation = api.session.createSession.useMutation();
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -25,13 +26,24 @@ const Session: NextPage = () => {
 		}
 	}, [status, router]);
 
-	const handleSaveClicked = (e: FormEvent<HTMLFormElement>) => {
+	const handleSaveClicked = async (e: FormEvent<HTMLFormElement>) => {
 		if (sessionData) {
 			e.preventDefault();
 
 			const newSessionName = getSessionNameInputElement(document).value;
 
+			const createSessionData = {
+				name: 'testName',
+				description: 'testDescription',
+				userId: sessionData.user.id,
+				days: ['mon', 'tue', 'wed'],
+			};
 
+			await createSessionMutation.mutateAsync(createSessionData, {
+				onSuccess: () => {
+					void router.push('/manage/sessions');
+				},
+			});
 		}
 	};
 
@@ -50,7 +62,7 @@ const Session: NextPage = () => {
 			<>
 				<Layout sessionData={sessionData}>
 					<div className="flex flex-col">
-						<div className="pl-4 flex flex-row">
+						<div className="flex flex-row pl-4">
 							<Link href="/manage/sessions">
 								<GoBack />
 							</Link>
@@ -122,7 +134,7 @@ const Session: NextPage = () => {
 									</label>
 									<label className="block pl-2">
 										<input
-											id="wednesday-select"	
+											id="wednesday-select"
 											type="checkbox"
 											className="mr-2"
 											onChange={handleInputChange}

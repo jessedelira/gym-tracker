@@ -4,11 +4,16 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Layout from '~/components/layout';
+import { api } from '~/utils/api';
 
 const Sessions: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
+
+	const { data: allSessionData } = api.session.getAllSessions.useQuery({
+		userId: sessionData?.user.id || '',
+	});
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -19,24 +24,6 @@ const Sessions: NextPage = () => {
 			setIsLoading(false);
 		}
 	}, [status, router]);
-
-	const sessions = [
-		{
-			id: '1',
-			name: 'Routine 1',
-			description: 'This is the first routine',
-		},
-		{
-			id: '2',
-			name: 'Routine 2',
-			description: 'This is the second routine',
-		},
-		{
-			id: '3',
-			name: 'Routine 3',
-			description: 'This is the third routine',
-		},
-	];
 
 	if (isLoading) {
 		return <></>;
@@ -56,9 +43,9 @@ const Sessions: NextPage = () => {
 							</button>
 						</Link>
 					</div>
-					{sessions && sessions.length === 0 ? (
+					{allSessionData && allSessionData.length === 0 ? (
 						<h2 className="ml-2">
-							You have not created a routine yet, press the blue
+							You have not created a session yet, press the blue
 							plus button to create one!
 						</h2>
 					) : (
@@ -67,7 +54,7 @@ const Sessions: NextPage = () => {
 								<thead className="bg-gray-200 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
 									<tr>
 										<th scope="col" className="px-6 py-3">
-											Routine
+											Session
 										</th>
 										<th scope="col" className="px-6 py-3">
 											<span className="sr-only">
@@ -77,26 +64,26 @@ const Sessions: NextPage = () => {
 									</tr>
 								</thead>
 								<tbody>
-									{sessions &&
-										sessions.map((routine) => (
+									{allSessionData &&
+										allSessionData.map((session) => (
 											<tr
-												key={routine.id}
+												key={session.id}
 												className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600"
 											>
 												<th
 													scope="row"
 													className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
 												>
-													{routine.name}
+													{session.name}
 													<p className="text-xs">
-														{routine.description &&
-															(routine.description
+														{session.description &&
+															(session.description
 																?.length > 35
-																? routine.description?.substring(
+																? session.description?.substring(
 																		0,
 																		35,
 																  ) + '...'
-																: routine.description)}
+																: session.description)}
 													</p>
 												</th>
 												<td className="grid grid-cols-2 px-6 py-4 text-right">
