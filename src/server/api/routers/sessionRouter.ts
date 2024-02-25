@@ -24,9 +24,6 @@ export const sessionRouter = createTRPCRouter({
 				},
 			});
 
-			console.log('input.days', input.days);
-			console.log('sessionId', createdSession.id);
-
 			await Promise.all(
 				input.days.map(async (day) => {
 					await primsa.sessionDaysActive.create({

@@ -41,8 +41,6 @@ const Workout: NextPage = () => {
 
 			const exerciseId = getExerciseInputElement(document).value;
 
-			console.log(exerciseId);
-
 			const createWorkoutData = {
 				exerciseId: exerciseId,
 				weight: Number(getWeightInputElement(document).value),
@@ -51,8 +49,6 @@ const Workout: NextPage = () => {
 				sessionId: getSessionIdInputElement(document).value,
 				userId: sessionData.user.id,
 			};
-
-			console.log(createWorkoutData);
 
 			await workoutMutation.mutateAsync(createWorkoutData, {
 				onSuccess: () => {
