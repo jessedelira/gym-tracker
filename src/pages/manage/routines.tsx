@@ -4,7 +4,6 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import NavBar from '~/components/navbar';
 import { api } from '~/utils/api';
 import GoldStar from '~/components/goldStar';
 import GreyStar from '~/components/greyStar';
@@ -43,11 +42,8 @@ const Routines: NextPage = () => {
 			setIsLoading(true);
 		} else {
 			setIsLoading(false);
-			// set active routine
 			const currentActiveRoutine = activeRoutineData;
-			console.log('here');
 			if (currentActiveRoutine) {
-				console.log('here2');
 				setActiveRoutine(currentActiveRoutine);
 			}
 		}
@@ -146,7 +142,6 @@ const Routines: NextPage = () => {
 																: routine.description)}
 													</p>
 												</th>
-
 												<td className="grid grid-cols-2 px-6 py-4 text-right">
 													{activeRoutine &&
 													routine.id ===

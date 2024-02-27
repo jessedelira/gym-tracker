@@ -1,15 +1,19 @@
 import { type NextPage } from 'next';
-import NavBar from '~/components/navbar';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '~/components/layout';
+import { api } from '~/utils/api';
 
 const Manage: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
+
+	const { data: activeRoutineData } = api.routine.getActiveRoutine.useQuery({
+		userId: sessionData?.user.id || '',
+	});
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -47,7 +51,10 @@ const Manage: NextPage = () => {
 						</div>
 						<div className="ml-4 mt-4 grid grid-cols-1">
 							<h1 className="text-2xl">Active Routine</h1>
-							<h2 className="text-l">Strength Training </h2>
+							<h2 className="text-l">
+								{activeRoutineData?.name ??
+									'No active routine selected'}
+							</h2>
 						</div>
 					</div>
 					<div className="mt-6 flex flex-col items-center justify-center">
@@ -85,7 +92,7 @@ const Manage: NextPage = () => {
 								</div>
 							</Link>
 							<Link
-								href="/create/routine"
+								href="/manage/sessions"
 								className="rounded-md bg-gray-300 px-4 py-2 text-xl font-semibold text-white  "
 							>
 								<div className="flex">
@@ -117,7 +124,7 @@ const Manage: NextPage = () => {
 								</div>
 							</Link>
 							<Link
-								href="/create/routine"
+								href="/manage/workouts"
 								className="rounded-md bg-gray-300 px-4 py-2 text-xl font-semibold text-white  "
 							>
 								<div className="flex">

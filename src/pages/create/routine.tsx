@@ -3,7 +3,6 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { type FormEvent, useEffect, useState } from 'react';
 import Layout from '~/components/layout';
-import NavBar from '~/components/navbar';
 import { api } from '~/utils/api';
 import {
 	getRoutineDescriptionInputElement,
