@@ -4,6 +4,7 @@ import { routineRouter } from './routers/routineRouter';
 import { exerciseRouter } from './routers/exerciseRouter';
 import { sessionRouter } from './routers/sessionRouter';
 import { workoutRouter } from './routers/workoutRouter';
+import { accountDeletionRouter } from './routers/accountDeletionRouter';
 
 /**
  * This is the primary router for your server.
@@ -16,6 +17,7 @@ export const appRouter = createTRPCRouter({
 	exercise: exerciseRouter,
 	session: sessionRouter,
 	workout: workoutRouter,
+	accountDeletion: accountDeletionRouter,
 });
 
 // export type definition of API

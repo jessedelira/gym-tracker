@@ -156,7 +156,7 @@ const Settings: NextPage = () => {
 								</p>
 							</div>
 						</Link>
-						<Link href="/settings/notifications">
+						<Link href="/settings/accountDeletion">
 							<div className="flex h-8">
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
