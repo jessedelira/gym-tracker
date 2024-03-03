@@ -53,7 +53,7 @@ const AccountDeletion: NextPage = () => {
 								></input>
 							</div>
 						</div>
-                        <div className="mat-4 grid grid-cols-1 gap-5 ">
+						<div className="mat-4 grid grid-cols-1 gap-5 ">
 							<div className="mat-4 grid grid-cols-1 px-2 pt-4">
 								<label className="block font-bold">
 									Password
@@ -65,7 +65,11 @@ const AccountDeletion: NextPage = () => {
 								></input>
 							</div>
 						</div>
-                        <input type="submit" value="Delete Account" className="bg-red-600 text-white rounded-md px-4 py-2"></input>
+						<input
+							type="submit"
+							value="Delete Account"
+							className="rounded-md bg-red-600 px-4 py-2 text-white"
+						></input>
 					</form>
 				</div>
 			</Layout>
