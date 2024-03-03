@@ -5,6 +5,7 @@ import type {
 } from 'next';
 import { getCsrfToken, signIn } from 'next-auth/react';
 import Link from 'next/link';
+import PasswordInput from '~/components/passwordInput';
 
 const GetServerSideProps = async (context: GetServerSidePropsContext) => {
 	return {
@@ -52,12 +53,10 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 						className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 						required
 					/>
-					<input
-						type="password"
-						placeholder="Password"
+					<PasswordInput
 						id="password"
-						className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
-						required
+						placeholder="Password"
+						isRequired
 					/>
 					<button
 						className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"

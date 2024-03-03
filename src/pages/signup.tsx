@@ -2,6 +2,7 @@ import { type NextPage } from 'next';
 import Link from 'next/link';
 import { useState, type FormEvent } from 'react';
 import AccountCreatedModal from '~/components/accountCreatedModal';
+import PasswordInput from '~/components/passwordInput';
 
 import { api } from '~/utils/api';
 import {
@@ -55,12 +56,10 @@ const SignUp: NextPage = () => {
 							className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 							required
 						/>
-						<input
-							type="password"
-							placeholder="Password"
+						<PasswordInput
 							id="password"
-							className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
-							required
+							placeholder="Password"
+							isRequired
 						/>
 						<input
 							type="text"

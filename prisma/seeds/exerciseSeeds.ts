@@ -83,6 +83,78 @@ const seedExercises = async () => {
 					'The dumbbell fly is a popular exercise for the pectoral muscles. It is performed by holding lightweight dumbbells in both hands and lying on a bench or exercise ball.',
 			},
 		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Dumbbell Lateral Raise',
+				description:
+					'The dumbbell lateral raise is a great exercise for building strength and size in your lateral deltoids, which are the muscles on the sides of your shoulders.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Dumbbell Front Raise',
+				description:
+					'The dumbbell front raise is a great exercise for building strength and size in your front deltoids, which are the muscles on the front of your shoulders.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Dumbbell Shoulder Press',
+				description:
+					'The dumbbell shoulder press is a great exercise for building strength and size in your shoulders.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Dumbbell Shrug',
+				description:
+					'The dumbbell shrug is a great exercise for building strength and size in your traps.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Dumbbell Squat',
+				description:
+					'The dumbbell squat is a great exercise for building strength and size in your legs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Dumbbell Lunge',
+				description:
+					'The dumbbell lunge is a great exercise for building strength and size in your legs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Dumbbell Deadlift',
+				description:
+					'The dumbbell deadlift is a great exercise for building strength and size in your legs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Dumbbell Calf Raise',
+				description:
+					'The dumbbell calf raise is a great exercise for building strength and size in your calves.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Dumbbell Crunch',
+				description:
+					'The dumbbell crunch is a great exercise for building strength and size in your abs.',
+			},
+		});
 	}
 };
 
