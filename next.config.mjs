@@ -6,12 +6,12 @@ import nextPWA from "next-pwa";
  * for Docker builds.
  */
 await import("./src/env.mjs");
-const prod = process.env.NODE_ENV === "production";
+
 const withPWA = nextPWA({
   dest: "public",
   register: true,
   skipWaiting: true,
-  disable: prod ? false : true,
+  disable: true,
 });
 
 
