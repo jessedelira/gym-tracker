@@ -19,7 +19,6 @@
 ![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen?logo=github) ![Website](https://img.shields.io/website?url=https%3A%2F%2Fgym-tracker.app&logo)
 ![stars](https://img.shields.io/github/stars/jessedelira/gym-tracker)
 
-
   </p>
   <p>
     <sub>
@@ -98,33 +97,52 @@ This is a list things you need to use the Gym Tracker.
 
 ### Installation
 
-1. Clone the repo
+1.  Clone the repo
     ```sh
     $ git clone https://github.com/jessedelira/gym-tracker.git
     ```
-2. Create MySQL instance using Docker
+2.  Create MySQL instance using Docker
     ```sh
     $ docker run --name gym-tracker-db -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql
     ```
-3. Use your database management tool of choice to create the database
+3.  Use your database management tool of choice to create the database
 
     ```sh
     CREATE DATABASE gym_tracker;
     ```
 
-4. Create .env at root of project and add the following:
+4.  Create .env at root of project and add the following:
 
-    - Use this command: `$ openssl rand -base64 32` to create a NEXTAUTH_SECRET env var
+    -   Use this command: `$ openssl rand -base64 32` to create a NEXTAUTH_SECRET env var
 
     ```sh
       DATABASE_URL="mysql://root:password@localhost:3306/gym_tracker"
       NEXTAUTH_SECRET="place_here"
       NEXTAUTH_URL="http://localhost:3000"
+      NODE_ENV="production"
     ```
 
-5. Run `$ npm install` at root of project to install the dependencies
-    - This will kick off the postinstall script, which will run `$ npx prisma migrate dev` to create the database tables and populate the database with seed data
-6. Finally, run `$ npm run dev` to start the server
+    -   **_Note_**: The `NODE_ENV` is set to production to avoid the `GenerateSW has been called multiple times, perhaps due to running webpack in --watch mode.` error.
+
+5.  Run `$ npm install` at root of project to install the dependencies
+
+    -   This will kick off the postinstall script, which will run `$ npx prisma migrate dev` to create the database tables and populate the database with seed data
+
+6.  In your `next.config.js` files, remove the comments from the while developming since this will cause the service worker error to occur
+
+    ```ts
+    await import('./src/env.mjs');
+
+    // const prod = process.env.NODE_ENV === "production";
+    const withPWA = nextPWA({
+    	dest: 'public',
+    	register: true,
+    	skipWaiting: true,
+    	// disable: prod ? false : true,
+    });
+    ```
+
+7.  Finally, run `$ npm run dev` to start the server
 
 ### Warnings
 
