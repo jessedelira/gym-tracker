@@ -1,5 +1,5 @@
-import next from "next";
-import nextPWA from "next-pwa";
+import withSerwistInit from '@serwist/next';
+
 
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
@@ -7,15 +7,14 @@ import nextPWA from "next-pwa";
  */
 await import("./src/env.mjs");
 
-const withPWA = nextPWA({
-  dest: "public",
-  register: true,
-  skipWaiting: true,
-});
+const withSerwist = withSerwistInit({
+  swSrc: "src/service-worker/index.ts",
+  swDest: 'public/sw.js',
+})  
 
 
 /** @type {import("next").NextConfig} */
-const config = withPWA({
+const config = withSerwist({
   reactStrictMode: true,
   /**
    * If you have `experimental: { appDir: true }` set, then you must comment the below `i18n` config
@@ -36,5 +35,5 @@ const config = withPWA({
 			},
 		],
 	},
-});
+})
 export default config;
