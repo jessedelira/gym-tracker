@@ -9,7 +9,6 @@ declare const self: ServiceWorkerGlobalScope & {
   __SW_MANIFEST: (PrecacheEntry | string)[] | undefined;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 installSerwist({
   precacheEntries: self.__SW_MANIFEST,
   skipWaiting: true,
