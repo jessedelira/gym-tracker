@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"target": "es2017",
-		"lib": ["dom", "dom.iterable", "esnext"],
+		"lib": ["dom", "dom.iterable", "esnext", "webworker"],
 		"allowJs": true,
 		"checkJs": true,
 		"skipLibCheck": true,
@@ -20,7 +20,8 @@
 		"baseUrl": ".",
 		"paths": {
 			"~/*": ["./src/*"]
-		}
+		},
+		"types": ["@serwist/next/typings"]
 	},
 	"include": [
 		".eslintrc.cjs",
