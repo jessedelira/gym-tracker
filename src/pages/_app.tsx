@@ -15,8 +15,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
 		<SessionProvider session={session}>
 			<Head>
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>My awesome PWA app</title>
-        <meta name="description" content="Best PWA app in the world!" />
+        <title>Gym Tracker</title>
+        <meta name="description" content="Open-source fitness tracking app" />
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="mask-icon" href="/icons/mask-icon.svg" color="#FFFFFF" />
         <meta name="theme-color" content="#ffffff" />
@@ -39,14 +39,13 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <link rel="manifest" href="/manifest.json" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:url" content="https://yourdomain.com" />
-        <meta name="twitter:title" content="My awesome PWA app" />
-        <meta name="twitter:description" content="Best PWA app in the world!" />
+        <meta name="twitter:title" content="Gym Tracker" />
+        <meta name="twitter:description" content="Open-source fitness tracking app" />
         <meta name="twitter:image" content="/icons/twitter.png" />
-        <meta name="twitter:creator" content="@DavidWShadow" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="My awesome PWA app" />
-        <meta property="og:description" content="Best PWA app in the world!" />
-        <meta property="og:site_name" content="My awesome PWA app" />
+        <meta property="og:title" content="Gym Tracker" />
+        <meta property="og:description" content="Open-source fitness tracking app" />
+        <meta property="og:site_name" content="Gym Tracker" />
         <meta property="og:url" content="https://yourdomain.com" />
         <meta property="og:image" content="/icons/og.png" />
         {/* add the following only if you want to add a startup image for Apple devices. */}
