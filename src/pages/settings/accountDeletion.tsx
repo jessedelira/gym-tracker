@@ -4,11 +4,14 @@ import { useRouter } from 'next/router';
 import { type FormEvent, useEffect, useState } from 'react';
 import Spinner from '~/components/Spinner';
 import Layout from '~/components/layout';
+import ProceedAccountDeletingButton from '~/components/proceedAccountDeletionButton';
 
 const AccountDeletion: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
+	const [proceedButtonHasBeenClicked, setProceedButtonHasBeenClicked] =
+		useState(false);
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -26,6 +29,11 @@ const AccountDeletion: NextPage = () => {
 			console.log('here');
 		}
 	};
+
+	const handleProceedButtonClick = () => {
+		setProceedButtonHasBeenClicked(true);
+	};
+
 	if (isLoading) {
 		return <Spinner />;
 	} else {
@@ -35,42 +43,48 @@ const AccountDeletion: NextPage = () => {
 					<h1 className="pl-2 text-3xl font-bold text-red-600">
 						Account Deletion
 					</h1>
-					<h2 className="text-l pl-2 font-bold">
+					<h2 className="text-l pb-5 pl-2 font-bold">
 						Deleting your account will permanently remove all of
 						your data from our servers. This action cannot be
 						undone.
 					</h2>
-					<form onSubmit={(e) => void handleSubmit(e)}>
-						<div className="mat-4 grid grid-cols-1 gap-5 ">
-							<div className="mat-4 grid grid-cols-1 px-2 pt-4">
-								<label className="block font-bold">
-									Username
-								</label>
-								<input
-									id="firstName"
-									className=" rounded-md bg-gray-300 px-4 py-2 text-white"
-									placeholder="Username"
-								></input>
+					{proceedButtonHasBeenClicked ? (
+						<form onSubmit={(e) => void handleSubmit(e)}>
+							<div className="mat-4 grid grid-cols-1 gap-5 ">
+								<div className="mat-4 grid grid-cols-1 px-2 pt-4">
+									<label className="block font-bold">
+										Username
+									</label>
+									<input
+										id="firstName"
+										className=" rounded-md bg-gray-300 px-4 py-2 text-white"
+										placeholder="Username"
+									></input>
+								</div>
 							</div>
-						</div>
-						<div className="mat-4 grid grid-cols-1 gap-5 ">
-							<div className="mat-4 grid grid-cols-1 px-2 pt-4">
-								<label className="block font-bold">
-									Password
-								</label>
-								<input
-									id="firstName"
-									className=" rounded-md bg-gray-300 px-4 py-2 text-white"
-									placeholder="Password"
-								></input>
+							<div className="mat-4 grid grid-cols-1 gap-5 ">
+								<div className="mat-4 grid grid-cols-1 px-2 pt-4">
+									<label className="block font-bold">
+										Password
+									</label>
+									<input
+										id="firstName"
+										className=" rounded-md bg-gray-300 px-4 py-2 text-white"
+										placeholder="Password"
+									></input>
+								</div>
 							</div>
-						</div>
-						<input
-							type="submit"
-							value="Delete Account"
-							className="rounded-md bg-red-600 px-4 py-2 text-white"
-						></input>
-					</form>
+							<input
+								type="submit"
+								value="Delete Account"
+								className="rounded-md bg-red-600 px-4 py-2 text-white"
+							></input>
+						</form>
+					) : (
+						<ProceedAccountDeletingButton
+							onClick={handleProceedButtonClick}
+						/>
+					)}
 				</div>
 			</Layout>
 		);
