@@ -5,6 +5,11 @@ import { type FormEvent, useEffect, useState } from 'react';
 import Spinner from '~/components/Spinner';
 import Layout from '~/components/layout';
 import ProceedAccountDeletingButton from '~/components/proceedAccountDeletionButton';
+import { api } from '~/utils/api';
+import {
+	getPasswordInputElement,
+	getUsernameInputElement,
+} from '~/utils/documentUtils';
 
 const AccountDeletion: NextPage = () => {
 	const { data: sessionData, status } = useSession();
@@ -12,6 +17,8 @@ const AccountDeletion: NextPage = () => {
 	const router = useRouter();
 	const [proceedButtonHasBeenClicked, setProceedButtonHasBeenClicked] =
 		useState(false);
+	const accountDeletionMutation =
+		api.accountDeletion.deleteAccount.useMutation();
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -24,10 +31,13 @@ const AccountDeletion: NextPage = () => {
 	}, [status, router, sessionData?.user]);
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-		if (sessionData) {
-			console.log(e);
-			console.log('here');
-		}
+		e.preventDefault();
+
+		// get data from the form
+		const username = getUsernameInputElement(document).value;
+		const password = getPasswordInputElement(document).value;
+
+		console.log(username, password);
 	};
 
 	const handleProceedButtonClick = () => {
@@ -56,7 +66,7 @@ const AccountDeletion: NextPage = () => {
 										Username
 									</label>
 									<input
-										id="firstName"
+										id="username"
 										className=" rounded-md bg-gray-300 px-4 py-2 text-white"
 										placeholder="Username"
 									></input>
@@ -68,7 +78,7 @@ const AccountDeletion: NextPage = () => {
 										Password
 									</label>
 									<input
-										id="firstName"
+										id="password"
 										className=" rounded-md bg-gray-300 px-4 py-2 text-white"
 										placeholder="Password"
 									></input>
