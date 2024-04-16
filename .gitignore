@@ -44,3 +44,7 @@ yarn-error.log*
 
 # notes
 *.notes.*
+
+# pwa
+/public/sw.js
+/public/sw.js.map
