@@ -1,7 +1,9 @@
 import { type NextPage } from 'next';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
+import { redirect } from 'next/dist/server/api-utils';
 import { useRouter } from 'next/router';
 import { type FormEvent, useEffect, useState } from 'react';
+import { set } from 'zod';
 import Spinner from '~/components/Spinner';
 import BaseModal from '~/components/baseModal';
 import Layout from '~/components/layout';
@@ -20,6 +22,7 @@ const AccountDeletion: NextPage = () => {
 		useState(false);
 	const accountDeletionMutation =
 		api.accountDeletion.deleteAccount.useMutation();
+	const [showModal, setShowModal] = useState(false);
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -39,22 +42,23 @@ const AccountDeletion: NextPage = () => {
 		const password = getPasswordInputElement(document).value;
 
 		// call the mutation
-		accountDeletionMutation.mutate({
-			userId: sessionData?.user.id ?? '',
-			username,
-			password,
-			
-		}, {
-			onSuccess: () => {
-				// Show Modal that saying account has been deleted
-				<BaseModal redirectUrl={'/'} headerMessage={'Account'} bodyMessage={''} buttonText={''}> </BaseModal>
+		accountDeletionMutation.mutate(
+			{
+				userId: sessionData?.user.id ?? '',
+				username,
+				password,
+			},
+			{
+				onSuccess: () => {
+					// Show Modal that saying account has been deleted
+					setShowModal(true);
 
-				// Remove the session
+					// Remove the session
 
-				// Redirect to the 
-			}
-		});
-
+					// Redirect to the
+				},
+			},
+		);
 	};
 
 	const handleProceedButtonClick = () => {
@@ -66,6 +70,19 @@ const AccountDeletion: NextPage = () => {
 	} else {
 		return (
 			<Layout sessionData={sessionData}>
+				{showModal && (
+					<BaseModal
+						redirectUrl={'/'}
+						headerMessage={'Account Deletion Succesful'}
+						bodyMessage={
+							'All data related to your accont has been deleted, thank you for using Gym Tracker ❤️'
+						}
+						buttonText={'Leave'}
+						onClick={() => {
+							void signOut();
+						}}
+					/>
+				)}
 				<div className="flex flex-col">
 					<h1 className="pl-2 text-3xl font-bold text-red-600">
 						Account Deletion

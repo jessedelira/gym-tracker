@@ -1,16 +1,21 @@
 import Link from 'next/link';
 import React from 'react';
 
-interface BaseModalProps 
-{
-    redirectUrl: string;
-    headerMessage: string;
-    bodyMessage: string
-    buttonText: string;
+interface BaseModalProps {
+	redirectUrl: string;
+	headerMessage: string;
+	bodyMessage: string;
+	buttonText: string;
+	onClick?: () => void;
 }
 
-
-const BaseModal: React.FC<BaseModalProps> = ({redirectUrl, headerMessage, bodyMessage, buttonText}) => {
+const BaseModal: React.FC<BaseModalProps> = ({
+	redirectUrl,
+	headerMessage,
+	bodyMessage,
+	buttonText,
+	onClick,
+}) => {
 	return (
 		<>
 			<div className="fixed inset-0 z-10 flex items-center justify-center">
@@ -19,16 +24,15 @@ const BaseModal: React.FC<BaseModalProps> = ({redirectUrl, headerMessage, bodyMe
 					<h1 className="text-center text-2xl text-black">
 						{headerMessage}
 					</h1>
-					<p className="mb-4 text-center text-black">
-						{bodyMessage}
-					</p>
+					<p className="mb-4 text-center text-black">{bodyMessage}</p>
 					<div className="flex flex-col items-center justify-center gap-4">
-						<Link
-							href={redirectUrl}
+						<button
+
+							onClick={onClick}
 							className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 						>
 							{buttonText}
-						</Link>
+						</button>
 					</div>
 				</div>
 			</div>
