@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { type FormEvent, useEffect, useState } from 'react';
 import Spinner from '~/components/Spinner';
+import BaseModal from '~/components/baseModal';
 import Layout from '~/components/layout';
 import ProceedAccountDeletingButton from '~/components/proceedAccountDeletionButton';
 import { api } from '~/utils/api';
@@ -37,7 +38,23 @@ const AccountDeletion: NextPage = () => {
 		const username = getUsernameInputElement(document).value;
 		const password = getPasswordInputElement(document).value;
 
-		console.log(username, password);
+		// call the mutation
+		accountDeletionMutation.mutate({
+			userId: sessionData?.user.id ?? '',
+			username,
+			password,
+			
+		}, {
+			onSuccess: () => {
+				// Show Modal that saying account has been deleted
+				<BaseModal redirectUrl={'/'} headerMessage={'Account'} bodyMessage={''} buttonText={''}> </BaseModal>
+
+				// Remove the session
+
+				// Redirect to the 
+			}
+		});
+
 	};
 
 	const handleProceedButtonClick = () => {
@@ -84,11 +101,13 @@ const AccountDeletion: NextPage = () => {
 									></input>
 								</div>
 							</div>
-							<input
-								type="submit"
-								value="Delete Account"
-								className="rounded-md bg-red-600 px-4 py-2 text-white"
-							></input>
+							<div className="mt-4 flex justify-center">
+								<input
+									type="submit"
+									value="Delete Account"
+									className="rounded-md bg-red-600 px-4 py-2 text-white"
+								></input>
+							</div>
 						</form>
 					) : (
 						<ProceedAccountDeletingButton
