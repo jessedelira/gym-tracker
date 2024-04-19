@@ -118,10 +118,6 @@ export const authOptions: NextAuthOptions = {
 				password: { label: 'Password', type: 'password' },
 			},
 			async authorize(credentials) {
-				// Two Cases on sign in
-				// 1. User is found by username
-				// 2. User is not found by username
-
 				const userFoundByUsername = await prisma.user.findUnique({
 					where: {
 						username: credentials?.username,
@@ -144,6 +140,7 @@ export const authOptions: NextAuthOptions = {
 				} catch (error) {
 					throw new Error('Incorrect username or password');
 				}
+				
 				return null;
 			},
 		}),
