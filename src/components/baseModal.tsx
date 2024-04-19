@@ -1,8 +1,6 @@
-import Link from 'next/link';
 import React from 'react';
 
 interface BaseModalProps {
-	redirectUrl: string;
 	headerMessage: string;
 	bodyMessage: string;
 	buttonText: string;
@@ -10,7 +8,6 @@ interface BaseModalProps {
 }
 
 const BaseModal: React.FC<BaseModalProps> = ({
-	redirectUrl,
 	headerMessage,
 	bodyMessage,
 	buttonText,
@@ -27,7 +24,6 @@ const BaseModal: React.FC<BaseModalProps> = ({
 					<p className="mb-4 text-center text-black">{bodyMessage}</p>
 					<div className="flex flex-col items-center justify-center gap-4">
 						<button
-
 							onClick={onClick}
 							className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 						>
