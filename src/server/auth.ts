@@ -140,7 +140,7 @@ export const authOptions: NextAuthOptions = {
 				} catch (error) {
 					throw new Error('Incorrect username or password');
 				}
-				
+
 				return null;
 			},
 		}),
