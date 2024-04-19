@@ -175,7 +175,3 @@ export const getServerAuthSession = (ctx: {
 }) => {
 	return getServerSession(ctx.req, ctx.res, authOptions);
 };
-function Awaitable<T>(arg0: null): User | PromiseLike<User | null> | null {
-	throw new Error('Function not implemented.');
-}
-
