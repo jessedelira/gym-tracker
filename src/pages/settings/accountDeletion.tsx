@@ -70,7 +70,6 @@ const AccountDeletion: NextPage = () => {
 			<Layout sessionData={sessionData}>
 				{showModal && (
 					<BaseModal
-						redirectUrl={'/'}
 						headerMessage={'Account Deletion Succesful'}
 						bodyMessage={
 							'All data related to your accont has been deleted, thank you for using Gym Tracker ❤️'
