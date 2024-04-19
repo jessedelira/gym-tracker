@@ -118,22 +118,33 @@ export const authOptions: NextAuthOptions = {
 				password: { label: 'Password', type: 'password' },
 			},
 			async authorize(credentials) {
+				// Two Cases on sign in
+				// 1. User is found by username
+				// 2. User is not found by username
+
 				const userFoundByUsername = await prisma.user.findUnique({
 					where: {
 						username: credentials?.username,
 					},
 				});
 
-				const doesInputPwMatchEncryptedPw = bcrypt.compareSync(
-					credentials?.password as 'string | Buffer',
-					userFoundByUsername?.password as 'string',
-				);
-
-				if (doesInputPwMatchEncryptedPw && userFoundByUsername) {
-					return userFoundByUsername;
-				} else {
-					throw new Error('User now found');
+				if (!userFoundByUsername) {
+					throw new Error('Incorrect username or password');
 				}
+
+				try {
+					const doesInputPwMatchEncryptedPw = bcrypt.compareSync(
+						credentials?.password as 'string | Buffer',
+						userFoundByUsername?.password as 'string',
+					);
+
+					if (doesInputPwMatchEncryptedPw) {
+						return userFoundByUsername;
+					}
+				} catch (error) {
+					throw new Error('Incorrect username or password');
+				}
+				return null;
 			},
 		}),
 		/**
@@ -152,6 +163,7 @@ export const authOptions: NextAuthOptions = {
 	},
 	pages: {
 		signIn: '/auth/signin',
+		error: '/auth/error',
 	},
 };
 
@@ -166,3 +178,7 @@ export const getServerAuthSession = (ctx: {
 }) => {
 	return getServerSession(ctx.req, ctx.res, authOptions);
 };
+function Awaitable<T>(arg0: null): User | PromiseLike<User | null> | null {
+	throw new Error('Function not implemented.');
+}
+
