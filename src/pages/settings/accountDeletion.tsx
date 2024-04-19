@@ -1,9 +1,7 @@
 import { type NextPage } from 'next';
 import { signOut, useSession } from 'next-auth/react';
-import { redirect } from 'next/dist/server/api-utils';
 import { useRouter } from 'next/router';
 import { type FormEvent, useEffect, useState } from 'react';
-import { set } from 'zod';
 import Spinner from '~/components/Spinner';
 import BaseModal from '~/components/baseModal';
 import Layout from '~/components/layout';

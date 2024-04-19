@@ -8,7 +8,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import XMark from '~/components/XMark';
-import BaseModal from '~/components/baseModal';
 import PasswordInput from '~/components/passwordInput';
 
 const GetServerSideProps = async (context: GetServerSidePropsContext) => {
