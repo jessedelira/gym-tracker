@@ -6,7 +6,7 @@ import type {
 import { getCsrfToken, signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import XMark from '~/components/XMark';
 import PasswordInput from '~/components/passwordInput';
 
@@ -34,13 +34,14 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 			csrfToken,
 			username: username,
 			password: password,
-			redirect: false, // This is important for error hanlding
+			redirect: false, // This is important for error hanlding, do not want to redirect
 		});
 
 		if (response?.status === 200 && response?.ok) {
 			void router.push('/');
 		} else {
 			setShowErrorMessage(true);
+			console.log(response)
 		}
 	};
 
