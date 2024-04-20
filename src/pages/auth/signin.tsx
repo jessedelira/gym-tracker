@@ -16,11 +16,6 @@ interface SignInProps {
 	>['csrfToken'];
 }
 
-interface ErrorModalDetails {
-	status: number | undefined;
-	error: string | undefined;
-}
-
 const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 	const [showErrorMessage, setShowErrorMessage] = useState(false);
 	const router = useRouter();
