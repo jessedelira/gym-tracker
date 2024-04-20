@@ -3,18 +3,18 @@
 	"short_name": "Gym Tracker",
 	"icons": [
 		{
-			"src": "./public/icons/flexed_bicep_3d_default.png",
+			"src": "/icons/flexed_biceps_3d_default.png",
 			"sizes": "192x192",
 			"type": "image/png",
 			"purpose": "any maskable"
 		},
 		{
-			"src": "./public/icons/flexed_bicep_3d_default.png",
+			"src": "/icons/flexed_biceps_3d_default.png",
 			"sizes": "384x384",
 			"type": "image/png"
 		},
 		{
-			"src": "./public/icons/flexed_bicep_3d_default.png",
+			"src": "/icons/flexed_biceps_3d_default.png",
 			"sizes": "512x512",
 			"type": "image/png"
 		}

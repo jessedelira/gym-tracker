@@ -3,8 +3,6 @@ import { useSession } from 'next-auth/react';
 import { type FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '~/components/layout';
-import Link from 'next/link';
-import GoBack from '~/components/goBack';
 import { api } from '~/utils/api';
 import {
 	getDaysSelected,
@@ -69,10 +67,7 @@ const Session: NextPage = () => {
 			<>
 				<Layout sessionData={sessionData}>
 					<div className="flex flex-col">
-						<div className="flex flex-row pl-4">
-							<Link href="/manage/sessions">
-								<GoBack />
-							</Link>
+						<div className="flex flex-row">
 							<h1 className="pl-2 text-3xl font-bold">Create</h1>
 						</div>
 						<h2 className="pl-2 text-2xl font-bold">
