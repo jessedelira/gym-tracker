@@ -69,10 +69,7 @@ const Session: NextPage = () => {
 			<>
 				<Layout sessionData={sessionData}>
 					<div className="flex flex-col">
-						<div className="flex flex-row pl-4">
-							<Link href="/manage/sessions">
-								<GoBack />
-							</Link>
+						<div className="flex flex-row">
 							<h1 className="pl-2 text-3xl font-bold">Create</h1>
 						</div>
 						<h2 className="pl-2 text-2xl font-bold">

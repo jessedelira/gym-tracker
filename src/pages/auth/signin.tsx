@@ -38,7 +38,7 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 		});
 
 		if (response?.status === 200 && response?.ok) {
-			void router.push('/');
+			void router.push('/');Í
 		} else {
 			setShowErrorMessage(true);
 			console.log(response)
