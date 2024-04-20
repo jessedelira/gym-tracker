@@ -7,7 +7,7 @@ import { getCsrfToken, signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import XMark from '~/components/XMark';
+import XMark from '~/components/icons/xIcon';
 import PasswordInput from '~/components/passwordInput';
 
 interface SignInProps {

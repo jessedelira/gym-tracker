@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { api } from '~/utils/api';
-import GoldStar from '~/components/goldStar';
-import GreyStar from '~/components/greyStar';
+import GoldStar from '~/components/icons/goldStarIcon';
+import GreyStar from '~/components/icons/greyStarIcon';
 import Layout from '~/components/layout';
 
 const Routines: NextPage = () => {

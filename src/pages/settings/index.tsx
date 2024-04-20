@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { getMonthDDCommaYYYY } from '~/utils/dateUtils';
 import Link from 'next/link';
-import Spinner from '~/components/Spinner';
+import Spinner from '~/components/spinner';
 import Layout from '~/components/layout';
 
 const Settings: NextPage = () => {

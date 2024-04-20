@@ -4,7 +4,7 @@ import { type FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '~/components/layout';
 import Link from 'next/link';
-import GoBack from '~/components/goBack';
+import GoBack from '~/components/icons/goBackIcon';
 import { api } from '~/utils/api';
 import {
 	getDaysSelected,

@@ -2,7 +2,7 @@ import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { type FormEvent, useEffect, useState } from 'react';
-import Spinner from '~/components/Spinner';
+import Spinner from '~/components/spinner';
 import Layout from '~/components/layout';
 import { api } from '~/utils/api';
 import {
