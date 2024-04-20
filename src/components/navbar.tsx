@@ -4,7 +4,7 @@ import type NavBarProps from '~/interfaces/navBarProps';
 
 const NavBar: React.FC<NavBarProps> = () => {
 	return (
-		<nav className="sticky bottom-0 flex h-[6rem] w-full flex-row items-center justify-between border-t-2 border-t-black bg-white">
+		<nav className="sticky bottom-0 flex h-[5rem] w-full flex-row items-center justify-between border-t-2 border-t-black bg-white">
 			<div className="flex flex-row items-center justify-between gap-1">
 				<Link href="/home" className="ml-3 rounded-full text-5xl">
 					<svg
@@ -13,7 +13,7 @@ const NavBar: React.FC<NavBarProps> = () => {
 						viewBox="0 0 24 24"
 						strokeWidth="1.5"
 						stroke="currentColor"
-						className="h-6 w-6"
+						className="h-8 w-8"
 					>
 						<path
 							strokeLinecap="round"
@@ -32,7 +32,7 @@ const NavBar: React.FC<NavBarProps> = () => {
 						viewBox="0 0 24 24"
 						strokeWidth="1.5"
 						stroke="currentColor"
-						className="h-6 w-6"
+						className="h-8 w-8"
 					>
 						<path
 							strokeLinecap="round"
@@ -51,7 +51,7 @@ const NavBar: React.FC<NavBarProps> = () => {
 						viewBox="0 0 24 24"
 						strokeWidth="1.5"
 						stroke="currentColor"
-						className="h-6 w-6"
+						className="h-8 w-8"
 					>
 						<path
 							strokeLinecap="round"
@@ -78,7 +78,7 @@ const NavBar: React.FC<NavBarProps> = () => {
 						viewBox="0 0 24 24"
 						strokeWidth="1.5"
 						stroke="currentColor"
-						className="h-6 w-6"
+						className="h-8 w-8"
 					>
 						<path
 							strokeLinecap="round"
