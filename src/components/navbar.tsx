@@ -6,7 +6,7 @@ import ClockIcon from './clockIcon';
 const NavBar: React.FC<NavBarProps> = () => {
 	return (
 		<nav className="sticky bottom-0 flex h-[5rem] w-full flex-row items-center justify-between border-t-2 border-t-black bg-white">
-			<div className="flex flex-row items-center justify-between gap-1 mb-2">
+			<div className="mb-2 flex flex-row items-center justify-between gap-1">
 				<Link href="/home" className="ml-3 rounded-full text-5xl">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +25,7 @@ const NavBar: React.FC<NavBarProps> = () => {
 				</Link>
 			</div>
 
-			<div className="flex flex-row items-center justify-between gap-1 mb-2">
+			<div className="mb-2 flex flex-row items-center justify-between gap-1">
 				<Link href="/manage" className="ml-3 rounded-full text-5xl">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +44,7 @@ const NavBar: React.FC<NavBarProps> = () => {
 				</Link>
 			</div>
 
-			<div className="flex flex-row items-center justify-between gap-1 mb-2">
+			<div className="mb-2 flex flex-row items-center justify-between gap-1">
 				<Link href="/settings" className="ml-3 rounded-full text-5xl">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -68,13 +68,13 @@ const NavBar: React.FC<NavBarProps> = () => {
 				</Link>
 			</div>
 
-			<div className="flex flex-row items-center justify-between gap-1 mb-2">
+			<div className="mb-2 flex flex-row items-center justify-between gap-1">
 				<Link href="/clock" className="ml-3 rounded-full text-5xl">
 					<ClockIcon />
 				</Link>
 			</div>
 
-			<div className="flex flex-row items-center justify-between gap-1 mb-2">
+			<div className="mb-2 flex flex-row items-center justify-between gap-1">
 				<button
 					className=" mr-3 rounded-full text-5xl"
 					onClick={() => void signOut()}

@@ -10,14 +10,6 @@ import { useEffect, useState } from 'react';
 import XMark from '~/components/XMark';
 import PasswordInput from '~/components/passwordInput';
 
-const GetServerSideProps = async (context: GetServerSidePropsContext) => {
-	return {
-		props: {
-			csrfToken: await getCsrfToken(context),
-		},
-	};
-};
-
 interface SignInProps {
 	csrfToken: InferGetServerSidePropsType<
 		typeof GetServerSideProps
@@ -30,27 +22,8 @@ interface ErrorModalDetails {
 }
 
 const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
-	const [responseDetails, setResDetails] = useState<
-		ErrorModalDetails | undefined
-	>(undefined);
-	const [showModal, setShowModal] = useState(false);
+	const [showErrorMessage, setShowErrorMessage] = useState(false);
 	const router = useRouter();
-
-	useEffect(() => {
-		// Check if there's an error query parameter
-		if (router.query.error) {
-			setResDetails({
-				status: 401,
-				error: 'Incorrect username or password.',
-			});
-		}
-	}, [router.query]);
-
-	useEffect(() => {
-		if (responseDetails?.status !== 200 && responseDetails !== undefined) {
-			setShowModal(true);
-		}
-	}, [responseDetails]);
 
 	const handleSignInSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -69,16 +42,15 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 			redirect: false, // This is important for error hanlding
 		});
 
-		if (response?.status === 200) {
+		if (response?.status === 200 && response?.ok) {
 			void router.push('/');
 		} else {
-			setShowModal(true);
-			console.log(response);
+			setShowErrorMessage(true);
 		}
 	};
 
 	const handleCloseErrorMessage = () => {
-		setShowModal(false);
+		setShowErrorMessage(false);
 	};
 
 	return (
@@ -91,7 +63,7 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 					className="flex flex-col items-center justify-center gap-4"
 					onSubmit={(e) => void handleSignInSubmit(e)}
 				>
-					{showModal && (
+					{showErrorMessage && (
 						<div className="flex justify-center rounded-full border-2 border-red-300 bg-red-200 p-3">
 							<p className=" text-sm">
 								Incorrect username or password.
@@ -132,6 +104,14 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 			</div>
 		</div>
 	);
+};
+
+const GetServerSideProps = async (context: GetServerSidePropsContext) => {
+	return {
+		props: {
+			csrfToken: await getCsrfToken(context),
+		},
+	};
 };
 
 export default SignIn;
