@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import AuthDisplay from '~/components/authDisplay';
-import Spinner from '~/components/spinner';
+import Spinner from '~/components/Spinner';
 
 const Home: NextPage = () => {
 	const { data: sessionData, status } = useSession();
