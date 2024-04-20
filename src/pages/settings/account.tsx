@@ -32,7 +32,7 @@ const Account: NextPage = () => {
 			sessionData?.user.username ?? 'Loading...';
 	};
 
-	const handleSaveClicked = async (e: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		if (sessionData) {
 			e.preventDefault();
 
@@ -84,7 +84,7 @@ const Account: NextPage = () => {
 						<h2 className="pl-2 text-2xl font-bold">
 							Personal Information
 						</h2>
-						<form onSubmit={(e) => void handleSaveClicked(e)}>
+						<form onSubmit={(e) => void handleSubmit(e)}>
 							<div className="mat-4 grid grid-cols-2 gap-5 ">
 								<div className="mat-4 grid grid-cols-1 pl-2">
 									<label className="block font-bold">

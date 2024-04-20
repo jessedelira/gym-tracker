@@ -124,16 +124,24 @@ export const authOptions: NextAuthOptions = {
 					},
 				});
 
-				const doesInputPwMatchEncryptedPw = bcrypt.compareSync(
-					credentials?.password as 'string | Buffer',
-					userFoundByUsername?.password as 'string',
-				);
-
-				if (doesInputPwMatchEncryptedPw && userFoundByUsername) {
-					return userFoundByUsername;
-				} else {
-					throw new Error('User now found');
+				if (!userFoundByUsername) {
+					throw new Error('Incorrect username or password');
 				}
+
+				try {
+					const doesInputPwMatchEncryptedPw = bcrypt.compareSync(
+						credentials?.password as 'string | Buffer',
+						userFoundByUsername?.password as 'string',
+					);
+
+					if (doesInputPwMatchEncryptedPw) {
+						return userFoundByUsername;
+					}
+				} catch (error) {
+					throw new Error('Incorrect username or password');
+				}
+
+				return null;
 			},
 		}),
 		/**
@@ -152,6 +160,7 @@ export const authOptions: NextAuthOptions = {
 	},
 	pages: {
 		signIn: '/auth/signin',
+		error: '/auth/error',
 	},
 };
 

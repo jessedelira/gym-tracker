@@ -38,7 +38,7 @@ model Routine {
   description String?
   isActive    Boolean   @default(false)
   sessions    Session[]
-  user        User      @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
 }
 
@@ -48,17 +48,17 @@ model Session {
   name        String
   description String?
   workouts    Workout[]
-  routine     Routine?            @relation(fields: [routineId], references: [id])
+  routine     Routine?            @relation(fields: [routineId], references: [id], onDelete: Cascade)
   routineId   String?
   days        SessionDaysActive[]
-  user        User                @relation(fields: [userId], references: [id])
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
 }
 
 model SessionDaysActive {
   id        String  @id @default(cuid())
   day       String
-  session   Session @relation(fields: [sessionId], references: [id])
+  session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   sessionId String
 }
 
@@ -67,11 +67,11 @@ model Workout {
   reps       Int
   sets       Int
   weight     Int
-  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+  exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
   exerciseId String
-  session    Session  @relation(fields: [sessionId], references: [id])
+  session    Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   sessionId  String
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
 }
 
