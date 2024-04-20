@@ -120,6 +120,7 @@ This is a list things you need to use the Gym Tracker.
       DATABASE_URL="mysql://root:password@localhost:3306/gym_tracker"
       NEXTAUTH_SECRET="place_here"
       NEXTAUTH_URL="http://localhost:3000"
+      NODE_ENV="development"
     ```
 
 5. Run `$ npm install` at root of project to install the dependencies
