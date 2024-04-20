@@ -27,8 +27,6 @@ const Home: NextPage = () => {
 		return (
 			<Layout sessionData={sessionData ? sessionData : null}>
 				<div className="flex flex-col items-center justify-center">
-					<p>Welcome, {sessionData?.user?.firstName}</p>
-
 					<CurrentWorkoutDisplay></CurrentWorkoutDisplay>
 				</div>
 			</Layout>
