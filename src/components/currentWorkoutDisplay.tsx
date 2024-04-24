@@ -1,6 +1,3 @@
-import { use } from "react";
-
-
 const CurrentWorkoutDisplay: React.FC = () => {
 	interface IWorkout {
 		id: number;
