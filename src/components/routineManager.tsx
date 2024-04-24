@@ -49,25 +49,25 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({ activeRoutine }) => {
 
 				{/* The blocks to represent the days of the week */}
 				<div className="mt-2 flex justify-center gap-1">
-					<div className="flex h-8 w-8 justify-center border-2 border-amber-950 bg-lime-500/90">
+					<div className="flex h-10 w-10 justify-center border-2 border-black bg-lime-500/90 text-2xl">
 						S
 					</div>
-					<div className="flex h-8 w-8 justify-center border-2 border-amber-950 bg-red-500/90">
+					<div className="flex h-10 w-10 justify-center border-2 border-black bg-white text-2xl">
 						M
 					</div>
-					<div className="bg-white-500/90 flex h-8 w-8 justify-center border-2 border-amber-950">
+					<div className="flex h-10 w-10 justify-center border-2 border-black bg-white text-2xl">
 						T
 					</div>
-					<div className="flex h-8 w-8 justify-center border-2 border-amber-950 bg-lime-500/90">
+					<div className="flex h-10 w-10 justify-center border-2 border-black bg-lime-500/90 text-2xl">
 						W
 					</div>
-					<div className="bg-white-500/90 flex h-8 w-8 justify-center border-2 border-amber-950">
+					<div className="flex h-10 w-10 justify-center border-2 border-black bg-white text-2xl">
 						T
 					</div>
-					<div className="flex h-8 w-8 justify-center border-2 border-amber-950 bg-lime-500/90">
+					<div className="flex h-10 w-10 justify-center border-2 border-black bg-lime-500/90 text-2xl">
 						F
 					</div>
-					<div className="flex h-8 w-8 justify-center border-2 border-amber-950 bg-red-500/90">
+					<div className="flex h-10 w-10 justify-center border-2 border-black bg-white text-2xl">
 						S
 					</div>
 				</div>
