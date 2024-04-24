@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '~/components/layout';
 import { api } from '~/utils/api';
+import RoutineManager from '~/components/routineManager';
 
 const Manage: NextPage = () => {
 	const { data: sessionData, status } = useSession();
@@ -158,8 +159,10 @@ const Manage: NextPage = () => {
 						</div>
 					</div>
 					<div>
-
-						asdf
+						<RoutineManager
+							sessionData={sessionData}
+							activeRoutine={activeRoutineData}
+						></RoutineManager>
 					</div>
 				</Layout>
 			</>

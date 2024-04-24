@@ -39,6 +39,7 @@ const Routine: NextPage = () => {
 				description: newRoutineDescription,
 				userId: sessionData.user.id,
 			};
+			console.log(createRoutineData);
 
 			await createRoutineMutation.mutateAsync(createRoutineData, {
 				onSuccess: () => {
