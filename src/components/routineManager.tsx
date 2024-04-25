@@ -67,7 +67,7 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({ activeRoutine }) => {
 					<div className="flex h-10 w-10 justify-center border-2 border-black bg-lime-500/90 text-2xl">
 						F
 					</div>
-					<div className="flex h-10 w-10 justify-center border-2 border-black bg-white text-2xl">
+					<div className="flex h-10 w-10 justify-center border-2 border-black bg-white text-2xl">	
 						S
 					</div>
 				</div>
