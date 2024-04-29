@@ -75,4 +75,40 @@ export const routineRouter = createTRPCRouter({
 
 			return routine;
 		}),
+
+	addSessionToActiveRoutine: protectedProcedure
+		.input(
+			z.object({
+				sessionId: z.string(),
+				userId: z.string(),
+			}),
+		)
+		.mutation(async ({ input }) => {
+			// update the session to be related to the active routine
+			const currentActiveRoutine = await prisma.routine.findFirst({
+				where: {
+					userId: input.userId,
+					isActive: true,
+				},
+			});
+
+			await prisma.session.update({
+				where: {
+					id: input.sessionId,
+				},
+				data: {
+					routineId: currentActiveRoutine?.id,
+				},
+			});
+
+			return await prisma.routine.findFirst({
+				where: {
+					userId: input.userId,
+					isActive: true,
+				},
+				include: {
+					sessions: {},
+				},
+			});
+		}),
 });
