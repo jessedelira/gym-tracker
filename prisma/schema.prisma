@@ -19,6 +19,7 @@ datasource db {
 // String types is limited to 191 characters when using MySQL
 
 model User {
+  @@map("user")
   id          String    @id @default(cuid())
   dateCreated DateTime  @default(now())
   username    String    @unique
@@ -32,6 +33,7 @@ model User {
 
 // Routine will be based on a weekly basis, only one will be active at a time
 model Routine {
+  @@map("routine")
   id          String    @id @default(cuid())
   createdAt   DateTime  @default(now())
   name        String    @unique
@@ -43,6 +45,7 @@ model Routine {
 }
 
 model Session {
+  @@map("session")
   id          String              @id @default(cuid())
   createdAt   DateTime            @default(now())
   name        String
@@ -56,6 +59,7 @@ model Session {
 }
 
 model SessionDaysActive {
+  @@map("session_days_active")
   id        String  @id @default(cuid())
   day       String
   session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
@@ -63,6 +67,7 @@ model SessionDaysActive {
 }
 
 model Workout {
+  @@map("workout")
   id         String   @id @default(cuid())
   reps       Int
   sets       Int
@@ -76,6 +81,7 @@ model Workout {
 }
 
 model Exercise {
+  @@map("exercise")
   id          String    @id @default(cuid())
   name        String    @unique
   description String?   @db.VarChar(300)
