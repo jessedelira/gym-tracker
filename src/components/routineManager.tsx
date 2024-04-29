@@ -28,7 +28,6 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 
 	const handleAddButtonClicked = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log('hi');
 		if (sessionData) {
 			const sessionId = getSessionIdInputElement(document).value;
 
