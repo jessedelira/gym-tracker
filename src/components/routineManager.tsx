@@ -49,7 +49,7 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 										</option>
 								  ))
 								: null}
-						</select>
+						</select>	
 					</div>
 					<button className="h-9 w-32 rounded-md bg-lime-300">
 						Add
