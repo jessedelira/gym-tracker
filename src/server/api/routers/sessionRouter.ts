@@ -53,7 +53,7 @@ export const sessionRouter = createTRPCRouter({
 			return sessions;
 		}),
 
-	getAllSessionsAddedToCurrentActiveRoutine: protectedProcedure
+	getSessionsAddedToCurrentActiveRoutine: protectedProcedure
 		.input(z.object({ userId: z.string() }))
 		.query(async ({ input }) => {
 			const activeRoutine = await prisma.routine.findFirst({
@@ -75,5 +75,32 @@ export const sessionRouter = createTRPCRouter({
 				});
 
 			return sessionsRelatedToActiveRoutine;
+		}),
+
+	getSessionsThatAreNotAddedToActiveRoutine: protectedProcedure
+		.input(z.object({ userId: z.string() }))
+		.query(async ({ input }) => {
+			const activeRoutine = await prisma.routine.findFirst({
+				where: {
+					userId: input.userId,
+					isActive: true,
+				},
+			});
+
+			if (!activeRoutine) {
+				return null;
+			}
+
+			const sessionsNotAddedToActiveRoutine =
+				await prisma.session.findMany({
+					where: {
+						NOT: {
+							routineId: activeRoutine.id,
+						},
+						userId: input.userId,
+					},
+				});
+
+			return sessionsNotAddedToActiveRoutine;
 		}),
 });

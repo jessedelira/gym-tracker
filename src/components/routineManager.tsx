@@ -16,13 +16,14 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 	const [mondayHasSession, setMondayHasSession] = useState(false);
 	const [tuesdayHasSession, setTuesdayHasSession] = useState(false);
 
-	const allSessions = api.session.getAllSessions.useQuery({
-		userId: sessionData?.user.id ?? '',
-	});
+	const sessionsNotOnActiveRoutine =
+		api.session.getSessionsThatAreNotAddedToActiveRoutine.useQuery({
+			userId: sessionData?.user.id ?? '',
+		});
 	const addSessionToActiveRoutineMutation =
 		api.routine.addSessionToActiveRoutine.useMutation();
 	const sessionsOnActiveRoutine =
-		api.session.getAllSessionsAddedToCurrentActiveRoutine.useQuery({
+		api.session.getSessionsAddedToCurrentActiveRoutine.useQuery({
 			userId: sessionData?.user.id ?? '',
 		});
 
@@ -54,15 +55,17 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 							required
 							className="rounded-md bg-gray-300 px-4 py-2 text-white"
 						>
-							{allSessions
-								? allSessions.data?.map((session) => (
+							{sessionsNotOnActiveRoutine
+								? sessionsNotOnActiveRoutine.data?.map(
+									(session) => (
 										<option
 											key={session.id}
 											value={session.id}
 										>
 											{session.name}
 										</option>
-								  ))
+									),
+								)
 								: null}
 						</select>
 					</div>
