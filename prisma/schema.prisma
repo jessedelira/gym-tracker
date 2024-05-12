@@ -19,7 +19,6 @@ datasource db {
 // String types is limited to 191 characters when using MySQL
 
 model User {
-  @@map("user")
   id          String    @id @default(cuid())
   dateCreated DateTime  @default(now())
   username    String    @unique
@@ -29,61 +28,68 @@ model User {
   routines    Routine[]
   sessions    Session[]
   workouts    Workout[]
+
+  @@map("user")
 }
 
 // Routine will be based on a weekly basis, only one will be active at a time
 model Routine {
-  @@map("routine")
   id          String    @id @default(cuid())
-  createdAt   DateTime  @default(now())
+  createdAt   DateTime  @default(now()) @map("created_at")
   name        String    @unique
   description String?
-  isActive    Boolean   @default(false)
+  isActive    Boolean   @default(false) @map("is_active")
   sessions    Session[]
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String
+  userId      String    @map("user_id")
+
+  @@map("routine")
 }
 
 model Session {
-  @@map("session")
   id          String              @id @default(cuid())
   createdAt   DateTime            @default(now())
   name        String
   description String?
   workouts    Workout[]
   routine     Routine?            @relation(fields: [routineId], references: [id], onDelete: Cascade)
-  routineId   String?
+  routineId   String?             @map("routine_id")
   days        SessionDaysActive[]
   user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String
+  userId      String              @map("user_id")
+
+  @@map("session")
 }
 
 model SessionDaysActive {
-  @@map("session_days_active")
   id        String  @id @default(cuid())
   day       String
   session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  sessionId String
+  sessionId String  @map("session_id")
+
+  @@map("session_days_active")
 }
 
 model Workout {
-  @@map("workout")
   id         String   @id @default(cuid())
   reps       Int
   sets       Int
   weight     Int
   exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
-  exerciseId String
+  exerciseId String   @map("exercise_id")
   session    Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  sessionId  String
+  sessionId  String   @map("session_id")
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String
+  userId     String   @map("user_id")
+
+  @@map("workout")
 }
 
 model Exercise {
-  @@map("exercise")
   id          String    @id @default(cuid())
   name        String    @unique
   description String?   @db.VarChar(300)
   workouts    Workout[]
+
+  @@map("exercise")
 }
