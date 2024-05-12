@@ -102,14 +102,9 @@ This is a list things you need to use the Gym Tracker.
     ```sh
     $ git clone https://github.com/jessedelira/gym-tracker.git
     ```
-2. Create MySQL instance using Docker
+2. Create MySQL container
     ```sh
-    $ docker run --name gym-tracker-db -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -d mysql
-    ```
-3. Use your database management tool of choice to create the database
-
-    ```sh
-    CREATE DATABASE gym_tracker;
+    $ docker-compose up -d
     ```
 
 4. Create .env at root of project and add the following:
