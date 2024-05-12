@@ -57,15 +57,15 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 						>
 							{sessionsNotOnActiveRoutine
 								? sessionsNotOnActiveRoutine.data?.map(
-									(session) => (
-										<option
-											key={session.id}
-											value={session.id}
-										>
-											{session.name}
-										</option>
-									),
-								)
+										(session) => (
+											<option
+												key={session.id}
+												value={session.id}
+											>
+												{session.name}
+											</option>
+										),
+								  )
 								: null}
 						</select>
 					</div>
