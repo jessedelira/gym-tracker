@@ -20,11 +20,11 @@ datasource db {
 
 model User {
   id          String    @id @default(cuid())
-  dateCreated DateTime  @default(now())
+  dateCreated DateTime  @default(now()) @map("date_created")
   username    String    @unique
   password    String
-  firstName   String
-  lastName    String
+  firstName   String    @map("first_name")
+  lastName    String    @map("last_name")
   routines    Routine[]
   sessions    Session[]
   workouts    Workout[]
@@ -40,7 +40,7 @@ model Routine {
   isActive    Boolean   @default(false) @map("is_active")
   sessions    Session[]
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String    
+  userId      String    @map("user_id")
 
   @@map("routine")
 }
