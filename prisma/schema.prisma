@@ -8,7 +8,7 @@ generator client {
 datasource db {
   provider     = "mysql"
   url          = env("DATABASE_URL")
-  relationMode = "foreignKeys" // Able to use this since DB is run using AWS RDS
+  relationMode = "foreignKeys" 
 }
 
 // Notes:
