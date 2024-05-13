@@ -94,9 +94,6 @@ export const sessionRouter = createTRPCRouter({
 			const sessionsNotAddedToActiveRoutine =
 				await prisma.session.findMany({
 					where: {
-						NOT: {
-							routineId: activeRoutine.id,
-						},
 						userId: input.userId,
 					},
 				});

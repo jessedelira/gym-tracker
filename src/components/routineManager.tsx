@@ -1,43 +1,53 @@
-import { type Routine } from '@prisma/client';
-import { type Session } from 'next-auth';
-import React, { type FormEvent, useState } from 'react';
+import { type Routine, type Session } from '@prisma/client';
+import { type Session as AuthSession } from 'next-auth'; // duplicate identifiers for interface
+import React, { type FormEvent, useState, useEffect } from 'react';
 import { api } from '~/utils/api';
 import { getSessionIdInputElement } from '~/utils/documentUtils';
 
 interface RoutineManagerProps {
 	activeRoutine: Routine | null | undefined;
-	sessionData: Session | null;
+	sessionData: AuthSession | null;
 }
 
 const RoutineManager: React.FC<RoutineManagerProps> = ({
 	activeRoutine,
 	sessionData,
 }) => {
-	const [mondayHasSession, setMondayHasSession] = useState(false);
-	const [tuesdayHasSession, setTuesdayHasSession] = useState(false);
+	const [sessionsOnAR, setSessionsOnAR] = useState<Session[]>([]);
 
-	const sessionsNotOnActiveRoutine =
+	const { data: sessionsNotOnActiveRoutine } =
 		api.session.getSessionsThatAreNotAddedToActiveRoutine.useQuery({
+			userId: sessionData?.user.id ?? '',
+		});
+	const { data: sessionsOnActiveRoutine } =
+		api.session.getSessionsAddedToCurrentActiveRoutine.useQuery({
 			userId: sessionData?.user.id ?? '',
 		});
 	const addSessionToActiveRoutineMutation =
 		api.routine.addSessionToActiveRoutine.useMutation();
-	const sessionsOnActiveRoutine =
-		api.session.getSessionsAddedToCurrentActiveRoutine.useQuery({
-			userId: sessionData?.user.id ?? '',
-		});
 
 	const handleAddButtonClicked = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		if (sessionData) {
 			const sessionId = getSessionIdInputElement(document).value;
 
-			await addSessionToActiveRoutineMutation.mutateAsync({
-				userId: sessionData.user.id,
-				sessionId: sessionId,
-			});
+			const routineData =
+				await addSessionToActiveRoutineMutation.mutateAsync({
+					userId: sessionData.user.id,
+					sessionId: sessionId,
+				});
+
+			if (routineData) {
+				setSessionsOnAR([...routineData.sessions]);
+			}
 		}
 	};
+
+	useEffect(() => {
+		if (sessionsOnActiveRoutine) {
+			setSessionsOnAR(sessionsOnActiveRoutine);
+		}
+	}, [sessionsOnActiveRoutine]);
 
 	return (
 		<>
@@ -56,16 +66,14 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 							className="rounded-md bg-gray-300 px-4 py-2 text-white"
 						>
 							{sessionsNotOnActiveRoutine
-								? sessionsNotOnActiveRoutine.data?.map(
-										(session) => (
-											<option
-												key={session.id}
-												value={session.id}
-											>
-												{session.name}
-											</option>
-										),
-								  )
+								? sessionsNotOnActiveRoutine.map((session) => (
+										<option
+											key={session.id}
+											value={session.id}
+										>
+											{session.name}
+										</option>
+								  ))
 								: null}
 						</select>
 					</div>
@@ -80,7 +88,7 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 				<p className="flex justify-center">
 					Active Sessions in {activeRoutine?.name}
 				</p>
-				{sessionsOnActiveRoutine?.data?.map(
+				{sessionsOnAR?.map(
 					(session) =>
 						(
 							<div
