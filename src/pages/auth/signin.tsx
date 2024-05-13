@@ -7,7 +7,7 @@ import { getCsrfToken, signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import XMark from '~/components/icons/xIcon';
+import XIcon from '~/components/icons/xIcon';
 import PasswordInput from '~/components/passwordInput';
 
 interface SignInProps {
@@ -67,7 +67,7 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 								className="ml-1"
 								onClick={handleCloseErrorMessage}
 							>
-								<XMark />
+								<XIcon />
 							</button>
 						</div>
 					)}
