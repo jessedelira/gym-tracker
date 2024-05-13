@@ -80,6 +80,7 @@ export const sessionRouter = createTRPCRouter({
 	getSessionsThatAreNotAddedToActiveRoutine: protectedProcedure
 		.input(z.object({ userId: z.string() }))
 		.query(async ({ input }) => {
+			// Check if there is an active routine
 			const activeRoutine = await prisma.routine.findFirst({
 				where: {
 					userId: input.userId,
@@ -94,9 +95,25 @@ export const sessionRouter = createTRPCRouter({
 			const sessionsNotAddedToActiveRoutine =
 				await prisma.session.findMany({
 					where: {
-						userId: input.userId,
+						AND: [
+							{ userId: input.userId },
+							{
+								OR: [
+									{ routineId: null },
+									{
+										routineId: {
+											not: {
+												equals: activeRoutine.id,
+											},
+										},
+									},
+								],
+							},
+						],
 					},
 				});
+
+			console.log(sessionsNotAddedToActiveRoutine);
 
 			return sessionsNotAddedToActiveRoutine;
 		}),
