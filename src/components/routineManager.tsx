@@ -3,6 +3,7 @@ import { type Session as AuthSession } from 'next-auth'; // duplicate identifier
 import React, { type FormEvent, useState, useEffect } from 'react';
 import { api } from '~/utils/api';
 import { getSessionIdInputElement } from '~/utils/documentUtils';
+import TrashCanIcon from './icons/trashCanIcon';
 
 interface RoutineManagerProps {
 	activeRoutine: Routine | null | undefined;
@@ -95,8 +96,10 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 								key={session.id}
 								className="flex justify-center"
 							>
-								<p>Session Name: {session.name}</p>
-								<p className="ml-2">X (Remove)</p>
+								<p>Session: {session.name}</p>
+								<button className='bg-red-300 ml-4 rounded-full w-6 h-6'>
+									<TrashCanIcon></TrashCanIcon>
+								</button>
 							</div>
 						) ?? null,
 				)}

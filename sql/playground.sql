@@ -16,4 +16,4 @@ left join routine as r
 on s.routine_id = r.id
 where s.user_id = 'clw3v31uo00005hyignh0oukl'
 AND s.routine_id IS NULL OR
-    s.routine_id != (select id from routine where r.is_active = true and r.id = 'clw3v31uo00005hyignh0oukl')
+    s.routine_id != (select id from routine where r.is_active = true and r.id = 'clw3v31uo00005hyignh0oukl')    
