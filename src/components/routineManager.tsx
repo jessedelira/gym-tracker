@@ -15,6 +15,7 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 	sessionData,
 }) => {
 	const [sessionsOnAR, setSessionsOnAR] = useState<Session[]>([]);
+	const [sessionsNotOnAR, setSessionsNotOnAR] = useState<Session[]>([]);
 
 	const { data: sessionsNotOnActiveRoutine } =
 		api.session.getSessionsThatAreNotAddedToActiveRoutine.useQuery({
@@ -26,6 +27,7 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 		});
 	const addSessionToActiveRoutineMutation =
 		api.routine.addSessionToActiveRoutine.useMutation();
+	const removeSessionFromActiveRoutineMutation = api.routine.removeSessionFromActiveRoutine.useMutation();
 
 	const handleAddButtonClicked = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -41,24 +43,45 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 			if (routineData) {
 				setSessionsOnAR([...routineData.sessions]);
 			}
+			const sessionToRemove = sessionsNotOnAR.find(
+				(session) => session.id === sessionId,
+			);
+			if (sessionToRemove) {
+				setSessionsNotOnAR(
+					sessionsNotOnAR.filter(
+						(session) => session.id !== sessionToRemove.id,
+					),
+				);
+			}
 		}
+	};
+
+	const handleTrashCanClicked = (id: string) => {
+		// Plan
+		// 1. Remove the session from the active routine
+		// 2. Update the state
+		removeSessionFromActiveRoutineMutation.mutate({
+			userId: sessionData?.user.id ?? '',
+			sessionId: id,
+		});
+
+		const sessionToAdd = sessionsOnAR.find((session) => session.id === id);
+		if (sessionToAdd) {
+			setSessionsNotOnAR(sessionsNotOnAR.concat(sessionToAdd));
+		}
+		setSessionsOnAR(sessionsOnAR.filter((session) => session.id !== id));
 	};
 
 	useEffect(() => {
 		if (sessionsOnActiveRoutine) {
 			setSessionsOnAR(sessionsOnActiveRoutine);
 		}
-	}, [sessionsOnActiveRoutine]);
+		if (sessionsNotOnActiveRoutine) {
+			setSessionsNotOnAR(sessionsNotOnActiveRoutine);
+		}
+	}, [sessionsNotOnActiveRoutine, sessionsOnActiveRoutine]);
 
-	const handleTrashCanClicked = (id: string) => {
-		// Plan
-		// 1. Remove the session from the active routine
-		// 2. Update the state
-
-
-
-		setSessionsOnAR(sessionsOnAR.filter((session) => session.id !== id));
-	};
+	
 
 	return (
 		<>
@@ -75,9 +98,9 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 							id="sessionId"
 							required
 							className="rounded-md bg-gray-300 px-4 py-2 text-white"
-						>
-							{sessionsNotOnActiveRoutine
-								? sessionsNotOnActiveRoutine.map((session) => (
+						>	
+							{sessionsNotOnAR
+								? sessionsNotOnAR.map((session) => (
 									<option
 										key={session.id}
 										value={session.id}
@@ -112,7 +135,7 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 								<div className="flex justify-right">
 									<button
 										className="ml-4 h-6 w-6  pl-1 rounded-full bg-red-300"
-										onClick={() =>
+										onClick={() => void
 											handleTrashCanClicked(session.id)
 										}
 									>
