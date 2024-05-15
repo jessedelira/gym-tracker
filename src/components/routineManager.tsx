@@ -50,6 +50,16 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 		}
 	}, [sessionsOnActiveRoutine]);
 
+	const handleTrashCanClicked = (id: string) => {
+		// Plan
+		// 1. Remove the session from the active routine
+		// 2. Update the state
+
+
+
+		setSessionsOnAR(sessionsOnAR.filter((session) => session.id !== id));
+	};
+
 	return (
 		<>
 			<div className="mt-6">
@@ -68,13 +78,13 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 						>
 							{sessionsNotOnActiveRoutine
 								? sessionsNotOnActiveRoutine.map((session) => (
-										<option
-											key={session.id}
-											value={session.id}
-										>
-											{session.name}
-										</option>
-								  ))
+									<option
+										key={session.id}
+										value={session.id}
+									>
+										{session.name}
+									</option>
+								))
 								: null}
 						</select>
 					</div>
@@ -94,12 +104,21 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 						(
 							<div
 								key={session.id}
-								className="flex justify-center"
+								className="flex flex-col-2 justify-center mb-2 "
 							>
-								<p>Session: {session.name}</p>
-								<button className='bg-red-300 ml-4 rounded-full w-6 h-6'>
-									<TrashCanIcon></TrashCanIcon>
-								</button>
+								<div className="flex justify-left w-40">
+									<p>Session: {session.name}</p>
+								</div>
+								<div className="flex justify-right">
+									<button
+										className="ml-4 h-6 w-6  pl-1 rounded-full bg-red-300"
+										onClick={() =>
+											handleTrashCanClicked(session.id)
+										}
+									>
+										<TrashCanIcon></TrashCanIcon>
+									</button>
+								</div>
 							</div>
 						) ?? null,
 				)}
