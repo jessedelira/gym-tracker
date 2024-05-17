@@ -27,7 +27,8 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 		});
 	const addSessionToActiveRoutineMutation =
 		api.routine.addSessionToActiveRoutine.useMutation();
-	const removeSessionFromActiveRoutineMutation = api.routine.removeSessionFromActiveRoutine.useMutation();
+	const removeSessionFromActiveRoutineMutation =
+		api.routine.removeSessionFromActiveRoutine.useMutation();
 
 	const handleAddButtonClicked = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -81,8 +82,6 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 		}
 	}, [sessionsNotOnActiveRoutine, sessionsOnActiveRoutine]);
 
-	
-
 	return (
 		<>
 			<div className="mt-6">
@@ -98,16 +97,16 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 							id="sessionId"
 							required
 							className="rounded-md bg-gray-300 px-4 py-2 text-white"
-						>	
+						>
 							{sessionsNotOnAR
 								? sessionsNotOnAR.map((session) => (
-									<option
-										key={session.id}
-										value={session.id}
-									>
-										{session.name}
-									</option>
-								))
+										<option
+											key={session.id}
+											value={session.id}
+										>
+											{session.name}
+										</option>
+								  ))
 								: null}
 						</select>
 					</div>
@@ -127,16 +126,18 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 						(
 							<div
 								key={session.id}
-								className="flex flex-col-2 justify-center mb-2 "
+								className="flex-col-2 mb-2 flex justify-center "
 							>
-								<div className="flex justify-left w-40">
+								<div className="justify-left flex w-40">
 									<p>Session: {session.name}</p>
 								</div>
-								<div className="flex justify-right">
+								<div className="justify-right flex">
 									<button
-										className="ml-4 h-6 w-6  pl-1 rounded-full bg-red-300"
-										onClick={() => void
-											handleTrashCanClicked(session.id)
+										className="ml-4 h-6 w-6  rounded-full bg-red-300 pl-1"
+										onClick={() =>
+											void handleTrashCanClicked(
+												session.id,
+											)
 										}
 									>
 										<TrashCanIcon></TrashCanIcon>

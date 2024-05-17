@@ -130,6 +130,6 @@ export const routineRouter = createTRPCRouter({
 				},
 			});
 
-			return removedSession
-		}),	
+			return removedSession;
+		}),
 });
