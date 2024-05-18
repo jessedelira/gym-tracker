@@ -113,8 +113,6 @@ export const sessionRouter = createTRPCRouter({
 					},
 				});
 
-			console.log(sessionsNotAddedToActiveRoutine);
-
 			return sessionsNotAddedToActiveRoutine;
 		}),
 });
