@@ -72,6 +72,9 @@ export const sessionRouter = createTRPCRouter({
 					where: {
 						routineId: activeRoutine.id,
 					},
+					include: {
+						days: true,
+					},
 				});
 
 			return sessionsRelatedToActiveRoutine;

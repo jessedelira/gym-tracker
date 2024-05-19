@@ -107,7 +107,11 @@ export const routineRouter = createTRPCRouter({
 					isActive: true,
 				},
 				include: {
-					sessions: {},
+					sessions: {
+						include: {
+							days: true,
+						},
+					},
 				},
 			});
 		}),
@@ -127,6 +131,9 @@ export const routineRouter = createTRPCRouter({
 				},
 				data: {
 					routineId: null,
+				},
+				include: {
+					days: true,
 				},
 			});
 
