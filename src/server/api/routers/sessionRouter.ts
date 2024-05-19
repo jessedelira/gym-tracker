@@ -1,8 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
-
-const prisma = new PrismaClient();
+import { prisma } from '~/server/db';
 
 export const sessionRouter = createTRPCRouter({
 	createSession: protectedProcedure
