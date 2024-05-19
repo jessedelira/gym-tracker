@@ -4,18 +4,36 @@ import React, { type FormEvent, useState, useEffect } from 'react';
 import { api } from '~/utils/api';
 import { getSessionIdInputElement } from '~/utils/documentUtils';
 import TrashCanIcon from './icons/trashCanIcon';
+import { Days } from '~/common/days.enum';
+import { set } from 'zod';
 
 interface RoutineManagerProps {
 	activeRoutine: Routine | null | undefined;
 	sessionData: AuthSession | null;
 }
 
+interface SessionIncludingDays extends Session {
+	days: { day: string }[];
+}
+
 const RoutineManager: React.FC<RoutineManagerProps> = ({
 	activeRoutine,
 	sessionData,
 }) => {
-	const [sessionsOnAR, setSessionsOnAR] = useState<Session[]>([]);
+	const [sessionsOnAR, setSessionsOnAR] = useState<SessionIncludingDays[]>(
+		[],
+	);
 	const [sessionsNotOnAR, setSessionsNotOnAR] = useState<Session[]>([]);
+	const [sundayTaken, setSundayTaken] = useState(false);
+	const [mondayTaken, setMondayTaken] = useState(false);
+	const [tuesdayTaken, setTuesdayTaken] = useState(false);
+	const [wednesdayTaken, setWednesdayTaken] = useState(false);
+	const [thursdayTaken, setThursdayTaken] = useState(false);
+	const [fridayTaken, setFridayTaken] = useState(false);
+	const [saturdayTaken, setSaturdayTaken] = useState(false);
+
+	const DAY_TAKEN_STYLE = 'bg-lime-500/90';
+	const DAY_NOT_TAKEN_STYLE = 'bg-white';
 
 	const { data: sessionsNotOnActiveRoutine } =
 		api.session.getSessionsThatAreNotAddedToActiveRoutine.useQuery({
@@ -43,6 +61,31 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 
 			if (routineData) {
 				setSessionsOnAR([...routineData.sessions]);
+				const daysTakenOnSessionsOnActiveRoutine =
+					routineData.sessions.flatMap((session) =>
+						session.days.map((day) => day.day),
+					);
+				setSundayTaken(
+					daysTakenOnSessionsOnActiveRoutine.includes(Days.SUNDAY),
+				);
+				setMondayTaken(
+					daysTakenOnSessionsOnActiveRoutine.includes(Days.MONDAY),
+				);
+				setTuesdayTaken(
+					daysTakenOnSessionsOnActiveRoutine.includes(Days.TUESDAY),
+				);
+				setWednesdayTaken(
+					daysTakenOnSessionsOnActiveRoutine.includes(Days.WEDNESDAY),
+				);
+				setThursdayTaken(
+					daysTakenOnSessionsOnActiveRoutine.includes(Days.THURSDAY),
+				);
+				setFridayTaken(
+					daysTakenOnSessionsOnActiveRoutine.includes(Days.FRIDAY),
+				);
+				setSaturdayTaken(
+					daysTakenOnSessionsOnActiveRoutine.includes(Days.SATURDAY),
+				);
 			}
 			const sessionToRemove = sessionsNotOnAR.find(
 				(session) => session.id === sessionId,
@@ -58,17 +101,68 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 	};
 
 	const handleTrashCanClicked = (id: string) => {
-		// Plan
-		// 1. Remove the session from the active routine
-		// 2. Update the state
 		removeSessionFromActiveRoutineMutation.mutate({
 			userId: sessionData?.user.id ?? '',
 			sessionId: id,
 		});
+		const remainingDaysOnSessionsOnAR = sessionsOnAR
+			.filter((session) => session.id !== id)
+			.flatMap((session) => session.days.map((day) => day.day));
+		const sessionToAddToDropdown = sessionsOnAR.find(
+			(session) => session.id === id,
+		);
 
-		const sessionToAdd = sessionsOnAR.find((session) => session.id === id);
-		if (sessionToAdd) {
-			setSessionsNotOnAR(sessionsNotOnAR.concat(sessionToAdd));
+		// ON DELETE YOU MUST MAKE SURE THAT THE OTHER SESSIONS DAYS ARE STILL ACTIVE
+
+		if (sessionToAddToDropdown) {
+			// results in ['sunday', 'monday', 'tuesday']
+			const daysOfSessionToBeAddedToDropdown =
+				sessionToAddToDropdown?.days.map((day) => day.day);
+
+			if (
+				daysOfSessionToBeAddedToDropdown.includes(Days.SUNDAY) &&
+				!remainingDaysOnSessionsOnAR.includes(Days.SUNDAY)
+			) {
+				setSundayTaken(false);
+			}
+			if (
+				daysOfSessionToBeAddedToDropdown.includes(Days.MONDAY) &&
+				!remainingDaysOnSessionsOnAR.includes(Days.MONDAY)
+			) {
+				setMondayTaken(false);
+			}
+			if (
+				daysOfSessionToBeAddedToDropdown.includes(Days.TUESDAY) &&
+				!remainingDaysOnSessionsOnAR.includes(Days.TUESDAY)
+			) {
+				setTuesdayTaken(false);
+			}
+			if (
+				daysOfSessionToBeAddedToDropdown.includes(Days.WEDNESDAY) &&
+				!remainingDaysOnSessionsOnAR.includes(Days.WEDNESDAY)
+			) {
+				setWednesdayTaken(false);
+			}
+			if (
+				daysOfSessionToBeAddedToDropdown.includes(Days.THURSDAY) &&
+				!remainingDaysOnSessionsOnAR.includes(Days.THURSDAY)
+			) {
+				setThursdayTaken(false);
+			}
+			if (
+				daysOfSessionToBeAddedToDropdown.includes(Days.FRIDAY) &&
+				!remainingDaysOnSessionsOnAR.includes(Days.FRIDAY)
+			) {
+				setFridayTaken(false);
+			}
+			if (
+				daysOfSessionToBeAddedToDropdown.includes(Days.SATURDAY) &&
+				!remainingDaysOnSessionsOnAR.includes(Days.SATURDAY)
+			) {
+				setSaturdayTaken(false);
+			}
+
+			setSessionsNotOnAR(sessionsNotOnAR.concat(sessionToAddToDropdown));
 		}
 		setSessionsOnAR(sessionsOnAR.filter((session) => session.id !== id));
 	};
@@ -76,6 +170,32 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 	useEffect(() => {
 		if (sessionsOnActiveRoutine) {
 			setSessionsOnAR(sessionsOnActiveRoutine);
+			const daysTakenOnSessionsOnActiveRoutine =
+				sessionsOnActiveRoutine.flatMap((session) =>
+					session.days.map((day) => day.day),
+				);
+
+			setSundayTaken(
+				daysTakenOnSessionsOnActiveRoutine.includes(Days.SUNDAY),
+			);
+			setMondayTaken(
+				daysTakenOnSessionsOnActiveRoutine.includes(Days.MONDAY),
+			);
+			setTuesdayTaken(
+				daysTakenOnSessionsOnActiveRoutine.includes(Days.TUESDAY),
+			);
+			setWednesdayTaken(
+				daysTakenOnSessionsOnActiveRoutine.includes(Days.WEDNESDAY),
+			);
+			setThursdayTaken(
+				daysTakenOnSessionsOnActiveRoutine.includes(Days.THURSDAY),
+			);
+			setFridayTaken(
+				daysTakenOnSessionsOnActiveRoutine.includes(Days.FRIDAY),
+			);
+			setSaturdayTaken(
+				daysTakenOnSessionsOnActiveRoutine.includes(Days.SATURDAY),
+			);
 		}
 		if (sessionsNotOnActiveRoutine) {
 			setSessionsNotOnAR(sessionsNotOnActiveRoutine);
@@ -118,9 +238,101 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 					</button>
 				</form>
 
-				<p className="flex justify-center">
-					Active Sessions in {activeRoutine?.name}
-				</p>
+				<div className="mt-2 flex justify-center gap-1">
+					{sundayTaken ? (
+						<div
+							className={`flex h-10 w-10 justify-center border-2 border-black ${DAY_TAKEN_STYLE} text-2xl`}
+						>
+							S
+						</div>
+					) : (
+						<div
+							className={`flex h-10 w-10 justify-center border-2 border-black ${DAY_NOT_TAKEN_STYLE} text-2xl`}
+						>
+							S
+						</div>
+					)}
+					{mondayTaken ? (
+						<div
+							className={`flex h-10 w-10 justify-center border-2 border-black ${DAY_TAKEN_STYLE} text-2xl`}
+						>
+							M
+						</div>
+					) : (
+						<div
+							className={`flex h-10 w-10 justify-center border-2 border-black ${DAY_NOT_TAKEN_STYLE} text-2xl`}
+						>
+							M
+						</div>
+					)}
+					{tuesdayTaken ? (
+						<div
+							className={`flex h-10 w-10 justify-center border-2 border-black ${DAY_TAKEN_STYLE} text-2xl`}
+						>
+							T
+						</div>
+					) : (
+						<div
+							className={`flex h-10 w-10 justify-center border-2 border-black ${DAY_NOT_TAKEN_STYLE} text-2xl`}
+						>
+							T
+						</div>
+					)}
+					{wednesdayTaken ? (
+						<div
+							className={`flex h-10 w-10 justify-center border-2 border-black ${DAY_TAKEN_STYLE} text-2xl`}
+						>
+							W
+						</div>
+					) : (
+						<div
+							className={`flex h-10 w-10 justify-center border-2 border-black ${DAY_NOT_TAKEN_STYLE} text-2xl`}
+						>
+							W
+						</div>
+					)}
+					{thursdayTaken ? (
+						<div
+							className={`flex h-10 w-10 justify-center border-2 border-black ${DAY_TAKEN_STYLE} text-2xl`}
+						>
+							T
+						</div>
+					) : (
+						<div
+							className={`flex h-10 w-10 justify-center border-2 border-black ${DAY_NOT_TAKEN_STYLE} text-2xl`}
+						>
+							T
+						</div>
+					)}
+					{fridayTaken ? (
+						<div
+							className={`flex h-10 w-10 justify-center border-2 border-black ${DAY_TAKEN_STYLE} text-2xl`}
+						>
+							F
+						</div>
+					) : (
+						<div
+							className={`flex h-10 w-10 justify-center border-2 border-black ${DAY_NOT_TAKEN_STYLE} text-2xl`}
+						>
+							F
+						</div>
+					)}
+					{saturdayTaken ? (
+						<div
+							className={`flex h-10 w-10 justify-center border-2 border-black ${DAY_TAKEN_STYLE} text-2xl`}
+						>
+							S
+						</div>
+					) : (
+						<div
+							className={`flex h-10 w-10 justify-center border-2 border-black ${DAY_NOT_TAKEN_STYLE} text-2xl`}
+						>
+							S
+						</div>
+					)}
+				</div>
+
+				<p className="flex justify-center">Active Sessions</p>
 				{sessionsOnAR?.map(
 					(session) =>
 						(
@@ -129,7 +341,12 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 								className="flex-col-2 mb-2 flex justify-center "
 							>
 								<div className="justify-left flex w-40">
-									<p>Session: {session.name}</p>
+									<p>
+										Session: {session.name} :{' '}
+										{session.days.map((day) => {
+											return day.day[0]?.toUpperCase();
+										})}
+									</p>
 								</div>
 								<div className="justify-right flex">
 									<button
@@ -146,31 +363,6 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 							</div>
 						) ?? null,
 				)}
-
-				{/* The blocks to represent the days of the week */}
-				<div className="mt-2 flex justify-center gap-1">
-					<div className="flex h-10 w-10 justify-center border-2 border-black bg-lime-500/90 text-2xl">
-						S
-					</div>
-					<div className="flex h-10 w-10 justify-center border-2 border-black bg-white text-2xl">
-						M
-					</div>
-					<div className="flex h-10 w-10 justify-center border-2 border-black bg-white text-2xl">
-						T
-					</div>
-					<div className="flex h-10 w-10 justify-center border-2 border-black bg-lime-500/90 text-2xl">
-						W
-					</div>
-					<div className="flex h-10 w-10 justify-center border-2 border-black bg-white text-2xl">
-						T
-					</div>
-					<div className="flex h-10 w-10 justify-center border-2 border-black bg-lime-500/90 text-2xl">
-						F
-					</div>
-					<div className="flex h-10 w-10 justify-center border-2 border-black bg-white text-2xl">
-						S
-					</div>
-				</div>
 			</div>
 		</>
 	);
