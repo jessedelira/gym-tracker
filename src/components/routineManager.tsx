@@ -1,14 +1,12 @@
-import { type Routine, type Session } from '@prisma/client';
+import { type Session } from '@prisma/client';
 import { type Session as AuthSession } from 'next-auth'; // duplicate identifiers for interface
 import React, { type FormEvent, useState, useEffect } from 'react';
 import { api } from '~/utils/api';
 import { getSessionIdInputElement } from '~/utils/documentUtils';
 import TrashCanIcon from './icons/trashCanIcon';
 import { Days } from '~/common/days.enum';
-import { set } from 'zod';
 
 interface RoutineManagerProps {
-	activeRoutine: Routine | null | undefined;
 	sessionData: AuthSession | null;
 }
 
@@ -17,7 +15,6 @@ interface SessionIncludingDays extends Session {
 }
 
 const RoutineManager: React.FC<RoutineManagerProps> = ({
-	activeRoutine,
 	sessionData,
 }) => {
 	const [sessionsOnAR, setSessionsOnAR] = useState<SessionIncludingDays[]>(
@@ -206,7 +203,7 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 		<>
 			<div className="mt-6">
 				<div className="flex justify-center">
-					<h1 className="text-2xl">Routine Manager</h1>
+					<h1 className="text-2xl">Active Routine Manager</h1>
 				</div>
 				<form
 					onSubmit={(e) => void handleAddButtonClicked(e)}
@@ -341,12 +338,7 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({
 								className="flex-col-2 mb-2 flex justify-center "
 							>
 								<div className="justify-left flex w-40">
-									<p>
-										Session: {session.name} :{' '}
-										{session.days.map((day) => {
-											return day.day[0]?.toUpperCase();
-										})}
-									</p>
+									<p>Session: {session.name}</p>
 								</div>
 								<div className="justify-right flex">
 									<button
