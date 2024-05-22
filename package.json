@@ -12,7 +12,8 @@
 		"seed": "prisma db seed",
 		"lint": "next lint",
 		"start": "next start",
-		"format": "prettier --write \"./!(.next)/**/*.{js,jsx,ts,tsx,json}\""
+		"format": "prettier --write \"./!(.next)/**/*.{js,jsx,ts,tsx,json}\"",
+		"cy:open": "cypress open"
 	},
 	"dependencies": {
 		"@next-auth/prisma-adapter": "^1.0.7",
@@ -47,6 +48,7 @@
 		"@typescript-eslint/eslint-plugin": "^5.62.0",
 		"@typescript-eslint/parser": "^5.62.0",
 		"autoprefixer": "^10.4.16",
+		"cypress": "^13.10.0",
 		"eslint": "^8.49.0",
 		"eslint-config-next": "^13.5.2",
 		"postcss": "^8.4.31",
