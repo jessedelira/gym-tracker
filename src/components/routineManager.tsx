@@ -107,10 +107,7 @@ const RoutineManager: React.FC<RoutineManagerProps> = ({ sessionData }) => {
 			(session) => session.id === id,
 		);
 
-		// ON DELETE YOU MUST MAKE SURE THAT THE OTHER SESSIONS DAYS ARE STILL ACTIVE
-
 		if (sessionToAddToDropdown) {
-			// results in ['sunday', 'monday', 'tuesday']
 			const daysOfSessionToBeAddedToDropdown =
 				sessionToAddToDropdown?.days.map((day) => day.day);
 

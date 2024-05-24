@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Layout from '~/components/layout';
 import { api } from '~/utils/api';
 import RoutineManager from '~/components/routineManager';
+import ManagePageLink from '~/components/managePageLink';
 
 const Manage: NextPage = () => {
 	const { data: sessionData, status } = useSession();
@@ -60,108 +61,36 @@ const Manage: NextPage = () => {
 					</div>
 					<div className="mt-6 flex flex-col items-center justify-center">
 						<div className="mat-4 mx-2 grid grid-cols-1 gap-5">
-							<Link
+							<ManagePageLink
 								href="/manage/routines"
-								className="rounded-md bg-gray-300 px-4 py-2 text-xl font-semibold text-white  "
-							>
-								<div className="flex">
-									<div className="w-90">
-										Manage Routines
-										<p className="text-base font-normal">
-											A routine is a collection of
-											sessions that you do in a single
-											week.
-										</p>
-									</div>
-
-									<div className="w-5 pt-6">
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											fill="none"
-											viewBox="0 0 24 24"
-											strokeWidth="1.5"
-											stroke="currentColor"
-											className="h-6 w-6"
-										>
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												d="M8.25 4.5l7.5 7.5-7.5 7.5"
-											/>
-										</svg>
-									</div>
-								</div>
-							</Link>
-							<Link
+								title="Manage Routines"
+								description="A routine is a collection of
+								sessions that you do in a single
+								week."
+							/>
+							<ManagePageLink
 								href="/manage/sessions"
-								className="rounded-md bg-gray-300 px-4 py-2 text-xl font-semibold text-white  "
-							>
-								<div className="flex">
-									<div className="w-90">
-										Manage Sessions
-										<p className="text-base font-normal">
-											A session is a collection of
-											workouts that you do in a single
-											day.
-										</p>
-									</div>
-
-									<div className="w-5 pt-6">
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											fill="none"
-											viewBox="0 0 24 24"
-											strokeWidth="1.5"
-											stroke="currentColor"
-											className="h-6 w-6"
-										>
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												d="M8.25 4.5l7.5 7.5-7.5 7.5"
-											/>
-										</svg>
-									</div>
-								</div>
-							</Link>
-							<Link
+								title="Manage Sessions"
+								description="A session is a collection of
+								workouts that you do in a single
+								day."
+							/>
+							<ManagePageLink
 								href="/manage/workouts"
-								className="rounded-md bg-gray-300 px-4 py-2 text-xl font-semibold text-white  "
-							>
-								<div className="flex">
-									<div className="w-90">
-										Manage Workouts
-										<p className="text-base font-normal">
-											A workout is a collection of
-											exercises that you do in a single
-											session.
-										</p>
-									</div>
-
-									<div className="w-5 pt-6">
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											fill="none"
-											viewBox="0 0 24 24"
-											strokeWidth="1.5"
-											stroke="currentColor"
-											className="h-6 w-6"
-										>
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												d="M8.25 4.5l7.5 7.5-7.5 7.5"
-											/>
-										</svg>
-									</div>
-								</div>
-							</Link>
+								title="Manage Workouts"
+								description="A workout is a collection of
+								exercises that you do in a single
+								session."
+							/>
+							<ManagePageLink
+								href="/routineManager"
+								title="Manage Active Routine"
+								description="Manage the active routine you are
+								currently following."
+							/>
 						</div>
 					</div>
 					<div className="mt-6">
-						<RoutineManager
-							sessionData={sessionData}
-						></RoutineManager>
 					</div>
 				</Layout>
 			</>
