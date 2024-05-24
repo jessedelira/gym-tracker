@@ -160,7 +160,6 @@ const Manage: NextPage = () => {
 					</div>
 					<div className="mt-6">
 						<RoutineManager
-							activeRoutine={activeRoutineData}
 							sessionData={sessionData}
 						></RoutineManager>
 					</div>
