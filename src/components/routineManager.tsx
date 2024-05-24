@@ -14,9 +14,7 @@ interface SessionIncludingDays extends Session {
 	days: { day: string }[];
 }
 
-const RoutineManager: React.FC<RoutineManagerProps> = ({
-	sessionData,
-}) => {
+const RoutineManager: React.FC<RoutineManagerProps> = ({ sessionData }) => {
 	const [sessionsOnAR, setSessionsOnAR] = useState<SessionIncludingDays[]>(
 		[],
 	);

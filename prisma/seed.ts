@@ -1,10 +1,9 @@
 import seedUsers from './seeds/userSeeds';
 import seedExercises from './seeds/exerciseSeeds';
 
-
 /**
  * Cannot use global prisma instance in seed files because of the server not running yet,
- * the prisma global references an instance of PrismaClient that is connected to the database. But 
+ * the prisma global references an instance of PrismaClient that is connected to the database. But
  * that doesn't happen when the npm i/seed commands are executed
  */
 const main = async () => {
@@ -12,8 +11,7 @@ const main = async () => {
 	await seedExercises();
 };
 
-main()
-	.catch((e) => {
-		console.error(e);
-		process.exit(1);
-	});
+main().catch((e) => {
+	console.error(e);
+	process.exit(1);
+});
