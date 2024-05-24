@@ -2,10 +2,8 @@ import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import Layout from '~/components/layout';
 import { api } from '~/utils/api';
-import RoutineManager from '~/components/routineManager';
 import ManagePageLink from '~/components/managePageLink';
 
 const Manage: NextPage = () => {
