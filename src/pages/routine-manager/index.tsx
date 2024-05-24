@@ -18,17 +18,15 @@ const RoutineManager: NextPage = () => {
 		}
 	}, [status, router]);
 
-    if(isLoading) {
-        return <></>
-    }
-    else {
-        return (
-            <div>
-                <h1>Routine Manager</h1>
-            </div>
-        )
-    }
-    
+	if (isLoading) {
+		return <></>;
+	} else {
+		return (
+			<div>
+				<h1>Routine Manager</h1>
+			</div>
+		);
+	}
 };
 
 export default RoutineManager;

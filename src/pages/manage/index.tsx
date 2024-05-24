@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import Layout from '~/components/layout';
 import { api } from '~/utils/api';
 import ManagePageLink from '~/components/managePageLink';
+import ActivityGraph from '~/components/activityGraph';
 
 const Manage: NextPage = () => {
 	const { data: sessionData, status } = useSession();
@@ -87,9 +88,9 @@ const Manage: NextPage = () => {
 								currently following."
 							/>
 						</div>
+						<ActivityGraph />
 					</div>
-					<div className="mt-6">
-					</div>
+					<div className="mt-6"></div>
 				</Layout>
 			</>
 		);
