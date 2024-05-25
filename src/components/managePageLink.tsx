@@ -19,7 +19,7 @@ const ManagePageLink: React.FC<ManagePageLinkProps> = ({
 			<div className="flex">
 				<div className="w-90">
 					{title}
-					<p className="text-base font-normal">{description}</p>
+					<p className="text-sm font-normal">{description}</p>
 				</div>
 
 				<div className="w-5 pt-6">
