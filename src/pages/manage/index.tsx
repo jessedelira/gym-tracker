@@ -58,8 +58,8 @@ const Manage: NextPage = () => {
 							</h2>
 						</div>
 					</div>
-					<div className="mt-6 flex flex-col items-center justify-center">
-						<div className="mat-4 mx-2 grid grid-cols-1 gap-5">
+					<div className="mt-3 flex flex-col items-center justify-center">
+						<div className="mat-4 mx-2 grid grid-cols-1 gap-2">
 							<ManagePageLink
 								href="/manage/routines"
 								title="Manage Routines"

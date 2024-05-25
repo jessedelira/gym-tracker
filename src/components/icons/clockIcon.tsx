@@ -6,7 +6,7 @@ const ClockIcon = () => {
 			viewBox="0 0 24 24"
 			strokeWidth={1.5}
 			stroke="currentColor"
-			className="h-6 w-6"
+			className="h-8 w-8"
 		>
 			<path
 				strokeLinecap="round"
