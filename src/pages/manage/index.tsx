@@ -82,7 +82,7 @@ const Manage: NextPage = () => {
 								session."
 							/>
 							<ManagePageLink
-								href="/routineManager"
+								href="/routine-manager"
 								title="Manage Active Routine"
 								description="Manage the active routine you are
 								currently following."
