@@ -2,6 +2,8 @@ import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import Layout from '~/components/layout';
+import RoutineManagerComponent from '~/components/routineManager';
 
 const RoutineManager: NextPage = () => {
 	const { data: sessionData, status } = useSession();
@@ -22,9 +24,9 @@ const RoutineManager: NextPage = () => {
 		return <></>;
 	} else {
 		return (
-			<div>
-				<h1>Routine Manager</h1>
-			</div>
+			<Layout sessionData={sessionData ? sessionData: null}>
+			<RoutineManagerComponent sessionData={sessionData} />
+			</Layout>
 		);
 	}
 };
