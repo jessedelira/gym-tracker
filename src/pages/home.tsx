@@ -22,7 +22,12 @@ const Home: NextPage = () => {
 	}, [status, router]);
 
 	if (isLoading) {
-		return <Spinner />;
+		return (
+
+			<Layout sessionData={sessionData ? sessionData : null}>
+				<Spinner />
+			</Layout>
+		);
 	} else {
 		return (
 			<Layout sessionData={sessionData ? sessionData : null}>
