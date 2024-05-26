@@ -1,8 +1,6 @@
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '~/server/db';
 
 export const routineRouter = createTRPCRouter({
 	createRoutine: protectedProcedure
@@ -74,5 +72,69 @@ export const routineRouter = createTRPCRouter({
 			});
 
 			return routine;
+		}),
+
+	addSessionToActiveRoutine: protectedProcedure
+		.input(
+			z.object({
+				sessionId: z.string(),
+				userId: z.string(),
+			}),
+		)
+		.mutation(async ({ input }) => {
+			// update the session to be related to the active routine
+			const currentActiveRoutine = await prisma.routine.findFirst({
+				where: {
+					userId: input.userId,
+					isActive: true,
+				},
+			});
+
+			await prisma.session.update({
+				where: {
+					id: input.sessionId,
+				},
+				data: {
+					routineId: currentActiveRoutine?.id,
+				},
+			});
+
+			return await prisma.routine.findFirst({
+				where: {
+					userId: input.userId,
+					isActive: true,
+				},
+				include: {
+					sessions: {
+						include: {
+							days: true,
+						},
+					},
+				},
+			});
+		}),
+
+	removeSessionFromActiveRoutine: protectedProcedure
+		.input(
+			z.object({
+				sessionId: z.string(),
+				userId: z.string(),
+			}),
+		)
+		.mutation(async ({ input }) => {
+			// update the session to be related to the active routine
+			const removedSession = await prisma.session.update({
+				where: {
+					id: input.sessionId,
+				},
+				data: {
+					routineId: null,
+				},
+				include: {
+					days: true,
+				},
+			});
+
+			return removedSession;
 		}),
 });

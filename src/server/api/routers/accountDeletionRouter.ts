@@ -1,10 +1,7 @@
-import { PrismaClient } from '@prisma/client';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
 import { z } from 'zod';
 import { prisma } from '~/server/db';
 import bcrypt from 'bcrypt';
-
-const primsa = new PrismaClient();
 
 export const accountDeletionRouter = createTRPCRouter({
 	deleteAccount: protectedProcedure
@@ -36,25 +33,25 @@ export const accountDeletionRouter = createTRPCRouter({
 				throw new Error('Password incorrect');
 			}
 
-			const deletedWorkouts = await primsa.workout.deleteMany({
+			const deletedWorkouts = await prisma.workout.deleteMany({
 				where: {
 					userId: input.userId,
 				},
 			});
 
-			const deletedSessions = await primsa.session.deleteMany({
+			const deletedSessions = await prisma.session.deleteMany({
 				where: {
 					userId: input.userId,
 				},
 			});
 
-			const deletedRoutines = await primsa.routine.deleteMany({
+			const deletedRoutines = await prisma.routine.deleteMany({
 				where: {
 					userId: input.userId,
 				},
 			});
 
-			const deletedUser = await primsa.user.delete({
+			const deletedUser = await prisma.user.delete({
 				where: {
 					id: input.userId,
 				},

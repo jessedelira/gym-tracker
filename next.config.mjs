@@ -11,6 +11,7 @@ const withSerwist = withSerwistInit({
   swSrc: "src/service-worker/index.ts",
   swDest: 'public/sw.js',
   disable: process.env.NODE_ENV === "development",
+  cacheOnNavigation: true
 })  
 
 

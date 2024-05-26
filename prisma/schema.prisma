@@ -1,65 +1,66 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider     = "mysql"
-  // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-  // Further reading:
-  // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-  // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
   url          = env("DATABASE_URL")
-  relationMode = "foreignKeys" // Able to use this since DB is run using AWS RDS
+  relationMode = "foreignKeys"
 }
 
 // Notes:
 // String types is limited to 191 characters when using MySQL
+// When changing Prisma schema, make sure to restart your server, if you get errors that don't make sense
 
 model User {
   id          String    @id @default(cuid())
-  dateCreated DateTime  @default(now())
+  dateCreated DateTime  @default(now()) @map("date_created")
   username    String    @unique
   password    String
-  firstName   String
-  lastName    String
+  firstName   String    @map("first_name")
+  lastName    String    @map("last_name")
   routines    Routine[]
   sessions    Session[]
   workouts    Workout[]
+
+  @@map("user")
 }
 
-// Routine will be based on a weekly basis, only one will be active at a time
 model Routine {
   id          String    @id @default(cuid())
-  createdAt   DateTime  @default(now())
+  createdAt   DateTime  @default(now()) @map("created_at")
   name        String    @unique
   description String?
-  isActive    Boolean   @default(false)
+  isActive    Boolean   @default(false) @map("is_active")
   sessions    Session[]
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String
+  userId      String    @map("user_id")
+
+  @@map("routine")
 }
 
 model Session {
   id          String              @id @default(cuid())
-  createdAt   DateTime            @default(now())
+  createdAt   DateTime            @default(now()) @map("created_at")
   name        String
   description String?
   workouts    Workout[]
   routine     Routine?            @relation(fields: [routineId], references: [id], onDelete: Cascade)
-  routineId   String?
+  routineId   String?             @map("routine_id")
   days        SessionDaysActive[]
   user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String
+  userId      String              @map("user_id")
+
+  @@map("session")
 }
 
 model SessionDaysActive {
   id        String  @id @default(cuid())
   day       String
   session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  sessionId String
+  sessionId String  @map("session_id")
+
+  @@map("session_days_active")
 }
 
 model Workout {
@@ -68,11 +69,13 @@ model Workout {
   sets       Int
   weight     Int
   exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
-  exerciseId String
+  exerciseId String   @map("exercise_id")
   session    Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  sessionId  String
+  sessionId  String   @map("session_id")
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String
+  userId     String   @map("user_id")
+
+  @@map("workout")
 }
 
 model Exercise {
@@ -80,4 +83,6 @@ model Exercise {
   name        String    @unique
   description String?   @db.VarChar(300)
   workouts    Workout[]
+
+  @@map("exercise")
 }
