@@ -14,5 +14,5 @@ new Serwist({
 	clientsClaim: true,
 	navigationPreload: true,
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-	runtimeCaching: defaultCache
+	runtimeCaching: defaultCache,
 }).addEventListeners();
