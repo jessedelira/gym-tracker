@@ -24,8 +24,8 @@ const RoutineManager: NextPage = () => {
 		return <></>;
 	} else {
 		return (
-			<Layout sessionData={sessionData ? sessionData: null}>
-			<RoutineManagerComponent sessionData={sessionData} />
+			<Layout sessionData={sessionData ? sessionData : null}>
+				<RoutineManagerComponent sessionData={sessionData} />
 			</Layout>
 		);
 	}
