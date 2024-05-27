@@ -28,9 +28,9 @@ const Manage: NextPage = () => {
 	}, [status, router]);
 
 	if (isLoading) {
-		<Layout sessionData={sessionData ? sessionData : null}>
+	
 			<Spinner />
-		</Layout>;
+
 	} else {
 		return (
 			// create three buttons: create workout, create exercise, create routine with tailwind css
