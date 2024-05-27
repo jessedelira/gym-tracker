@@ -30,9 +30,10 @@ const Home: NextPage = () => {
 	} else {
 		return (
 			<Layout sessionData={sessionData ? sessionData : null}>
-				<div className="flex flex-col items-center justify-center">
+				{/* <div className="flex flex-col items-center justify-center">
 					<CurrentWorkoutDisplay></CurrentWorkoutDisplay>
-				</div>
+				</div> */}
+				<Spinner />
 			</Layout>
 		);
 	}

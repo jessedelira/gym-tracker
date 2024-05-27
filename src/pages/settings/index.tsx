@@ -24,8 +24,8 @@ const Settings: NextPage = () => {
 
 	if (isLoading) {
 		<Layout sessionData={sessionData ? sessionData : null}>
-				<Spinner />
-			</Layout>
+			<Spinner />
+		</Layout>;
 	} else {
 		return (
 			<>
