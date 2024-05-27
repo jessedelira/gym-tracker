@@ -3,8 +3,8 @@ import NavBar from './navbar';
 
 const Layout: React.FC<LayoutProps> = ({ sessionData, children }) => {
 	return (
-		<div className="flex h-full flex-col">
-			<main className="flex h-svh flex-col bg-white">{children}</main>
+		<div>
+			<main className="flex flex-col h-192 bg-white">{children}</main>
 			<NavBar sessionData={sessionData ? sessionData : null}></NavBar>
 		</div>
 	);
