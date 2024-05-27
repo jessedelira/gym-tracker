@@ -23,7 +23,6 @@ const Home: NextPage = () => {
 
 	if (isLoading) {
 		return (
-
 			<Layout sessionData={sessionData ? sessionData : null}>
 				<Spinner />
 			</Layout>
