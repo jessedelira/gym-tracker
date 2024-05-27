@@ -23,7 +23,9 @@ const Settings: NextPage = () => {
 	}, [status, router, sessionData?.user]);
 
 	if (isLoading) {
+		<Layout sessionData={sessionData ? sessionData : null}>
 			<Spinner />
+		</Layout>;
 	} else {
 		return (
 			<>
