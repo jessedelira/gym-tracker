@@ -4,7 +4,7 @@ const Spinner: React.FC = () => {
 	return (
 		<div
 			role="status"
-			className="flex h-full w-full items-center justify-center"
+			className="flex h-full h-16 w-full items-center justify-center"
 		>
 			<svg
 				aria-hidden="true"

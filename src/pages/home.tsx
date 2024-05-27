@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Spinner from '~/components/Spinner';
-// import CurrentWorkoutDisplay from '~/components/currentWorkoutDisplay';
+import CurrentWorkoutDisplay from '~/components/currentWorkoutDisplay';
 import Layout from '~/components/layout';
 
 const Home: NextPage = () => {
@@ -30,7 +30,9 @@ const Home: NextPage = () => {
 	} else {
 		return (
 			<Layout sessionData={sessionData ? sessionData : null}>
-				<Spinner />
+				<div className="flex flex-col items-center justify-center">
+					<CurrentWorkoutDisplay></CurrentWorkoutDisplay>
+				</div>
 			</Layout>
 		);
 	}
