@@ -21,21 +21,15 @@ const Home: NextPage = () => {
 		}
 	}, [status, router]);
 
-	if (isLoading) {
-		return (
-			<Layout>
-				<Spinner />
-			</Layout>
-		);
-	} else {
-		return (
-			<Layout>
-				<div className="flex flex-col items-center justify-center">
-					<CurrentWorkoutDisplay></CurrentWorkoutDisplay>
-				</div>
-			</Layout>
-		);
-	}
+
+	return (
+		<Layout>
+			<div className="flex flex-col items-center justify-center">
+				<CurrentWorkoutDisplay></CurrentWorkoutDisplay>
+			</div>
+		</Layout>
+	);
+
 };
 
 export default Home;

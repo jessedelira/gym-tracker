@@ -22,11 +22,7 @@ const Settings: NextPage = () => {
 		}
 	}, [status, router, sessionData?.user]);
 
-	if (isLoading) {
-		<Layout>
-			<Spinner />
-		</Layout>;
-	} else {
+
 		return (
 			<Layout>
 				<div className="flex items-center">
@@ -178,7 +174,7 @@ const Settings: NextPage = () => {
 				</div>
 			</Layout>
 		);
-	}
+	
 };
 
 export default Settings;

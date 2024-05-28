@@ -27,11 +27,6 @@ const Manage: NextPage = () => {
 		}
 	}, [status, router]);
 
-	if (isLoading) {
-		<Layout>
-			<Spinner />
-		</Layout>;
-	} else {
 		return (
 			<Layout>
 				<div className="flex items-center">
@@ -94,7 +89,6 @@ const Manage: NextPage = () => {
 				<div className="mt-6"></div>
 			</Layout>
 		);
-	}
 };
 
 export default Manage;
