@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import Layout from '~/components/layout';
 import { api } from '~/utils/api';
 import ManagePageLink from '~/components/managePageLink';
-import ActivityGraph from '~/components/activityGraph';
+// import ActivityGraph from '~/components/activityGraph';
 import Spinner from '~/components/Spinner';
 
 const Manage: NextPage = () => {
