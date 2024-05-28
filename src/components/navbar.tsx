@@ -6,7 +6,7 @@ const NavBar: React.FC = () => {
 	return (
 		<nav className="sticky bottom-0 flex h-[7rem] w-full flex-row items-center justify-between border-t-2 border-t-black bg-white">
 			<div className="mb-3 flex flex-row items-center justify-between gap-1">
-				<Link href="/home" className="ml-3 rounded-full text-5xl">
+				<Link href="/home" prefetch={true} className="ml-3 rounded-full text-5xl">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
@@ -25,7 +25,7 @@ const NavBar: React.FC = () => {
 			</div>
 
 			<div className="mb-3 flex flex-row items-center justify-between gap-1">
-				<Link href="/manage" className="ml-3 rounded-full text-5xl">
+				<Link href="/manage" prefetch={true} className="ml-3 rounded-full text-5xl">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
@@ -44,7 +44,7 @@ const NavBar: React.FC = () => {
 			</div>
 
 			<div className="mb-3 flex flex-row items-center justify-between gap-1">
-				<Link href="/settings" className="ml-3 rounded-full text-5xl">
+				<Link href="/settings" prefetch={true} className="ml-3 rounded-full text-5xl">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
@@ -68,7 +68,7 @@ const NavBar: React.FC = () => {
 			</div>
 
 			<div className="mb-3 flex flex-row items-center justify-between gap-1">
-				<Link href="/clock" className="ml-3 rounded-full text-5xl">
+				<Link href="/clock" prefetch={true} className="ml-3 rounded-full text-5xl">
 					<ClockIcon />
 				</Link>
 			</div>
