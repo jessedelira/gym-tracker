@@ -67,7 +67,7 @@ const AccountDeletion: NextPage = () => {
 		return <Spinner />;
 	} else {
 		return (
-			<Layout sessionData={sessionData}>
+			<Layout>
 				{showModal && (
 					<BaseModal
 						headerMessage={'Account Deletion Succesful'}
