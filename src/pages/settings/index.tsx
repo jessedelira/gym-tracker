@@ -28,7 +28,7 @@ const Settings: NextPage = () => {
 		</Layout>;
 	} else {
 		return (
-			<>
+
 				<Layout sessionData={sessionData}>
 					<div className="flex items-center">
 						<div className="mt-4 pl-4">
@@ -180,7 +180,6 @@ const Settings: NextPage = () => {
 						</Link>
 					</div>
 				</Layout>
-			</>
 		);
 	}
 };
