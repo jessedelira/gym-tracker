@@ -1,6 +1,4 @@
-import type NavBarProps from './navBarProps';
-
-interface LayoutProps extends NavBarProps {
+interface LayoutProps {
 	children: React.ReactNode;
 }
 

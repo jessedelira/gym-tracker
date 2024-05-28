@@ -23,13 +23,13 @@ const Home: NextPage = () => {
 
 	if (isLoading) {
 		return (
-			<Layout sessionData={sessionData ? sessionData : null}>
+			<Layout>
 				<Spinner />
 			</Layout>
 		);
 	} else {
 		return (
-			<Layout sessionData={sessionData ? sessionData : null}>
+			<Layout>
 				<div className="flex flex-col items-center justify-center">
 					<CurrentWorkoutDisplay></CurrentWorkoutDisplay>
 				</div>
