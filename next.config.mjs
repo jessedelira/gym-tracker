@@ -18,14 +18,5 @@ const withSerwist = withSerwistInit({
 /** @type {import("next").NextConfig} */
 const config = withSerwist({
   reactStrictMode: true,
-  images: {
-		remotePatterns: [
-			{
-				protocol: 'https',
-				hostname: 'robohash.org',
-				pathname: '/**',
-			},
-		],
-	},
 })
 export default config;
