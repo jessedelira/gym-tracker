@@ -33,8 +33,6 @@ const Manage: NextPage = () => {
 		</Layout>;
 	} else {
 		return (
-			// create three buttons: create workout, create exercise, create routine with tailwind css
-
 				<Layout sessionData={sessionData}>
 					<div className="flex items-center">
 						<div className="mt-4 pl-4">
@@ -91,7 +89,7 @@ const Manage: NextPage = () => {
 								currently following."
 							/>
 						</div>
-						<ActivityGraph />
+						{/* <ActivityGraph /> */}
 					</div>
 					<div className="mt-6"></div>
 				</Layout>
