@@ -7,7 +7,7 @@ import CurrentWorkoutDisplay from '~/components/currentWorkoutDisplay';
 import Layout from '~/components/layout';
 
 const Home: NextPage = () => {
-	const { data: sessionData, status } = useSession();
+	const { status } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
 
