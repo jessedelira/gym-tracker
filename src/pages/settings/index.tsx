@@ -23,11 +23,7 @@ const Settings: NextPage = () => {
 	}, [status, router, sessionData?.user]);
 
 	if (isLoading || status === 'loading') {
-		return (
-			<Layout>
-				<Spinner />
-			</Layout>
-		);
+		return <Spinner />;
 	}
 
 	return (

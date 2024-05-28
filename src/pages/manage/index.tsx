@@ -28,11 +28,7 @@ const Manage: NextPage = () => {
 	}, [status, router]);
 
 	if (isLoading || status === 'loading') {
-		return (
-			<Layout>
-				<Spinner />
-			</Layout>
-		);
+		return <Spinner />;
 	}
 	return (
 		<Layout>
