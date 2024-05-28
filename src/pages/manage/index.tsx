@@ -6,13 +6,12 @@ import Layout from '~/components/layout';
 import { api } from '~/utils/api';
 import ManagePageLink from '~/components/managePageLink';
 import ActivityGraph from '~/components/activityGraph';
-import Spinner from '~/components/Spinner';
 
 const Manage: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
-
+	console.log(isLoading);
 	const { data: activeRoutineData } = api.routine.getActiveRoutine.useQuery({
 		userId: sessionData?.user.id || '',
 	});

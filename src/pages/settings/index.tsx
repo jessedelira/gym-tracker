@@ -4,14 +4,13 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { getMonthDDCommaYYYY } from '~/utils/dateUtils';
 import Link from 'next/link';
-import Spinner from '~/components/Spinner';
 import Layout from '~/components/layout';
 
 const Settings: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
-
+	console.log(isLoading)
 	useEffect(() => {
 		if (status === 'unauthenticated') {
 			void router.push('/');
