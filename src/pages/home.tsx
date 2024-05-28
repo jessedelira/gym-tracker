@@ -2,6 +2,7 @@ import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import Spinner from '~/components/Spinner';
 import CurrentWorkoutDisplay from '~/components/currentWorkoutDisplay';
 import Layout from '~/components/layout';
 
@@ -9,8 +10,6 @@ const Home: NextPage = () => {
 	const { status } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
-
-	console.log(isLoading)
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -22,6 +21,13 @@ const Home: NextPage = () => {
 		}
 	}, [status, router]);
 
+	if (isLoading || status === 'loading') {
+		return (
+			<Layout>
+				<Spinner />
+			</Layout>
+		);
+	}
 
 	return (
 		<Layout>
@@ -30,7 +36,6 @@ const Home: NextPage = () => {
 			</div>
 		</Layout>
 	);
-
 };
 
 export default Home;
