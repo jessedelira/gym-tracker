@@ -4,10 +4,8 @@ import {
 	protectedProcedure,
 	publicProcedure,
 } from '~/server/api/trpc';
-import { PrismaClient } from '@prisma/client';
 import { hash } from 'bcrypt';
-
-const prisma = new PrismaClient();
+import { prisma } from '~/server/db';
 
 interface UserDto {
 	id: string;

@@ -1,8 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '~/server/db';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
-
-const primsa = new PrismaClient();
 
 export const workoutRouter = createTRPCRouter({
 	createWorkout: protectedProcedure
@@ -17,7 +15,7 @@ export const workoutRouter = createTRPCRouter({
 			}),
 		)
 		.mutation(({ input }) => {
-			const createdWorkout = primsa.workout.create({
+			const createdWorkout = prisma.workout.create({
 				data: {
 					exerciseId: input.exerciseId,
 					weight: input.weight,
@@ -37,7 +35,7 @@ export const workoutRouter = createTRPCRouter({
 			}),
 		)
 		.query(async ({ input }) => {
-			const workouts = await primsa.workout.findMany({
+			const workouts = await prisma.workout.findMany({
 				where: {
 					userId: input.userId,
 				},

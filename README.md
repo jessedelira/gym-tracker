@@ -1,7 +1,7 @@
 <div align="center">
   <a href="https://gym-tracker.app">
     <img
-      src="./public/flexed_biceps_3d_default.png"
+      src="./public/icons/flexed_biceps_3d_default.png"
       alt="Flexed Muscles"
       height="64"
     />

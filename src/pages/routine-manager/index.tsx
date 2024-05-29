@@ -2,11 +2,10 @@ import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import Spinner from '~/components/Spinner';
-import CurrentWorkoutDisplay from '~/components/currentWorkoutDisplay';
 import Layout from '~/components/layout';
+import RoutineManagerComponent from '~/components/routineManager';
 
-const Home: NextPage = () => {
+const RoutineManager: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
@@ -22,16 +21,14 @@ const Home: NextPage = () => {
 	}, [status, router]);
 
 	if (isLoading) {
-		return <Spinner />;
+		return <></>;
 	} else {
 		return (
 			<Layout sessionData={sessionData ? sessionData : null}>
-				<div className="flex flex-col items-center justify-center">
-					<CurrentWorkoutDisplay></CurrentWorkoutDisplay>
-				</div>
+				<RoutineManagerComponent sessionData={sessionData} />
 			</Layout>
 		);
 	}
 };
 
-export default Home;
+export default RoutineManager;
