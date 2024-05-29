@@ -1,5 +1,5 @@
 describe('login', () => {
-	it('logos the user in given it has correct credentials', () => {
+	it('logs the user in given it has correct credentials', () => {
     const username = 'superuser';
     const password = 'superuser';
     
