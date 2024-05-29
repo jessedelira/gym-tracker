@@ -21,14 +21,6 @@ const Home: NextPage = () => {
 		}
 	}, [status, router]);
 
-	if (isLoading || status === 'loading') {
-		return (
-			<Layout>
-				<Spinner />
-			</Layout>
-		);
-	}
-
 	return (
 		<Layout>
 			<div className="flex flex-col items-center justify-center">

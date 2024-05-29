@@ -27,13 +27,6 @@ const Manage: NextPage = () => {
 		}
 	}, [status, router]);
 
-	if (isLoading || status === 'loading') {
-		return (
-			<Layout>
-				<Spinner />
-			</Layout>
-		);
-	}
 	return (
 		<Layout>
 			<div className="flex items-center">
