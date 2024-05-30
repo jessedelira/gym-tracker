@@ -20,6 +20,10 @@ const Home: NextPage = () => {
 		}
 	}, [status, router]);
 
+	if(isLoading === true) {
+		return null;
+	}
+
 	return (
 		<Layout>
 			<div className="flex flex-col items-center justify-center">
