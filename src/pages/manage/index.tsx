@@ -1,18 +1,16 @@
 import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '~/components/layout';
 import { api } from '~/utils/api';
 import ManagePageLink from '~/components/managePageLink';
 import ActivityGraph from '~/components/activityGraph';
-
+import Spinner from '~/components/Spinner';
 
 const Manage: NextPage = () => {
 	const { data: sessionData, status } = useSession();
-	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
-	console.log(isLoading);
 	const { data: activeRoutineData } = api.routine.getActiveRoutine.useQuery({
 		userId: sessionData?.user.id || '',
 	});
@@ -20,12 +18,12 @@ const Manage: NextPage = () => {
 	useEffect(() => {
 		if (status === 'unauthenticated') {
 			void router.push('/');
-		} else if (status === 'loading') {
-			setIsLoading(true);
-		} else {
-			setIsLoading(false);
 		}
 	}, [status, router]);
+
+	if (!sessionData) {
+		return <Spinner />;
+	}
 
 	return (
 		<Layout>

@@ -15,8 +15,8 @@ const Home: NextPage = () => {
 		}
 	}, [status, router]);
 
-	if(!sessionData) {
-		return <Spinner/>;
+	if (!sessionData) {
+		return <Spinner />;
 	}
 
 	return (
