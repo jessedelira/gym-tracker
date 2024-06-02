@@ -5,15 +5,16 @@ export default {
 	theme: {
 		extend: {
 			height: {
-				'110' : '28rem', // 448px
-				'128' : '32rem', // 512px
-				'144' : '36rem', // 576px
-				'160' : '40rem', // 640px
-				'176' : '44rem', // 704px
-				'186' : '46.5rem', // 744px
-				'192' : '48rem', // 768px
-
+				'110': '28rem', // 448px
+				'128': '32rem', // 512px
+				'144': '36rem', // 576px
+				'160': '40rem', // 640px
+				'176': '44rem', // 704px
+				'186': '46.5rem', // 744px
+				'192': '48rem', // 768px
+			},
+			
 		},
+		plugins: [],
 	},
-	plugins: [],
-}} satisfies Config;
+} satisfies Config;
