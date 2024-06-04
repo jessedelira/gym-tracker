@@ -45,7 +45,7 @@ const Manage: NextPage = () => {
 					</svg>
 				</div>
 				<div className="ml-4 mt-4 grid grid-cols-1">
-					<h1 className="text-2xl">Active Routine</h1>
+					<h1 className="font text-2xl">Active Routine</h1>
 					<h2 className="text-l">
 						{activeRoutineData?.name ??
 							'No active routine selected'}
@@ -68,13 +68,13 @@ const Manage: NextPage = () => {
 								workouts that you do in a single
 								day."
 					/>
-					<ManagePageLink
+					{/* <ManagePageLink
 						href="/manage/workouts"
 						title="Manage Workouts"
 						description="A workout is a collection of
 								exercises that you do in a single
 								session."
-					/>
+					/> */}
 					<ManagePageLink
 						href="/routine-manager"
 						title="Manage Active Routine"

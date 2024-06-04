@@ -14,6 +14,12 @@ import Spinner from '~/components/Spinner';
 const Session: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const [dataChangeInForm, setDataChangeInForm] = useState(false);
+	const ACTIVE_DAY_CLASS =
+		'flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400';
+	const INACTIVE_DAY_CLASS =
+		'flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400';
+	const [mondayActive, setMondayActive] = useState(false);
+
 	const router = useRouter();
 
 	const createSessionMutation = api.session.createSession.useMutation();
@@ -54,6 +60,13 @@ const Session: NextPage = () => {
 
 	const handleCancelClicked = () => {
 		setDataChangeInForm(false);
+	};
+
+	const handleButtonClicked = (elementId: string) => {
+		const element = document.getElementById(elementId);
+		if (element) {
+			element.classList.toggle('bg-green-500');
+		}
 	};
 
 	if (!sessionData) {
@@ -100,71 +113,134 @@ const Session: NextPage = () => {
 						<label className="block pl-2 font-bold">
 							Day of the Week
 						</label>
-						<div className="grid grid-cols-3">
-							<label className="block pl-2">
-								<input
-									id="sunday-select"
-									type="checkbox"
-									className="mr-2"
+						<div className="mt-2 grid grid-cols-7">
+							<label className="pl-2">
+								<button
+									id="sunday"
+									type="button"
+									className={
+										mondayActive
+											? ACTIVE_DAY_CLASS
+											: INACTIVE_DAY_CLASS
+									}
 									onChange={handleInputChange}
-								/>
-								Sunday
+									onClick={(e) =>
+										handleButtonClicked(e.currentTarget.id)
+									}
+								>
+									S
+								</button>
 							</label>
-							<label className="block pl-2">
-								<input
-									id="monday-select"
-									type="checkbox"
-									className="mr-2"
+							<label className=" pl-2">
+								<button
+									id="monday"
+									type="button"
+									className={
+										mondayActive
+											? ACTIVE_DAY_CLASS
+											: INACTIVE_DAY_CLASS
+									}
 									onChange={handleInputChange}
-								/>
-								Monday
+									onClick={(e) =>
+										handleButtonClicked(e.currentTarget.id)
+									}
+								>
+									M
+								</button>
 							</label>
-							<label className="block pl-2">
-								<input
-									id="tuesday-select"
-									type="checkbox"
-									className="mr-2"
+							<label className=" pl-2">
+								<button
+									id="tuesday"
+									type="button"
+									className={
+										mondayActive
+											? ACTIVE_DAY_CLASS
+											: INACTIVE_DAY_CLASS
+									}
 									onChange={handleInputChange}
-								/>
-								Tuesday
+									onClick={(e) =>
+										handleButtonClicked(e.currentTarget.id)
+									}
+								>
+									T
+								</button>
 							</label>
-							<label className="block pl-2">
-								<input
-									id="wednesday-select"
-									type="checkbox"
-									className="mr-2"
+							<label className=" pl-2">
+								<button
+									id="wednesday"
+									type="button"
+									className={
+										mondayActive
+											? ACTIVE_DAY_CLASS
+											: INACTIVE_DAY_CLASS
+									}
 									onChange={handleInputChange}
-								/>
-								Wednesday
+									onClick={(e) =>
+										handleButtonClicked(e.currentTarget.id)
+									}
+								>
+									W
+								</button>
 							</label>
-							<label className="block pl-2">
-								<input
-									id="thursday-select"
-									type="checkbox"
-									className="mr-2"
+							<label className=" pl-2">
+								<button
+									id="thursday"
+									type="button"
+									className={
+										mondayActive
+											? ACTIVE_DAY_CLASS
+											: INACTIVE_DAY_CLASS
+									}
 									onChange={handleInputChange}
-								/>
-								Thursday
+									onClick={(e) =>
+										handleButtonClicked(e.currentTarget.id)
+									}
+								>
+									T
+								</button>
 							</label>
-							<label className="block pl-2">
-								<input
-									id="friday-select"
-									type="checkbox"
-									className="mr-2"
+							<label className=" pl-2">
+								<button
+									id="friday"
+									type="button"
+									className={
+										mondayActive
+											? ACTIVE_DAY_CLASS
+											: INACTIVE_DAY_CLASS
+									}
 									onChange={handleInputChange}
-								/>
-								Friday
+									onClick={(e) =>
+										handleButtonClicked(e.currentTarget.id)
+									}
+								>
+									F
+								</button>
 							</label>
-							<label className="block pl-2">
-								<input
-									id="saturday-select"
-									type="checkbox"
-									className="mr-2"
+							<label className=" pl-2">
+								<button
+									id="saturday"
+									type="button"
+									className={
+										mondayActive
+											? ACTIVE_DAY_CLASS
+											: INACTIVE_DAY_CLASS
+									}
 									onChange={handleInputChange}
-								/>
-								Saturday
+									onClick={(e) =>
+										handleButtonClicked(e.currentTarget.id)
+									}
+								>
+									S
+								</button>
 							</label>
 						</div>
+					</div>
+
+					<div className="mt-4">
+						<h2 className="flex justify-center text-xl font-medium">
+							Workouts
+						</h2>
+						<div className="flex justify-center font-medium">+</div>
 					</div>
 
 					{dataChangeInForm ? (
