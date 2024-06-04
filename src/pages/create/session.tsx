@@ -14,11 +14,13 @@ import Spinner from '~/components/Spinner';
 const Session: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const [dataChangeInForm, setDataChangeInForm] = useState(false);
-	const ACTIVE_DAY_CLASS =
-		'flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400';
-	const INACTIVE_DAY_CLASS =
-		'flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400';
+	const [sundayActive, setSundayActive] = useState(false);
 	const [mondayActive, setMondayActive] = useState(false);
+	const [tuesdayActive, setTuesdayActive] = useState(false);
+	const [wednesdayActive, setWednesdayActive] = useState(false);
+	const [thursdayActive, setThursdayActive] = useState(false);
+	const [fridayActive, setFridayActive] = useState(false);
+	const [saturdayActive, setSaturdayActive] = useState(false);
 
 	const router = useRouter();
 
@@ -64,9 +66,30 @@ const Session: NextPage = () => {
 
 	const handleButtonClicked = (elementId: string) => {
 		const element = document.getElementById(elementId);
-		if (element) {
-			element.classList.toggle('bg-green-500');
+		if (element?.id === 'sunday') {
+			setSundayActive(!sundayActive);
 		}
+		if (element?.id === 'monday') {
+			setMondayActive(!mondayActive);
+		}
+		if (element?.id === 'tuesday') {
+			setTuesdayActive(!tuesdayActive);
+		}
+		if (element?.id === 'wednesday') {
+			setWednesdayActive(!wednesdayActive);
+		}
+		if (element?.id === 'thursday') {
+			setThursdayActive(!thursdayActive);
+		}
+		if (element?.id === 'friday') {
+			setFridayActive(!fridayActive);
+		}
+		if (element?.id === 'saturday') {
+			setSaturdayActive(!saturdayActive);
+		}
+
+		element?.classList.toggle('bg-green-500');
+		element?.classList.toggle('text-white');
 	};
 
 	if (!sessionData) {
@@ -118,11 +141,7 @@ const Session: NextPage = () => {
 								<button
 									id="sunday"
 									type="button"
-									className={
-										mondayActive
-											? ACTIVE_DAY_CLASS
-											: INACTIVE_DAY_CLASS
-									}
+									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400"
 									onChange={handleInputChange}
 									onClick={(e) =>
 										handleButtonClicked(e.currentTarget.id)
@@ -135,11 +154,7 @@ const Session: NextPage = () => {
 								<button
 									id="monday"
 									type="button"
-									className={
-										mondayActive
-											? ACTIVE_DAY_CLASS
-											: INACTIVE_DAY_CLASS
-									}
+									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400"
 									onChange={handleInputChange}
 									onClick={(e) =>
 										handleButtonClicked(e.currentTarget.id)
@@ -152,11 +167,7 @@ const Session: NextPage = () => {
 								<button
 									id="tuesday"
 									type="button"
-									className={
-										mondayActive
-											? ACTIVE_DAY_CLASS
-											: INACTIVE_DAY_CLASS
-									}
+									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400"
 									onChange={handleInputChange}
 									onClick={(e) =>
 										handleButtonClicked(e.currentTarget.id)
@@ -169,11 +180,7 @@ const Session: NextPage = () => {
 								<button
 									id="wednesday"
 									type="button"
-									className={
-										mondayActive
-											? ACTIVE_DAY_CLASS
-											: INACTIVE_DAY_CLASS
-									}
+									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400"
 									onChange={handleInputChange}
 									onClick={(e) =>
 										handleButtonClicked(e.currentTarget.id)
@@ -186,11 +193,7 @@ const Session: NextPage = () => {
 								<button
 									id="thursday"
 									type="button"
-									className={
-										mondayActive
-											? ACTIVE_DAY_CLASS
-											: INACTIVE_DAY_CLASS
-									}
+									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400"
 									onChange={handleInputChange}
 									onClick={(e) =>
 										handleButtonClicked(e.currentTarget.id)
@@ -203,11 +206,7 @@ const Session: NextPage = () => {
 								<button
 									id="friday"
 									type="button"
-									className={
-										mondayActive
-											? ACTIVE_DAY_CLASS
-											: INACTIVE_DAY_CLASS
-									}
+									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400"
 									onChange={handleInputChange}
 									onClick={(e) =>
 										handleButtonClicked(e.currentTarget.id)
@@ -220,11 +219,7 @@ const Session: NextPage = () => {
 								<button
 									id="saturday"
 									type="button"
-									className={
-										mondayActive
-											? ACTIVE_DAY_CLASS
-											: INACTIVE_DAY_CLASS
-									}
+									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400"
 									onChange={handleInputChange}
 									onClick={(e) =>
 										handleButtonClicked(e.currentTarget.id)
