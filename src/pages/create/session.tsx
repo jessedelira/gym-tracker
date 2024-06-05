@@ -10,9 +10,12 @@ import {
 	getSessionNameInputElement,
 } from '~/utils/documentUtils';
 import Spinner from '~/components/Spinner';
+import CreateWorkoutModal from '~/components/createWorkoutModal';
+import PlusIcon from '~/components/icons/plusIcon';
 
 const Session: NextPage = () => {
 	const { data: sessionData, status } = useSession();
+	const [showModal, setShowModal] = useState(false);
 	const [dataChangeInForm, setDataChangeInForm] = useState(false);
 	const [sundayActive, setSundayActive] = useState(false);
 	const [mondayActive, setMondayActive] = useState(false);
@@ -64,6 +67,10 @@ const Session: NextPage = () => {
 		setDataChangeInForm(false);
 	};
 
+	const handlePlusButtonClicked = () => {
+		setShowModal(true);
+	}
+
 	const handleButtonClicked = (elementId: string) => {
 		const element = document.getElementById(elementId);
 		if (element?.id === 'sunday') {
@@ -98,6 +105,7 @@ const Session: NextPage = () => {
 
 	return (
 		<Layout>
+			{showModal && <CreateWorkoutModal />}
 			<div className="flex flex-col">
 				<div className="flex flex-row">
 					<h1 className="pl-2 text-3xl font-bold">Create</h1>
@@ -131,7 +139,7 @@ const Session: NextPage = () => {
 						></textarea>
 					</div>
 
-					{/* create multi-select of the days of the week checkboxs */}
+					{/* Select Date Section */}
 					<div className="mat-4 grid grid-cols-1">
 						<label className="block pl-2 font-bold">
 							Day of the Week
@@ -231,11 +239,16 @@ const Session: NextPage = () => {
 						</div>
 					</div>
 
+					{/* Create Workout Section */}
 					<div className="mt-4">
 						<h2 className="flex justify-center text-xl font-medium">
 							Workouts
 						</h2>
-						<div className="flex justify-center font-medium">+</div>
+						<div className="flex justify-center m-1 rounded-md bg-lime-300 ">
+							<button className="w-full flex justify-center" type="button" onClick={() => handlePlusButtonClicked}>
+								<PlusIcon />
+							</button>
+						</div>
 					</div>
 
 					{dataChangeInForm ? (
