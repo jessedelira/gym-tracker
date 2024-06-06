@@ -1,7 +1,7 @@
 import { type AppType } from 'next/app';
 import { type Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
-
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { api } from '~/utils/api';
 
 import '~/styles/globals.css';
@@ -104,6 +104,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 					sizes="640x1136"
 				/>
 			</Head>
+			<SpeedInsights />
 			<Component {...pageProps} />
 		</SessionProvider>
 	);
