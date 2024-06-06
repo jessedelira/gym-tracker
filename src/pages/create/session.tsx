@@ -66,7 +66,7 @@ const Session: NextPage = () => {
 	};
 
 	const handlePlusButtonClicked = () => {
-		setShowModal(true);
+
 	};
 
 	const handleButtonClicked = (elementId: string) => {
