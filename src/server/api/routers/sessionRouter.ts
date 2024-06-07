@@ -13,7 +13,6 @@ export const sessionRouter = createTRPCRouter({
 			}),
 		)
 		.mutation(async ({ input }) => {
-			// Create a new session
 			const createdSession = await prisma.session.create({
 				data: {
 					name: input.name,

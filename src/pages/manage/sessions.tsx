@@ -1,14 +1,16 @@
+import { type Session } from '@prisma/client';
 import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import TrashCanIcon from '~/components/icons/trashCanIcon';
 import Layout from '~/components/layout';
 import { api } from '~/utils/api';
 
 const Sessions: NextPage = () => {
 	const { data: sessionData, status } = useSession();
+	const [allSessionDataState, setAllSessionDataState] = useState<Session[]>([]);
 	const router = useRouter();
 
 	const { data: allSessionData } = api.session.getAllSessions.useQuery({
@@ -21,10 +23,14 @@ const Sessions: NextPage = () => {
 		if (status === 'unauthenticated') {
 			void router.push('/');
 		}
-	}, [status, router]);
+		setAllSessionDataState(allSessionData || []);
+	}, [status, router, allSessionData]);
 
 	const handleTrashCanClicked= (id: string): void => {
 		deleteSessionMutation.mutate({ sessionId: id });
+		setAllSessionDataState(
+			allSessionDataState.filter((session) => session.id !== id),
+		);
 	}
 
 	return (
@@ -60,8 +66,8 @@ const Sessions: NextPage = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{allSessionData &&
-								allSessionData.map((session) => (
+							{allSessionDataState &&
+								allSessionDataState.map((session) => (
 									<tr
 										key={session.id}
 										className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600"
