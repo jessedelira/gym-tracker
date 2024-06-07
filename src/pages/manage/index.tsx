@@ -68,13 +68,6 @@ const Manage: NextPage = () => {
 								workouts that you do in a single
 								day."
 					/>
-					{/* <ManagePageLink
-						href="/manage/workouts"
-						title="Manage Workouts"
-						description="A workout is a collection of
-								exercises that you do in a single
-								session."
-					/> */}
 					<ManagePageLink
 						href="/routine-manager"
 						title="Manage Active Routine"

@@ -1,6 +1,6 @@
 const ActivityGraph: React.FC = () => {
 	return (
-		<div className="mt-10 flex flex-col items-center justify-center gap-2 p-2 sm:p-10">
+		<div className="mt-6 flex flex-col items-center justify-center gap-2 p-2 sm:p-10">
 			<h1 className="mb-2 text-xl font-medium">Activity Graph</h1>
 			<div className="grid grid-cols-7 gap-2">
 				<div className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400">
