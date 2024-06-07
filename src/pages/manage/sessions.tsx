@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import TrashCanIcon from '~/components/icons/trashCanIcon';
 import Layout from '~/components/layout';
 import { api } from '~/utils/api';
 
@@ -13,12 +14,18 @@ const Sessions: NextPage = () => {
 	const { data: allSessionData } = api.session.getAllSessions.useQuery({
 		userId: sessionData?.user.id || '',
 	});
+	const deleteSessionMutation = api.session.deleteSession.useMutation();
+	
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
 			void router.push('/');
 		}
 	}, [status, router]);
+
+	const handleTrashCanClicked= (id: string): void => {
+		deleteSessionMutation.mutate({ sessionId: id });
+	}
 
 	return (
 		<Layout>
@@ -78,12 +85,30 @@ const Sessions: NextPage = () => {
 										<td className="grid grid-cols-2 px-6 py-4 text-right">
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
+												fill="none"
 												viewBox="0 0 24 24"
-												fill="currentColor"
-												className="ml-4 h-6 w-6"
+												strokeWidth={1.5}
+												stroke="black"
+												className="size-6"
 											>
-												<path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
+												<path
+													strokeLinecap="round"
+													strokeLinejoin="round"
+													d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+												/>
 											</svg>
+
+											<button
+												className="ml-4 h-6 w-6  rounded-full pl-1"
+												onClick={() =>
+													void handleTrashCanClicked(session.id)
+												}
+											>
+												<TrashCanIcon
+													heightValue={'6'}
+													widthValue={'6'}
+												></TrashCanIcon>
+											</button>
 										</td>
 									</tr>
 								))}

@@ -116,4 +116,14 @@ export const sessionRouter = createTRPCRouter({
 
 			return sessionsNotAddedToActiveRoutine;
 		}),
+	
+	deleteSession: protectedProcedure
+		.input(z.object({ sessionId: z.string() }))
+		.mutation(async ({ input }) => {
+			await prisma.session.delete({
+				where: {
+					id: input.sessionId,
+				},
+			});
+		}),
 });

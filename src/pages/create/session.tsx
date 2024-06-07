@@ -65,9 +65,7 @@ const Session: NextPage = () => {
 		setDataChangeInForm(false);
 	};
 
-	const handlePlusButtonClicked = () => {
-
-	};
+	const handlePlusButtonClicked = () => {};
 
 	const handleButtonClicked = (elementId: string) => {
 		const element = document.getElementById(elementId);

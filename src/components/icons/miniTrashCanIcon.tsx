@@ -1,23 +1,14 @@
-interface TrashCanIconProps {
-	heightValue: string;
-	widthValue: string;
-    strokeWidth?: number;
-}
-
-const TrashCanIcon: React.FC<TrashCanIconProps> = ({
-	heightValue,
-	widthValue,
-    strokeWidth: st = 1.5
-}) => {
+const MiniTrashCanIcon = () => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			fill="none"
 			viewBox="0 0 24 24"
-			strokeWidth={st}
-			stroke="red"
-			className={`h-${heightValue} w-${widthValue}`}
+			strokeWidth={1.5}
+			stroke="currentColor"
+			className="h-4 w-4"
 		>
+			j
 			<path
 				strokeLinecap="round"
 				strokeLinejoin="round"
@@ -27,4 +18,4 @@ const TrashCanIcon: React.FC<TrashCanIconProps> = ({
 	);
 };
 
-export default TrashCanIcon;
+export default MiniTrashCanIcon;
