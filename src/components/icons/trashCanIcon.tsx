@@ -1,13 +1,13 @@
 interface TrashCanIconProps {
 	heightValue: string;
 	widthValue: string;
-    strokeWidth?: number;
+	strokeWidth?: number;
 }
 
 const TrashCanIcon: React.FC<TrashCanIconProps> = ({
 	heightValue,
 	widthValue,
-    strokeWidth: st = 1.5
+	strokeWidth: st = 1.5,
 }) => {
 	return (
 		<svg

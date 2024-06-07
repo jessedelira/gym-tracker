@@ -11,10 +11,12 @@ import {
 } from '~/utils/documentUtils';
 import Spinner from '~/components/Spinner';
 import PlusIcon from '~/components/icons/plusIcon';
+import CreateWorkoutModal from '~/components/createWorkoutModal';
 
 const Session: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const [dataChangeInForm, setDataChangeInForm] = useState(false);
+	const [showModal, setShowModal] = useState(false);
 	const [sundayActive, setSundayActive] = useState(false);
 	const [mondayActive, setMondayActive] = useState(false);
 	const [tuesdayActive, setTuesdayActive] = useState(false);
@@ -65,7 +67,9 @@ const Session: NextPage = () => {
 		setDataChangeInForm(false);
 	};
 
-	const handlePlusButtonClicked = () => {};
+	const handlePlusButtonClicked = () => {
+		setShowModal(true);
+	};
 
 	const handleButtonClicked = (elementId: string) => {
 		const element = document.getElementById(elementId);
@@ -101,6 +105,11 @@ const Session: NextPage = () => {
 
 	return (
 		<Layout>
+			{showModal && (
+				<CreateWorkoutModal
+					onXClick={() => setShowModal(false)}
+				></CreateWorkoutModal>
+			)}
 			<div className="flex flex-col">
 				<div className="flex flex-row">
 					<h1 className="pl-2 text-3xl font-bold">Create</h1>
@@ -243,7 +252,7 @@ const Session: NextPage = () => {
 							<button
 								className="flex w-full justify-center"
 								type="button"
-								onClick={() => handlePlusButtonClicked}
+								onClick={() => void handlePlusButtonClicked()}
 							>
 								<PlusIcon />
 							</button>

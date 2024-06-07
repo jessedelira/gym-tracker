@@ -10,14 +10,15 @@ import { api } from '~/utils/api';
 
 const Sessions: NextPage = () => {
 	const { data: sessionData, status } = useSession();
-	const [allSessionDataState, setAllSessionDataState] = useState<Session[]>([]);
+	const [allSessionDataState, setAllSessionDataState] = useState<Session[]>(
+		[],
+	);
 	const router = useRouter();
 
 	const { data: allSessionData } = api.session.getAllSessions.useQuery({
 		userId: sessionData?.user.id || '',
 	});
 	const deleteSessionMutation = api.session.deleteSession.useMutation();
-	
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -26,12 +27,12 @@ const Sessions: NextPage = () => {
 		setAllSessionDataState(allSessionData || []);
 	}, [status, router, allSessionData]);
 
-	const handleTrashCanClicked= (id: string): void => {
+	const handleTrashCanClicked = (id: string): void => {
 		deleteSessionMutation.mutate({ sessionId: id });
 		setAllSessionDataState(
 			allSessionDataState.filter((session) => session.id !== id),
 		);
-	}
+	};
 
 	return (
 		<Layout>
@@ -107,7 +108,9 @@ const Sessions: NextPage = () => {
 											<button
 												className="ml-4 h-6 w-6  rounded-full pl-1"
 												onClick={() =>
-													void handleTrashCanClicked(session.id)
+													void handleTrashCanClicked(
+														session.id,
+													)
 												}
 											>
 												<TrashCanIcon
