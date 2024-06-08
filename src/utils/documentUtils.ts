@@ -130,7 +130,7 @@ export const getDaysSelected = (document: Document) => {
 	return daysSelected;
 };
 
-// workout utils
+// create workout modal utils
 export const getExerciseInputElement = (doc: Document): HTMLInputElement => {
 	const exerciseSelect = doc.getElementById('exerciseId');
 	return exerciseSelect as HTMLInputElement;
