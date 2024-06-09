@@ -18,7 +18,7 @@ export const workoutRouter = createTRPCRouter({
 			const createdWorkout = prisma.workout.create({
 				data: {
 					exerciseId: input.exerciseId,
-					weight: input.weight,
+					weightLbs: input.weight,
 					reps: input.reps,
 					sets: input.sets,
 					sessionId: input.sessionId,
@@ -41,5 +41,25 @@ export const workoutRouter = createTRPCRouter({
 				},
 			});
 			return workouts;
+		}),
+
+	createManyWorkouts: protectedProcedure
+		.input(
+			z.array(
+				z.object({
+					exerciseId: z.string(),
+					weightLbs: z.number(),
+					reps: z.number(),
+					sets: z.number(),
+					sessionId: z.string(),
+					userId: z.string(),
+				}),
+			),
+		)
+		.mutation(async ({ input }) => {
+			const createdWorkouts = await prisma.workout.createMany({
+				data: input,
+			});
+			return createdWorkouts;
 		}),
 });

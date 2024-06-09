@@ -24,3 +24,11 @@ from session
 left join session_days_active
 on session.id = session_days_active.session_id
 where session.name LIKE 'hi';
+
+
+-- get a session with all related workouts
+select *
+from session
+left join workout
+on session.id = workout.session_id
+where session.user_id = 'clx6v20pe0000k8dxf46pewgo'

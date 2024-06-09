@@ -1,23 +1,38 @@
 import React, { type FormEvent } from 'react';
 import XIcon from './icons/xIcon';
-import { api } from '~/utils/api';
+import {
+	getExerciseInputElement,
+	getRepsInputElement,
+	getSetsInputElement,
+	getWeightInputElement,
+} from '~/utils/documentUtils';
+import { type Exercise } from '@prisma/client';
 
 interface CreateWorkoutModalProps {
 	onXClick: () => void;
-	onSaveClick: () => void;
+	onSaveClick: (
+		exerciseId: string,
+		weightLbs: number,
+		sets: number,
+		reps: number,
+	) => void;
+	exercises: Exercise[];
 }
 
 const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 	onXClick,
+	onSaveClick,
+	exercises,
 }) => {
-	const exercises = api.exercise.getAllExercises.useQuery();
+	const handleSaveButtonClicked = (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
 
-	const handleSaveClicked = (e: FormEvent<HTMLFormElement>) => {
-		console.log(e);
-	};
+		const exerciseId = getExerciseInputElement(document).value;
+		const weightLbs = Number(getWeightInputElement(document).value);
+		const sets = Number(getSetsInputElement(document).value);
+		const reps = Number(getRepsInputElement(document).value);
 
-	const handleInputChange = () => {
-		console.log('input changed');
+		onSaveClick(exerciseId, weightLbs, sets, reps);
 	};
 
 	return (
@@ -26,16 +41,14 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 				<div className="absolute inset-0 bg-black opacity-50"></div>
 				<div className="z-10 max-w-[23rem] rounded-lg bg-white p-2">
 					<div className="flex flex-col justify-start">
-						<button  onClick={() => onXClick()}>
-							
+						<button onClick={() => onXClick()}>
 							<XIcon></XIcon>
-							
 						</button>
 					</div>
 					<h1 className="text-center text-2xl text-black">
 						Create Workout
 					</h1>
-					<form onSubmit={(e) => void handleSaveClicked(e)}>
+					<form onSubmit={(e) => void handleSaveButtonClicked(e)}>
 						<div className="flex">
 							<div className=" mr-2 grid grid-cols-1 pl-2">
 								<label className="block font-bold">
@@ -47,7 +60,7 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 									className="rounded-md bg-gray-300  py-2 text-black"
 								>
 									{exercises
-										? exercises.data?.map((exercise) => (
+										? exercises?.map((exercise) => (
 												<option
 													key={exercise.id}
 													value={exercise.id}
@@ -66,43 +79,39 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 									id="weightLbs"
 									className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-black"
 									placeholder="75"
-									onChange={handleInputChange}
 									required
 								></input>
 							</div>
 						</div>
 						<div className="flex">
 							<div className="grid grid-cols-1">
-							<label className="block pl-2 font-bold">
+								<label className="block pl-2 font-bold">
 									Sets
 								</label>
- 								<input
+								<input
 									id="sets"
 									className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-black"
 									placeholder="3"
-									onChange={handleInputChange}
 									required
 								></input>
-								
 							</div>
 							<div className="grid grid-cols-1">
-							<label className="block pl-2 font-bold">
+								<label className="block pl-2 font-bold">
 									Reps
 								</label>
 								<input
 									id="reps"
 									className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-black"
 									placeholder="10"
-									onChange={handleInputChange}
 									required
 								></input>
 							</div>
 						</div>
 
-						<div className="flex justify-center mt-2">
+						<div className="mt-2 flex justify-center">
 							<button
 								type="submit"
-								className="bg-green-400 text-black rounded-md px-4 py-2"
+								className="rounded-md bg-green-400 px-4 py-2 text-black"
 							>
 								Save
 							</button>

@@ -5,17 +5,27 @@ import { useRouter } from 'next/router';
 import Layout from '~/components/layout';
 import { api } from '~/utils/api';
 import {
-	getDaysSelected,
 	getSessionDescriptionInputElement,
 	getSessionNameInputElement,
 } from '~/utils/documentUtils';
 import Spinner from '~/components/Spinner';
 import PlusIcon from '~/components/icons/plusIcon';
 import CreateWorkoutModal from '~/components/createWorkoutModal';
+import TrashCanIcon from '~/components/icons/trashCanIcon';
+
+interface CreateWorkoutData {
+	exerciseId: string;
+	weightLbs: number;
+	reps: number;
+	sets: number;
+}
 
 const Session: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const [dataChangeInForm, setDataChangeInForm] = useState(false);
+	const [newWorkoutData, setNewWorkoutData] = useState<CreateWorkoutData[]>(
+		[],
+	);
 	const [showModal, setShowModal] = useState(false);
 	const [sundayActive, setSundayActive] = useState(false);
 	const [mondayActive, setMondayActive] = useState(false);
@@ -28,6 +38,9 @@ const Session: NextPage = () => {
 	const router = useRouter();
 
 	const createSessionMutation = api.session.createSession.useMutation();
+	const createWorkoutManyMutation =
+		api.workout.createManyWorkouts.useMutation();
+	const { data: exercisesData } = api.exercise.getAllExercises.useQuery();
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -42,20 +55,52 @@ const Session: NextPage = () => {
 			const newSessionName = getSessionNameInputElement(document).value;
 			const newSessionDescription =
 				getSessionDescriptionInputElement(document).value;
-			const daysSelected = getDaysSelected(document);
+
+			const activeDays = [
+				{ name: 'sunday', active: sundayActive },
+				{ name: 'monday', active: mondayActive },
+				{ name: 'tuesday', active: tuesdayActive },
+				{ name: 'wednesday', active: wednesdayActive },
+				{ name: 'thursday', active: thursdayActive },
+				{ name: 'friday', active: fridayActive },
+				{ name: 'saturday', active: saturdayActive },
+			]
+				.filter((day) => day.active)
+				.map((day) => day.name);
 
 			const createSessionData = {
 				name: newSessionName,
 				description: newSessionDescription,
 				userId: sessionData.user.id,
-				days: daysSelected,
+				days: activeDays,
 			};
 
-			await createSessionMutation.mutateAsync(createSessionData, {
-				onSuccess: () => {
-					void router.push('/manage/sessions');
+			const createdSession = await createSessionMutation.mutateAsync(
+				createSessionData,
+			);
+
+			// get the workouts that are in state and save them to the database
+
+			// create object for new creation
+			const createdSessionId = createdSession.id;
+			const newWorkoutDataWithSessionId = newWorkoutData.map(
+				(workout) => {
+					return {
+						...workout,
+						sessionId: createdSessionId,
+						userId: sessionData.user.id,
+					};
 				},
-			});
+			);
+
+			await createWorkoutManyMutation.mutateAsync(
+				newWorkoutDataWithSessionId,
+				{
+					onSuccess: () => {
+						void router.push('/manage/sessions');
+					},
+				},
+			);
 		}
 	};
 
@@ -99,6 +144,28 @@ const Session: NextPage = () => {
 		element?.classList.toggle('text-white');
 	};
 
+	const handleTrashCanClicked = () => {
+		console.log('Trash can clicked');
+	};
+
+	const handleModalSaveClicked = (
+		exerciseId: string,
+		weightLbs: number,
+		sets: number,
+		reps: number,
+	): void => {
+		const newWorkout: CreateWorkoutData = {
+			exerciseId: exerciseId,
+			weightLbs: weightLbs,
+			sets: sets,
+			reps: reps,
+		};
+
+		setNewWorkoutData([...newWorkoutData, newWorkout]);
+
+		setShowModal(false);
+	};
+
 	if (!sessionData) {
 		return <Spinner />;
 	}
@@ -108,6 +175,8 @@ const Session: NextPage = () => {
 			{showModal && (
 				<CreateWorkoutModal
 					onXClick={() => setShowModal(false)}
+					onSaveClick={handleModalSaveClicked}
+					exercises={exercisesData ?? []}
 				></CreateWorkoutModal>
 			)}
 			<div className="flex flex-col">
@@ -244,20 +313,73 @@ const Session: NextPage = () => {
 					</div>
 
 					{/* Create Workout Section */}
-					<div className="mt-4">
-						<h2 className="flex justify-center text-xl font-medium">
-							Workouts
-						</h2>
-						<div className="m-1 flex justify-center rounded-md bg-lime-300 ">
-							<button
-								className="flex w-full justify-center"
-								type="button"
-								onClick={() => void handlePlusButtonClicked()}
-							>
-								<PlusIcon />
-							</button>
+					{(sundayActive ||
+						mondayActive ||
+						tuesdayActive ||
+						wednesdayActive ||
+						thursdayActive ||
+						fridayActive ||
+						saturdayActive) && (
+						<div className="mt-4">
+							<h2 className="flex justify-center text-xl font-medium">
+								Workouts
+							</h2>
+							<div className="m-2 flex justify-center rounded-md bg-lime-300 ">
+								<button
+									className="flex w-full justify-center"
+									type="button"
+									onClick={() =>
+										void handlePlusButtonClicked()
+									}
+								>
+									<PlusIcon />
+								</button>
+							</div>
 						</div>
-					</div>
+					)}
+
+					{/* Workouts set to be saved Section */}
+					{newWorkoutData.length !== 0 && (
+						<div className="mx-2 max-h-64 overflow-y-auto rounded-md shadow-md sm:rounded-lg">
+							<table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+								<tbody>
+									{newWorkoutData &&
+										newWorkoutData.map((workout) => (
+											<tr
+												key={workout.exerciseId}
+												className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600"
+											>
+												<th
+													scope="row"
+													className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+												>
+													{
+														exercisesData?.find(
+															(exercise) =>
+																exercise.id ===
+																workout.exerciseId,
+														)?.name
+													}
+												</th>
+												<td className="grid grid-cols-2 px-6 py-4 text-right">
+													<button
+														className="ml-4 h-6 w-6  rounded-full pl-1"
+														onClick={() =>
+															handleTrashCanClicked()
+														}
+													>
+														<TrashCanIcon
+															heightValue={'6'}
+															widthValue={'6'}
+														></TrashCanIcon>
+													</button>
+												</td>
+											</tr>
+										))}
+								</tbody>
+							</table>
+						</div>
+					)}
 
 					{dataChangeInForm ? (
 						<div className="mt-4 grid grid-cols-2 gap-1">
