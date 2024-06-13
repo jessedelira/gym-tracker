@@ -67,7 +67,7 @@ model Workout {
   id         String   @id @default(cuid())
   reps       Int
   sets       Int
-  weightLbs     Int
+  weightLbs  Int
   exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
   exerciseId String   @map("exercise_id")
   session    Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
