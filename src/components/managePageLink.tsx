@@ -4,17 +4,20 @@ interface ManagePageLinkProps {
 	href: string;
 	title: string;
 	description: string;
+	dataTestId?: string;
 }
 
 const ManagePageLink: React.FC<ManagePageLinkProps> = ({
 	href,
 	title,
 	description,
+	dataTestId
 }) => {
 	return (
 		<Link
 			href={href}
 			className="rounded-md bg-gray-300 px-4 py-2 text-xl font-semibold text-white  "
+			data-testid={dataTestId}
 		>
 			<div className="flex">
 				<div className="w-90">

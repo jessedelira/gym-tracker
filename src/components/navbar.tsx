@@ -26,7 +26,7 @@ const NavBar: React.FC<NavBarProps> = () => {
 			</div>
 
 			<div className="mb-3 flex flex-row items-center justify-between gap-1">
-				<Link href="/manage" className="ml-3 rounded-full text-5xl">
+				<Link href="/manage" className="ml-3 rounded-full text-5xl" data-testid='manage-button'>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
