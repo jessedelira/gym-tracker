@@ -66,13 +66,6 @@ export const workoutRouter = createTRPCRouter({
 	getCompiledWorkoutsOfTheDay: protectedProcedure
 		.input(z.object({ userId: z.string(), clientCurrentDate: z.date() }))
 		.query(async ({ input }) => {
-			/**
-			 * Steps to get the compiled workouts of the day
-			 * 1. Using the userId, find the active routine
-			 * 2. Using the active routine, find the sessions on that routine
-			 * 3. Given the date value form the client , find the session that matches the day of the week given
-			 * 4. If more than one session create a larger workout list using both of those
-			 */
 			const dayMap = [
 				'sunday',
 				'monday',
@@ -89,7 +82,6 @@ export const workoutRouter = createTRPCRouter({
 					isActive: true,
 				},
 			});
-			console.log('active routine found:', activeRoutine);
 
 			if (!activeRoutine) {
 				return null;
@@ -109,10 +101,6 @@ export const workoutRouter = createTRPCRouter({
 					workouts: true,
 				},
 			});
-			console.log(
-				'sessions on active routine found:',
-				sessionsOnActiveRoutine,
-			);
 
 			if (sessionsOnActiveRoutine.length === 0) {
 				return null;
