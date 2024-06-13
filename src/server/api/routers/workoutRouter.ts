@@ -62,4 +62,66 @@ export const workoutRouter = createTRPCRouter({
 			});
 			return createdWorkouts;
 		}),
+
+	getCompiledWorkoutsOfTheDay: protectedProcedure
+		.input(z.object({ userId: z.string(), clientCurrentDate: z.date() }))
+		.query(async ({ input }) => {
+			/**
+			 * Steps to get the compiled workouts of the day
+			 * 1. Using the userId, find the active routine
+			 * 2. Using the active routine, find the sessions on that routine
+			 * 3. Given the date value form the client , find the session that matches the day of the week given
+			 * 4. If more than one session create a larger workout list using both of those
+			 */
+			const dayMap = [
+				'sunday',
+				'monday',
+				'tuesday',
+				'wednesday',
+				'thursday',
+				'friday',
+				'saturday',
+			];
+
+			const activeRoutine = await prisma.routine.findFirst({
+				where: {
+					userId: input.userId,
+					isActive: true,
+				},
+			});
+			console.log('active routine found:', activeRoutine);
+
+			if (!activeRoutine) {
+				return null;
+			}
+
+			const sessionsOnActiveRoutine = await prisma.session.findMany({
+				where: {
+					routineId: activeRoutine.id,
+					days: {
+						some: {
+							day: dayMap[input.clientCurrentDate.getDay()],
+						},
+					},
+				},
+				include: {
+					days: true,
+					workouts: true,
+				},
+			});
+			console.log(
+				'sessions on active routine found:',
+				sessionsOnActiveRoutine,
+			);
+
+			if (sessionsOnActiveRoutine.length === 0) {
+				return null;
+			}
+
+			const workoutList = sessionsOnActiveRoutine.map((session) => {
+				return session.workouts;
+			});
+
+			return workoutList.flat();
+		}),
 });

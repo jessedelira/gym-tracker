@@ -26,6 +26,17 @@ on session.id = session_days_active.session_id
 where session.name LIKE 'hi';
 
 
+-- get a list of all sessions that are related to a active routine
+select *
+from routine
+left join session
+on routine.id = session.routine_id
+left join session_days_active
+on session.id = session_days_active.session_id
+where routine.is_active = true;
+
+
+
 -- get a session with all related workouts
 select *
 from session
