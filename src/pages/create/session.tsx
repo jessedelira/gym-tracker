@@ -18,6 +18,7 @@ interface CreateWorkoutData {
 	weightLbs: number;
 	reps: number;
 	sets: number;
+	id: number;
 }
 
 const Session: NextPage = () => {
@@ -34,6 +35,7 @@ const Session: NextPage = () => {
 	const [thursdayActive, setThursdayActive] = useState(false);
 	const [fridayActive, setFridayActive] = useState(false);
 	const [saturdayActive, setSaturdayActive] = useState(false);
+	const [workoutId, setWorkoutId] = useState(1);
 
 	const router = useRouter();
 
@@ -110,6 +112,8 @@ const Session: NextPage = () => {
 
 	const handleCancelClicked = () => {
 		setDataChangeInForm(false);
+		// TODO: Add a modal to confirm cancel and push back to manage/sessions
+		void router.push('/manage/sessions');
 	};
 
 	const handlePlusButtonClicked = () => {
@@ -144,8 +148,11 @@ const Session: NextPage = () => {
 		element?.classList.toggle('text-white');
 	};
 
-	const handleTrashCanClicked = () => {
-		console.log('Trash can clicked');
+	const handleTrashCanClicked = (id: number) => {
+		const newWorkoutDataFiltered = newWorkoutData.filter(
+			(workout) => workout.id !== id,
+		);
+		setNewWorkoutData(newWorkoutDataFiltered);
 	};
 
 	const handleModalSaveClicked = (
@@ -159,10 +166,12 @@ const Session: NextPage = () => {
 			weightLbs: weightLbs,
 			sets: sets,
 			reps: reps,
+			id: workoutId,
 		};
 
 		setNewWorkoutData([...newWorkoutData, newWorkout]);
 
+		setWorkoutId(workoutId + 1);
 		setShowModal(false);
 	};
 
@@ -359,13 +368,17 @@ const Session: NextPage = () => {
 																exercise.id ===
 																workout.exerciseId,
 														)?.name
-													}
+													}{' '}
+													- {workout.sets} x{' '}
+													{workout.reps}
 												</th>
 												<td className="grid grid-cols-2 px-6 py-4 text-right">
 													<button
 														className="ml-4 h-6 w-6  rounded-full pl-1"
 														onClick={() =>
-															handleTrashCanClicked()
+															handleTrashCanClicked(
+																workout.id,
+															)
 														}
 													>
 														<TrashCanIcon
