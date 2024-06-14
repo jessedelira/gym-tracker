@@ -9,6 +9,8 @@ import Layout from '~/components/layout';
 const Home: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const router = useRouter();
+	const currentDate = new Date();
+
 	useEffect(() => {
 		if (status === 'unauthenticated') {
 			void router.push('/');
@@ -22,7 +24,10 @@ const Home: NextPage = () => {
 	return (
 		<Layout>
 			<div className="flex flex-col items-center justify-center">
-				<CurrentWorkoutDisplay></CurrentWorkoutDisplay>
+				<CurrentWorkoutDisplay
+					userId={sessionData.user.id}
+					currentDate={currentDate}
+				></CurrentWorkoutDisplay>
 			</div>
 		</Layout>
 	);

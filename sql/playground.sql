@@ -1,12 +1,7 @@
-select *
-from session;
-
-select *
-from user;
-
-
-delete from session
-where id = 'clw49gnog0007hej88oe5wyyg';
+-- get superuser id
+    select *
+    from user
+    where username = 'superuser';
 
 
 -- I want all of the sessions that are related to specific user and that are not connected to the current active routine
@@ -33,8 +28,7 @@ left join session
 on routine.id = session.routine_id
 left join session_days_active
 on session.id = session_days_active.session_id
-where routine.is_active = true;
-
+where routine.is_active = true and routine.user_id = 'clxdwza5y0000yvj767cykl92'
 
 
 -- get a session with all related workouts

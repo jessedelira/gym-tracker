@@ -1,10 +1,18 @@
 import { api } from '~/utils/api';
 
-const CurrentWorkoutDisplay: React.FC = () => {
+interface CurrentWorkoutDisplayProps {
+	userId: string;
+	currentDate: Date;
+}
+
+const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
+	userId,
+	currentDate,
+}) => {
 	const { data: compiledWorkouts } =
 		api.workout.getCompiledWorkoutsOfTheDay.useQuery({
-			userId: 'clw3v31uo00005hyignh0oukl',
-			clientCurrentDate: new Date(2024, 5, 14),
+			userId: userId,
+			clientCurrentDate: currentDate,
 		});
 
 	const { data: exercises } = api.exercise.getAllExercises.useQuery();
