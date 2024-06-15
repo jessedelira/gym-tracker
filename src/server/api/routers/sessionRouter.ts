@@ -125,4 +125,43 @@ export const sessionRouter = createTRPCRouter({
 				},
 			});
 		}),
+
+	getSessionsThatAreActiveOnDate: protectedProcedure
+		.input(
+			z.object({
+				userId: z.string(),
+				date: z.date(),
+			}),
+		)
+		.query(async ({ input }) => {
+			const dayMap = [
+				'sunday',
+				'monday',
+				'tuesday',
+				'wednesday',
+				'thursday',
+				'friday',
+				'saturday',
+			];
+
+			const sessions = await prisma.session.findMany({
+				select: {
+					id: true,
+					name: true,
+				},
+				where: {
+					userId: input.userId,
+					days: {
+						some: {
+							day: dayMap[input.date.getDay()],
+						},
+					},
+					routine: {
+						isActive: true,
+					},
+				},
+			});
+
+			return sessions;
+		}),
 });

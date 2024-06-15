@@ -27,6 +27,7 @@ const Home: NextPage = () => {
 				<CurrentWorkoutDisplay
 					userId={sessionData.user.id}
 					currentDate={currentDate}
+					userFirstName={sessionData.user.firstName ?? '🍉'}
 				></CurrentWorkoutDisplay>
 			</div>
 		</Layout>

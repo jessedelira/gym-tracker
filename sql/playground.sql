@@ -37,3 +37,7 @@ from session
 left join workout
 on session.id = workout.session_id
 where session.user_id = 'clx6v20pe0000k8dxf46pewgo'
+
+-- select all on active sessions
+select *
+from active_session;
