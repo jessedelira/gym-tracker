@@ -25,10 +25,12 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			userId: userId,
 			date: currentDate,
 		});
-	const { data: activeSessions } = api.activeSesssion.getActiveSessions.useQuery({
-		userId: userId,
-	});
-	const addActiveSessionMutation = api.activeSesssion.addActiveSession.useMutation();
+	const { data: activeSessions } =
+		api.activeSesssion.getActiveSessions.useQuery({
+			userId: userId,
+		});
+	const addActiveSessionMutation =
+		api.activeSesssion.addActiveSession.useMutation();
 
 	const handleCheckboxChange = (
 		event: React.ChangeEvent<HTMLInputElement>,
@@ -43,12 +45,9 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			userId: userId,
 			sessionId: sessionId,
 		});
-
-
 	};
 
 	useEffect(() => {
-
 		if (activeSessions && activeSessions.length > 0) {
 			setSessionHasStarted(true);
 		}
@@ -61,17 +60,19 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 					<h1 className="text-5xl font-medium">
 						Welcome {userFirstName}!
 					</h1>
-					{sessionsToStart && sessionsToStart?.length > 0 && (
+					{sessionsToStart &&
+						sessionsToStart?.length > 0 &&
 						sessionsToStart.map((session) => (
 							<button
 								key={session.id}
-								onClick={() => handleStartSessionClick(session.id)}
+								onClick={() =>
+									handleStartSessionClick(session.id)
+								}
 								className="text-whitetext-lg mt-64 rounded bg-green-500 p-4"
 							>
 								Start Session : {session.name}
 							</button>
-						))
-					)}
+						))}
 				</div>
 			) : (
 				<div className="mt-8">

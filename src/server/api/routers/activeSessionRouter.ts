@@ -32,16 +32,18 @@ export const activeSessionRouter = createTRPCRouter({
 			return createdActiveSession;
 		}),
 
-	getActiveSessions: protectedProcedure.input(
-		z.object({
-			userId: z.string(),
+	getActiveSessions: protectedProcedure
+		.input(
+			z.object({
+				userId: z.string(),
+			}),
+		)
+		.query(async ({ input }) => {
+			const activeSessions = await prisma.activeSession.findMany({
+				where: {
+					userId: input.userId,
+				},
+			});
+			return activeSessions;
 		}),
-	).query(async ({ input }) => {
-		const activeSessions = await prisma.activeSession.findMany({
-			where: {
-				userId: input.userId,
-			},
-		});
-		return activeSessions;
-	}),
 });
