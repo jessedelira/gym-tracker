@@ -66,7 +66,7 @@ const Manage: NextPage = () => {
 								description="A routine is a collection of
 								sessions that you do in a single
 								week."
-								dataTestId='manage-page-link'
+								dataTestId="manage-page-link"
 							/>
 							<ManagePageLink
 								href="/manage/sessions"

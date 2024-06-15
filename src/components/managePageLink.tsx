@@ -11,7 +11,7 @@ const ManagePageLink: React.FC<ManagePageLinkProps> = ({
 	href,
 	title,
 	description,
-	dataTestId
+	dataTestId,
 }) => {
 	return (
 		<Link
