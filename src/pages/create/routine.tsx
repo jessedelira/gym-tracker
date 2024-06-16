@@ -82,6 +82,7 @@ const Routine: NextPage = () => {
 										placeholder="Name"
 										onChange={handleInputChange}
 										required
+										data-testid="routine-name-input"
 									></input>
 								</div>
 							</div>
@@ -95,6 +96,7 @@ const Routine: NextPage = () => {
 									placeholder="Description"
 									onChange={handleInputChange}
 									required
+									data-testid="routine-desc-input"
 								></textarea>
 							</div>
 
@@ -103,6 +105,7 @@ const Routine: NextPage = () => {
 									<button
 										className="ml-2 rounded-md bg-green-700 px-4 py-2 text-white"
 										type="submit"
+										data-testid="routine-submit-button"
 									>
 										Save
 									</button>

@@ -80,6 +80,7 @@ const Routines: NextPage = () => {
 							<Link
 								href="/create/routine"
 								className="mr-2 h-7 w-7 flex-none"
+								data-testid="create-routine-button"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -125,6 +126,7 @@ const Routines: NextPage = () => {
 											<tr
 												key={routine.id}
 												className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600"
+												data-testid={`routine-row-${routine.name}`}
 											>
 												<th
 													scope="row"

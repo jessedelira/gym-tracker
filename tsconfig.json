@@ -30,6 +30,6 @@
 		"**/*.tsx",
 		"**/*.cjs",
 		"**/*.mjs"
-	],
+, "cypress/e2e/getToLandingPage.cy.ts"	],
 	"exclude": ["node_modules"]
 }
