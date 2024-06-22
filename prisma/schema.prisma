@@ -8,10 +8,6 @@ datasource db {
   relationMode = "foreignKeys"
 }
 
-// Notes:
-// String types is limited to 191 characters when using MySQL
-// When changing Prisma schema, make sure to restart your server, if you get errors that don't make sense
-
 model User {
   id               String             @id @default(cuid())
   dateCreated      DateTime           @default(now()) @map("date_created")

@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import { api } from '~/utils/api';
+import HomePageSessionCard from './homePageSessionCard';
 
 interface CurrentWorkoutDisplayProps {
 	userId: string;
 	currentDate: Date;
-	userFirstName: string;
 }
 
 const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	userId,
 	currentDate,
-	userFirstName,
 }) => {
+	// TODO: if you have multiple session that are possible you will need to query the completed sessions and compare vs active so you know which one to show as completed for the day
+
 	const [sessionHasStarted, setSessionHasStarted] = useState(false);
 
 	const { data: compiledWorkouts } =
@@ -57,21 +58,17 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		<div>
 			{!sessionHasStarted ? (
 				<div className="flex flex-col  justify-center">
-					<h1 className="text-5xl font-medium">
-						Welcome {userFirstName}!
-					</h1>
 					{sessionsToStart &&
 						sessionsToStart?.length > 0 &&
 						sessionsToStart.map((session) => (
-							<button
+							<HomePageSessionCard
 								key={session.id}
-								onClick={() =>
+								sessionName={session.name}
+								sessionDescription={session.description ?? ''}
+								handleStartButtonClick={() =>
 									handleStartSessionClick(session.id)
 								}
-								className="text-whitetext-lg mt-64 rounded bg-green-500 p-4"
-							>
-								Start Session : {session.name}
-							</button>
+							></HomePageSessionCard>
 						))}
 				</div>
 			) : (

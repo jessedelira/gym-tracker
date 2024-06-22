@@ -41,3 +41,7 @@ where session.user_id = 'clx6v20pe0000k8dxf46pewgo'
 -- select all on active sessions
 select *
 from active_session;
+
+-- delete specific session in active sessions
+delete from active_session
+where id = 'clxphaw0p000112z1dfq85ob2';

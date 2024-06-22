@@ -148,6 +148,7 @@ export const sessionRouter = createTRPCRouter({
 				select: {
 					id: true,
 					name: true,
+					description: true,
 				},
 				where: {
 					userId: input.userId,
