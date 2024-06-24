@@ -1,8 +1,6 @@
-import { act, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { api } from '~/utils/api';
 import HomePageSessionCard from './homePageSessionCard';
-import Spinner from './Spinner';
-import { useRouter } from 'next/router';
 
 // TODO: if you have multiple session that are possible you will need to query the completed sessions and compare vs active so you know which one to show as completed for the day
 
@@ -133,7 +131,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 					<h1 className="text-2xl">
 						Active Session: {activeSession?.session.name}
 					</h1>
-					<div className="flex justify-center flex-col ">
+					<div className="flex flex-col justify-center ">
 						<ul>
 							{compiledWorkouts &&
 								exercises &&
