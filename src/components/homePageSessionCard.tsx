@@ -12,7 +12,7 @@ const HomePageSessionCard: React.FC<HomePageSessionCardProps> = ({
 	return (
 		<section className="bg-muted w-full py-12 md:py-24 lg:py-32">
 			<div className="container grid grid-cols-1 gap-6 px-4 md:grid-cols-3 md:px-6">
-				<div className="overflow-hidden rounded-lg border-2">
+				<div className="min-w-80 overflow-hidden rounded-lg border-2">
 					<div className="p-4">
 						<h3 className="text-xl font-bold">{sessionName}</h3>
 						<p className="text-muted-foreground">

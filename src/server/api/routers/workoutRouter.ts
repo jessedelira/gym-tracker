@@ -106,41 +106,36 @@ export const workoutRouter = createTRPCRouter({
 				return null;
 			}
 
-			// TODO: Time this to see what is faster
-			// const activeRoutine = await prisma.routine.findFirst({
-			// 	where: {
-			// 		userId: input.userId,
-			// 		isActive: true,
-			// 	},
-			// 	include: {
-			// 		sessions: {
-			// 			where: {
-			// 				days: {
-			// 					some: {
-			// 						day: dayMap[
-			// 							input.clientCurrentDate.getDay()
-			// 						],
-			// 					},
-			// 				},
-			// 			},
-			// 			include: {
-			// 				days: true,
-			// 				workouts: true,
-			// 			},
-			// 		},
-			// 	},
-			// });
-
-			// if (!activeRoutine) {
-			// 	return null;
-			// }
-
-			// const sessionsOnActiveRoutine = activeRoutine.sessions;
-
 			const workoutList = sessionsOnActiveRoutine.map((session) => {
 				return session.workouts;
 			});
 
 			return workoutList.flat();
+		}),
+
+	setWorkoutAsCompleted: protectedProcedure
+		.input(z.object({ workoutId: z.string() }))
+		.mutation(async ({ input }) => {
+			await prisma.workout.update({
+				where: {
+					id: input.workoutId,
+				},
+				data: {
+					isCompletedOnActiveSession: true,
+				},
+			});
+		}),
+
+	setWorkoutAsNotCompleted: protectedProcedure
+		.input(z.object({ workoutId: z.string() }))
+		.mutation(async ({ input }) => {
+			await prisma.workout.update({
+				where: {
+					id: input.workoutId,
+				},
+				data: {
+					isCompletedOnActiveSession: false,
+				},
+			});
 		}),
 });

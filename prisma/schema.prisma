@@ -20,7 +20,6 @@ model User {
   workouts         Workout[]
   CompletedSession CompletedSession[]
   ActiveSession    ActiveSession[]
-  ActiveWorkout    ActiveWorkout[]
 
   @@map("user")
 }
@@ -65,17 +64,17 @@ model SessionDaysActive {
 }
 
 model Workout {
-  id            String          @id @default(cuid())
-  reps          Int
-  sets          Int
-  weightLbs     Int
-  exercise      Exercise        @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
-  exerciseId    String          @map("exercise_id")
-  session       Session         @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  sessionId     String          @map("session_id")
-  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId        String          @map("user_id")
-  ActiveWorkout ActiveWorkout[]
+  id                         String   @id @default(cuid())
+  reps                       Int
+  sets                       Int
+  weightLbs                  Int
+  isCompletedOnActiveSession Boolean  @default(false) @map("is_completed_on_active_session")
+  exercise                   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  exerciseId                 String   @map("exercise_id")
+  session                    Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sessionId                  String   @map("session_id")
+  user                       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                     String   @map("user_id")
 
   @@map("workout")
 }
@@ -89,24 +88,13 @@ model Exercise {
   @@map("exercise")
 }
 
-model ActiveWorkout {
+model ActiveSession {
   id        String   @id @default(cuid())
-  createdAt DateTime @default(now()) @map("created_at")
-  workout   Workout  @relation(fields: [workoutId], references: [id], onDelete: Cascade)
-  workoutId String   @map("workout_id")
+  startedAt DateTime @default(now()) @map("started_at")
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sessionId String   @map("session_id")
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String   @map("user_id")
-
-  @@map("active_workout")
-}
-
-model ActiveSession {
-  id        String  @id @default(cuid()) 
-  startedAt DateTime @default(now()) @map("started_at")
-  session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  sessionId String  @map("session_id")
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String  @map("user_id")
 
   @@map("active_session")
 }
