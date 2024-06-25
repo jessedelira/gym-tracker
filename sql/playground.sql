@@ -4,10 +4,7 @@
     where username = 'superuser';
 
 
--- find workouts that are related to a specific session
-select *
-from workout
-where session_id = 'clxs06mt20005xq09q7qa5r8k'
+
 
 select *
 from session;
@@ -46,6 +43,12 @@ left join workout
 on session.id = workout.session_id
 where session.user_id = 'clx6v20pe0000k8dxf46pewgo'
 
+
+
+-- find workouts that are related to a specific session
+select *
+from workout
+where session_id = 'clxs06mt20005xq09q7qa5r8k'
 -- select all on active sessions
 select *
 from active_session;
@@ -57,3 +60,6 @@ where id = 'clxs9l8sd0026xq09st37jmf2';
 select *
 from workout
 where session_id = 'clxrzpbrl0008102ikebt1nro';
+
+select *
+from completed_session;

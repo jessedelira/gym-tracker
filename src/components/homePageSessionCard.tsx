@@ -10,7 +10,7 @@ const HomePageSessionCard: React.FC<HomePageSessionCardProps> = ({
 	handleStartButtonClick,
 }) => {
 	return (
-		<section className="bg-muted w-full py-12 md:py-24 lg:py-32">
+		<section className="bg-muted w-full py-5 md:py-24 lg:py-32">
 			<div className="container grid grid-cols-1 gap-6 px-4 md:grid-cols-3 md:px-6">
 				<div className="min-w-80 overflow-hidden rounded-lg border-2">
 					<div className="p-4">

@@ -63,19 +63,9 @@ export const workoutRouter = createTRPCRouter({
 			return createdWorkouts;
 		}),
 
-	getCompiledWorkoutsOfTheDay: protectedProcedure
+	getWorkoutsForActiveSession: protectedProcedure
 		.input(z.object({ userId: z.string(), clientCurrentDate: z.date() }))
 		.query(async ({ input }) => {
-			const dayMap = [
-				'sunday',
-				'monday',
-				'tuesday',
-				'wednesday',
-				'thursday',
-				'friday',
-				'saturday',
-			];
-
 			const activeRoutine = await prisma.routine.findFirst({
 				where: {
 					userId: input.userId,
@@ -87,30 +77,20 @@ export const workoutRouter = createTRPCRouter({
 				return null;
 			}
 
-			const sessionsOnActiveRoutine = await prisma.session.findMany({
+			const sessionOnActiveRoutine = await prisma.session.findFirst({
 				where: {
 					routineId: activeRoutine.id,
-					days: {
-						some: {
-							day: dayMap[input.clientCurrentDate.getDay()],
-						},
-					},
 				},
 				include: {
-					days: true,
 					workouts: true,
 				},
 			});
 
-			if (sessionsOnActiveRoutine.length === 0) {
+			if (!sessionOnActiveRoutine) {
 				return null;
 			}
 
-			const workoutList = sessionsOnActiveRoutine.map((session) => {
-				return session.workouts;
-			});
-
-			return workoutList.flat();
+			return sessionOnActiveRoutine.workouts;
 		}),
 
 	setWorkoutAsCompleted: protectedProcedure
