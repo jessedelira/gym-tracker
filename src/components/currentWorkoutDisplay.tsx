@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '~/utils/api';
 import HomePageSessionCard from './homePageSessionCard';
-import { Workout } from '@prisma/client';
-import router from 'next/router';
-import { set } from 'zod';
+import { type Workout } from '@prisma/client';
 
 
 // TODO: if you have multiple session that are possible you will need to query the completed sessions and compare vs active so you know which one to show as completed for the day
