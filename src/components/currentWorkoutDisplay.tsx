@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { api } from '~/utils/api';
 import HomePageSessionCard from './homePageSessionCard';
 import { type Workout } from '@prisma/client';
-
+import { useRouter } from 'next/router';
 
 // TODO: if you have multiple session that are possible you will need to query the completed sessions and compare vs active so you know which one to show as completed for the day
 
@@ -15,26 +15,31 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	userId,
 	currentDate,
 }) => {
+	const router = useRouter();
+
 	// State
 	const [allWorkoutsCompleted, setAllWorkoutsCompleted] = useState(false);
 	const [sessionHasStarted, setSessionHasStarted] = useState(false);
-	const [activeSession, setActiveSession] = useState<({
-		session: {
-			id: string;
-			createdAt: Date;
-			name: string;
-			description: string | null;
-			routineId: string | null;
-			userId: string;
-		};
-	} & {
-		id: string;
-		startedAt: Date;
-		sessionId: string;
-		userId: string;
-	}) | null>(null);
-	const [workoutsForActiveSessionState, setWorkoutsForActiveSessionState] = useState<
-	Workout[]>([]);
+	const [activeSession, setActiveSession] = useState<
+		| ({
+				session: {
+					id: string;
+					createdAt: Date;
+					name: string;
+					description: string | null;
+					routineId: string | null;
+					userId: string;
+				};
+		  } & {
+				id: string;
+				startedAt: Date;
+				sessionId: string;
+				userId: string;
+		  })
+		| null
+	>(null);
+	const [workoutsForActiveSessionState, setWorkoutsForActiveSessionState] =
+		useState<Workout[]>([]);
 
 	// Queries
 	const { data: activeSessionData } =
@@ -84,24 +89,23 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			),
 		);
 
-		
-			
-		const allWorkoutsCompleted = workoutsForActiveSessionState?.every((workout) => {
-			console.log('workout', workout)
-			if(workout.isCompletedOnActiveSession){
-				console.log('here 1')
-				return workout.isCompletedOnActiveSession;
-			} else if(workout.id === workoutId){ 
-				console.log('here 2')
-				return true;
-			} else {
-				console.log('here 3')
-				return false;
-			}
-			});
-		console.log('value of allWorkoutsCompleted', allWorkoutsCompleted)
+		const allWorkoutsCompleted = workoutsForActiveSessionState?.every(
+			(workout) => {
+				console.log('workout', workout);
+				if (workout.isCompletedOnActiveSession) {
+					console.log('here 1');
+					return workout.isCompletedOnActiveSession;
+				} else if (workout.id === workoutId) {
+					console.log('here 2');
+					return true;
+				} else {
+					console.log('here 3');
+					return false;
+				}
+			},
+		);
+		console.log('value of allWorkoutsCompleted', allWorkoutsCompleted);
 		setAllWorkoutsCompleted(allWorkoutsCompleted ?? false);
-		
 	};
 
 	const handleStartSessionClick = (sessionId: string) => {
@@ -133,21 +137,21 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				},
 			},
 		);
-		// void router.push('/home')
-
+		void router.push('/home')
 	};
 
 	useEffect(() => {
-		console.log('at the start of useEffect ---------')
-		console.log('activeSession', activeSession)
-		console.log('activeSessionData', activeSessionData)
-		console.log('sessionHasStarted', sessionHasStarted)
-		console.log('allWorkoutsCompleted', allWorkoutsCompleted)
-		if (activeSessionData && allWorkoutsCompleted === false) {
+		console.log('at the start of useEffect ---------');
+		console.log('activeSession', activeSession);
+		console.log('activeSessionData', activeSessionData);
+		console.log('sessionHasStarted', sessionHasStarted);
+		console.log('allWorkoutsCompleted', allWorkoutsCompleted);
+		if (activeSessionData && allWorkoutsCompleted === true) {
 			setSessionHasStarted(true);
 			setActiveSession(activeSessionData);
+			
 		}
-		
+
 		if (workoutsForActiveSession) {
 			setWorkoutsForActiveSessionState(workoutsForActiveSession);
 			workoutsForActiveSession.forEach((workout) => {
@@ -159,12 +163,17 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				}
 			});
 		}
-
-	}, [workoutsForActiveSession, sessionHasStarted, allWorkoutsCompleted, activeSessionData, activeSession]);
+	}, [
+		workoutsForActiveSession,
+		sessionHasStarted,
+		allWorkoutsCompleted,
+		activeSessionData,
+		activeSession,
+	]);
 
 	return (
 		<div>
-			{(activeSession === null) && sessionHasStarted === false ? (
+			{activeSession === null && sessionHasStarted === false ? (
 				sessionsToStart?.length === 0 ? (
 					<h1 className="flex justify-center font-medium">
 						No sessions for today 🎉
@@ -230,14 +239,14 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 							</ul>
 						</div>
 						<div className="flex justify-center">
-							{allWorkoutsCompleted && 
+							{allWorkoutsCompleted && (
 								<button
 									className="rounded bg-lime-300 p-3 font-medium"
 									onClick={handleCompleteSessionClick}
 								>
 									Complete Session
 								</button>
-							}
+							)}
 						</div>
 					</div>
 				</div>
