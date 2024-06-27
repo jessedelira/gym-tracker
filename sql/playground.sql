@@ -48,18 +48,15 @@ where session.user_id = 'clx6v20pe0000k8dxf46pewgo'
 -- find workouts that are related to a specific session
 select *
 from workout
-where session_id = 'clxs06mt20005xq09q7qa5r8k'
+where user_id ='clxs025pk0000f4z916c457x7';
 -- select all on active sessions
 select *
 from active_session;
--- delete specific session in active sessions
-delete from active_session
-where id = 'clxs9l8sd0026xq09st37jmf2';
 
--- get workouts
+
 select *
 from workout
-where session_id = 'clxrzpbrl0008102ikebt1nro';
+where session_id = 'clxs06mt20005xq09q7qa5r8k';
 
 select *
 from completed_session;

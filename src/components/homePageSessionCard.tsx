@@ -1,7 +1,7 @@
 interface HomePageSessionCardProps {
 	sessionName: string;
 	sessionDescription: string;
-	handleStartButtonClick?: () => void;
+	handleStartButtonClick?: () => Promise<void>;
 }
 
 const HomePageSessionCard: React.FC<HomePageSessionCardProps> = ({

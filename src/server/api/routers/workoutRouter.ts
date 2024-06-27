@@ -64,7 +64,13 @@ export const workoutRouter = createTRPCRouter({
 		}),
 
 	getWorkoutsForActiveSession: protectedProcedure
-		.input(z.object({ userId: z.string(), clientCurrentDate: z.date() }))
+		.input(
+			z.object({
+				userId: z.string(),
+				clientCurrentDate: z.date(),
+				sessionId: z.string(),
+			}),
+		)
 		.query(async ({ input }) => {
 			const activeRoutine = await prisma.routine.findFirst({
 				where: {
@@ -80,6 +86,7 @@ export const workoutRouter = createTRPCRouter({
 			const sessionOnActiveRoutine = await prisma.session.findFirst({
 				where: {
 					routineId: activeRoutine.id,
+					id: input.sessionId,
 				},
 				include: {
 					workouts: true,
