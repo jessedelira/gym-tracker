@@ -16,6 +16,29 @@ const SignUp: NextPage = () => {
 	const createUserMutation = api.user.createUser.useMutation();
 	const [showModal, setShowModal] = useState(false);
 
+	const emojiMoods = [
+		{
+			emojiId: 1,
+			emoji: '🙂',
+		},
+		{
+			emojiId: 2,
+			emoji: '🥲',
+		},
+		{
+			emojiId: 3,
+			emoji: '😡',
+		},
+		{
+			emojiId: 4,
+			emoji: '🤠',
+		},
+		{
+			emojiId: 5,
+			emoji: '🐶'
+		}
+	];
+
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
@@ -23,6 +46,8 @@ const SignUp: NextPage = () => {
 		const password = getPasswordInputElement(document).value;
 		const firstName = getFirstNameInputElement(document).value;
 		const lastName = getLastNameInputElement(document).value;
+		const emojiMood = (document.getElementById('emoji-mood') as HTMLSelectElement).value;
+
 
 		createUserMutation.mutate(
 			{
@@ -30,6 +55,7 @@ const SignUp: NextPage = () => {
 				password: password,
 				firstName: firstName,
 				lastName: lastName,
+				emojiMood: emojiMood,
 			},
 			{
 				onSuccess: () => {
@@ -74,6 +100,22 @@ const SignUp: NextPage = () => {
 							id="lastName"
 							className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 						/>
+						<label className="text-black">
+							How are you feeling today?
+						</label>
+						<select
+							id="emoji-mood"
+							required
+							className="rounded-md bg-gray-300  py-2 text-black"
+						>
+							{emojiMoods
+								? emojiMoods?.map((emoji) => (
+										<option key={emoji.emojiId} value={emoji.emoji}>
+											{emoji.emoji}
+										</option>
+								  ))
+								: null}
+						</select>
 
 						<button
 							className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"

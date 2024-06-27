@@ -15,6 +15,7 @@ model User {
   password         String
   firstName        String             @map("first_name")
   lastName         String             @map("last_name")
+  emojiMood        String            @map("emoji_mood")
   routines         Routine[]
   sessions         Session[]
   workouts         Workout[]

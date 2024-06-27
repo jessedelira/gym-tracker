@@ -60,3 +60,8 @@ where session_id = 'clxs06mt20005xq09q7qa5r8k';
 
 select *
 from completed_session;
+
+SELECT *  character_set_name
+
+
+select * from user;

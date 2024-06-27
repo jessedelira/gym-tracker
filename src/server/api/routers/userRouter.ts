@@ -22,6 +22,7 @@ export const userRouter = createTRPCRouter({
 				password: z.string(),
 				firstName: z.string(),
 				lastName: z.string(),
+				emojiMoode: z.string()
 			}),
 		)
 		.mutation(async ({ input }) => {
