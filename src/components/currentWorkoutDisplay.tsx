@@ -129,22 +129,16 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	};
 
 	const handleCompleteSessionClick = async () => {
-		await createCompletedSessionMutation.mutateAsync(
-			{
-				userId: userId,
-				sessionId: activeSessionData?.session.id ?? '',
-			},
-			{
-				onSuccess: () => {
-					setSessionHasStarted(false);
-					setActiveSession(null);
-					setAllWorkoutsCompleted(false);
-					setWorkoutsForActiveSessionState([]);
-				},
-			},
-		);
+		await createCompletedSessionMutation.mutateAsync({
+			userId: userId,
+			sessionId: activeSessionData?.session.id ?? '',
+		});
 		await refetch();
 		await refetchWorkoutsForActiveSession();
+		setActiveSession(null);
+		setSessionHasStarted(false);
+		setAllWorkoutsCompleted(false);
+		setWorkoutsForActiveSessionState([]);
 	};
 
 	const handleCompleteSessionClickWrapper = () => {
