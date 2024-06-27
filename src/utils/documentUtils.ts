@@ -94,43 +94,7 @@ export const getSaturdaySelectInputElement = (
 	return saturday as HTMLInputElement;
 };
 
-export const getDaysSelected = (document: Document) => {
-	const daysSelected: string[] = [];
-
-	const newSundaySelect = getSundaySelectInputElement(document).checked;
-	const newMondaySelect = getMondaySelectInputElement(document).checked;
-	const newTuesdaySelect = getTuesdaySelectInputElement(document).checked;
-	const newWednesdaySelect = getWednesdaySelectInputElement(document).checked;
-	const newThursdaySelect = getThursdaySelectInputElement(document).checked;
-	const newFridaySelect = getFridaySelectInputElement(document).checked;
-	const newSaturdaySelect = getSaturdaySelectInputElement(document).checked;
-
-	if (newSundaySelect) {
-		daysSelected.push('sunday');
-	}
-	if (newMondaySelect) {
-		daysSelected.push('monday');
-	}
-	if (newTuesdaySelect) {
-		daysSelected.push('tuesday');
-	}
-	if (newWednesdaySelect) {
-		daysSelected.push('wednesday');
-	}
-	if (newThursdaySelect) {
-		daysSelected.push('thursday');
-	}
-	if (newFridaySelect) {
-		daysSelected.push('friday');
-	}
-	if (newSaturdaySelect) {
-		daysSelected.push('saturday');
-	}
-
-	return daysSelected;
-};
-
-// workout utils
+// create workout modal utils
 export const getExerciseInputElement = (doc: Document): HTMLInputElement => {
 	const exerciseSelect = doc.getElementById('exerciseId');
 	return exerciseSelect as HTMLInputElement;

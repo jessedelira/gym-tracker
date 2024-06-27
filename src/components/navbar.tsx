@@ -1,9 +1,8 @@
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
-import type NavBarProps from '~/interfaces/navBarProps';
 import ClockIcon from './icons/clockIcon';
 
-const NavBar: React.FC<NavBarProps> = () => {
+const NavBar: React.FC = () => {
 	return (
 		<nav className="sticky bottom-0 flex h-[7rem] w-full flex-row items-center justify-between border-t-2 border-t-black bg-white">
 			<div className="mb-3 flex flex-row items-center justify-between gap-1">

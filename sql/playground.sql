@@ -1,13 +1,13 @@
+-- get superuser id
+    select *
+    from user
+    where username = 'superuser';
+
+
+
+
 select *
 from session;
-
-select *
-from user;
-
-
-delete from session
-where id = 'clw49gnog0007hej88oe5wyyg';
-
 
 -- I want all of the sessions that are related to specific user and that are not connected to the current active routine
 select *
@@ -24,3 +24,39 @@ from session
 left join session_days_active
 on session.id = session_days_active.session_id
 where session.name LIKE 'hi';
+
+
+-- get a list of all sessions that are related to a active routine
+select *
+from routine
+left join session
+on routine.id = session.routine_id
+left join session_days_active
+on session.id = session_days_active.session_id
+where routine.is_active = true and routine.user_id = 'clxdwza5y0000yvj767cykl92'
+
+
+-- get a session with all related workouts
+select *
+from session
+left join workout
+on session.id = workout.session_id
+where session.user_id = 'clx6v20pe0000k8dxf46pewgo'
+
+
+
+-- find workouts that are related to a specific session
+select *
+from workout
+where user_id ='clxs025pk0000f4z916c457x7';
+-- select all on active sessions
+select *
+from active_session;
+
+
+select *
+from workout
+where session_id = 'clxs06mt20005xq09q7qa5r8k';
+
+select *
+from completed_session;

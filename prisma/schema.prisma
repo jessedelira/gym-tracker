@@ -8,20 +8,18 @@ datasource db {
   relationMode = "foreignKeys"
 }
 
-// Notes:
-// String types is limited to 191 characters when using MySQL
-// When changing Prisma schema, make sure to restart your server, if you get errors that don't make sense
-
 model User {
-  id          String    @id @default(cuid())
-  dateCreated DateTime  @default(now()) @map("date_created")
-  username    String    @unique
-  password    String
-  firstName   String    @map("first_name")
-  lastName    String    @map("last_name")
-  routines    Routine[]
-  sessions    Session[]
-  workouts    Workout[]
+  id               String             @id @default(cuid())
+  dateCreated      DateTime           @default(now()) @map("date_created")
+  username         String             @unique
+  password         String
+  firstName        String             @map("first_name")
+  lastName         String             @map("last_name")
+  routines         Routine[]
+  sessions         Session[]
+  workouts         Workout[]
+  CompletedSession CompletedSession[]
+  ActiveSession    ActiveSession[]
 
   @@map("user")
 }
@@ -40,16 +38,18 @@ model Routine {
 }
 
 model Session {
-  id          String              @id @default(cuid())
-  createdAt   DateTime            @default(now()) @map("created_at")
-  name        String
-  description String?
-  workouts    Workout[]
-  routine     Routine?            @relation(fields: [routineId], references: [id], onDelete: Cascade)
-  routineId   String?             @map("routine_id")
-  days        SessionDaysActive[]
-  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String              @map("user_id")
+  id               String              @id @default(cuid())
+  createdAt        DateTime            @default(now()) @map("created_at")
+  name             String
+  description      String?
+  workouts         Workout[]
+  routine          Routine?            @relation(fields: [routineId], references: [id], onDelete: Cascade)
+  routineId        String?             @map("routine_id")
+  days             SessionDaysActive[]
+  user             User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String              @map("user_id")
+  CompletedSession CompletedSession[]
+  ActiveSession    ActiveSession[]
 
   @@map("session")
 }
@@ -64,16 +64,17 @@ model SessionDaysActive {
 }
 
 model Workout {
-  id         String   @id @default(cuid())
-  reps       Int
-  sets       Int
-  weight     Int
-  exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
-  exerciseId String   @map("exercise_id")
-  session    Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  sessionId  String   @map("session_id")
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String   @map("user_id")
+  id                         String   @id @default(cuid())
+  reps                       Int
+  sets                       Int
+  weightLbs                  Int
+  isCompletedOnActiveSession Boolean  @default(false) @map("is_completed_on_active_session")
+  exercise                   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  exerciseId                 String   @map("exercise_id")
+  session                    Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sessionId                  String   @map("session_id")
+  user                       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                     String   @map("user_id")
 
   @@map("workout")
 }
@@ -85,4 +86,28 @@ model Exercise {
   workouts    Workout[]
 
   @@map("exercise")
+}
+
+model ActiveSession {
+  id        String   @id @default(cuid())
+  startedAt DateTime @default(now()) @map("started_at")
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sessionId String   @map("session_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @map("user_id")
+
+  @@map("active_session")
+}
+
+model CompletedSession {
+  id                  String   @id @default(cuid())
+  startedAt           DateTime @map("started_at")
+  completedAt         DateTime @default(now()) @map("completed_at")
+  percentageCompleted Int      @map("percentage_completed")
+  session             Session  @relation(fields: [sessionId], references: [id])
+  sessionId           String   @map("session_id")
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId              String   @map("user_id")
+
+  @@map("completed_session")
 }

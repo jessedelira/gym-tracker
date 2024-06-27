@@ -24,17 +24,19 @@ const SignUp: NextPage = () => {
 		const firstName = getFirstNameInputElement(document).value;
 		const lastName = getLastNameInputElement(document).value;
 
-		const createUserData = {
-			username: username,
-			password: password,
-			firstName: firstName,
-			lastName: lastName,
-		};
-		createUserMutation.mutate(createUserData, {
-			onSuccess: () => {
-				setShowModal(true);
+		createUserMutation.mutate(
+			{
+				username: username,
+				password: password,
+				firstName: firstName,
+				lastName: lastName,
 			},
-		});
+			{
+				onSuccess: () => {
+					setShowModal(true);
+				},
+			},
+		);
 	};
 
 	return (

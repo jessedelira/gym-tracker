@@ -3,7 +3,7 @@ import { type Session as AuthSession } from 'next-auth'; // duplicate identifier
 import React, { type FormEvent, useState, useEffect } from 'react';
 import { api } from '~/utils/api';
 import { getSessionIdInputElement } from '~/utils/documentUtils';
-import TrashCanIcon from './icons/trashCanIcon';
+import MiniTrashCanIcon from './icons/miniTrashCanIcon';
 import { Days } from '~/common/days.enum';
 
 interface RoutineManagerProps {
@@ -346,7 +346,7 @@ const RoutineManagerComponent: React.FC<RoutineManagerProps> = ({
 											)
 										}
 									>
-										<TrashCanIcon></TrashCanIcon>
+										<MiniTrashCanIcon></MiniTrashCanIcon>
 									</button>
 								</div>
 							</div>

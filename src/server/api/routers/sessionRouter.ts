@@ -13,7 +13,6 @@ export const sessionRouter = createTRPCRouter({
 			}),
 		)
 		.mutation(async ({ input }) => {
-			// Create a new session
 			const createdSession = await prisma.session.create({
 				data: {
 					name: input.name,
@@ -115,5 +114,55 @@ export const sessionRouter = createTRPCRouter({
 				});
 
 			return sessionsNotAddedToActiveRoutine;
+		}),
+
+	deleteSession: protectedProcedure
+		.input(z.object({ sessionId: z.string() }))
+		.mutation(async ({ input }) => {
+			await prisma.session.delete({
+				where: {
+					id: input.sessionId,
+				},
+			});
+		}),
+
+	getSessionsThatAreActiveOnDate: protectedProcedure
+		.input(
+			z.object({
+				userId: z.string(),
+				date: z.date(),
+			}),
+		)
+		.query(async ({ input }) => {
+			const dayMap = [
+				'sunday',
+				'monday',
+				'tuesday',
+				'wednesday',
+				'thursday',
+				'friday',
+				'saturday',
+			];
+
+			const sessions = await prisma.session.findMany({
+				select: {
+					id: true,
+					name: true,
+					description: true,
+				},
+				where: {
+					userId: input.userId,
+					days: {
+						some: {
+							day: dayMap[input.date.getDay()],
+						},
+					},
+					routine: {
+						isActive: true,
+					},
+				},
+			});
+
+			return sessions;
 		}),
 });
