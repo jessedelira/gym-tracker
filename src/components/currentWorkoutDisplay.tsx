@@ -39,13 +39,14 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 
 	const {
 		data: activeSessionData,
-		isLoading,
+		isLoading: activeSessionDataIsLoading,
 		refetch,
 	} = api.activeSesssion.getActiveSession.useQuery({
 		userId: userId,
 	});
 	const {
 		data: workoutsForActiveSession,
+		isLoading: workoutsForActiveSessionIsLoading,
 		refetch: refetchWorkoutsForActiveSession,
 	} = api.workout.getWorkoutsForActiveSession.useQuery({
 		userId: userId,
@@ -102,7 +103,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		);
 
 		setAllWorkoutsCompleted(allWorkoutsCompleted ?? false);
-		await refetchWorkoutsForActiveSession();
+		// await refetchWorkoutsForActiveSession();
 	};
 
 	const handleCheckboxChangeWrapper = (
@@ -134,7 +135,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			sessionId: activeSessionData?.session.id ?? '',
 		});
 		await refetch();
-		await refetchWorkoutsForActiveSession();
+		// await refetchWorkoutsForActiveSession(); // TODO: this is being called since we are changing the checkboxes
 		setActiveSession(null);
 		setSessionHasStarted(false);
 		setAllWorkoutsCompleted(false);
@@ -167,13 +168,12 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			(workout) => workout.isCompletedOnActiveSession,
 		);
 		setAllWorkoutsCompleted(areAllWorkoutsCompleted ?? false);
+		console.log('--------------------------------------------------')
+
 	}, [
 		workoutsForActiveSession,
-		sessionHasStarted,
-		allWorkoutsCompleted,
 		activeSessionData,
 		activeSession,
-		workoutsForActiveSessionState,
 	]);
 
 	return (
@@ -205,7 +205,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 						</div>
 					) : (
 						<div>
-							{isLoading ? (
+							{activeSessionDataIsLoading === null && workoutsForActiveSessionIsLoading == null && exerciseList === null ? (
 								<Spinner />
 							) : (
 								<div className="mt-8">
@@ -216,9 +216,9 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 									<div className="grid grid-cols-1">
 										<div className="flex justify-center ">
 											<ul>
-												{workoutsForActiveSessionState &&
+												{workoutsForActiveSession &&
 													exerciseList &&
-													workoutsForActiveSessionState.map(
+													workoutsForActiveSession.map(
 														(workout) => (
 															<li
 																key={workout.id}
@@ -231,9 +231,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 																	}
 																	className="mr-2 h-5 w-5 rounded"
 																	onChange={
-																		handleCheckboxChangeWrapper
-																	}
-																	onSelect={
 																		handleCheckboxChangeWrapper
 																	}
 																/>
