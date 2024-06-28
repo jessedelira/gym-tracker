@@ -47,7 +47,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	const {
 		data: workoutsForActiveSession,
 		isLoading: workoutsForActiveSessionIsLoading,
-		refetch: refetchWorkoutsForActiveSession,
 	} = api.workout.getWorkoutsForActiveSession.useQuery({
 		userId: userId,
 		clientCurrentDate: currentDate,
