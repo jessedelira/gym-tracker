@@ -15,7 +15,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 }) => {
 	const [allWorkoutsCompleted, setAllWorkoutsCompleted] = useState(false);
 	const [sessionHasStarted, setSessionHasStarted] = useState(false);
-	// TODO: add proper types here Session & ActiveSession
 	const [activeSession, setActiveSession] = useState<
 		| ({
 				session: {
@@ -38,20 +37,22 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		useState<Workout[]>([]);
 
 	const {
+		data: workoutsForActiveSession,
+		isLoading: workoutsForActiveSessionIsLoading,
+		refetch: refetchWorkoutsForActiveSession,
+	} = api.workout.getWorkoutsForActiveSession.useQuery({
+		userId: userId,
+		clientCurrentDate: currentDate,
+		sessionId: activeSession?.session.id ?? '',
+	});
+	const {
 		data: activeSessionData,
 		isLoading: activeSessionDataIsLoading,
 		refetch,
 	} = api.activeSesssion.getActiveSession.useQuery({
 		userId: userId,
 	});
-	const {
-		data: workoutsForActiveSession,
-		isLoading: workoutsForActiveSessionIsLoading,
-	} = api.workout.getWorkoutsForActiveSession.useQuery({
-		userId: userId,
-		clientCurrentDate: currentDate,
-		sessionId: activeSession?.session.id ?? '',
-	});
+
 	const { data: exerciseList } = api.exercise.getAllExercises.useQuery();
 	const { data: possibleSessionsToStart } =
 		api.session.getSessionsThatAreActiveOnDate.useQuery({
@@ -102,7 +103,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		);
 
 		setAllWorkoutsCompleted(allWorkoutsCompleted ?? false);
-		// await refetchWorkoutsForActiveSession();
+		await refetchWorkoutsForActiveSession();
 	};
 
 	const handleCheckboxChangeWrapper = (
@@ -134,7 +135,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			sessionId: activeSessionData?.session.id ?? '',
 		});
 		await refetch();
-		// await refetchWorkoutsForActiveSession(); // TODO: this is being called since we are changing the checkboxes
 		setActiveSession(null);
 		setSessionHasStarted(false);
 		setAllWorkoutsCompleted(false);
@@ -167,13 +167,8 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			(workout) => workout.isCompletedOnActiveSession,
 		);
 		setAllWorkoutsCompleted(areAllWorkoutsCompleted ?? false);
-		console.log('--------------------------------------------------')
-
-	}, [
-		workoutsForActiveSession,
-		activeSessionData,
-		activeSession,
-	]);
+		console.log('--------------------------------------------------');
+	}, [workoutsForActiveSession, activeSessionData, activeSession]);
 
 	return (
 		<div>
@@ -204,7 +199,9 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 						</div>
 					) : (
 						<div>
-							{activeSessionDataIsLoading === null && workoutsForActiveSessionIsLoading == null && exerciseList === null ? (
+							{activeSessionDataIsLoading === null &&
+							workoutsForActiveSessionIsLoading == null &&
+							exerciseList === null ? (
 								<Spinner />
 							) : (
 								<div className="mt-8">
