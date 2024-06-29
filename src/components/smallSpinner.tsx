@@ -4,7 +4,7 @@ const SmallSpinner: React.FC = () => {
 	return (
 		<div
 			role="status"
-			className="flex w-full items-center justify-center mt-80"
+			className="mt-80 flex w-full items-center justify-center"
 		>
 			<svg
 				aria-hidden="true"
