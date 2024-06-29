@@ -40,12 +40,18 @@ export const activeSessionRouter = createTRPCRouter({
 		)
 		.query(async ({ input }) => {
 			const activeSession = await prisma.activeSession.findFirst({
+				select: {
+					session: {
+						select: {
+							id: true,
+							name: true,
+						},
+					},
+				},
 				where: {
 					userId: input.userId,
 				},
-				include: {
-					session: true,
-				},
+			
 			});
 			return activeSession;
 		}),

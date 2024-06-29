@@ -16,22 +16,12 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	const [allWorkoutsCompleted, setAllWorkoutsCompleted] = useState(false);
 	const [sessionHasStarted, setSessionHasStarted] = useState(false);
 	const [activeSession, setActiveSession] = useState<
-		| ({
-				session: {
-					id: string;
-					createdAt: Date;
-					name: string;
-					description: string | null;
-					routineId: string | null;
-					userId: string;
-				};
-		  } & {
+		| {
+			session: {
+				name: string;
 				id: string;
-				startedAt: Date;
-				sessionId: string;
-				userId: string;
-		  })
-		| null
+			};
+		} | null
 	>(null);
 	const [workoutsForActiveSessionState, setWorkoutsForActiveSessionState] =
 		useState<Workout[]>([]);
