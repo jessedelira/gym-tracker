@@ -72,25 +72,22 @@ export const workoutRouter = createTRPCRouter({
 			}),
 		)
 		.query(async ({ input }) => {
-			const sessionOnActiveRoutine = await prisma.session.findFirst({
+			
+
+			const workoutsOnActiveSession = await prisma.workout.findMany({
 				where: {
-					id: input.sessionId,
+					sessionId: input.sessionId,
 				},
 				include: {
-					workouts: {
-						include: {
-							exercise: true,
-						},
-						
-					},
+					exercise: true,
 				},
 			});
 
-			if (!sessionOnActiveRoutine) {
+			if (!workoutsOnActiveSession) {
 				return null;
 			}
 
-			return sessionOnActiveRoutine.workouts;
+			return workoutsOnActiveSession
 		}),
 
 	setWorkoutAsCompleted: protectedProcedure

@@ -36,8 +36,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	const [workoutsForActiveSessionState, setWorkoutsForActiveSessionState] =
 		useState<Workout[]>([]);
 
-	// TODO: instead of quering all the exercise put the exercise name in the workouts object request
-
 	const {
 		data: workoutsForActiveSession,
 		isLoading: workoutsForActiveSessionIsLoading,
@@ -190,7 +188,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 					{activeSession === null && sessionHasStarted === false ? (
 						<div className="flex flex-col justify-center">
 							{possibleSessionsToStart &&
-								possibleSessionsToStart?.length > 0 &&
 								possibleSessionsToStart.map((session) => (
 									<HomePageSessionCard
 										key={session.id}
