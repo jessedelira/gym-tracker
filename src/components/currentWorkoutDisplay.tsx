@@ -3,6 +3,7 @@ import { api } from '~/utils/api';
 import HomePageSessionCard from './homePageSessionCard';
 import { type Workout } from '@prisma/client';
 import Spinner from './Spinner';
+import SmallSpinner from './smallSpinner';
 
 interface CurrentWorkoutDisplayProps {
 	userId: string;
@@ -169,6 +170,11 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		setAllWorkoutsCompleted(areAllWorkoutsCompleted ?? false);
 		console.log('--------------------------------------------------');
 	}, [workoutsForActiveSession, activeSessionData, activeSession]);
+
+
+	if(activeSessionDataIsLoading || workoutsForActiveSessionIsLoading || exerciseList === null) {
+		return <SmallSpinner />;
+	}
 
 	return (
 		<div>
