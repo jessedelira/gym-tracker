@@ -54,8 +54,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	} = api.activeSesssion.getActiveSession.useQuery({
 		userId: userId,
 	});
-
-	const { data: exerciseList } = api.exercise.getAllExercises.useQuery();
 	const { data: possibleSessionsToStart } =
 		api.session.getSessionsThatAreActiveOnDate.useQuery({
 			userId: userId,
@@ -174,8 +172,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 
 	if (
 		activeSessionDataIsLoading ||
-		workoutsForActiveSessionIsLoading ||
-		exerciseList === null
+		workoutsForActiveSessionIsLoading 
 	) {
 		return <SmallSpinner />;
 	}
@@ -218,7 +215,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 									<div className="flex justify-center ">
 										<ul>
 											{workoutsForActiveSession &&
-												exerciseList &&
 												workoutsForActiveSession.map(
 													(workout) => (
 														<li
@@ -236,13 +232,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 															<div>
 																<p className="font-bold">
 																	{
-																		exerciseList.find(
-																			(
-																				exercise,
-																			) =>
-																				exercise.id ===
-																				workout.exerciseId,
-																		)?.name
+																		workout.exercise.name
 																	}
 																</p>
 																<p>

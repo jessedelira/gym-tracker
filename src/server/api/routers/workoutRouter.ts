@@ -77,7 +77,12 @@ export const workoutRouter = createTRPCRouter({
 					id: input.sessionId,
 				},
 				include: {
-					workouts: true,
+					workouts: {
+						include: {
+							exercise: true,
+						},
+						
+					},
 				},
 			});
 
