@@ -7,6 +7,7 @@ const config = {
 	arrowParens: 'always',
 	singleQuote: true,
 	trailingComma: 'all',
+	printWidth: 80,
 };
 
 module.exports = config;
