@@ -48,7 +48,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		date: currentDate,
 	});
 
-	const addActiveSessionMutation =
+	const {mutateAsync: addActiveSessionMutationAsync, isLoading: isLoadingActiveSessionMutationAsync} =
 		api.activeSesssion.addActiveSession.useMutation();
 	const setWorkoutAsCompletedMutation =
 		api.workout.setWorkoutAsCompleted.useMutation();
@@ -101,7 +101,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	};
 
 	const handleStartSessionClick = async (sessionId: string) => {
-		await addActiveSessionMutation.mutateAsync(
+		await addActiveSessionMutationAsync(
 			{
 				userId: userId,
 				sessionId: sessionId,
@@ -161,7 +161,8 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	if (
 		activeSessionDataIsLoading ||
 		workoutsForActiveSessionIsLoading ||
-		isPossibleSessionsToStartLoading
+		isPossibleSessionsToStartLoading ||
+		isLoadingActiveSessionMutationAsync
 	) {
 		return <SmallSpinner />;
 	}
