@@ -72,8 +72,6 @@ export const workoutRouter = createTRPCRouter({
 			}),
 		)
 		.query(async ({ input }) => {
-			
-
 			const workoutsOnActiveSession = await prisma.workout.findMany({
 				where: {
 					sessionId: input.sessionId,
@@ -87,7 +85,7 @@ export const workoutRouter = createTRPCRouter({
 				return null;
 			}
 
-			return workoutsOnActiveSession
+			return workoutsOnActiveSession;
 		}),
 
 	setWorkoutAsCompleted: protectedProcedure

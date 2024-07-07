@@ -51,7 +51,6 @@ export const activeSessionRouter = createTRPCRouter({
 				where: {
 					userId: input.userId,
 				},
-			
 			});
 			return activeSession;
 		}),
