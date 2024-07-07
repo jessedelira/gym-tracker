@@ -27,7 +27,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	const {
 		data: activeSessionData,
 		isLoading: activeSessionDataIsLoading,
-		refetch,
+		refetch: refetchActiveSessionData,
 	} = api.activeSesssion.getActiveSession.useQuery({
 		userId: userId,
 	});
@@ -114,7 +114,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				},
 			},
 		);
-		await refetch();
+		await refetchActiveSessionData();
 	};
 
 	const handleCompleteSessionClick = async () => {
@@ -122,7 +122,8 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			userId: userId,
 			sessionId: activeSessionData?.session.id ?? '',
 		});
-		await refetch();
+		await refetchActiveSessionData();
+		await refetchWorkoutsForActiveSession();
 		setActiveSession(null);
 		setSessionHasStarted(false);
 		setAllWorkoutsCompleted(false);
@@ -157,7 +158,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		setAllWorkoutsCompleted(areAllWorkoutsCompleted ?? false);
 	}, [workoutsForActiveSession, activeSessionData, activeSession]);
 
-	// anything is loading
 	if (
 		activeSessionDataIsLoading ||
 		workoutsForActiveSessionIsLoading ||
@@ -169,7 +169,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	return (
 		<div>
 			{/* If no session on on that day show this message */}
-			{possibleSessionsToStart?.length === 0 ? (
+			{possibleSessionsToStart && possibleSessionsToStart.length === 0 ? (
 				<h1 className="flex justify-center font-medium">
 					No sessions for today 🎉
 				</h1>
