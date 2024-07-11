@@ -15,12 +15,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 }) => {
 	const [allWorkoutsCompleted, setAllWorkoutsCompleted] = useState(false);
 	const [sessionHasStarted, setSessionHasStarted] = useState(false);
-	const [activeSession, setActiveSession] = useState<{
-		session: {
-			name: string;
-			id: string;
-		};
-	} | null>(null);
 	const [workoutsForActiveSessionState, setWorkoutsForActiveSessionState] =
 		useState<Workout[]>([]);
 
@@ -38,7 +32,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	} = api.workout.getWorkoutsForActiveSession.useQuery({
 		userId: userId,
 		clientCurrentDate: currentDate,
-		sessionId: activeSession?.session.id ?? '',
+		sessionId: activeSessionData?.session.id ?? '',
 	});
 	const {
 		data: possibleSessionsToStart,
@@ -48,8 +42,10 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		date: currentDate,
 	});
 
-	const {mutateAsync: addActiveSessionMutationAsync, isLoading: isLoadingActiveSessionMutationAsync} =
-		api.activeSesssion.addActiveSession.useMutation();
+	const {
+		mutateAsync: addActiveSessionMutationAsync,
+		isLoading: isLoadingActiveSessionMutationAsync,
+	} = api.activeSesssion.addActiveSession.useMutation();
 	const setWorkoutAsCompletedMutation =
 		api.workout.setWorkoutAsCompleted.useMutation();
 	const setWorkoutAsNotCompletedMutation =
@@ -91,7 +87,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		);
 
 		setAllWorkoutsCompleted(allWorkoutsCompleted ?? false);
-		await refetchWorkoutsForActiveSession();
+		// await refetchWorkoutsForActiveSession();
 	};
 
 	const handleCheckboxChangeWrapper = (
@@ -122,9 +118,12 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			userId: userId,
 			sessionId: activeSessionData?.session.id ?? '',
 		});
-		await refetchActiveSessionData();
-		await refetchWorkoutsForActiveSession();
-		setActiveSession(null);
+		await Promise.all([
+			refetchActiveSessionData(),
+			refetchWorkoutsForActiveSession(),
+		]);
+		// await refetchActiveSessionData();
+		// await refetchWorkoutsForActiveSession();
 		setSessionHasStarted(false);
 		setAllWorkoutsCompleted(false);
 		setWorkoutsForActiveSessionState([]);
@@ -135,11 +134,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	};
 
 	useEffect(() => {
-		if (activeSessionData && !activeSession) {
-			setSessionHasStarted(true);
-			setActiveSession(activeSessionData);
-		}
-
 		if (workoutsForActiveSession) {
 			setWorkoutsForActiveSessionState(workoutsForActiveSession);
 			workoutsForActiveSession.forEach((workout) => {
@@ -151,12 +145,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				}
 			});
 		}
-
-		const areAllWorkoutsCompleted = workoutsForActiveSession?.every(
-			(workout) => workout.isCompletedOnActiveSession,
-		);
-		setAllWorkoutsCompleted(areAllWorkoutsCompleted ?? false);
-	}, [workoutsForActiveSession, activeSessionData, activeSession]);
+	}, [workoutsForActiveSession]);
 
 	if (
 		activeSessionDataIsLoading ||
@@ -177,7 +166,8 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			) : (
 				<div>
 					{/* If activeSession state is null and the sessionHasStarted is false show the cards for possible sessions */}
-					{activeSession === null && sessionHasStarted === false ? (
+					{activeSessionData === null &&
+					sessionHasStarted === false ? (
 						<div className="flex flex-col justify-center">
 							{possibleSessionsToStart &&
 								possibleSessionsToStart.map((session) => (
@@ -198,7 +188,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 							<div className="mt-8">
 								<h1 className="font-bold">
 									Current Workout Session:{' '}
-									{activeSession?.session.name ?? ''}
+									{activeSessionData?.session.name ?? ''}
 								</h1>
 								<div className="grid grid-cols-1">
 									{workoutsForActiveSession &&

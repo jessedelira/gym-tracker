@@ -156,6 +156,7 @@ const seedExercises = async () => {
 			},
 		});
 	}
+	await prisma.$disconnect();
 };
 
 export default seedExercises;

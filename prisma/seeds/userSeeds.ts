@@ -22,6 +22,7 @@ const seedUsers = async () => {
 			},
 		});
 	}
+	await prisma.$disconnect();
 };
 
 export default seedUsers;
