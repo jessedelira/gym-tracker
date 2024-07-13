@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from '~/utils/api';
 import HomePageSessionCard from './homePageSessionCard';
-import { type Workout } from '@prisma/client';
 import SmallSpinner from './smallSpinner';
 
 interface CurrentWorkoutDisplayProps {
@@ -15,9 +14,8 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 }) => {
 	const [allWorkoutsCompleted, setAllWorkoutsCompleted] = useState(false);
 	const [sessionHasStarted, setSessionHasStarted] = useState(false);
-	const [workoutsForActiveSessionState, setWorkoutsForActiveSessionState] =
-		useState<Workout[]>([]);
 
+	//#region Queries
 	const {
 		data: activeSessionData,
 		isLoading: activeSessionDataIsLoading,
@@ -41,7 +39,9 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		userId: userId,
 		date: currentDate,
 	});
+	//#endregion
 
+	//#region Mutations
 	const {
 		mutateAsync: addActiveSessionMutationAsync,
 		isLoading: isLoadingActiveSessionMutationAsync,
@@ -52,13 +52,13 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		api.workout.setWorkoutAsNotCompleted.useMutation();
 	const createCompletedSessionMutation =
 		api.completedSession.createCompletedSession.useMutation();
+	//#endregion
 
 	const handleCheckboxChange = async (
 		event: React.ChangeEvent<HTMLInputElement>,
 	) => {
 		const workoutId = event.target.id;
 		const isNowChecked = event.target.checked;
-
 		if (isNowChecked) {
 			await setWorkoutAsCompletedMutation.mutateAsync({ workoutId });
 		} else {
@@ -66,19 +66,13 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			event.target.removeAttribute('checked');
 		}
 
-		setWorkoutsForActiveSessionState((prev) =>
-			prev.map((workout) =>
-				workout.id === workoutId
-					? { ...workout, isCompletedOnActiveSession: isNowChecked }
-					: workout,
-			),
-		);
+		if (!workoutsForActiveSession) return;
 
-		const allWorkoutsCompleted = workoutsForActiveSessionState?.every(
+		const allWorkoutsCompleted = workoutsForActiveSession?.every(
 			(workout) => {
 				if (workout.isCompletedOnActiveSession) {
 					return workout.isCompletedOnActiveSession;
-				} else if (workout.id === workoutId) {
+				} else if (workout.id === workoutId && isNowChecked) {
 					return true;
 				} else {
 					return false;
@@ -86,8 +80,8 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			},
 		);
 
-		setAllWorkoutsCompleted(allWorkoutsCompleted ?? false);
-		// await refetchWorkoutsForActiveSession();
+		setAllWorkoutsCompleted(allWorkoutsCompleted);
+		void refetchWorkoutsForActiveSession();
 	};
 
 	const handleCheckboxChangeWrapper = (
@@ -106,7 +100,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				onSuccess: () => {
 					setSessionHasStarted(true);
 					setAllWorkoutsCompleted(false);
-					setWorkoutsForActiveSessionState([]);
 				},
 			},
 		);
@@ -122,11 +115,8 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			refetchActiveSessionData(),
 			refetchWorkoutsForActiveSession(),
 		]);
-		// await refetchActiveSessionData();
-		// await refetchWorkoutsForActiveSession();
 		setSessionHasStarted(false);
 		setAllWorkoutsCompleted(false);
-		setWorkoutsForActiveSessionState([]);
 	};
 
 	const handleCompleteSessionClickWrapper = () => {
@@ -135,7 +125,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 
 	useEffect(() => {
 		if (workoutsForActiveSession) {
-			setWorkoutsForActiveSessionState(workoutsForActiveSession);
 			workoutsForActiveSession.forEach((workout) => {
 				if (workout.isCompletedOnActiveSession) {
 					const checkbox = document.getElementById(workout.id);
@@ -144,6 +133,12 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 					}
 				}
 			});
+
+			// check to see if all workoutsForActiveSession are completed to setstate
+			const allWorkoutsCompleted = workoutsForActiveSession.every(
+				(workout) => workout.isCompletedOnActiveSession,
+			);
+			setAllWorkoutsCompleted(allWorkoutsCompleted);
 		}
 	}, [workoutsForActiveSession]);
 
@@ -156,16 +151,59 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		return <SmallSpinner />;
 	}
 
+	const workoutCard = (
+		workout: {
+			exercise: {
+				id: string;
+				name: string;
+				description: string | null;
+			};
+		} & {
+			id: string;
+			reps: number;
+			sets: number;
+			weightLbs: number;
+			isCompletedOnActiveSession: boolean;
+			exerciseId: string;
+			sessionId: string;
+			userId: string;
+		},
+	) => (
+		<div
+			key={workout.id}
+			className="mt-4 w-80 overflow-hidden rounded-lg bg-[#f5f5f5] shadow-lg"
+		>
+			<div className="p-6 md:p-8">
+				<div className="mb-4 flex items-center justify-between">
+					<h3 className="text-lg font-semibold">
+						{workout.exercise.name}
+					</h3>
+					<div className="flex items-center">
+						<input
+							type="checkbox"
+							id={workout.id}
+							className="text-primary focus:ring-primary h-4 w-4 rounded border-gray-300"
+							onChange={handleCheckboxChangeWrapper}
+						/>
+					</div>
+				</div>
+				<div className="grid grid-cols-2 gap-3 text-sm text-[#666666]">
+					<div>Reps: {workout.reps}</div>
+					<div className="text-right">Sets: {workout.sets}</div>
+					<div>Weight: {workout.weightLbs} lbs</div>
+				</div>
+			</div>
+		</div>
+	);
+
 	return (
 		<div>
-			{/* If no session on on that day show this message */}
 			{possibleSessionsToStart && possibleSessionsToStart.length === 0 ? (
 				<h1 className="flex justify-center font-medium">
 					No sessions for today 🎉
 				</h1>
 			) : (
 				<div>
-					{/* If activeSession state is null and the sessionHasStarted is false show the cards for possible sessions */}
 					{activeSessionData === null &&
 					sessionHasStarted === false ? (
 						<div className="flex flex-col justify-center">
@@ -180,6 +218,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 										handleStartButtonClick={() =>
 											handleStartSessionClick(session.id)
 										}
+										isCompleted={false}
 									></HomePageSessionCard>
 								))}
 						</div>
@@ -193,59 +232,13 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 								<div className="grid grid-cols-1">
 									{workoutsForActiveSession &&
 										workoutsForActiveSession.map(
-											(workout) => (
-												<div
-													key={workout.id}
-													className="mt-4 w-80 overflow-hidden rounded-lg bg-[#f5f5f5] shadow-lg"
-												>
-													<div className="p-6 md:p-8">
-														<div className="mb-4 flex items-center justify-between">
-															<h3 className="text-lg font-semibold">
-																{
-																	workout
-																		.exercise
-																		.name
-																}
-															</h3>
-															<div className="flex items-center">
-																<input
-																	type="checkbox"
-																	id={
-																		workout.id
-																	}
-																	className="text-primary focus:ring-primary h-4 w-4 rounded border-gray-300"
-																	onChange={
-																		handleCheckboxChangeWrapper
-																	}
-																/>
-															</div>
-														</div>
-														<div className="grid grid-cols-2 gap-3 text-sm text-[#666666]">
-															<div>
-																Reps:{' '}
-																{workout.reps}
-															</div>
-															<div className="text-right">
-																Sets:{' '}
-																{workout.sets}
-															</div>
-															<div>
-																Weight:{' '}
-																{
-																	workout.weightLbs
-																}{' '}
-																lbs
-															</div>
-														</div>
-													</div>
-												</div>
-											),
+											(workout) => workoutCard(workout),
 										)}
 
 									<div className="flex justify-center">
 										{allWorkoutsCompleted && (
 											<button
-												className="rounded bg-lime-300 p-3 font-medium"
+												className="mt-8 rounded-md bg-lime-300 p-3 font-medium"
 												onClick={
 													handleCompleteSessionClickWrapper
 												}
