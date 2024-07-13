@@ -2,12 +2,14 @@ interface HomePageSessionCardProps {
 	sessionName: string;
 	sessionDescription: string;
 	handleStartButtonClick?: () => Promise<void>;
+	isCompleted: boolean | undefined;
 }
 
 const HomePageSessionCard: React.FC<HomePageSessionCardProps> = ({
 	sessionName,
 	sessionDescription,
 	handleStartButtonClick,
+	isCompleted,
 }) => {
 	return (
 		<section className="bg-muted w-full py-5 md:py-24 lg:py-32">
@@ -19,12 +21,22 @@ const HomePageSessionCard: React.FC<HomePageSessionCardProps> = ({
 							{sessionDescription}
 						</p>
 						<div className="mt-4">
-							<button
-								onClick={handleStartButtonClick}
-								className="bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-ring inline-flex h-9 items-center justify-center rounded-md bg-blue-400 px-4 py-2 text-sm font-medium shadow transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
-							>
-								Start
-							</button>
+							{isCompleted ? (
+								<button
+									onClick={handleStartButtonClick}
+									className="bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-ring inline-flex h-9 items-center justify-center rounded-md bg-blue-300 px-4 py-2 text-sm font-medium shadow transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
+									disabled
+								>
+									Completed 🎉
+								</button>
+							) : (
+								<button
+									onClick={handleStartButtonClick}
+									className="bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-ring inline-flex h-9 items-center justify-center rounded-md bg-blue-400 px-4 py-2 text-sm font-medium shadow transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
+								>
+									Start
+								</button>
+							)}
 						</div>
 					</div>
 				</div>
