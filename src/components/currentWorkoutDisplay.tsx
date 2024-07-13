@@ -17,12 +17,30 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 
 	//#region Queries
 	const {
+		data: possibleSessionsToStart,
+		isLoading: isPossibleSessionsToStartLoading,
+	} = api.session.getSessionsThatAreActiveOnDate.useQuery({
+		userId: userId,
+		date: currentDate,
+	});
+
+	const {
 		data: activeSessionData,
 		isLoading: activeSessionDataIsLoading,
 		refetch: refetchActiveSessionData,
 	} = api.activeSesssion.getActiveSession.useQuery({
 		userId: userId,
 	});
+	const {
+		data: listOfCompletedSessionIdsForActiveRoutine,
+		isLoading: isListOfCompletedSessionIdsForActiveRoutineLoading,
+		refetch: refetchListOfCompletedSessionIdsForActiveRoutine,
+	} = api.completedSession.getListOfÇompletedSessionIdsForActiveRoutine.useQuery(
+		{
+			userId: userId,
+			currentDate: currentDate,
+		},
+	);
 	const {
 		data: workoutsForActiveSession,
 		isLoading: workoutsForActiveSessionIsLoading,
@@ -31,13 +49,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		userId: userId,
 		clientCurrentDate: currentDate,
 		sessionId: activeSessionData?.session.id ?? '',
-	});
-	const {
-		data: possibleSessionsToStart,
-		isLoading: isPossibleSessionsToStartLoading,
-	} = api.session.getSessionsThatAreActiveOnDate.useQuery({
-		userId: userId,
-		date: currentDate,
 	});
 	//#endregion
 
@@ -107,13 +118,16 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	};
 
 	const handleCompleteSessionClick = async () => {
+		if (!activeSessionData) return;
+
 		await createCompletedSessionMutation.mutateAsync({
 			userId: userId,
-			sessionId: activeSessionData?.session.id ?? '',
+			sessionId: activeSessionData.session.id,
 		});
 		await Promise.all([
 			refetchActiveSessionData(),
 			refetchWorkoutsForActiveSession(),
+			refetchListOfCompletedSessionIdsForActiveRoutine(),
 		]);
 		setSessionHasStarted(false);
 		setAllWorkoutsCompleted(false);
@@ -146,6 +160,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		activeSessionDataIsLoading ||
 		workoutsForActiveSessionIsLoading ||
 		isPossibleSessionsToStartLoading ||
+		isListOfCompletedSessionIdsForActiveRoutineLoading ||
 		isLoadingActiveSessionMutationAsync
 	) {
 		return <SmallSpinner />;
@@ -218,7 +233,9 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 										handleStartButtonClick={() =>
 											handleStartSessionClick(session.id)
 										}
-										isCompleted={false}
+										isCompleted={listOfCompletedSessionIdsForActiveRoutine?.includes(
+											session.id,
+										)}
 									></HomePageSessionCard>
 								))}
 						</div>

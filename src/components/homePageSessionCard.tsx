@@ -2,7 +2,7 @@ interface HomePageSessionCardProps {
 	sessionName: string;
 	sessionDescription: string;
 	handleStartButtonClick?: () => Promise<void>;
-	isCompleted: boolean;
+	isCompleted: boolean | undefined;
 }
 
 const HomePageSessionCard: React.FC<HomePageSessionCardProps> = ({
