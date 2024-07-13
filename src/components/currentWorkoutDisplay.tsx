@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { api } from '~/utils/api';
 import HomePageSessionCard from './homePageSessionCard';
 import SmallSpinner from './smallSpinner';
+import JSConfetti from 'js-confetti';
+
 
 interface CurrentWorkoutDisplayProps {
 	userId: string;
@@ -12,6 +14,8 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	userId,
 	currentDate,
 }) => {
+	const jsConfetti = new JSConfetti();
+
 	const [allWorkoutsCompleted, setAllWorkoutsCompleted] = useState(false);
 	const [sessionHasStarted, setSessionHasStarted] = useState(false);
 
@@ -118,6 +122,13 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	};
 
 	const handleCompleteSessionClick = async () => {
+		void jsConfetti.addConfetti({
+			confettiRadius: 10,
+			confettiNumber: 250,
+			emojis: ['🎉', '🎊'],
+			emojiSize: 50
+		});
+
 		if (!activeSessionData) return;
 
 		await createCompletedSessionMutation.mutateAsync({
