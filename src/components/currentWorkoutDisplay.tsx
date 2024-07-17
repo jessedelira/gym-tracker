@@ -4,7 +4,6 @@ import HomePageSessionCard from './homePageSessionCard';
 import SmallSpinner from './smallSpinner';
 import JSConfetti from 'js-confetti';
 
-
 interface CurrentWorkoutDisplayProps {
 	userId: string;
 	currentDate: Date;
@@ -22,12 +21,12 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	//#region Queries
 	const {
 		data: possibleSessionsToStart,
+		isFetched: isPossibleSessionsToStartFetched,
 		isLoading: isPossibleSessionsToStartLoading,
 	} = api.session.getSessionsThatAreActiveOnDate.useQuery({
 		userId: userId,
 		date: currentDate,
 	});
-
 	const {
 		data: activeSessionData,
 		isLoading: activeSessionDataIsLoading,
@@ -37,6 +36,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	});
 	const {
 		data: listOfCompletedSessionIdsForActiveRoutine,
+		isFetched: isListOfCompletedSessionIdsForActiveRoutineLoadingFetched,
 		isLoading: isListOfCompletedSessionIdsForActiveRoutineLoading,
 		refetch: refetchListOfCompletedSessionIdsForActiveRoutine,
 	} = api.completedSession.getListOfÇompletedSessionIdsForActiveRoutine.useQuery(
@@ -48,6 +48,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	const {
 		data: workoutsForActiveSession,
 		isLoading: workoutsForActiveSessionIsLoading,
+		isFetched: isworkoutsForActiveSessionFetched,
 		refetch: refetchWorkoutsForActiveSession,
 	} = api.workout.getWorkoutsForActiveSession.useQuery({
 		userId: userId,
@@ -124,9 +125,9 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	const handleCompleteSessionClick = async () => {
 		void jsConfetti.addConfetti({
 			confettiRadius: 10,
-			confettiNumber: 250,
+			confettiNumber: 50,
 			emojis: ['🎉', '🎊'],
-			emojiSize: 50
+			emojiSize: 50,
 		});
 
 		if (!activeSessionData) return;
@@ -167,60 +168,19 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		}
 	}, [workoutsForActiveSession]);
 
+	// TODO: Add conditions so you don't see two spinners
 	if (
 		activeSessionDataIsLoading ||
 		workoutsForActiveSessionIsLoading ||
 		isPossibleSessionsToStartLoading ||
 		isListOfCompletedSessionIdsForActiveRoutineLoading ||
-		isLoadingActiveSessionMutationAsync
+		isLoadingActiveSessionMutationAsync ||
+		!isListOfCompletedSessionIdsForActiveRoutineLoadingFetched ||
+		!isPossibleSessionsToStartFetched ||
+		!isworkoutsForActiveSessionFetched
 	) {
 		return <SmallSpinner />;
 	}
-
-	const workoutCard = (
-		workout: {
-			exercise: {
-				id: string;
-				name: string;
-				description: string | null;
-			};
-		} & {
-			id: string;
-			reps: number;
-			sets: number;
-			weightLbs: number;
-			isCompletedOnActiveSession: boolean;
-			exerciseId: string;
-			sessionId: string;
-			userId: string;
-		},
-	) => (
-		<div
-			key={workout.id}
-			className="mt-4 w-80 overflow-hidden rounded-lg bg-[#f5f5f5] shadow-lg"
-		>
-			<div className="p-6 md:p-8">
-				<div className="mb-4 flex items-center justify-between">
-					<h3 className="text-lg font-semibold">
-						{workout.exercise.name}
-					</h3>
-					<div className="flex items-center">
-						<input
-							type="checkbox"
-							id={workout.id}
-							className="text-primary focus:ring-primary h-4 w-4 rounded border-gray-300"
-							onChange={handleCheckboxChangeWrapper}
-						/>
-					</div>
-				</div>
-				<div className="grid grid-cols-2 gap-3 text-sm text-[#666666]">
-					<div>Reps: {workout.reps}</div>
-					<div className="text-right">Sets: {workout.sets}</div>
-					<div>Weight: {workout.weightLbs} lbs</div>
-				</div>
-			</div>
-		</div>
-	);
 
 	return (
 		<div>
@@ -252,31 +212,78 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 						</div>
 					) : (
 						<div>
-							<div className="mt-8">
-								<h1 className="font-bold">
-									Current Workout Session:{' '}
-									{activeSessionData?.session.name ?? ''}
-								</h1>
-								<div className="grid grid-cols-1">
-									{workoutsForActiveSession &&
-										workoutsForActiveSession.map(
-											(workout) => workoutCard(workout),
+							{activeSessionData && workoutsForActiveSession && (
+								<div className="mt-8">
+									<h1 className="font-bold">
+										Current Workout Session:{' '}
+										{activeSessionData.session.name}
+									</h1>
+									<div className="grid grid-cols-1">
+										{workoutsForActiveSession.map(
+											(workout) => (
+												<div
+													key={workout.id}
+													className="mt-4 w-80 overflow-hidden rounded-lg bg-[#f5f5f5] shadow-lg"
+												>
+													<div className="p-6 md:p-8">
+														<div className="mb-4 flex items-center justify-between">
+															<h3 className="text-lg font-semibold">
+																{
+																	workout
+																		.exercise
+																		.name
+																}
+															</h3>
+															<div className="flex items-center">
+																<input
+																	type="checkbox"
+																	id={
+																		workout.id
+																	}
+																	className="text-primary h-4 w-4 rounded border-gray-300"
+																	onChange={
+																		handleCheckboxChangeWrapper
+																	}
+																/>
+															</div>
+														</div>
+														<div className="grid grid-cols-2 gap-3 text-sm text-[#666666]">
+															<div>
+																Reps:{' '}
+																{workout.reps}
+															</div>
+															<div className="text-right">
+																Sets:{' '}
+																{workout.sets}
+															</div>
+															<div>
+																Weight:{' '}
+																{
+																	workout.weightLbs
+																}{' '}
+																lbs
+															</div>
+														</div>
+													</div>
+												</div>
+											),
 										)}
 
-									<div className="flex justify-center">
-										{allWorkoutsCompleted && (
-											<button
-												className="mt-8 rounded-md bg-lime-300 p-3 font-medium"
-												onClick={
-													handleCompleteSessionClickWrapper
-												}
-											>
-												Complete Session
-											</button>
-										)}
+										<div className="flex justify-center">
+											{allWorkoutsCompleted && (
+												<button
+													className="mt-8 rounded-md bg-lime-300 p-3 font-medium"
+													onClick={
+														handleCompleteSessionClickWrapper
+													}
+												>
+													Complete Session
+												</button>
+											)}
+										</div>
 									</div>
 								</div>
-							</div>
+							)}
 						</div>
 					)}
 				</div>

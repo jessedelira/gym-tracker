@@ -20,6 +20,7 @@ model User {
   workouts         Workout[]
   CompletedSession CompletedSession[]
   ActiveSession    ActiveSession[]
+  UserPreferences  UserPreference[]
 
   @@map("user")
 }
@@ -110,4 +111,18 @@ model CompletedSession {
   userId              String   @map("user_id")
 
   @@map("completed_session")
+}
+
+model UserPreference {
+  id     String @id @default(cuid())
+  preference Preference @map("preference")
+  enabled Boolean @default(true)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
+
+  @@map("user_preference")
+}
+
+enum Preference {
+  CONFETTI_ON_SESSION_COMPLETION
 }
