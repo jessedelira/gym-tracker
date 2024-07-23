@@ -125,7 +125,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	const handleCompleteSessionClick = async () => {
 		void jsConfetti.addConfetti({
 			confettiRadius: 10,
-			confettiNumber: 50,
+			confettiNumber: 20,
 			emojis: ['🎉', '🎊'],
 			emojiSize: 50,
 		});
@@ -192,7 +192,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				<div>
 					{activeSessionData === null &&
 					sessionHasStarted === false ? (
-						<div className="hide-scrollbar max-h-[750px] overflow-auto">
+						<div className="hide-scrollbar max-h-[675px] overflow-auto">
 							{possibleSessionsToStart &&
 								possibleSessionsToStart.map((session) => (
 									<HomePageSessionCard

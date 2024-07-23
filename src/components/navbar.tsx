@@ -4,7 +4,7 @@ import ClockIcon from './icons/clockIcon';
 
 const NavBar: React.FC = () => {
 	return (
-		<nav className="sticky bottom-0 flex h-[7rem] w-full flex-row items-center justify-between border-t-2 border-t-black bg-white">
+		<nav className="sticky bottom-0 flex h-[7rem] w-full flex-row items-center justify-between bg-gray-300">
 			<div className="mb-3 flex flex-row items-center justify-between gap-1">
 				<Link href="/home" className="ml-3 rounded-full text-5xl">
 					<svg
