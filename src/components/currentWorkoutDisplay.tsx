@@ -192,7 +192,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				<div>
 					{activeSessionData === null &&
 					sessionHasStarted === false ? (
-						<div className="max-h-[750px] overflow-auto">
+						<div className="hide-scrollbar max-h-[750px] overflow-auto">
 							{possibleSessionsToStart &&
 								possibleSessionsToStart.map((session) => (
 									<HomePageSessionCard
@@ -268,22 +268,21 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 												</div>
 											),
 										)}
-
-										<div className="flex justify-center">
-											{allWorkoutsCompleted && (
-												<button
-													className="mt-8 rounded-md bg-lime-300 p-3 font-medium"
-													onClick={
-														handleCompleteSessionClickWrapper
-													}
-												>
-													Complete Session
-												</button>
-											)}
-										</div>
 									</div>
 								</div>
 							)}
+							<div className="flex justify-center">
+								{allWorkoutsCompleted && (
+									<button
+										className="mt-2 rounded-md bg-lime-300 p-3 font-medium"
+										onClick={
+											handleCompleteSessionClickWrapper
+										}
+									>
+										Complete Session
+									</button>
+								)}
+							</div>
 						</div>
 					)}
 				</div>
