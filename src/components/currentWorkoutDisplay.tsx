@@ -192,7 +192,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				<div>
 					{activeSessionData === null &&
 					sessionHasStarted === false ? (
-						<div className="flex flex-col justify-center">
+						<div className="max-h-[750px] overflow-auto">
 							{possibleSessionsToStart &&
 								possibleSessionsToStart.map((session) => (
 									<HomePageSessionCard
@@ -213,12 +213,12 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 					) : (
 						<div>
 							{activeSessionData && workoutsForActiveSession && (
-								<div className="mt-8">
+								<div>
 									<h1 className="font-bold">
 										Current Workout Session:{' '}
 										{activeSessionData.session.name}
 									</h1>
-									<div className="no-scrollbar grid max-h-[650px] grid-cols-1 overflow-auto rounded-md">
+									<div className="hide-scrollbar max-h-[650px] overflow-auto rounded-md ">
 										{workoutsForActiveSession.map(
 											(workout) => (
 												<div
