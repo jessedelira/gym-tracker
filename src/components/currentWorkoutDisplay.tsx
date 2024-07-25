@@ -70,6 +70,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		api.completedSession.createCompletedSession.useMutation();
 	//#endregion
 
+	//#region UI Handlers
 	const handleCheckboxChange = async (
 		event: React.ChangeEvent<HTMLInputElement>,
 	) => {
@@ -148,6 +149,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	const handleCompleteSessionClickWrapper = () => {
 		void handleCompleteSessionClick();
 	};
+	//#endregion
 
 	useEffect(() => {
 		if (workoutsForActiveSession) {
@@ -168,7 +170,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		}
 	}, [workoutsForActiveSession]);
 
-	// TODO: Add conditions so you don't see two spinners
 	if (
 		activeSessionDataIsLoading ||
 		workoutsForActiveSessionIsLoading ||
