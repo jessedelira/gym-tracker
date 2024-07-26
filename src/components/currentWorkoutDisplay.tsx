@@ -214,7 +214,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 					) : (
 						<>
 							{activeSessionData && workoutsForActiveSession && (
-								<div>
+								<>
 									<h1 className="font-bold">
 										Current Workout Session:{' '}
 										{activeSessionData.session.name}
@@ -270,12 +270,12 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 											),
 										)}
 									</div>
-								</div>
+								</>
 							)}
-							<div className="flex justify-center">
+							<div className="flex justify-center bg-purple-600 w-full rounded-tl-xl rounded-tr-xl">
 								{allWorkoutsCompleted && (
 									<button
-										className="mt-4 rounded-md bg-lime-300 p-3 font-medium"
+										className="my-2 rounded-md bg-pink-600 p-3 font-medium"
 										onClick={
 											handleCompleteSessionClickWrapper
 										}
