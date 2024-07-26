@@ -184,16 +184,16 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	}
 
 	return (
-		<div>
+		<>
 			{possibleSessionsToStart && possibleSessionsToStart.length === 0 ? (
 				<h1 className="flex justify-center font-medium">
 					No sessions for today 🎉
 				</h1>
 			) : (
-				<div>
+				<>
 					{activeSessionData === null &&
 					sessionHasStarted === false ? (
-						<div className="hide-scrollbar max-h-[675px] overflow-auto">
+						<div className="hide-scrollbar overflow-auto">
 							{possibleSessionsToStart &&
 								possibleSessionsToStart.map((session) => (
 									<HomePageSessionCard
@@ -212,14 +212,14 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 								))}
 						</div>
 					) : (
-						<div>
+						<>
 							{activeSessionData && workoutsForActiveSession && (
 								<div>
 									<h1 className="font-bold">
 										Current Workout Session:{' '}
 										{activeSessionData.session.name}
 									</h1>
-									<div className="hide-scrollbar max-h-[650px] overflow-auto rounded-md ">
+									<div className="hide-scrollbar h-full overflow-auto rounded-md">
 										{workoutsForActiveSession.map(
 											(workout) => (
 												<div
@@ -275,7 +275,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 							<div className="flex justify-center">
 								{allWorkoutsCompleted && (
 									<button
-										className="mt-2 rounded-md bg-lime-300 p-3 font-medium"
+										className="mt-4 rounded-md bg-lime-300 p-3 font-medium"
 										onClick={
 											handleCompleteSessionClickWrapper
 										}
@@ -284,11 +284,11 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 									</button>
 								)}
 							</div>
-						</div>
+						</>
 					)}
-				</div>
+				</>
 			)}
-		</div>
+		</>
 	);
 };
 
