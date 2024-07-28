@@ -272,10 +272,13 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 									</div>
 								</>
 							)}
-							<div className="flex w-full justify-center rounded-tl-xl rounded-tr-xl bg-purple-600">
+
+							<div className="flex-grow" />
+
+							<div className="flex w-full justify-center rounded-tl-xl rounded-tr-xl bg-black">
 								{allWorkoutsCompleted && (
 									<button
-										className="my-2 rounded-md bg-pink-600 p-3 font-medium"
+										className="my-2 rounded-md bg-lime-300 p-3 font-medium"
 										onClick={
 											handleCompleteSessionClickWrapper
 										}
