@@ -214,12 +214,12 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 					) : (
 						<>
 							{activeSessionData && workoutsForActiveSession && (
-								<div>
+								<>
 									<h1 className="font-bold">
 										Current Workout Session:{' '}
 										{activeSessionData.session.name}
 									</h1>
-									<div className="hide-scrollbar h-full overflow-auto rounded-md">
+									<div className="hide-scrollbar overflow-auto rounded-md">
 										{workoutsForActiveSession.map(
 											(workout) => (
 												<div
@@ -270,12 +270,15 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 											),
 										)}
 									</div>
-								</div>
+								</>
 							)}
-							<div className="flex justify-center">
+
+							<div className="flex-grow" />
+
+							<div className="flex w-full justify-center rounded-tl-xl rounded-tr-xl bg-black">
 								{allWorkoutsCompleted && (
 									<button
-										className="mt-4 rounded-md bg-lime-300 p-3 font-medium"
+										className="my-2 rounded-md bg-lime-300 p-3 font-medium"
 										onClick={
 											handleCompleteSessionClickWrapper
 										}
