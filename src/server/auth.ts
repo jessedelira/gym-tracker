@@ -10,6 +10,7 @@ import { prisma } from '~/server/db';
 import bcrypt from 'bcrypt';
 import Credentials from 'next-auth/providers/credentials';
 import { type AdapterUser } from 'next-auth/adapters';
+import { type UserPreference } from '@prisma/client';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -19,18 +20,7 @@ import { type AdapterUser } from 'next-auth/adapters';
  */
 declare module 'next-auth' {
 	interface Session extends DefaultSession {
-		user: {
-			id: string;
-			name?: string | null;
-			email?: string | null;
-			image?: string | null;
-			username?: string | null;
-			firstName?: string | null;
-			lastName?: string | null;
-			dateCreated?: Date | null;
-			// ...other properties
-			// role: UserRole;
-		};
+		user: User;
 		// expires: ISODateString;
 	}
 
@@ -43,6 +33,7 @@ declare module 'next-auth' {
 		firstName?: string | null;
 		lastName?: string | null;
 		dateCreated?: Date | null;
+		userPreferences?: UserPreference[];
 		// ...other properties
 		// role: UserRole;
 	}
@@ -117,10 +108,13 @@ export const authOptions: NextAuthOptions = {
 				},
 				password: { label: 'Password', type: 'password' },
 			},
-			async authorize(credentials) {
+			async authorize(credentials): Promise<User | null> {
 				const userFoundByUsername = await prisma.user.findUnique({
 					where: {
 						username: credentials?.username,
+					},
+					include: {
+						userPreferences: true,
 					},
 				});
 
