@@ -18,9 +18,9 @@ model User {
   routines         Routine[]
   sessions         Session[]
   workouts         Workout[]
-  CompletedSession CompletedSession[]
-  ActiveSession    ActiveSession[]
-  UserPreferences  UserPreference[]
+  completedSession CompletedSession[]
+  activeSession    ActiveSession[]
+  userPreferences  UserPreference[]
 
   @@map("user")
 }
@@ -49,8 +49,8 @@ model Session {
   days             SessionDaysActive[]
   user             User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId           String              @map("user_id")
-  CompletedSession CompletedSession[]
-  ActiveSession    ActiveSession[]
+  completedSession CompletedSession[]
+  activeSession    ActiveSession[]
 
   @@map("session")
 }
@@ -114,11 +114,11 @@ model CompletedSession {
 }
 
 model UserPreference {
-  id     String @id @default(cuid())
+  id         String     @id @default(cuid())
   preference Preference @map("preference")
-  enabled Boolean @default(true)
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @map("user_id")
+  enabled    Boolean    @default(true)
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String     @map("user_id")
 
   @@map("user_preference")
 }
