@@ -1,4 +1,3 @@
-import { Preference } from '@prisma/client';
 import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
@@ -13,13 +12,10 @@ const Preferences: NextPage = () => {
 
 	const { mutateAsync: enablePreferenceByIdAsync } =
 		api.preference.enablePreferenceById.useMutation();
-	const { mutateAsync: disablePreferenceByIdAsync } =
-		api.preference.disablePreferenceById.useMutation();
 
 	const handleConfettiToggle = async (
 		event: React.ChangeEvent<HTMLInputElement>,
 	) => {
-		console.log('here 1')
 		if (sessionData && sessionData.user.userPreferences) {
 			const preferenceEnumValue = event.target.id;
 			const isNowChecked = event.target.checked;
@@ -33,20 +29,19 @@ const Preferences: NextPage = () => {
 					id: preference.id,
 				});
 			} else {
-				console.log('here 2')
 				// TODO: disable the preference with the Id
-				if (!preference) {
-					return;
-				}
-				console.log('here :)')
 
-				await disablePreferenceByIdAsync({
-					id: preference.id,
-				});
+				
+
+
+
 				event.target.removeAttribute('checked');
 			}
 
-			// Updates the session to reflect the changes of preferences
+
+
+
+			
 			await update({}).then(() => {
 				console.log('Session updated');
 			});
@@ -66,15 +61,13 @@ const Preferences: NextPage = () => {
 		console.log('sessionData', sessionData);
 		if (sessionData) {
 			sessionData.user.userPreferences?.forEach((preference) => {
-				if (
-					preference.preference ===
-						Preference.CONFETTI_ON_SESSION_COMPLETION &&
-					preference.enabled
-				) {
+				if (preference.enabled) {
 					const checkbox = document.getElementById(
-						Preference.CONFETTI_ON_SESSION_COMPLETION,
+						preference.preference,
 					);
-					checkbox?.setAttribute('checked', 'true');
+					if (checkbox) {
+						checkbox.setAttribute('checked', 'true');
+					}
 				}
 			});
 		}
