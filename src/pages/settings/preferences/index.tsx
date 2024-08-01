@@ -16,10 +16,11 @@ const Preferences: NextPage = () => {
 		console.log(event);
 		// const workoutId = event.target.id;
 		const isNowChecked = event.target.checked;
+
 		if (isNowChecked) {
-			// TODO: do the thing one
+			// TODO: enable the preference with the Id
 		} else {
-			// TODO: do that thing two
+			// TODO: disable the preference with the Id
 			event.target.removeAttribute('checked');
 		}
 
