@@ -124,7 +124,18 @@ export const authOptions: NextAuthOptions = {
 
 					if (doesInputPwMatchEncryptedPw) {
 						console.log(userFoundByUsername);
-						return userFoundByUsername;
+
+						const returnUser: User = {
+							id: userFoundByUsername.id,
+							username: userFoundByUsername.username,
+							firstName: userFoundByUsername.firstName,
+							lastName: userFoundByUsername.lastName,
+							dateCreated: userFoundByUsername.dateCreated,
+							userPreferences:
+								userFoundByUsername.userPreferences as UserPreference[],
+						};
+
+						return returnUser;
 					}
 				} catch (error) {
 					throw new Error('Incorrect username or password');
