@@ -5,42 +5,67 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import Layout from '~/components/layout';
 import Spinner from '~/components/Spinner';
+import { api } from '~/utils/api';
 
 const Preferences: NextPage = () => {
 	const { data: sessionData, status, update } = useSession();
 	const router = useRouter();
 
+	const { mutateAsync: enablePreferenceByIdAsync } =
+		api.preference.enablePreferenceById.useMutation();
+	const { mutateAsync: disablePreferenceByIdAsync } =
+		api.preference.disablePreferenceById.useMutation();
+
 	const handleConfettiToggle = async (
 		event: React.ChangeEvent<HTMLInputElement>,
 	) => {
-		console.log(event);
-		// const workoutId = event.target.id;
-		const isNowChecked = event.target.checked;
+		console.log('here 1')
+		if (sessionData && sessionData.user.userPreferences) {
+			const preferenceEnumValue = event.target.id;
+			const isNowChecked = event.target.checked;
 
-		if (isNowChecked) {
-			// TODO: enable the preference with the Id
-		} else {
-			// TODO: disable the preference with the Id
-			event.target.removeAttribute('checked');
+			const preference = sessionData.user.userPreferences.find(
+				(preference) => preference.preference === preferenceEnumValue,
+			);
+
+			if (isNowChecked && preference) {
+				await enablePreferenceByIdAsync({
+					id: preference.id,
+				});
+			} else {
+				console.log('here 2')
+				// TODO: disable the preference with the Id
+				if (!preference) {
+					return;
+				}
+				console.log('here :)')
+
+				await disablePreferenceByIdAsync({
+					id: preference.id,
+				});
+				event.target.removeAttribute('checked');
+			}
+
+			// Updates the session to reflect the changes of preferences
+			await update({}).then(() => {
+				console.log('Session updated');
+			});
 		}
-
-		// Update to get back the correct information from server on updated user preferences
-		await update();
 	};
 
 	const handleConfettiToggleWrapper = (
 		event: React.ChangeEvent<HTMLInputElement>,
 	) => {
 		void handleConfettiToggle(event);
-	}
+	};
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
 			void router.push('/');
 		}
-
-		if (sessionData && sessionData.user.userPreferences) {
-			sessionData.user.userPreferences.forEach((preference) => {
+		console.log('sessionData', sessionData);
+		if (sessionData) {
+			sessionData.user.userPreferences?.forEach((preference) => {
 				if (
 					preference.preference ===
 						Preference.CONFETTI_ON_SESSION_COMPLETION &&

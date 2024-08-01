@@ -9,7 +9,6 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { prisma } from '~/server/db';
 import bcrypt from 'bcrypt';
 import Credentials from 'next-auth/providers/credentials';
-import { type AdapterUser } from 'next-auth/adapters';
 import { type UserPreference } from '@prisma/client';
 
 /**
@@ -27,13 +26,11 @@ declare module 'next-auth' {
 	interface User {
 		id: string;
 		name?: string | null;
-		email?: string | null;
-		image?: string | null;
 		username?: string | null;
 		firstName?: string | null;
 		lastName?: string | null;
 		dateCreated?: Date | null;
-		userPreferences?: UserPreference[];
+		userPreferences?: UserPreference[] | null;
 		// ...other properties
 		// role: UserRole;
 	}
@@ -44,13 +41,14 @@ declare module 'next-auth/jwt' {
 		user: {
 			id: string;
 			name?: string | null;
-			email?: string | null;
-			image?: string | null;
 			username?: string | null;
+			firstName?: string | null;
+			lastName?: string | null;
+			dateCreated?: Date | null;
+			userPreferences?: UserPreference[] | null;
 			// ...other properties
 			// role: UserRole;
 		};
-		// expires: ISODateString;
 	}
 }
 
@@ -71,17 +69,13 @@ export const authOptions: NextAuthOptions = {
 					where: {
 						id: token.user.id,
 					},
+					include: {
+						userPreferences: true,
+					},
 				});
 
 				if (updatedUser) {
-					const newJWTUser: User | AdapterUser = {
-						id: updatedUser.id,
-						dateCreated: updatedUser.dateCreated,
-						firstName: updatedUser.firstName,
-						lastName: updatedUser.lastName,
-						username: updatedUser.username,
-					};
-					token.user = newJWTUser;
+					token.user = updatedUser;
 				}
 			}
 			return token;
@@ -129,6 +123,7 @@ export const authOptions: NextAuthOptions = {
 					);
 
 					if (doesInputPwMatchEncryptedPw) {
+						console.log(userFoundByUsername);
 						return userFoundByUsername;
 					}
 				} catch (error) {
