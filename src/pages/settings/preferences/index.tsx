@@ -13,6 +13,9 @@ const Preferences: NextPage = () => {
 	const { mutateAsync: enablePreferenceByIdAsync } =
 		api.preference.enablePreferenceById.useMutation();
 
+	const { mutateAsync: disablePreferenceByIdAsync } =
+		api.preference.disablePreferenceById.useMutation();
+
 	const handleConfettiToggle = async (
 		event: React.ChangeEvent<HTMLInputElement>,
 	) => {
@@ -29,19 +32,14 @@ const Preferences: NextPage = () => {
 					id: preference.id,
 				});
 			} else {
-				// TODO: disable the preference with the Id
-
-				
-
-
-
+				if (preference) {
+					await disablePreferenceByIdAsync({
+						id: preference.id,
+					});
+				}
 				event.target.removeAttribute('checked');
 			}
 
-
-
-
-			
 			await update({}).then(() => {
 				console.log('Session updated');
 			});

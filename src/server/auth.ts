@@ -132,7 +132,7 @@ export const authOptions: NextAuthOptions = {
 							lastName: userFoundByUsername.lastName,
 							dateCreated: userFoundByUsername.dateCreated,
 							userPreferences:
-								userFoundByUsername.userPreferences as UserPreference[],
+								userFoundByUsername.userPreferences,
 						};
 
 						return returnUser;

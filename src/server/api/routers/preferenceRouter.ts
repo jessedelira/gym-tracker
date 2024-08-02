@@ -17,4 +17,16 @@ export const preferenceRouter = createTRPCRouter({
 		}),
 
 	// TODO: Disable preference by ID
+	disablePreferenceById: protectedProcedure
+		.input(z.object({ id: z.string() }))
+		.mutation(async ({ input }) => {
+			await prisma.userPreference.update({
+				where: {
+					id: input.id,
+				},
+				data: {
+					enabled: false,
+				},
+			});
+		}),
 });
