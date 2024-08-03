@@ -23,7 +23,7 @@ const Home: NextPage = () => {
 
 	return (
 		<Layout>
-			<div className="flex flex-col items-center justify-center">
+			<div className="flex h-full flex-col items-center bg-white">
 				<CurrentWorkoutDisplay
 					userId={sessionData.user.id}
 					currentDate={currentDate}
