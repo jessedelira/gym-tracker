@@ -86,8 +86,6 @@ export const completedSessionRouter = createTRPCRouter({
 				},
 			});
 
-			console.log('sessionsOnActiveRoutine', sessionsOnActiveRoutine);
-
 			const completedSessionIds = await prisma.completedSession.findMany({
 				select: {
 					sessionId: true,
