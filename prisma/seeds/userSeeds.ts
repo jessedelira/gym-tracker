@@ -21,6 +21,25 @@ const seedUsers = async () => {
 				lastName: 'user',
 			},
 		});
+
+		const user = await prisma.user.findUnique({
+			where: {
+				username: 'superuser',
+			},
+		});
+
+		if (!user) {
+			console.log('Failed to create user');
+			return;
+		}
+
+		await prisma.userPreference.create({
+			data: {
+				userId: user.id,
+				preference: 'CONFETTI_ON_SESSION_COMPLETION',
+				enabled: true,
+			},
+		});
 	}
 	await prisma.$disconnect();
 };
