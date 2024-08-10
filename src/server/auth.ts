@@ -9,7 +9,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { prisma } from '~/server/db';
 import bcrypt from 'bcrypt';
 import Credentials from 'next-auth/providers/credentials';
-import { type AdapterUser } from 'next-auth/adapters';
+import { type UserPreference } from '@prisma/client';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -19,30 +19,18 @@ import { type AdapterUser } from 'next-auth/adapters';
  */
 declare module 'next-auth' {
 	interface Session extends DefaultSession {
-		user: {
-			id: string;
-			name?: string | null;
-			email?: string | null;
-			image?: string | null;
-			username?: string | null;
-			firstName?: string | null;
-			lastName?: string | null;
-			dateCreated?: Date | null;
-			// ...other properties
-			// role: UserRole;
-		};
+		user: User;
 		// expires: ISODateString;
 	}
 
 	interface User {
 		id: string;
 		name?: string | null;
-		email?: string | null;
-		image?: string | null;
 		username?: string | null;
 		firstName?: string | null;
 		lastName?: string | null;
 		dateCreated?: Date | null;
+		userPreferences?: UserPreference[] | null;
 		// ...other properties
 		// role: UserRole;
 	}
@@ -53,13 +41,14 @@ declare module 'next-auth/jwt' {
 		user: {
 			id: string;
 			name?: string | null;
-			email?: string | null;
-			image?: string | null;
 			username?: string | null;
+			firstName?: string | null;
+			lastName?: string | null;
+			dateCreated?: Date | null;
+			userPreferences?: UserPreference[] | null;
 			// ...other properties
 			// role: UserRole;
 		};
-		// expires: ISODateString;
 	}
 }
 
@@ -80,17 +69,13 @@ export const authOptions: NextAuthOptions = {
 					where: {
 						id: token.user.id,
 					},
+					include: {
+						userPreferences: true,
+					},
 				});
 
 				if (updatedUser) {
-					const newJWTUser: User | AdapterUser = {
-						id: updatedUser.id,
-						dateCreated: updatedUser.dateCreated,
-						firstName: updatedUser.firstName,
-						lastName: updatedUser.lastName,
-						username: updatedUser.username,
-					};
-					token.user = newJWTUser;
+					token.user = updatedUser;
 				}
 			}
 			return token;
@@ -117,10 +102,13 @@ export const authOptions: NextAuthOptions = {
 				},
 				password: { label: 'Password', type: 'password' },
 			},
-			async authorize(credentials) {
+			async authorize(credentials): Promise<User | null> {
 				const userFoundByUsername = await prisma.user.findUnique({
 					where: {
 						username: credentials?.username,
+					},
+					include: {
+						userPreferences: true,
 					},
 				});
 
@@ -135,7 +123,17 @@ export const authOptions: NextAuthOptions = {
 					);
 
 					if (doesInputPwMatchEncryptedPw) {
-						return userFoundByUsername;
+						const returnUser: User = {
+							id: userFoundByUsername.id,
+							username: userFoundByUsername.username,
+							firstName: userFoundByUsername.firstName,
+							lastName: userFoundByUsername.lastName,
+							dateCreated: userFoundByUsername.dateCreated,
+							userPreferences:
+								userFoundByUsername.userPreferences,
+						};
+
+						return returnUser;
 					}
 				} catch (error) {
 					throw new Error('Incorrect username or password');
