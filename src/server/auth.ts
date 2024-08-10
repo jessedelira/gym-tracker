@@ -123,8 +123,6 @@ export const authOptions: NextAuthOptions = {
 					);
 
 					if (doesInputPwMatchEncryptedPw) {
-						console.log(userFoundByUsername);
-
 						const returnUser: User = {
 							id: userFoundByUsername.id,
 							username: userFoundByUsername.username,
