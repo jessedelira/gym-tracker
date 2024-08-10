@@ -171,7 +171,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				}
 			});
 
-			// check to see if all workoutsForActiveSession are completed to setstate
 			const allWorkoutsCompleted = workoutsForActiveSession.every(
 				(workout) => workout.isCompletedOnActiveSession,
 			);
