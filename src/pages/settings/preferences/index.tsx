@@ -17,11 +17,11 @@ const Preferences: NextPage = () => {
 		api.preference.disablePreferenceById.useMutation();
 
 	const handleConfettiToggle = async (
-		event: React.ChangeEvent<HTMLInputElement>,
+		event: React.MouseEvent<HTMLInputElement, MouseEvent>,
 	) => {
 		if (sessionData && sessionData.user.userPreferences) {
-			const preferenceEnumValue = event.target.id;
-			const isNowChecked = event.target.checked;
+			const preferenceEnumValue = (event.target as HTMLInputElement).id;
+			const isNowChecked = (event.target as HTMLInputElement).checked;
 
 			const preference = sessionData.user.userPreferences.find(
 				(preference) => preference.preference === preferenceEnumValue,
@@ -37,38 +37,27 @@ const Preferences: NextPage = () => {
 						id: preference.id,
 					});
 				}
-				event.target.removeAttribute('checked');
+				(event.target as HTMLInputElement).removeAttribute('checked');
 			}
 
-			await update({}).then(() => {
-				console.log('Session updated');
-			});
+			await update({});
 		}
-	};
-
-	const handleConfettiToggleWrapper = (
-		event: React.ChangeEvent<HTMLInputElement>,
-	) => {
-		void handleConfettiToggle(event);
 	};
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
 			void router.push('/');
 		}
-		console.log('sessionData', sessionData);
-		if (sessionData) {
-			sessionData.user.userPreferences?.forEach((preference) => {
-				if (preference.enabled) {
-					const checkbox = document.getElementById(
-						preference.preference,
-					);
-					if (checkbox) {
-						checkbox.setAttribute('checked', 'true');
-					}
+
+		sessionData?.user.userPreferences?.forEach((preference) => {
+			if (preference.enabled) {
+				const checkbox = document.getElementById(preference.preference);
+
+				if (checkbox) {
+					checkbox.setAttribute('checked', 'true');
 				}
-			});
-		}
+			}
+		});
 	}, [status, router, sessionData]);
 
 	if (!sessionData && status === 'loading') {
@@ -105,7 +94,9 @@ const Preferences: NextPage = () => {
 									id="CONFETTI_ON_SESSION_COMPLETION"
 									type="checkbox"
 									className="bg-blue-gray-100 peer absolute h-4 w-8 cursor-pointer appearance-none rounded-full border border-black transition-colors duration-300 checked:bg-gray-900 peer-checked:border-gray-900 peer-checked:before:bg-gray-900"
-									onChange={handleConfettiToggleWrapper}
+									onClick={(e) => {
+										void handleConfettiToggle(e);
+									}}
 								/>
 								<label
 									htmlFor="CONFETTI_ON_SESSION_COMPLETION"
