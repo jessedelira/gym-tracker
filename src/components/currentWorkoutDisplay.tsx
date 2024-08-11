@@ -31,6 +31,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		data: possibleSessionsToStart,
 		isFetched: isPossibleSessionsToStartFetched,
 		isLoading: isPossibleSessionsToStartLoading,
+		isFetching: isPossibleSessionsToStartFetching,
 	} = api.session.getSessionsThatAreActiveOnDate.useQuery({
 		userId: user.id,
 		date: currentDate,
@@ -38,6 +39,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	const {
 		data: activeSessionData,
 		isLoading: activeSessionDataIsLoading,
+		isFetching: isActiveSessionDataFetching,
 		refetch: refetchActiveSessionData,
 	} = api.activeSesssion.getActiveSession.useQuery({
 		userId: user.id,
@@ -46,6 +48,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		data: listOfCompletedSessionIdsForActiveRoutine,
 		isFetched: isListOfCompletedSessionIdsForActiveRoutineLoadingFetched,
 		isLoading: isListOfCompletedSessionIdsForActiveRoutineLoading,
+		isFetching: isListOfCompletedSessionIdsForActiveRoutineFetching,
 		refetch: refetchListOfCompletedSessionIdsForActiveRoutine,
 	} = api.completedSession.getListOfÇompletedSessionIdsForActiveRoutine.useQuery(
 		{
@@ -57,6 +60,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		data: workoutsForActiveSession,
 		isLoading: workoutsForActiveSessionIsLoading,
 		isFetched: isworkoutsForActiveSessionFetched,
+		isFetching: isWorkoutsForActiveSessionFetching,
 		refetch: refetchWorkoutsForActiveSession,
 	} = api.workout.getWorkoutsForActiveSession.useQuery({
 		userId: user.id,
@@ -186,7 +190,11 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		isLoadingActiveSessionMutationAsync ||
 		!isListOfCompletedSessionIdsForActiveRoutineLoadingFetched ||
 		!isPossibleSessionsToStartFetched ||
-		!isworkoutsForActiveSessionFetched
+		!isworkoutsForActiveSessionFetched ||
+		isActiveSessionDataFetching ||
+		isWorkoutsForActiveSessionFetching ||
+		isPossibleSessionsToStartFetching ||
+		isListOfCompletedSessionIdsForActiveRoutineFetching
 	) {
 		return <SmallSpinner />;
 	}
