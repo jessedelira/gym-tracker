@@ -60,7 +60,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		data: workoutsForActiveSession,
 		isLoading: workoutsForActiveSessionIsLoading,
 		isFetched: isworkoutsForActiveSessionFetched,
-		isFetching: isWorkoutsForActiveSessionFetching,
 		refetch: refetchWorkoutsForActiveSession,
 	} = api.workout.getWorkoutsForActiveSession.useQuery({
 		userId: user.id,
@@ -192,7 +191,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		!isPossibleSessionsToStartFetched ||
 		!isworkoutsForActiveSessionFetched ||
 		isActiveSessionDataFetching ||
-		isWorkoutsForActiveSessionFetching ||
 		isPossibleSessionsToStartFetching ||
 		isListOfCompletedSessionIdsForActiveRoutineFetching
 	) {
