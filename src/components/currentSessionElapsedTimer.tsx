@@ -22,18 +22,10 @@ const CurrentWorkoutDisplay: React.FC<CurrentSessionElapsedTimerProps> = ({
 			);
 
 			setElapsedTime(`${elapsedMinutes} min ${elapsedSeconds} sec`);
-		}, 1000);
+		}, 1);
 
 		return () => clearInterval(interval);
 	}, [startedAtDate]);
-
-	if (
-		elapsedTime === null ||
-		elapsedTime === undefined ||
-		elapsedTime === ''
-	) {
-		return <p className="text-[#666666]">Elapsed time: ...</p>;
-	}
 
 	return <h2 className="text-[#666666]">Elapsed time: {elapsedTime}</h2>;
 };
