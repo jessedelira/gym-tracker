@@ -5,6 +5,7 @@ import SmallSpinner from './smallSpinner';
 import JSConfetti from 'js-confetti';
 import { type User } from 'next-auth';
 import { Preference } from '@prisma/client';
+import CurrentSessionElapsedTimer from './currentSessionElapsedTimer';
 
 interface CurrentWorkoutDisplayProps {
 	user: User;
@@ -164,6 +165,8 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	//#endregion
 
 	useEffect(() => {
+		console.log('activeSessionData', activeSessionData);
+
 		if (workoutsForActiveSession) {
 			workoutsForActiveSession.forEach((workout) => {
 				if (workout.isCompletedOnActiveSession) {
@@ -179,7 +182,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			);
 			setAllWorkoutsCompleted(allWorkoutsCompleted);
 		}
-	}, [workoutsForActiveSession]);
+	}, [activeSessionData, workoutsForActiveSession]);
 
 	if (
 		activeSessionDataIsLoading ||
@@ -233,6 +236,11 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 										Current Workout Session:{' '}
 										{activeSessionData.session.name}
 									</h1>
+									<CurrentSessionElapsedTimer
+										startedAtDate={
+											activeSessionData.startedAt
+										}
+									/>
 									<div className="hide-scrollbar overflow-auto rounded-md">
 										{workoutsForActiveSession.map(
 											(workout) => (

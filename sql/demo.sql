@@ -6,4 +6,6 @@ from user_preference;
 select *
 from completed_session;
 
-s
+
+select *
+from active_session;
