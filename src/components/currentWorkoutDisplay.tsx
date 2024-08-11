@@ -6,6 +6,7 @@ import JSConfetti from 'js-confetti';
 import { type User } from 'next-auth';
 import { Preference } from '@prisma/client';
 import CurrentSessionElapsedTimer from './currentSessionElapsedTimer';
+import WorkoutCard from './icons/workoutCard';
 
 interface CurrentWorkoutDisplayProps {
 	user: User;
@@ -244,51 +245,21 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 									<div className="hide-scrollbar overflow-auto rounded-md">
 										{workoutsForActiveSession.map(
 											(workout) => (
-												<div
+												<WorkoutCard
 													key={workout.id}
-													className="mt-6 w-80 overflow-hidden rounded-lg bg-[#f5f5f5] shadow-lg"
-												>
-													<div className="p-6 md:p-8">
-														<div className="mb-4 flex items-center justify-between">
-															<h3 className="text-lg font-semibold">
-																{
-																	workout
-																		.exercise
-																		.name
-																}
-															</h3>
-															<div className="flex items-center">
-																<input
-																	type="checkbox"
-																	id={
-																		workout.id
-																	}
-																	className="text-primary h-4 w-4 rounded border-gray-300"
-																	onChange={
-																		handleCheckboxChangeWrapper
-																	}
-																/>
-															</div>
-														</div>
-														<div className="grid grid-cols-2 gap-3 text-sm text-[#666666]">
-															<div>
-																Reps:{' '}
-																{workout.reps}
-															</div>
-															<div className="text-right">
-																Sets:{' '}
-																{workout.sets}
-															</div>
-															<div>
-																Weight:{' '}
-																{
-																	workout.weightLbs
-																}{' '}
-																lbs
-															</div>
-														</div>
-													</div>
-												</div>
+													workoutId={workout.id}
+													exerciseName={
+														workout.exercise.name
+													}
+													onChangeHanlder={
+														handleCheckboxChangeWrapper
+													}
+													sets={workout.sets}
+													weightInLbs={
+														workout.weightLbs
+													}
+													reps={workout.reps}
+												/>
 											),
 										)}
 									</div>

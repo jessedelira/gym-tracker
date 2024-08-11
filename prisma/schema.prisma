@@ -100,6 +100,7 @@ model ActiveSession {
   @@map("active_session")
 }
 
+// TODO: Add a field that holds minutes and seconds for thd duration of the sesssion
 model CompletedSession {
   id                  String   @id @default(cuid())
   startedAt           DateTime @map("started_at")
