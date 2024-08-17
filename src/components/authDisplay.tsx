@@ -9,22 +9,18 @@ interface AuthShowcaseProps {
 const AuthDisplay: React.FC<AuthShowcaseProps> = () => {
 	return (
 		<>
-			<div className="mb-5 mr-[10%] flex-col items-center justify-center gap-4">
+			<div className="mb-5 flex-col items-center justify-center gap-4">
 				<button
-					className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+					className="ml-[-2%] mr-[5%] rounded-full border-2 bg-red-500 px-10 py-3 font-semibold text-white no-underline transition hover:border-2 hover:border-red-500 hover:bg-white hover:text-black"
 					onClick={() => void signIn('credential')}
 				>
 					Sign In
 				</button>
-			</div>
-			<div className="inline-flex">
-				<div>Don&apos;t have an account? </div>
-
 				<Link
+					className="rounded-full border-2 border-red-500 bg-white px-10 py-3 font-semibold text-black no-underline transition hover:border-2 hover:bg-red-500 hover:text-white"
 					href="/signup"
-					className="ml-1 cursor-pointer text-blue-500 hover:underline"
 				>
-					Sign up
+					Sign Up
 				</Link>
 			</div>
 		</>
