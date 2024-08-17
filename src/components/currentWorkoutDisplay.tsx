@@ -3,17 +3,25 @@ import { api } from '~/utils/api';
 import HomePageSessionCard from './homePageSessionCard';
 import SmallSpinner from './smallSpinner';
 import JSConfetti from 'js-confetti';
+import { type User } from 'next-auth';
+import { Preference } from '@prisma/client';
 
 interface CurrentWorkoutDisplayProps {
-	userId: string;
+	user: User;
 	currentDate: Date;
 }
 
 const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
-	userId,
+	user,
 	currentDate,
 }) => {
 	const jsConfetti = new JSConfetti();
+	const userHasConfettiPreferenceEnabled = user.userPreferences?.some(
+		(preference) =>
+			preference.preference ===
+				Preference.CONFETTI_ON_SESSION_COMPLETION &&
+			preference.enabled === true,
+	);
 
 	const [allWorkoutsCompleted, setAllWorkoutsCompleted] = useState(false);
 	const [sessionHasStarted, setSessionHasStarted] = useState(false);
@@ -24,7 +32,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		isFetched: isPossibleSessionsToStartFetched,
 		isLoading: isPossibleSessionsToStartLoading,
 	} = api.session.getSessionsThatAreActiveOnDate.useQuery({
-		userId: userId,
+		userId: user.id,
 		date: currentDate,
 	});
 	const {
@@ -32,7 +40,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		isLoading: activeSessionDataIsLoading,
 		refetch: refetchActiveSessionData,
 	} = api.activeSesssion.getActiveSession.useQuery({
-		userId: userId,
+		userId: user.id,
 	});
 	const {
 		data: listOfCompletedSessionIdsForActiveRoutine,
@@ -41,7 +49,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		refetch: refetchListOfCompletedSessionIdsForActiveRoutine,
 	} = api.completedSession.getListOfÇompletedSessionIdsForActiveRoutine.useQuery(
 		{
-			userId: userId,
+			userId: user.id,
 			currentDate: currentDate,
 		},
 	);
@@ -51,7 +59,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		isFetched: isworkoutsForActiveSessionFetched,
 		refetch: refetchWorkoutsForActiveSession,
 	} = api.workout.getWorkoutsForActiveSession.useQuery({
-		userId: userId,
+		userId: user.id,
 		clientCurrentDate: currentDate,
 		sessionId: activeSessionData?.session.id ?? '',
 	});
@@ -110,7 +118,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	const handleStartSessionClick = async (sessionId: string) => {
 		await addActiveSessionMutationAsync(
 			{
-				userId: userId,
+				userId: user.id,
 				sessionId: sessionId,
 			},
 			{
@@ -124,17 +132,18 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	};
 
 	const handleCompleteSessionClick = async () => {
-		void jsConfetti.addConfetti({
-			confettiRadius: 10,
-			confettiNumber: 20,
-			emojis: ['🎉', '🎊'],
-			emojiSize: 50,
-		});
-
+		if (userHasConfettiPreferenceEnabled) {
+			void jsConfetti.addConfetti({
+				confettiRadius: 10,
+				confettiNumber: 20,
+				emojis: ['🎉', '🎊'],
+				emojiSize: 50,
+			});
+		}
 		if (!activeSessionData) return;
 
 		await createCompletedSessionMutation.mutateAsync({
-			userId: userId,
+			userId: user.id,
 			sessionId: activeSessionData.session.id,
 		});
 		await Promise.all([
@@ -162,7 +171,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				}
 			});
 
-			// check to see if all workoutsForActiveSession are completed to setstate
 			const allWorkoutsCompleted = workoutsForActiveSession.every(
 				(workout) => workout.isCompletedOnActiveSession,
 			);

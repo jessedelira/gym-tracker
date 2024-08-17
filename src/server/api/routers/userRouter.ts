@@ -6,6 +6,7 @@ import {
 } from '~/server/api/trpc';
 import { hash } from 'bcrypt';
 import { prisma } from '~/server/db';
+import { Preference } from '@prisma/client';
 
 interface UserDto {
 	id: string;
@@ -33,6 +34,13 @@ export const userRouter = createTRPCRouter({
 					password: hashedPassword,
 					firstName: input.firstName,
 					lastName: input.lastName,
+				},
+			});
+
+			await prisma.userPreference.create({
+				data: {
+					preference: Preference.CONFETTI_ON_SESSION_COMPLETION,
+					userId: createdUser.id,
 				},
 			});
 

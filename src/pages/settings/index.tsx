@@ -71,7 +71,7 @@ const Settings: NextPage = () => {
 						</p>
 					</div>
 				</Link>
-				<Link href="/settings/apperance">
+				<Link href="/settings/preferences">
 					<div className="flex h-8 border-b-[0.5px] border-black">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +83,7 @@ const Settings: NextPage = () => {
 						</svg>
 
 						<p className="h-9 w-14 flex-initial  pl-3 text-2xl">
-							Appearance
+							Preferences
 						</p>
 					</div>
 				</Link>
