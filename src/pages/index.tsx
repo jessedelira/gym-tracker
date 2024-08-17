@@ -2,7 +2,7 @@ import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import AuthDisplay from '~/components/authDisplay';
+import HomePage from '~/components/homePage';
 import Spinner from '~/components/Spinner';
 
 const Home: NextPage = () => {
@@ -25,12 +25,7 @@ const Home: NextPage = () => {
 	} else {
 		return (
 			<>
-				<main className="flex min-h-screen flex-col items-center justify-center bg-white">
-					<h1 className="mb-5 text-center text-2xl text-black">
-						Gym Tracker
-					</h1>
-					<AuthDisplay sessionData={sessionData}></AuthDisplay>
-				</main>
+				<HomePage />
 			</>
 		);
 	}
