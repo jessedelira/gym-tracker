@@ -5,6 +5,8 @@ import SmallSpinner from './smallSpinner';
 import JSConfetti from 'js-confetti';
 import { type User } from 'next-auth';
 import { Preference } from '@prisma/client';
+import CurrentSessionElapsedTimer from './currentSessionElapsedTimer';
+import WorkoutCard from './icons/workoutCard';
 
 interface CurrentWorkoutDisplayProps {
 	user: User;
@@ -15,7 +17,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	user,
 	currentDate,
 }) => {
-	const jsConfetti = new JSConfetti();
 	const userHasConfettiPreferenceEnabled = user.userPreferences?.some(
 		(preference) =>
 			preference.preference ===
@@ -31,6 +32,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		data: possibleSessionsToStart,
 		isFetched: isPossibleSessionsToStartFetched,
 		isLoading: isPossibleSessionsToStartLoading,
+		isFetching: isPossibleSessionsToStartFetching,
 	} = api.session.getSessionsThatAreActiveOnDate.useQuery({
 		userId: user.id,
 		date: currentDate,
@@ -38,6 +40,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	const {
 		data: activeSessionData,
 		isLoading: activeSessionDataIsLoading,
+		isFetching: isActiveSessionDataFetching,
 		refetch: refetchActiveSessionData,
 	} = api.activeSesssion.getActiveSession.useQuery({
 		userId: user.id,
@@ -46,6 +49,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		data: listOfCompletedSessionIdsForActiveRoutine,
 		isFetched: isListOfCompletedSessionIdsForActiveRoutineLoadingFetched,
 		isLoading: isListOfCompletedSessionIdsForActiveRoutineLoading,
+		isFetching: isListOfCompletedSessionIdsForActiveRoutineFetching,
 		refetch: refetchListOfCompletedSessionIdsForActiveRoutine,
 	} = api.completedSession.getListOfÇompletedSessionIdsForActiveRoutine.useQuery(
 		{
@@ -132,6 +136,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	};
 
 	const handleCompleteSessionClick = async () => {
+		const jsConfetti = new JSConfetti();
 		if (userHasConfettiPreferenceEnabled) {
 			void jsConfetti.addConfetti({
 				confettiRadius: 10,
@@ -151,6 +156,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			refetchWorkoutsForActiveSession(),
 			refetchListOfCompletedSessionIdsForActiveRoutine(),
 		]);
+
 		setSessionHasStarted(false);
 		setAllWorkoutsCompleted(false);
 	};
@@ -161,6 +167,8 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	//#endregion
 
 	useEffect(() => {
+		console.log('activeSessionData', activeSessionData);
+
 		if (workoutsForActiveSession) {
 			workoutsForActiveSession.forEach((workout) => {
 				if (workout.isCompletedOnActiveSession) {
@@ -176,7 +184,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			);
 			setAllWorkoutsCompleted(allWorkoutsCompleted);
 		}
-	}, [workoutsForActiveSession]);
+	}, [activeSessionData, workoutsForActiveSession]);
 
 	if (
 		activeSessionDataIsLoading ||
@@ -186,7 +194,10 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		isLoadingActiveSessionMutationAsync ||
 		!isListOfCompletedSessionIdsForActiveRoutineLoadingFetched ||
 		!isPossibleSessionsToStartFetched ||
-		!isworkoutsForActiveSessionFetched
+		!isworkoutsForActiveSessionFetched ||
+		isActiveSessionDataFetching ||
+		isPossibleSessionsToStartFetching ||
+		isListOfCompletedSessionIdsForActiveRoutineFetching
 	) {
 		return <SmallSpinner />;
 	}
@@ -227,54 +238,29 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 										Current Workout Session:{' '}
 										{activeSessionData.session.name}
 									</h1>
+									<CurrentSessionElapsedTimer
+										startedAtDate={
+											activeSessionData.startedAt
+										}
+									/>
 									<div className="hide-scrollbar overflow-auto rounded-md">
 										{workoutsForActiveSession.map(
 											(workout) => (
-												<div
+												<WorkoutCard
 													key={workout.id}
-													className="mt-6 w-80 overflow-hidden rounded-lg bg-[#f5f5f5] shadow-lg"
-												>
-													<div className="p-6 md:p-8">
-														<div className="mb-4 flex items-center justify-between">
-															<h3 className="text-lg font-semibold">
-																{
-																	workout
-																		.exercise
-																		.name
-																}
-															</h3>
-															<div className="flex items-center">
-																<input
-																	type="checkbox"
-																	id={
-																		workout.id
-																	}
-																	className="text-primary h-4 w-4 rounded border-gray-300"
-																	onChange={
-																		handleCheckboxChangeWrapper
-																	}
-																/>
-															</div>
-														</div>
-														<div className="grid grid-cols-2 gap-3 text-sm text-[#666666]">
-															<div>
-																Reps:{' '}
-																{workout.reps}
-															</div>
-															<div className="text-right">
-																Sets:{' '}
-																{workout.sets}
-															</div>
-															<div>
-																Weight:{' '}
-																{
-																	workout.weightLbs
-																}{' '}
-																lbs
-															</div>
-														</div>
-													</div>
-												</div>
+													workoutId={workout.id}
+													exerciseName={
+														workout.exercise.name
+													}
+													onChangeHanlder={
+														handleCheckboxChangeWrapper
+													}
+													sets={workout.sets}
+													weightInLbs={
+														workout.weightLbs
+													}
+													reps={workout.reps}
+												/>
 											),
 										)}
 									</div>
