@@ -136,7 +136,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	};
 
 	const handleCompleteSessionClick = async () => {
-	const jsConfetti = new JSConfetti();
+		const jsConfetti = new JSConfetti();
 		if (userHasConfettiPreferenceEnabled) {
 			void jsConfetti.addConfetti({
 				confettiRadius: 10,
@@ -168,7 +168,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 
 	useEffect(() => {
 		console.log('activeSessionData', activeSessionData);
-		
 
 		if (workoutsForActiveSession) {
 			workoutsForActiveSession.forEach((workout) => {
