@@ -84,6 +84,7 @@ model Exercise {
   id          String    @id @default(cuid())
   name        String    @unique
   description String?   @db.VarChar(300)
+  isAerobic   Boolean   @default(false) @map("is_aerobic")
   workouts    Workout[]
 
   @@map("exercise")
