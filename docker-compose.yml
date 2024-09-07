@@ -1,6 +1,6 @@
 services:
   mysql:
-    container_name: mysql
+    container_name: gym-tracker-mysql
     build:
       context: .
       dockerfile: ./Dockerfile
