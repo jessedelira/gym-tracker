@@ -110,7 +110,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		);
 
 		setAllWorkoutsCompleted(allWorkoutsCompleted);
-		void refetchWorkoutsForActiveSession();
+
 	};
 
 	const handleCheckboxChangeWrapper = (
@@ -166,7 +166,8 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	};
 	//#endregion
 
-	useEffect(() => {
+	useEff	ect(() => {
+		void refetchWorkoutsForActiveSession();
 		if (workoutsForActiveSession) {
 			workoutsForActiveSession.forEach((workout) => {
 				if (workout.isCompletedOnActiveSession) {
@@ -182,7 +183,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			);
 			setAllWorkoutsCompleted(allWorkoutsCompleted);
 		}
-	}, [activeSessionData, workoutsForActiveSession]);
+	}, [activeSessionData, refetchWorkoutsForActiveSession, workoutsForActiveSession]);
 
 	if (
 		activeSessionDataIsLoading ||
