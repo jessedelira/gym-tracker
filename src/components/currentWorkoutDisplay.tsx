@@ -37,36 +37,48 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		userId: user.id,
 		date: currentDate,
 	});
+	// const {
+	// 	data: activeSessionData,
+	// 	isLoading: activeSessionDataIsLoading,
+	// 	isFetching: isActiveSessionDataFetching,
+	// 	refetch: refetchActiveSessionData,
+	// } = api.activeSesssion.getActiveSession.useQuery({
+	// 	userId: user.id,
+	// });
+
+	// TODO: new query to get all active session data, testing with having less queries
 	const {
-		data: activeSessionData,
-		isLoading: activeSessionDataIsLoading,
-		isFetching: isActiveSessionDataFetching,
-		refetch: refetchActiveSessionData,
-	} = api.activeSesssion.getActiveSession.useQuery({
+		data: activeSessionDataComplete,
+		isLoading: activeSessionDataIsLoadingComplete,
+		isFetching: isActiveSessionDataFetchingComplete,
+		refetch: refetchActiveSessionDataComplete,
+	} = api.activeSesssion.getActiveSessionComplete.useQuery({
 		userId: user.id,
+		clientCurrentDate: currentDate,
 	});
+
 	const {
 		data: listOfCompletedSessionIdsForActiveRoutine,
 		isFetched: isListOfCompletedSessionIdsForActiveRoutineLoadingFetched,
 		isLoading: isListOfCompletedSessionIdsForActiveRoutineLoading,
 		isFetching: isListOfCompletedSessionIdsForActiveRoutineFetching,
 		refetch: refetchListOfCompletedSessionIdsForActiveRoutine,
-	} = api.completedSession.getListOfÇompletedSessionIdsForActiveRoutine.useQuery(
+	} = api.completedSession.getListOfCompletedSessionIdsForActiveRoutine.useQuery(
 		{
 			userId: user.id,
 			currentDate: currentDate,
 		},
 	);
-	const {
-		data: workoutsForActiveSession,
-		isLoading: workoutsForActiveSessionIsLoading,
-		isFetched: isworkoutsForActiveSessionFetched,
-		refetch: refetchWorkoutsForActiveSession,
-	} = api.workout.getWorkoutsForActiveSession.useQuery({
-		userId: user.id,
-		clientCurrentDate: currentDate,
-		sessionId: activeSessionData?.session.id ?? '',
-	});
+	// const {
+	// 	data: workoutsForActiveSession,
+	// 	isLoading: workoutsForActiveSessionIsLoading,
+	// 	isFetched: isworkoutsForActiveSessionFetched,
+	// 	refetch: refetchWorkoutsForActiveSession,
+	// } = api.workout.getWorkoutsForActiveSession.useQuery({
+	// 	userId: user.id,
+	// 	clientCurrentDate: currentDate,
+	// 	sessionId: activeSessionData?.session.id ?? '',
+	// });
 	//#endregion
 
 	//#region Mutations
@@ -95,10 +107,10 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			event.target.removeAttribute('checked');
 		}
 
-		if (!workoutsForActiveSession) return;
+		if (!activeSessionDataComplete) return;
 
-		const allWorkoutsCompleted = workoutsForActiveSession?.every(
-			(workout) => {
+		const allWorkoutsCompleted =
+			activeSessionDataComplete?.session.workouts.every((workout) => {
 				if (workout.isCompletedOnActiveSession) {
 					return workout.isCompletedOnActiveSession;
 				} else if (workout.id === workoutId && isNowChecked) {
@@ -106,11 +118,27 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				} else {
 					return false;
 				}
-			},
-		);
+			});
 
 		setAllWorkoutsCompleted(allWorkoutsCompleted);
-		void refetchWorkoutsForActiveSession();
+		void refetchActiveSessionDataComplete();
+
+		// if (!workoutsForActiveSession) return;
+
+		// const allWorkoutsCompleted = workoutsForActiveSession?.every(
+		// 	(workout) => {
+		// 		if (workout.isCompletedOnActiveSession) {
+		// 			return workout.isCompletedOnActiveSession;
+		// 		} else if (workout.id === workoutId && isNowChecked) {
+		// 			return true;
+		// 		} else {
+		// 			return false;
+		// 		}
+		// 	},
+		// );
+
+		// setAllWorkoutsCompleted(allWorkoutsCompleted);
+		// void refetchWorkoutsForActiveSession();
 	};
 
 	const handleCheckboxChangeWrapper = (
@@ -132,7 +160,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				},
 			},
 		);
-		await refetchActiveSessionData();
+		await refetchActiveSessionDataComplete();
 	};
 
 	const handleCompleteSessionClick = async () => {
@@ -145,17 +173,33 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				emojiSize: 50,
 			});
 		}
-		if (!activeSessionData) return;
+
+		if (!activeSessionDataComplete) return;
 
 		await createCompletedSessionMutation.mutateAsync({
 			userId: user.id,
-			sessionId: activeSessionData.session.id,
+			sessionId: activeSessionDataComplete.session.id,
 		});
+
 		await Promise.all([
-			refetchActiveSessionData(),
-			refetchWorkoutsForActiveSession(),
+			refetchActiveSessionDataComplete(),
 			refetchListOfCompletedSessionIdsForActiveRoutine(),
 		]);
+
+		setSessionHasStarted(false);
+		setAllWorkoutsCompleted(false);
+
+		// if (!activeSessionData) return;
+
+		// await createCompletedSessionMutation.mutateAsync({
+		// 	userId: user.id,
+		// 	sessionId: activeSessionData.session.id,
+		// });
+		// await Promise.all([
+		// 	refetchActiveSessionData(),
+		// 	refetchWorkoutsForActiveSession(),
+		// 	refetchListOfCompletedSessionIdsForActiveRoutine(),
+		// ]);
 
 		setSessionHasStarted(false);
 		setAllWorkoutsCompleted(false);
@@ -167,33 +211,57 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	//#endregion
 
 	useEffect(() => {
-		if (workoutsForActiveSession) {
-			workoutsForActiveSession.forEach((workout) => {
-				if (workout.isCompletedOnActiveSession) {
-					const checkbox = document.getElementById(workout.id);
-					if (checkbox) {
-						checkbox.setAttribute('checked', 'true');
-					}
-				}
-			});
+		if (activeSessionDataComplete) {
+			if (activeSessionDataComplete?.session.workouts) {
+				activeSessionDataComplete?.session.workouts.forEach(
+					(workout) => {
+						if (workout.isCompletedOnActiveSession) {
+							const checkbox = document.getElementById(
+								workout.id,
+							);
+							if (checkbox) {
+								checkbox.setAttribute('checked', 'true');
+							}
+						}
+					},
+				);
+			}
 
-			const allWorkoutsCompleted = workoutsForActiveSession.every(
-				(workout) => workout.isCompletedOnActiveSession,
-			);
+			const allWorkoutsCompleted =
+				activeSessionDataComplete?.session.workouts.every(
+					(workout) => workout.isCompletedOnActiveSession,
+				);
+
 			setAllWorkoutsCompleted(allWorkoutsCompleted);
 		}
-	}, [activeSessionData, workoutsForActiveSession]);
+
+		// if (workoutsForActiveSession) {
+		// 	workoutsForActiveSession.forEach((workout) => {
+		// 		if (workout.isCompletedOnActiveSession) {
+		// 			const checkbox = document.getElementById(workout.id);
+		// 			if (checkbox) {
+		// 				checkbox.setAttribute('checked', 'true');
+		// 			}
+		// 		}
+		// 	});
+
+		// 	const allWorkoutsCompleted = workoutsForActiveSession.every(
+		// 		(workout) => workout.isCompletedOnActiveSession,
+		// 	);
+		// 	setAllWorkoutsCompleted(allWorkoutsCompleted);
+		// }
+	}, [activeSessionDataComplete]);
 
 	if (
-		activeSessionDataIsLoading ||
-		workoutsForActiveSessionIsLoading ||
+		// activeSessionDataIsLoading ||
+		// workoutsForActiveSessionIsLoading ||
 		isPossibleSessionsToStartLoading ||
 		isListOfCompletedSessionIdsForActiveRoutineLoading ||
 		isLoadingActiveSessionMutationAsync ||
 		!isListOfCompletedSessionIdsForActiveRoutineLoadingFetched ||
 		!isPossibleSessionsToStartFetched ||
-		!isworkoutsForActiveSessionFetched ||
-		isActiveSessionDataFetching ||
+		// !isworkoutsForActiveSessionFetched ||
+		// isActiveSessionDataFetching ||
 		isPossibleSessionsToStartFetching ||
 		isListOfCompletedSessionIdsForActiveRoutineFetching
 	) {
@@ -208,7 +276,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				</h1>
 			) : (
 				<>
-					{activeSessionData === null &&
+					{activeSessionDataComplete === null &&
 					sessionHasStarted === false ? (
 						<div className="hide-scrollbar overflow-auto">
 							{possibleSessionsToStart &&
@@ -230,19 +298,19 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 						</div>
 					) : (
 						<>
-							{activeSessionData && workoutsForActiveSession && (
+							{activeSessionDataComplete && (
 								<>
 									<h1 className="font-bold">
 										Current Workout Session:{' '}
-										{activeSessionData.session.name}
+										{activeSessionDataComplete.session.name}
 									</h1>
 									<CurrentSessionElapsedTimer
 										startedAtDate={
-											activeSessionData.startedAt
+											activeSessionDataComplete.startedAt
 										}
 									/>
 									<div className="hide-scrollbar overflow-auto rounded-md">
-										{workoutsForActiveSession.map(
+										{activeSessionDataComplete.session.workouts.map(
 											(workout) => (
 												<WorkoutCard
 													key={workout.id}

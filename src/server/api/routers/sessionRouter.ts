@@ -134,6 +134,7 @@ export const sessionRouter = createTRPCRouter({
 			}),
 		)
 		.query(async ({ input }) => {
+			console.time('getSessionsThatAreActiveOnDate');
 			const dayMap = [
 				'sunday',
 				'monday',
@@ -162,6 +163,7 @@ export const sessionRouter = createTRPCRouter({
 					},
 				},
 			});
+			console.timeEnd('getSessionsThatAreActiveOnDate');
 
 			return sessions;
 		}),

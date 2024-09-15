@@ -17,6 +17,6 @@ const withSerwist = withSerwistInit({
 
 /** @type {import("next").NextConfig} */
 const config = withSerwist({
-  reactStrictMode: true,
+  reactStrictMode: false,
 })
 export default config;
