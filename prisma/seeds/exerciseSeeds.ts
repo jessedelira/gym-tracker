@@ -238,7 +238,7 @@ const seedExercises = async () => {
 					name: 'Pull-Up',
 					description:
 						'An upper-body exercise performed by pulling oneself up on a bar using a pronated grip to target the back and biceps.',
-					isAerobic: true
+					isAerobic: true,
 				},
 				{
 					name: 'Push-Up',
@@ -297,67 +297,82 @@ const seedExercises = async () => {
 				},
 				{
 					name: 'Tricep Dip',
-					description: 'An upper-body exercise targeting the triceps by lowering and raising the body using parallel bars or a bench.',
-				  },
-				  {
+					description:
+						'An upper-body exercise targeting the triceps by lowering and raising the body using parallel bars or a bench.',
+				},
+				{
 					name: 'Tricep Extension',
-					description: 'An isolation exercise that targets the triceps, performed by extending the arm while holding a dumbbell or cable overhead.',
-				  },
-				  {
+					description:
+						'An isolation exercise that targets the triceps, performed by extending the arm while holding a dumbbell or cable overhead.',
+				},
+				{
 					name: 'Tricep Kickback',
-					description: 'A tricep exercise performed by extending the arm backward while bent over, holding a dumbbell.',
-				  },
-				  {
+					description:
+						'A tricep exercise performed by extending the arm backward while bent over, holding a dumbbell.',
+				},
+				{
 					name: 'Upright Row',
-					description: 'A shoulder exercise that involves lifting a barbell or dumbbells vertically along the front of the body, targeting the deltoids and traps.',
-				  },
-				  {
+					description:
+						'A shoulder exercise that involves lifting a barbell or dumbbells vertically along the front of the body, targeting the deltoids and traps.',
+				},
+				{
 					name: 'Walking Lunge',
-					description: 'A dynamic version of the lunge exercise that involves stepping forward into a lunge position while walking, targeting the quads and glutes.',
-				  },
-				  {
+					description:
+						'A dynamic version of the lunge exercise that involves stepping forward into a lunge position while walking, targeting the quads and glutes.',
+				},
+				{
 					name: 'Wall Sit',
-					description: 'A static exercise that involves holding a sitting position against a wall to target the quads and glutes.',
+					description:
+						'A static exercise that involves holding a sitting position against a wall to target the quads and glutes.',
 					isAerobic: true,
-				  },
-				  {
+				},
+				{
 					name: 'Weighted Crunch',
-					description: 'An abdominal exercise where added weight is held while performing a crunch, increasing resistance on the core muscles.',
-				  },
-				  {
+					description:
+						'An abdominal exercise where added weight is held while performing a crunch, increasing resistance on the core muscles.',
+				},
+				{
 					name: 'Wide-Grip Pull-Up',
-					description: 'A variation of the pull-up that uses a wider grip to emphasize the upper back muscles.',
-				  },
-				  {
+					description:
+						'A variation of the pull-up that uses a wider grip to emphasize the upper back muscles.',
+				},
+				{
 					name: 'Windshield Wiper',
-					description: 'A core exercise performed by lying on the back and moving the legs side to side in a windshield wiper motion, targeting the obliques.',
-				  },
-				  {
+					description:
+						'A core exercise performed by lying on the back and moving the legs side to side in a windshield wiper motion, targeting the obliques.',
+				},
+				{
 					name: 'Wrist Curl',
-					description: 'An isolation exercise that targets the forearm muscles by curling the wrists up and down while holding weights.',
-				  },
-				  {
+					description:
+						'An isolation exercise that targets the forearm muscles by curling the wrists up and down while holding weights.',
+				},
+				{
 					name: 'Y Raise',
-					description: 'A shoulder exercise that involves raising dumbbells in a Y-shape to target the upper back and shoulders.',
-				  },
-				  {
+					description:
+						'A shoulder exercise that involves raising dumbbells in a Y-shape to target the upper back and shoulders.',
+				},
+				{
 					name: 'Zercher Squat',
-					description: 'A squat variation where the barbell is held in the crook of the elbows, targeting the quads and core for added stability.',
-				  },
-				  {
+					description:
+						'A squat variation where the barbell is held in the crook of the elbows, targeting the quads and core for added stability.',
+				},
+				{
 					name: 'Zottman Curl',
-					description: 'A bicep exercise that combines a regular curl and reverse curl to target both the biceps and forearms.',
-				  },
-				  {
+					description:
+						'A bicep exercise that combines a regular curl and reverse curl to target both the biceps and forearms.',
+				},
+				{
 					name: 'Walk',
-					description: 'A low-impact cardiovascular exercise that involves walking at a moderate pace to improve fitness and health.',
-					isAerobic: true
-				  },
-				  {
+					description:
+						'A low-impact cardiovascular exercise that involves walking at a moderate pace to improve fitness and health.',
+					isAerobic: true,
+				},
+				{
 					name: 'Run',
-					description: 'A high-impact cardiovascular exercise that involves running at a moderate to high intensity to improve fitness and health.',
-					isAerobic: true
-				  },
+					description:
+						'A high-impact cardiovascular exercise that involves running at a moderate to high intensity to improve fitness and health.',
+					isAerobic: true,
+				},
 			],
 		});
 	}
