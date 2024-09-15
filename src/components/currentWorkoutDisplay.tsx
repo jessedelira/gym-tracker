@@ -166,7 +166,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	};
 	//#endregion
 
-	useEff	ect(() => {
+	useEffect(() => {
 		void refetchWorkoutsForActiveSession();
 		if (workoutsForActiveSession) {
 			workoutsForActiveSession.forEach((workout) => {
