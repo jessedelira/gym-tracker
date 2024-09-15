@@ -1,4 +1,4 @@
-import React, { type FormEvent } from 'react';
+import React, { useState, type FormEvent } from 'react';
 import XIcon from './icons/xIcon';
 import {
 	getExerciseInputElement,
@@ -24,6 +24,10 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 	onSaveClick,
 	exercises,
 }) => {
+	const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(
+		null,
+	);
+
 	const handleSaveButtonClicked = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
@@ -33,6 +37,15 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 		const reps = Number(getRepsInputElement(document).value);
 
 		onSaveClick(exerciseId, weightLbs, sets, reps);
+	};
+
+	const handleExerciseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		console.log(e.target.value);
+		const exerciseId = e.target.value;
+		const selectedExercise =
+			exercises.find((exercise) => exercise.id === exerciseId) || null;
+
+		setSelectedExercise(selectedExercise);
 	};
 
 	return (
@@ -57,6 +70,8 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 								<select
 									id="exerciseId"
 									required
+									value={selectedExercise?.id}
+									onChange={handleExerciseChange}
 									className="rounded-md bg-gray-300  py-2 text-black"
 								>
 									{exercises
@@ -117,6 +132,7 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 							</button>
 						</div>
 					</form>
+					{/* // if selectedExercise is equal to 10, then show the following */}
 				</div>
 			</div>
 		</>
