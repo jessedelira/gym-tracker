@@ -49,8 +49,8 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	// TODO: new query to get all active session data, testing with having less queries
 	const {
 		data: activeSessionDataComplete,
-		isLoading: activeSessionDataIsLoadingComplete,
-		isFetching: isActiveSessionDataFetchingComplete,
+		// isLoading: activeSessionDataIsLoadingComplete,
+		// isFetching: isActiveSessionDataFetchingComplete,
 		refetch: refetchActiveSessionDataComplete,
 	} = api.activeSesssion.getActiveSessionComplete.useQuery({
 		userId: user.id,
