@@ -89,7 +89,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		const workoutId = event.target.id;
 		const isNowChecked = event.target.checked;
 		if (isNowChecked) {
-			await setWorkoutAsCompletedMutation.mutateAsync({ workoutId });
+			void setWorkoutAsCompletedMutation.mutate({ workoutId });
 		} else {
 			await setWorkoutAsNotCompletedMutation.mutateAsync({ workoutId });
 			event.target.removeAttribute('checked');
@@ -110,6 +110,8 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		);
 
 		setAllWorkoutsCompleted(allWorkoutsCompleted);
+		void refetchWorkoutsForActiveSession();
+
 
 	};
 
@@ -167,7 +169,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	//#endregion
 
 	useEffect(() => {
-		void refetchWorkoutsForActiveSession();
 		if (workoutsForActiveSession) {
 			workoutsForActiveSession.forEach((workout) => {
 				if (workout.isCompletedOnActiveSession) {
