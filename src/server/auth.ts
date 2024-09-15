@@ -64,7 +64,6 @@ export const authOptions: NextAuthOptions = {
 				token.user = user;
 			}
 			if (trigger === 'update') {
-				// Note: Prisma calls must always be awaited.
 				const updatedUser = await prisma.user.findUnique({
 					where: {
 						id: token.user.id,
@@ -74,9 +73,20 @@ export const authOptions: NextAuthOptions = {
 					},
 				});
 
-				if (updatedUser) {
-					token.user = updatedUser;
+				if (!updatedUser) {
+					return token;
 				}
+
+				const user: User = {
+					id: updatedUser.id,
+					username: updatedUser.username,
+					firstName: updatedUser.firstName,
+					lastName: updatedUser.lastName,
+					dateCreated: updatedUser.dateCreated,
+					userPreferences: updatedUser.userPreferences,
+				};
+
+				token.user = user;
 			}
 			return token;
 		},
