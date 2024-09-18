@@ -37,6 +37,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		userId: user.id,
 		date: currentDate,
 	});
+
 	const {
 		data: activeSessionData,
 		isLoading: activeSessionDataIsLoading,
@@ -83,15 +84,15 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	//#endregion
 
 	//#region UI Handlers
-	const handleCheckboxChange = async (
+	const handleCheckboxChange = (
 		event: React.ChangeEvent<HTMLInputElement>,
 	) => {
 		const workoutId = event.target.id;
 		const isNowChecked = event.target.checked;
 		if (isNowChecked) {
-			await setWorkoutAsCompletedMutation.mutateAsync({ workoutId });
+			setWorkoutAsCompletedMutation.mutate({ workoutId });
 		} else {
-			await setWorkoutAsNotCompletedMutation.mutateAsync({ workoutId });
+			setWorkoutAsNotCompletedMutation.mutate({ workoutId });
 			event.target.removeAttribute('checked');
 		}
 
@@ -129,10 +130,11 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				onSuccess: () => {
 					setSessionHasStarted(true);
 					setAllWorkoutsCompleted(false);
+					refetchActiveSessionData().catch(console.error);
 				},
 			},
 		);
-		await refetchActiveSessionData();
+		
 	};
 
 	const handleCompleteSessionClick = async () => {
@@ -167,8 +169,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	//#endregion
 
 	useEffect(() => {
-		console.log('activeSessionData', activeSessionData);
-
 		if (workoutsForActiveSession) {
 			workoutsForActiveSession.forEach((workout) => {
 				if (workout.isCompletedOnActiveSession) {
@@ -178,13 +178,12 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 					}
 				}
 			});
-
 			const allWorkoutsCompleted = workoutsForActiveSession.every(
 				(workout) => workout.isCompletedOnActiveSession,
 			);
 			setAllWorkoutsCompleted(allWorkoutsCompleted);
 		}
-	}, [activeSessionData, workoutsForActiveSession]);
+	}, [activeSessionData, workoutsForActiveSession, allWorkoutsCompleted]);
 
 	if (
 		activeSessionDataIsLoading ||
