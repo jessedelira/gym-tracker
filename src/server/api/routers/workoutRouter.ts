@@ -103,14 +103,18 @@ export const workoutRouter = createTRPCRouter({
 
 	setWorkoutAsNotCompleted: protectedProcedure
 		.input(z.object({ workoutId: z.string() }))
-		.mutation(async ({ input }) => {
-			await prisma.workout.update({
-				where: {
-					id: input.workoutId,
-				},
-				data: {
-					isCompletedOnActiveSession: false,
-				},
-			});
+		.mutation(({ input }) => {
+			prisma.workout
+				.update({
+					where: {
+						id: input.workoutId,
+					},
+					data: {
+						isCompletedOnActiveSession: false,
+					},
+				})
+				.catch((error) => {
+					console.error(error);
+				});
 		}),
 });
