@@ -7,7 +7,6 @@ import { type User } from 'next-auth';
 import { Preference } from '@prisma/client';
 import CurrentSessionElapsedTimer from './currentSessionElapsedTimer';
 import WorkoutCard from './icons/workoutCard';
-import { boolean, set } from 'zod';
 
 interface CurrentWorkoutDisplayProps {
 	user: User;
