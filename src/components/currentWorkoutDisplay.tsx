@@ -179,22 +179,10 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	};
 	//#endregion
 
-	if (workoutsForActiveSession && workoutsForActiveSession.length > 0) {
-		if (localStorage.getItem('workoutCompletionMap') !== null) {
-			console.log('hi');
-		} else {
-			const workoutCompletionMap = workoutsForActiveSession.map(
-				(workout) => {
-					return [workout.id, workout.isCompletedOnActiveSession];
-				},
-			);
-
-			localStorage.setItem(
-				'workoutCompletionMap',
-				JSON.stringify(workoutCompletionMap),
-			);
-		}
-	}
+	//#region State
+	const [allWorkoutsCompleted, setAllWorkoutsCompleted] = useState(false);
+	const [sessionHasStarted, setSessionHasStarted] = useState(false);
+	//#endregion
 
 	const userHasConfettiPreferenceEnabled = user.userPreferences?.some(
 		(preference) =>
@@ -202,9 +190,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				Preference.CONFETTI_ON_SESSION_COMPLETION &&
 			preference.enabled === true,
 	);
-
-	const [allWorkoutsCompleted, setAllWorkoutsCompleted] = useState(false);
-	const [sessionHasStarted, setSessionHasStarted] = useState(false);
 
 	const isDataLoading = (): boolean => {
 		return (
@@ -224,6 +209,26 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	};
 
 	useEffect(() => {
+		if ((workoutsForActiveSession ?? []).length > 0) {
+			const workoutCompletionMap = localStorage.getItem(
+				'workoutCompletionMap',
+			);
+
+			if (!workoutCompletionMap) {
+				const completionMap = workoutsForActiveSession?.map(
+					({ id, isCompletedOnActiveSession }) => [
+						id,
+						isCompletedOnActiveSession,
+					],
+				);
+
+				localStorage.setItem(
+					'workoutCompletionMap',
+					JSON.stringify(completionMap),
+				);
+			}
+		}
+
 		if (workoutsForActiveSession) {
 			workoutsForActiveSession.forEach((workout) => {
 				const workoutCompletionMap = JSON.parse(
