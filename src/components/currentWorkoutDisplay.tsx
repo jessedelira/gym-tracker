@@ -190,6 +190,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				Preference.CONFETTI_ON_SESSION_COMPLETION &&
 			preference.enabled === true,
 	);
+
 	const isDataLoading = (): boolean => {
 		return (
 			activeSessionDataIsLoading ||
