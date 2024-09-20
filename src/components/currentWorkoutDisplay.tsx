@@ -190,7 +190,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				Preference.CONFETTI_ON_SESSION_COMPLETION &&
 			preference.enabled === true,
 	);
-
 	const isDataLoading = (): boolean => {
 		return (
 			activeSessionDataIsLoading ||
@@ -203,60 +202,59 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			!isworkoutsForActiveSessionFetched ||
 			isActiveSessionDataFetching ||
 			isPossibleSessionsToStartFetching ||
-			isListOfCompletedSessionIdsForActiveRoutineFetching ||
-			activeSessionData === undefined
+			isListOfCompletedSessionIdsForActiveRoutineFetching
 		);
 	};
 
 	useEffect(() => {
-		if ((workoutsForActiveSession ?? []).length > 0) {
-			const workoutCompletionMap = localStorage.getItem(
-				'workoutCompletionMap',
-			);
-
-			if (!workoutCompletionMap) {
-				const completionMap = workoutsForActiveSession?.map(
-					({ id, isCompletedOnActiveSession }) => [
-						id,
-						isCompletedOnActiveSession,
-					],
-				);
-
-				localStorage.setItem(
-					'workoutCompletionMap',
-					JSON.stringify(completionMap),
-				);
-			}
-		}
-
 		if (workoutsForActiveSession) {
-			workoutsForActiveSession.forEach((workout) => {
-				const workoutCompletionMap = JSON.parse(
-					localStorage.getItem('workoutCompletionMap') || '[]',
-				) as [string, boolean][];
+			if (workoutsForActiveSession.length > 0) {
+				const workoutCompletionMap = localStorage.getItem(
+					'workoutCompletionMap',
+				);
 
+				if (!workoutCompletionMap) {
+					const completionMap = workoutsForActiveSession?.map(
+						({ id, isCompletedOnActiveSession }) => [
+							id,
+							isCompletedOnActiveSession,
+						],
+					);
+
+					localStorage.setItem(
+						'workoutCompletionMap',
+						JSON.stringify(completionMap),
+					);
+				}
+			}
+
+			const workoutCompletionMap = JSON.parse(
+				localStorage.getItem('workoutCompletionMap') || '[]',
+			) as [string, boolean][];
+
+			const updateCheckbox = (workoutId: string) => {
+				const checkbox = document.getElementById(workoutId);
+				if (checkbox) {
+					checkbox.setAttribute('checked', 'true');
+				}
+			};
+
+			const checkAllWorkoutsCompleted = () => {
+				return workoutCompletionMap.every(
+					([, isCompleted]) => isCompleted === true,
+				);
+			};
+
+			workoutsForActiveSession.forEach((workout) => {
 				const workoutCompletionObj = workoutCompletionMap.find(
 					([id]) => id === workout.id,
 				);
 
-				if (workoutCompletionObj && workoutCompletionObj[1]) {
-					const checkbox = document.getElementById(workout.id);
-					if (checkbox) {
-						checkbox.setAttribute('checked', 'true');
-					}
+				if (workoutCompletionObj?.[1]) {
+					updateCheckbox(workout.id);
 				}
 
-				const allWorkoutsCompleted = JSON.parse(
-					localStorage.getItem('workoutCompletionMap') || '[]',
-				) as [string, boolean][];
-
-				const areAllWorkoutsCompleted = allWorkoutsCompleted.every(
-					(element) => {
-						return element[1] === true;
-					},
-				);
-
-				setAllWorkoutsCompleted(areAllWorkoutsCompleted);
+				setAllWorkoutsCompleted(checkAllWorkoutsCompleted());
 			});
 		}
 	}, [activeSessionData, workoutsForActiveSession]);
@@ -297,16 +295,19 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 						<>
 							{activeSessionData && workoutsForActiveSession && (
 								<>
-									<h1 className="font-bold">
-										Current Workout Session:{' '}
-										{activeSessionData.session.name}
-									</h1>
-									<CurrentSessionElapsedTimer
-										startedAtDate={
-											activeSessionData.startedAt
-										}
-									/>
-									<div className="hide-scrollbar mb-4 overflow-auto rounded-md">
+									<div className="bg-teal-100">
+										<h1 className="font-bold">
+											Current Workout Session:{' '}
+											{activeSessionData.session.name}
+										</h1>
+										<CurrentSessionElapsedTimer
+											startedAtDate={
+												activeSessionData.startedAt
+											}
+										/>
+									</div>
+
+									<div className="hide-scrollbar overflow-auto rounded-md pb-4">
 										{workoutsForActiveSession.map(
 											(workout) => (
 												<WorkoutCard
