@@ -143,6 +143,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				},
 			},
 		);
+		localStorage.removeItem('workoutCompletionMap');
 		await refetchActiveSessionData();
 	};
 
@@ -168,6 +169,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			refetchListOfCompletedSessionIdsForActiveRoutine(),
 		]);
 
+		localStorage.removeItem('workoutCompletionMap');
 		setSessionHasStarted(false);
 		setAllWorkoutsCompleted(false);
 	};
@@ -248,10 +250,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 						return element[1] === true;
 					},
 				);
-
-				if (areAllWorkoutsCompleted) {
-					localStorage.removeItem('workoutCompletionMap');
-				}
 
 				setAllWorkoutsCompleted(areAllWorkoutsCompleted);
 			});
