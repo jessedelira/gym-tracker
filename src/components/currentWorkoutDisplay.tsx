@@ -13,13 +13,6 @@ interface CurrentWorkoutDisplayProps {
 	currentDate: Date;
 }
 
-/**
- * TODO: Try to save the page state with localStorage and then you will
- * be able to see the button enabled instantly when all are clicked then have a
- * mutation to update the database after for all the workouts
- *
- */
-
 const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	user,
 	currentDate,
@@ -71,10 +64,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		mutateAsync: addActiveSessionMutationAsync,
 		isLoading: isLoadingActiveSessionMutationAsync,
 	} = api.activeSesssion.addActiveSession.useMutation();
-	// const setWorkoutAsCompletedMutation =
-	// 	api.workout.setWorkoutAsCompleted.useMutation();
-	// const setWorkoutAsNotCompletedMutation =
-	// 	api.workout.setWorkoutAsNotCompleted.useMutation();
 	const createCompletedSessionMutation =
 		api.completedSession.createCompletedSession.useMutation();
 	//#endregion
@@ -99,17 +88,10 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				},
 			);
 
-			console.log(
-				'updatedWorkoutCompletionMap',
-				updatedWorkoutCompletionMap,
-			);
-
 			localStorage.setItem(
 				'workoutCompletionMap',
 				JSON.stringify(updatedWorkoutCompletionMap),
 			);
-
-			// void setWorkoutAsCompletedMutation.mutate({ workoutId });
 		} else {
 			const workoutCompletionMap = JSON.parse(
 				localStorage.getItem('workoutCompletionMap') || '[]',
@@ -136,12 +118,8 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		) as [string, boolean][];
 
 		const areAllWorkoutsChecked = workoutCompletionMap.every((element) => {
-			console.log(element);
-
 			return element[1] === true;
 		});
-
-		console.log('areAllWorkoutsChecked', areAllWorkoutsChecked);
 
 		setAllWorkoutsCompleted(areAllWorkoutsChecked);
 	};
@@ -198,13 +176,11 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		void handleCompleteSessionClick();
 	};
 	//#endregion
-	console.log('start')
+
 	if (workoutsForActiveSession && workoutsForActiveSession.length > 0) {
 		if (localStorage.getItem('workoutCompletionMap') !== null) {
 			console.log('hi');
 		} else {
-			console.log('bye')
-			// populate the map
 			const workoutCompletionMap = workoutsForActiveSession.map(
 				(workout) => {
 					return [workout.id, workout.isCompletedOnActiveSession];
@@ -216,8 +192,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				JSON.stringify(workoutCompletionMap),
 			);
 		}
-	} else {
-		localStorage.removeItem('workoutCompletionMap');
 	}
 
 	const userHasConfettiPreferenceEnabled = user.userPreferences?.some(
@@ -271,10 +245,13 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 
 				const areAllWorkoutsCompleted = allWorkoutsCompleted.every(
 					(element) => {
-						console.log(element);
 						return element[1] === true;
 					},
 				);
+
+				if (areAllWorkoutsCompleted) {
+					localStorage.removeItem('workoutCompletionMap');
+				}
 
 				setAllWorkoutsCompleted(areAllWorkoutsCompleted);
 			});
