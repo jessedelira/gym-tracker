@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import Spinner from '~/components/Spinner';
-import WorkoutSessionDisplay from '~/components/currentWorkoutDisplay';
+import WorkoutSessionDisplay from '~/components/workoutSessionDisplay';
 import Layout from '~/components/layout';
 
 const Home: NextPage = () => {
