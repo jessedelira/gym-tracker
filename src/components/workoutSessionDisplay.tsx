@@ -13,7 +13,7 @@ interface CurrentWorkoutDisplayProps {
 	currentDate: Date;
 }
 
-const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
+const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	user,
 	currentDate,
 }) => {
@@ -346,4 +346,4 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	);
 };
 
-export default CurrentWorkoutDisplay;
+export default WorkoutSessionDisplay;
