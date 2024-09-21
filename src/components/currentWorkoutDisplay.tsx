@@ -216,10 +216,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 
 				if (!workoutCompletionMap) {
 					const completionMap = workoutsForActiveSession?.map(
-						({ id, isCompletedOnActiveSession }) => [
-							id,
-							isCompletedOnActiveSession,
-						],
+						({ id }) => [id, false],
 					);
 
 					localStorage.setItem(
@@ -296,17 +293,15 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 						<>
 							{activeSessionData && workoutsForActiveSession && (
 								<>
-									<div className="bg-teal-100">
-										<h1 className="font-bold">
-											Current Workout Session:{' '}
-											{activeSessionData.session.name}
-										</h1>
-										<CurrentSessionElapsedTimer
-											startedAtDate={
-												activeSessionData.startedAt
-											}
-										/>
-									</div>
+									<h1 className="font-bold">
+										Current Workout Session:{' '}
+										{activeSessionData.session.name}
+									</h1>
+									<CurrentSessionElapsedTimer
+										startedAtDate={
+											activeSessionData.startedAt
+										}
+									/>
 
 									<div className="hide-scrollbar overflow-auto rounded-md pb-4">
 										{workoutsForActiveSession.map(
