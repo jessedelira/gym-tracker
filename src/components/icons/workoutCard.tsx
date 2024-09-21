@@ -18,7 +18,7 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({
 	return (
 		<div
 			key={workoutId}
-			className="mt-6 w-80 overflow-hidden rounded-lg bg-[#f5f5f5] shadow-lg"
+			className="mt-6 w-80 overflow-hidden rounded-lg bg-[#f5f5f5]"
 		>
 			<div className="p-6 md:p-8">
 				<div className="mb-4 flex items-center justify-between">

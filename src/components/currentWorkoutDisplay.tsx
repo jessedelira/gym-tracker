@@ -17,16 +17,6 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	user,
 	currentDate,
 }) => {
-	const userHasConfettiPreferenceEnabled = user.userPreferences?.some(
-		(preference) =>
-			preference.preference ===
-				Preference.CONFETTI_ON_SESSION_COMPLETION &&
-			preference.enabled === true,
-	);
-
-	const [allWorkoutsCompleted, setAllWorkoutsCompleted] = useState(false);
-	const [sessionHasStarted, setSessionHasStarted] = useState(false);
-
 	//#region Queries
 	const {
 		data: possibleSessionsToStart,
@@ -74,43 +64,64 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		mutateAsync: addActiveSessionMutationAsync,
 		isLoading: isLoadingActiveSessionMutationAsync,
 	} = api.activeSesssion.addActiveSession.useMutation();
-	const setWorkoutAsCompletedMutation =
-		api.workout.setWorkoutAsCompleted.useMutation();
-	const setWorkoutAsNotCompletedMutation =
-		api.workout.setWorkoutAsNotCompleted.useMutation();
 	const createCompletedSessionMutation =
 		api.completedSession.createCompletedSession.useMutation();
 	//#endregion
 
 	//#region UI Handlers
-	const handleCheckboxChange = async (
+	const handleCheckboxChange = (
 		event: React.ChangeEvent<HTMLInputElement>,
 	) => {
 		const workoutId = event.target.id;
 		const isNowChecked = event.target.checked;
+
 		if (isNowChecked) {
-			await setWorkoutAsCompletedMutation.mutateAsync({ workoutId });
+			const workoutCompletionMap = JSON.parse(
+				localStorage.getItem('workoutCompletionMap') || '[]',
+			) as [string, boolean][];
+			const updatedWorkoutCompletionMap = workoutCompletionMap.map(
+				([id, isCompleted]) => {
+					if (id === workoutId) {
+						return [id, true];
+					}
+					return [id, isCompleted];
+				},
+			);
+
+			localStorage.setItem(
+				'workoutCompletionMap',
+				JSON.stringify(updatedWorkoutCompletionMap),
+			);
 		} else {
-			await setWorkoutAsNotCompletedMutation.mutateAsync({ workoutId });
+			const workoutCompletionMap = JSON.parse(
+				localStorage.getItem('workoutCompletionMap') || '[]',
+			) as [string, boolean][];
+
+			const updatedWorkoutCompletionMap = workoutCompletionMap.map(
+				([id, isCompleted]) => {
+					if (id === workoutId) {
+						return [id, false];
+					}
+					return [id, isCompleted];
+				},
+			);
+
+			localStorage.setItem(
+				'workoutCompletionMap',
+				JSON.stringify(updatedWorkoutCompletionMap),
+			);
 			event.target.removeAttribute('checked');
 		}
 
-		if (!workoutsForActiveSession) return;
+		const workoutCompletionMap = JSON.parse(
+			localStorage.getItem('workoutCompletionMap') || '[]',
+		) as [string, boolean][];
 
-		const allWorkoutsCompleted = workoutsForActiveSession?.every(
-			(workout) => {
-				if (workout.isCompletedOnActiveSession) {
-					return workout.isCompletedOnActiveSession;
-				} else if (workout.id === workoutId && isNowChecked) {
-					return true;
-				} else {
-					return false;
-				}
-			},
-		);
+		const areAllWorkoutsChecked = workoutCompletionMap.every((element) => {
+			return element[1] === true;
+		});
 
-		setAllWorkoutsCompleted(allWorkoutsCompleted);
-		void refetchWorkoutsForActiveSession();
+		setAllWorkoutsCompleted(areAllWorkoutsChecked);
 	};
 
 	const handleCheckboxChangeWrapper = (
@@ -132,6 +143,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				},
 			},
 		);
+		localStorage.removeItem('workoutCompletionMap');
 		await refetchActiveSessionData();
 	};
 
@@ -157,6 +169,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			refetchListOfCompletedSessionIdsForActiveRoutine(),
 		]);
 
+		localStorage.removeItem('workoutCompletionMap');
 		setSessionHasStarted(false);
 		setAllWorkoutsCompleted(false);
 	};
@@ -166,39 +179,85 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	};
 	//#endregion
 
+	//#region State
+	const [allWorkoutsCompleted, setAllWorkoutsCompleted] = useState(false);
+	const [sessionHasStarted, setSessionHasStarted] = useState(false);
+	//#endregion
+
+	const userHasConfettiPreferenceEnabled = user.userPreferences?.some(
+		(preference) =>
+			preference.preference ===
+				Preference.CONFETTI_ON_SESSION_COMPLETION &&
+			preference.enabled === true,
+	);
+
+	const isDataLoading = (): boolean => {
+		return (
+			activeSessionDataIsLoading ||
+			workoutsForActiveSessionIsLoading ||
+			isPossibleSessionsToStartLoading ||
+			isListOfCompletedSessionIdsForActiveRoutineLoading ||
+			isLoadingActiveSessionMutationAsync ||
+			!isListOfCompletedSessionIdsForActiveRoutineLoadingFetched ||
+			!isPossibleSessionsToStartFetched ||
+			!isworkoutsForActiveSessionFetched ||
+			isActiveSessionDataFetching ||
+			isPossibleSessionsToStartFetching ||
+			isListOfCompletedSessionIdsForActiveRoutineFetching
+		);
+	};
+
 	useEffect(() => {
-		console.log('activeSessionData', activeSessionData);
-
 		if (workoutsForActiveSession) {
-			workoutsForActiveSession.forEach((workout) => {
-				if (workout.isCompletedOnActiveSession) {
-					const checkbox = document.getElementById(workout.id);
-					if (checkbox) {
-						checkbox.setAttribute('checked', 'true');
-					}
-				}
-			});
+			if (workoutsForActiveSession.length > 0) {
+				const workoutCompletionMap = localStorage.getItem(
+					'workoutCompletionMap',
+				);
 
-			const allWorkoutsCompleted = workoutsForActiveSession.every(
-				(workout) => workout.isCompletedOnActiveSession,
-			);
-			setAllWorkoutsCompleted(allWorkoutsCompleted);
+				if (!workoutCompletionMap) {
+					const completionMap = workoutsForActiveSession?.map(
+						({ id }) => [id, false],
+					);
+
+					localStorage.setItem(
+						'workoutCompletionMap',
+						JSON.stringify(completionMap),
+					);
+				}
+			}
+
+			const workoutCompletionMap = JSON.parse(
+				localStorage.getItem('workoutCompletionMap') || '[]',
+			) as [string, boolean][];
+
+			const updateCheckbox = (workoutId: string) => {
+				const checkbox = document.getElementById(workoutId);
+				if (checkbox) {
+					checkbox.setAttribute('checked', 'true');
+				}
+			};
+
+			const checkAllWorkoutsCompleted = () => {
+				return workoutCompletionMap.every(
+					([, isCompleted]) => isCompleted === true,
+				);
+			};
+
+			workoutsForActiveSession.forEach((workout) => {
+				const workoutCompletionObj = workoutCompletionMap.find(
+					([id]) => id === workout.id,
+				);
+
+				if (workoutCompletionObj?.[1]) {
+					updateCheckbox(workout.id);
+				}
+
+				setAllWorkoutsCompleted(checkAllWorkoutsCompleted());
+			});
 		}
 	}, [activeSessionData, workoutsForActiveSession]);
 
-	if (
-		activeSessionDataIsLoading ||
-		workoutsForActiveSessionIsLoading ||
-		isPossibleSessionsToStartLoading ||
-		isListOfCompletedSessionIdsForActiveRoutineLoading ||
-		isLoadingActiveSessionMutationAsync ||
-		!isListOfCompletedSessionIdsForActiveRoutineLoadingFetched ||
-		!isPossibleSessionsToStartFetched ||
-		!isworkoutsForActiveSessionFetched ||
-		isActiveSessionDataFetching ||
-		isPossibleSessionsToStartFetching ||
-		isListOfCompletedSessionIdsForActiveRoutineFetching
-	) {
+	if (isDataLoading()) {
 		return <SmallSpinner />;
 	}
 
@@ -243,7 +302,8 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 											activeSessionData.startedAt
 										}
 									/>
-									<div className="hide-scrollbar overflow-auto rounded-md">
+
+									<div className="hide-scrollbar overflow-auto rounded-md pb-4">
 										{workoutsForActiveSession.map(
 											(workout) => (
 												<WorkoutCard
@@ -270,16 +330,13 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 							<div className="flex-grow" />
 
 							<div className="flex w-full justify-center rounded-tl-xl rounded-tr-xl bg-black">
-								{allWorkoutsCompleted && (
-									<button
-										className="my-2 rounded-md bg-lime-300 p-3 font-medium"
-										onClick={
-											handleCompleteSessionClickWrapper
-										}
-									>
-										Complete Session
-									</button>
-								)}
+								<button
+									className="my-2 rounded-md bg-green-300 p-3 font-medium  disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-500 disabled:shadow-none"
+									disabled={!allWorkoutsCompleted}
+									onClick={handleCompleteSessionClickWrapper}
+								>
+									Complete Session
+								</button>
 							</div>
 						</>
 					)}

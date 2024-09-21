@@ -53,16 +53,6 @@ export const completedSessionRouter = createTRPCRouter({
 				},
 			});
 
-			// set all workouts as not completed
-			await prisma.workout.updateMany({
-				where: {
-					sessionId: input.sessionId,
-				},
-				data: {
-					isCompletedOnActiveSession: false,
-				},
-			});
-
 			return createdCompletedSession;
 		}),
 
