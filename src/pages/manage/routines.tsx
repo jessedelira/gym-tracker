@@ -101,8 +101,8 @@ const Routines: NextPage = () => {
 				</h2>
 			) : (
 				<div className="mx-2 rounded-md shadow-md sm:rounded-lg">
-					<table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-						<thead className="bg-gray-200 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+					<table className="w-full text-left text-sm text-gray-500">
+						<thead className="bg-gray-200 text-xs uppercase text-gray-700">
 							<tr>
 								<th scope="col" className="px-6 py-3">
 									Routine
@@ -117,11 +117,11 @@ const Routines: NextPage = () => {
 								routineData.map((routine) => (
 									<tr
 										key={routine.id}
-										className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600"
+										className="bg-white hover:bg-gray-50"
 									>
 										<th
 											scope="row"
-											className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+											className="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
 										>
 											{routine.name}
 											<p className="text-xs">
@@ -138,7 +138,7 @@ const Routines: NextPage = () => {
 										<td className="grid grid-cols-2 px-6 py-4 text-right">
 											{activeRoutine &&
 											routine.id === activeRoutine.id ? (
-												<button className="font-medium text-yellow-400 hover:underline dark:text-yellow-400">
+												<button className="font-medium text-yellow-400 hover:underline">
 													<GoldStar />
 												</button>
 											) : (

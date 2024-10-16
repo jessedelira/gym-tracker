@@ -231,7 +231,7 @@ const Session: NextPage = () => {
 								<button
 									id="sunday"
 									type="button"
-									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500"
 									onChange={handleInputChange}
 									onClick={(e) =>
 										handleButtonClicked(e.currentTarget.id)
@@ -244,7 +244,7 @@ const Session: NextPage = () => {
 								<button
 									id="monday"
 									type="button"
-									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500"
 									onChange={handleInputChange}
 									onClick={(e) =>
 										handleButtonClicked(e.currentTarget.id)
@@ -257,7 +257,7 @@ const Session: NextPage = () => {
 								<button
 									id="tuesday"
 									type="button"
-									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500"
 									onChange={handleInputChange}
 									onClick={(e) =>
 										handleButtonClicked(e.currentTarget.id)
@@ -270,7 +270,7 @@ const Session: NextPage = () => {
 								<button
 									id="wednesday"
 									type="button"
-									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500"
 									onChange={handleInputChange}
 									onClick={(e) =>
 										handleButtonClicked(e.currentTarget.id)
@@ -283,7 +283,7 @@ const Session: NextPage = () => {
 								<button
 									id="thursday"
 									type="button"
-									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500"
 									onChange={handleInputChange}
 									onClick={(e) =>
 										handleButtonClicked(e.currentTarget.id)
@@ -296,7 +296,7 @@ const Session: NextPage = () => {
 								<button
 									id="friday"
 									type="button"
-									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500"
 									onChange={handleInputChange}
 									onClick={(e) =>
 										handleButtonClicked(e.currentTarget.id)
@@ -309,7 +309,7 @@ const Session: NextPage = () => {
 								<button
 									id="saturday"
 									type="button"
-									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500"
 									onChange={handleInputChange}
 									onClick={(e) =>
 										handleButtonClicked(e.currentTarget.id)
@@ -350,17 +350,17 @@ const Session: NextPage = () => {
 					{/* Workouts set to be saved Section */}
 					{newWorkoutData.length !== 0 && (
 						<div className="mx-2 max-h-64 overflow-y-auto rounded-md shadow-md sm:rounded-lg">
-							<table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+							<table className="w-full text-left text-sm text-gray-500">
 								<tbody>
 									{newWorkoutData &&
 										newWorkoutData.map((workout) => (
 											<tr
 												key={workout.exerciseId}
-												className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600"
+												className="bg-white hover:bg-gray-50"
 											>
 												<th
 													scope="row"
-													className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+													className="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
 												>
 													{
 														exercisesData?.find(
