@@ -20,7 +20,7 @@
 	},
 	"dependencies": {
 		"@next-auth/prisma-adapter": "^1.0.7",
-		"@serwist/next": "^9.0.2",
+		"@serwist/next": "^9.0.9",
 		"@t3-oss/env-nextjs": "^0.2.2",
 		"@tanstack/react-query": "^4.35.3",
 		"@trpc/client": "^10.18.0",
