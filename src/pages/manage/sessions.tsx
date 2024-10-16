@@ -55,8 +55,8 @@ const Sessions: NextPage = () => {
 				</h2>
 			) : (
 				<div className="mx-2 rounded-md shadow-md sm:rounded-lg">
-					<table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-						<thead className="bg-gray-200 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+					<table className="w-full text-left text-sm text-gray-500">
+						<thead className="bg-gray-200 text-xs uppercase text-gray-700">
 							<tr>
 								<th scope="col" className="px-6 py-3">
 									Session
@@ -71,11 +71,11 @@ const Sessions: NextPage = () => {
 								allSessionDataState.map((session) => (
 									<tr
 										key={session.id}
-										className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600"
+										className="bg-white hover:bg-gray-50"
 									>
 										<th
 											scope="row"
-											className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+											className="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
 										>
 											{session.name}
 											<p className="text-xs">
