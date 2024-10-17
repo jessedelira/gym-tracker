@@ -54,7 +54,7 @@ const SignUp: NextPage = () => {
 							type="text"
 							placeholder="Username"
 							id="username"
-							className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+							className="rounded-lg bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 							required
 						/>
 						<PasswordInput
@@ -66,17 +66,17 @@ const SignUp: NextPage = () => {
 							type="text"
 							placeholder="First Name"
 							id="firstName"
-							className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+							className="rounded-lg bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 						/>
 						<input
 							type="text"
 							placeholder="Last Name"
 							id="lastName"
-							className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+							className="rounded-lg bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 						/>
 
 						<button
-							className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+							className="rounded-lg bg-blue-300 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 							type="submit"
 						>
 							Sign Up
@@ -85,7 +85,7 @@ const SignUp: NextPage = () => {
 
 					<Link
 						href="/"
-						className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+						className="rounded-lg bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 					>
 						Back
 					</Link>

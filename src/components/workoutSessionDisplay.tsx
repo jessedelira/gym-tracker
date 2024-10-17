@@ -13,7 +13,7 @@ interface CurrentWorkoutDisplayProps {
 	currentDate: Date;
 }
 
-const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
+const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	user,
 	currentDate,
 }) => {
@@ -331,7 +331,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 
 							<div className="flex w-full justify-center rounded-tl-xl rounded-tr-xl bg-black">
 								<button
-									className="my-2 rounded-md bg-green-300 p-3 font-medium  disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-500 disabled:shadow-none"
+									className="my-2 rounded-md bg-primaryButton p-3 font-medium  disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-500 disabled:shadow-none"
 									disabled={!allWorkoutsCompleted}
 									onClick={handleCompleteSessionClickWrapper}
 								>
@@ -346,4 +346,4 @@ const CurrentWorkoutDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	);
 };
 
-export default CurrentWorkoutDisplay;
+export default WorkoutSessionDisplay;

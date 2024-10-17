@@ -13,7 +13,10 @@ export default {
 				'186': '46.5rem', // 744px
 				'192': '48rem', // 768px
 			},
-			
+			colors: {
+				// Use hex colors for the best compatibility
+				primaryButton: '#4ade80',
+			},
 		},
 		plugins: [],
 	},
