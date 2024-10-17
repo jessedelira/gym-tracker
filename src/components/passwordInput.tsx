@@ -22,7 +22,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
 				placeholder={placeholder}
 				required={isRequired}
 				onChange={() => setIsShow(false)}
-				className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+				className="rounded-lg bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 				type={isShow ? 'text' : 'password'}
 			/>
 			<button

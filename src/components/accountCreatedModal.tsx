@@ -16,7 +16,7 @@ const AccountCreatedModal: React.FC = () => {
 					<div className="flex flex-col items-center justify-center gap-4">
 						<Link
 							href="/auth/signin"
-							className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+							className="rounded-button bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 						>
 							Sign In
 						</Link>
