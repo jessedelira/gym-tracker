@@ -5,14 +5,14 @@ import ClockIcon from './icons/clockIcon';
 const NavBar: React.FC = () => {
 	return (
 		<>
-			<div className="mb-3 flex flex-row items-center">
+			<div className="mb-3 flex flex-row items-center ">
 				<Link href="/home" className="ml-3 rounded-full text-5xl">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
 						viewBox="0 0 24 24"
 						strokeWidth="1.5"
-						stroke="currentColor"
+						stroke="white"
 						className="h-8 w-8"
 					>
 						<path
@@ -23,14 +23,14 @@ const NavBar: React.FC = () => {
 					</svg>
 				</Link>
 			</div>
-			<div className="mb-3 flex flex-row items-center ">
+			<div className="mb-3 flex flex-row items-center">
 				<Link href="/manage" className="ml-3 rounded-full text-5xl">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
 						viewBox="0 0 24 24"
 						strokeWidth="1.5"
-						stroke="currentColor"
+						stroke="white"
 						className="h-8 w-8"
 					>
 						<path
@@ -48,7 +48,7 @@ const NavBar: React.FC = () => {
 						fill="none"
 						viewBox="0 0 24 24"
 						strokeWidth="1.5"
-						stroke="currentColor"
+						stroke="white"
 						className="h-8 w-8"
 					>
 						<path
@@ -79,7 +79,7 @@ const NavBar: React.FC = () => {
 						fill="none"
 						viewBox="0 0 24 24"
 						strokeWidth="1.5"
-						stroke="currentColor"
+						stroke="white"
 						className="h-8 w-8"
 					>
 						<path

@@ -76,7 +76,7 @@ const SignUp: NextPage = () => {
 						/>
 
 						<button
-							className="rounded-lg bg-blue-300 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+							className="rounded-lg bg-primaryButton p-3 font-semibold text-black no-underline transition hover:bg-black/20"
 							type="submit"
 						>
 							Sign Up

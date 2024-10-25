@@ -26,26 +26,28 @@ const Home: NextPage = () => {
 		return (
 			<>
 				<main className="flex min-h-screen flex-col items-center justify-center bg-white">
-					<h1 className="mb-10 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-center text-4xl text-black text-transparent">
-						Gym Tracker
-					</h1>
-					<div className="flex flex-col items-center justify-center gap-4">
-						<button
-							className="mb-1 rounded-lg bg-primaryButton px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
-							onClick={() => void signIn('credential')}
-						>
-							Sign In
-						</button>
-					</div>
-					<div className="inline-flex">
-						<div>Don&apos;t have an account? </div>
+					<div className="mb-16">
+						<h1 className="mb-10 text-center text-4xl text-black">
+							Gym Tracker
+						</h1>
+						<div className="flex flex-col items-center justify-center gap-4">
+							<button
+								className="mb-1 rounded-lg bg-primaryButton px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+								onClick={() => void signIn('credential')}
+							>
+								Sign In
+							</button>
+						</div>
+						<div className="inline-flex">
+							<div>Don&apos;t have an account? </div>
 
-						<Link
-							href="/signup"
-							className="ml-1 cursor-pointer text-blue-500 hover:underline"
-						>
-							Sign up
-						</Link>
+							<Link
+								href="/signup"
+								className="ml-1 cursor-pointer text-blue-500 hover:underline"
+							>
+								Sign up
+							</Link>
+						</div>
 					</div>
 				</main>
 			</>
