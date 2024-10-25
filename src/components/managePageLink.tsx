@@ -14,7 +14,7 @@ const ManagePageLink: React.FC<ManagePageLinkProps> = ({
 	return (
 		<Link
 			href={href}
-			className="rounded-md bg-gray-300 px-4 py-2 text-xl font-semibold text-white  "
+			className="rounded-md bg-black px-4 py-2 text-xl font-semibold text-white  "
 		>
 			<div className="flex">
 				<div className="w-90">

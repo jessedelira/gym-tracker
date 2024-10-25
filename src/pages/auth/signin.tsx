@@ -75,7 +75,7 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 						type="text"
 						placeholder="Username"
 						id="username"
-						className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+						className="rounded-lg bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 						required
 					/>
 					<PasswordInput
@@ -84,14 +84,14 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 						isRequired
 					/>
 					<button
-						className="rounded-full bg-green-600/90 px-16 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+						className="rounded-lg bg-primaryButton px-16 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 						type="submit"
 					>
 						Sign In
 					</button>
 					<Link
 						href="/"
-						className="rounded-full bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+						className="rounded-lg bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 					>
 						Back
 					</Link>
