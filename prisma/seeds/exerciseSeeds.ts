@@ -155,6 +155,304 @@ const seedExercises = async () => {
 					'The dumbbell crunch is a great exercise for building strength and size in your abs.',
 			},
 		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Dumbbell Russian Twist',
+				description:
+					'The dumbbell russian twist is a great exercise for building strength and size in your obliques.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Dumbbell Side Bend',
+				description:
+					'The dumbbell side bend is a great exercise for building strength and size in your obliques.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Dumbbell Bench Press',
+				description:
+					'The dumbbell bench press is a great exercise for building strength and size in your chest.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Dumbbell Incline Bench Press',
+				description:
+					'The dumbbell incline bench press is a great exercise for building strength and size in your chest.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Run',
+				description:
+					'Running is a great exercise for building strength and size in your legs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Sprint',
+				description:
+					'Sprinting is a great exercise for building strength and size in your legs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Jump Rope',
+				description:
+					'Jumping rope is a great exercise for building strength and size in your legs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Swim',
+				description:
+					'Swimming is a great exercise for building strength and size in your arms and legs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Bike',
+				description:
+					'Biking is a great exercise for building strength and size in your legs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Row',
+				description:
+					'Rowing is a great exercise for building strength and size in your arms and legs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Climb',
+				description:
+					'Climbing is a great exercise for building strength and size in your arms and legs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Hike',
+				description:
+					'Hiking is a great exercise for building strength and size in your legs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Walk',
+				description:
+					'Walking is a great exercise for building strength and size in your legs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Pullup',
+				description:
+					'Pullups are a great exercise for building strength and size in your back and arms.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Dip',
+				description:
+					'Dips are a great exercise for building strength and size in your chest and arms.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Pushup',
+				description:
+					'Pushups are a great exercise for building strength and size in your chest and arms.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Situp',
+				description:
+					'Situps are a great exercise for building strength and size in your abs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Plank',
+				description:
+					'Planks are a great exercise for building strength and size in your abs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Crunch',
+				description:
+					'Crunches are a great exercise for building strength and size in your abs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Leg Raise',
+				description:
+					'Leg raises are a great exercise for building strength and size in your abs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Flutter Kick',
+				description:
+					'Flutter kicks are a great exercise for building strength and size in your abs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Bicycle Crunch',
+				description:
+					'Bicycle crunches are a great exercise for building strength and size in your abs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Russian Twist',
+				description:
+					'Russian twists are a great exercise for building strength and size in your abs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Mountain Climber',
+				description:
+					'Mountain climbers are a great exercise for building strength and size in your abs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Burpee',
+				description:
+					'Burpees are a great exercise for building strength and size in your entire body.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Jumping Jack',
+				description:
+					'Jumping jacks are a great exercise for building strength and size in your entire body.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'High Knees',
+				description:
+					'High knees are a great exercise for building strength and size in your legs.',
+			},
+		});
+
+		// create more exercises here
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Jump Squat',
+				description:
+					'Jump squats are a great exercise for building strength and size in your legs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Lunge',
+				description:
+					'Weight Lunge are a great exercise for building strength and size in your legs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Leg Press',
+				description:
+					'Leg Press are a great exercise for building strength and size in your legs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Leg Curl',
+				description:
+					'Leg Curl are a great exercise for building strength and size in your legs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Leg Extension',
+				description:
+					'Leg Extension are a great exercise for building strength and size in your legs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Skull Crusher',
+				description:
+					'Skull Crusher are a great exercise for building strength and size in your arms.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Hammer Curl',
+				description:
+					'Hammer Curl are a great exercise for building strength and size in your arms.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Reverse Curl',
+				description:
+					'Reverse Curl are a great exercise for building strength and size in your arms.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Preacher Curl',
+				description:
+					'Preacher Curl are a great exercise for building strength and size in your arms.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Tricep Pushdown',
+				description:
+					'Tricep Pushdown are a great exercise for building strength and size in your arms.',
+			},
+		});
 	}
 	await prisma.$disconnect();
 };
