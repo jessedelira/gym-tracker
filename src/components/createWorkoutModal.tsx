@@ -7,6 +7,7 @@ import {
 	getWeightInputElement,
 } from '~/utils/documentUtils';
 import { type Exercise } from '@prisma/client';
+import SearchableDropdown from './searchableDropdown';
 
 interface CreateWorkoutModalProps {
 	onXClick: () => void;
@@ -117,6 +118,10 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 							</button>
 						</div>
 					</form>
+
+					<SearchableDropdown
+						exercises={exercises}
+					></SearchableDropdown>
 				</div>
 			</div>
 		</>
