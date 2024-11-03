@@ -174,6 +174,30 @@ const seedExercises = async () => {
 
 		await prisma.exercise.create({
 			data: {
+				name: 'Arnolds',
+				description:
+					'Arnolds are a great exercise for building strength and size in your shoulders.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Hip Flexor Curl',
+				description:
+					'Hip flexor curls are a great exercise for building strength and size in your hip flexors.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Lat Pulldown',
+				description:
+					'Lat pulldowns are a great exercise for building strength and size in your back.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
 				name: 'Dumbbell Bench Press',
 				description:
 					'The dumbbell bench press is a great exercise for building strength and size in your chest.',
@@ -448,9 +472,25 @@ const seedExercises = async () => {
 
 		await prisma.exercise.create({
 			data: {
-				name: 'Tricep Pushdown',
+				name: 'Tricep Pull Down',
 				description:
-					'Tricep Pushdown are a great exercise for building strength and size in your arms.',
+					'Tricep Pull Downs are a great exercise for building strength and size in your arms.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Bulgarian Split Squat',
+				description:
+					'Bulgarian Split Squats are a great exercise for building strength and size in your legs.',
+			},
+		});
+
+		await prisma.exercise.create({
+			data: {
+				name: 'Horizaontal Row',
+				description:
+					'Horizontal Rows are a great exercise for building strength and size in your back.',
 			},
 		});
 	}
