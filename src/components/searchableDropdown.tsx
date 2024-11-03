@@ -32,7 +32,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
 	};
 
 	return (
-		<div className="relative w-64">
+		<div className="relative">
 			{/* Input field */}
 			<input
 				type="text"
