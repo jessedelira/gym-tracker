@@ -2,13 +2,10 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 const seedExercises = async () => {
-	const result = await prisma.exercise.findUnique({
-		where: {
-			name: 'Bench Press',
-		},
-	});
+	const result = await prisma.exercise.findMany();
 
-	if (result) {
+	// Update value to reflect number of exercises in the database
+	if (result.length === 60) {
 		console.log('Exercises already seeded');
 		return;
 	} else {
