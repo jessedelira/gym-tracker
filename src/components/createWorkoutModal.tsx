@@ -56,8 +56,8 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 									Exercise
 								</label>
 								<SearchableDropdown
-						exercises={exercises}
-					></SearchableDropdown>
+									exercises={exercises}
+								></SearchableDropdown>
 							</div>
 							<div className=" grid grid-cols-1">
 								<label className="block pl-2 font-bold">
@@ -105,8 +105,6 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 							</button>
 						</div>
 					</form>
-
-					
 				</div>
 			</div>
 		</>

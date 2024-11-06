@@ -5,10 +5,13 @@ const seedExercises = async () => {
 	const result = await prisma.exercise.findMany();
 
 	// Update value to reflect number of exercises in the database
-	if (result.length === 60) {
+	if (result.length === 59) {
 		console.log('Exercises already seeded');
 		return;
 	} else {
+		// Wipe table
+		await prisma.exercise.deleteMany();
+
 		await prisma.exercise.create({
 			data: {
 				name: 'Bench Press',
@@ -126,14 +129,6 @@ const seedExercises = async () => {
 				name: 'Dumbbell Lunge',
 				description:
 					'The dumbbell lunge is a great exercise for building strength and size in your legs.',
-			},
-		});
-
-		await prisma.exercise.create({
-			data: {
-				name: 'Dumbbell Deadlift',
-				description:
-					'The dumbbell deadlift is a great exercise for building strength and size in your legs.',
 			},
 		});
 

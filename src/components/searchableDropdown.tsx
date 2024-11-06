@@ -5,6 +5,7 @@ interface SearchableDropdownProps {
 	exercises: Exercise[];
 }
 
+// TODO: have alphebetical sorting of the search results and at start of search
 const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
 	exercises,
 }) => {
@@ -17,10 +18,12 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
 		const searchTerm = e.target.value.toLowerCase();
 		setQuery(searchTerm);
 		setSearchResults(
-			exercises.filter((exercise) =>
-				exercise.name.toLowerCase().includes(searchTerm),
-			),
-		);
+			exercises
+				.filter((exercise) =>
+					exercise.name.toLowerCase().includes(searchTerm),
+				)
+				.sort(),
+			);
 
 		console.log('searchResults', searchResults);
 		console.log('searchTerm', searchTerm);
