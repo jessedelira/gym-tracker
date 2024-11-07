@@ -24,9 +24,6 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
 				)
 				.sort(),
 			);
-
-		console.log('searchResults', searchResults);
-		console.log('searchTerm', searchTerm);
 	};
 
 	const handleItemClick = (item: Exercise) => {
