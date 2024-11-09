@@ -480,7 +480,7 @@ const seedExercises = async () => {
 
 		await prisma.exercise.create({
 			data: {
-				name: 'Horizaontal Row',
+				name: 'Horizontal Row',
 				description:
 					'Horizontal Rows are a great exercise for building strength and size in your back.',
 			},
