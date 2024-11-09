@@ -65,16 +65,16 @@ model SessionDaysActive {
 }
 
 model Workout {
-  id                         String   @id @default(cuid())
-  reps                       Int
-  sets                       Int
-  weightLbs                  Int      @map("weight_lbs")
-  exercise                   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
-  exerciseId                 String   @map("exercise_id")
-  session                    Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  sessionId                  String   @map("session_id")
-  user                       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId                     String   @map("user_id")
+  id         String   @id @default(cuid())
+  reps       Int
+  sets       Int
+  weightLbs  Int      @map("weight_lbs")
+  exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  exerciseId String   @map("exercise_id")
+  session    Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sessionId  String   @map("session_id")
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String   @map("user_id")
 
   @@map("workout")
 }
