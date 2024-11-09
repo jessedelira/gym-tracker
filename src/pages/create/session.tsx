@@ -197,7 +197,7 @@ const Session: NextPage = () => {
 					<div className="mat-4 flex">
 						<div className="mat-4 w-18 mr-2 grid grid-cols-1 pl-2">
 							<label className="block font-bold">
-								Session Name
+								Session Name*
 							</label>
 							<input
 								id="sessionName"
@@ -210,14 +210,13 @@ const Session: NextPage = () => {
 					</div>
 					<div className="mat-4 grid grid-cols-1">
 						<label className="block pl-2 font-bold">
-							Description
+							Description (optional)
 						</label>
 						<textarea
 							id="sessionDescription"
 							className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-white"
 							placeholder="Description"
 							onChange={handleInputChange}
-							required
 						></textarea>
 					</div>
 

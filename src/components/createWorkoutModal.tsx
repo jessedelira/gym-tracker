@@ -1,7 +1,6 @@
-import React, { type FormEvent } from 'react';
+import React, { useState, type FormEvent } from 'react';
 import XIcon from './icons/xIcon';
 import {
-	getExerciseInputElement,
 	getRepsInputElement,
 	getSetsInputElement,
 	getWeightInputElement,
@@ -25,15 +24,22 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 	onSaveClick,
 	exercises,
 }) => {
+	const [exerciseSelectedId, setExerciseSelectedId] = useState('');
+
+	const hanldeSearchableDropdownSelect = (
+		e: React.ChangeEvent<HTMLInputElement>,
+	) => {
+		setExerciseSelectedId(e.target.value);
+	};
+
 	const handleSaveButtonClicked = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const exerciseId = getExerciseInputElement(document).value;
 		const weightLbs = Number(getWeightInputElement(document).value);
 		const sets = Number(getSetsInputElement(document).value);
 		const reps = Number(getRepsInputElement(document).value);
 
-		onSaveClick(exerciseId, weightLbs, sets, reps);
+		onSaveClick(exerciseSelectedId, weightLbs, sets, reps);
 	};
 
 	return (
@@ -57,6 +63,9 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 								</label>
 								<SearchableDropdown
 									exercises={exercises}
+									onInputSelect={
+										hanldeSearchableDropdownSelect
+									}
 								></SearchableDropdown>
 							</div>
 							<div className=" grid grid-cols-1">
