@@ -23,7 +23,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
 					exercise.name.toLowerCase().includes(searchTerm),
 				)
 				.sort(),
-			);
+		);
 	};
 
 	const handleItemClick = (item: Exercise) => {
