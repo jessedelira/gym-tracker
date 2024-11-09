@@ -3,6 +3,7 @@ import { api } from '~/utils/api';
 import HomePageSessionCard from './homePageSessionCard';
 import SmallSpinner from './smallSpinner';
 import JSConfetti from 'js-confetti';
+import Image from 'next/image';
 import { type User } from 'next-auth';
 import { Preference } from '@prisma/client';
 import CurrentSessionElapsedTimer from './currentSessionElapsedTimer';
@@ -287,7 +288,14 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		<>
 			{possibleSessionsToStart && possibleSessionsToStart.length === 0 ? (
 				<div className="flex h-full items-center justify-center">
-					<h1 className="m-12 text-lg font-medium text-gray-700">
+					<h1 className="m-12 pb-10 text-lg font-medium text-gray-700">
+						{/* how to addd a gif here */}
+						<Image
+							src="/gifs/bunnyRunner.gif"
+							alt="Animated running rabbit"
+							width={300}
+							height={300}
+						/>
 						Your active routine, {activeRoutine.name}, has no
 						sessions for today!
 					</h1>
