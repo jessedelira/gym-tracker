@@ -105,7 +105,7 @@ model CompletedSession {
   startedAt           DateTime @map("started_at")
   completedAt         DateTime @default(now()) @map("completed_at")
   percentageCompleted Int      @map("percentage_completed")
-  session             Session  @relation(fields: [sessionId], references: [id])
+  session             Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   sessionId           String   @map("session_id")
   user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId              String   @map("user_id")
