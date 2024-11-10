@@ -3,6 +3,7 @@ import { api } from '~/utils/api';
 import HomePageSessionCard from './homePageSessionCard';
 import SmallSpinner from './smallSpinner';
 import JSConfetti from 'js-confetti';
+import Image from 'next/image';
 import { type User } from 'next-auth';
 import { Preference } from '@prisma/client';
 import CurrentSessionElapsedTimer from './currentSessionElapsedTimer';
@@ -47,6 +48,14 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			currentDate: currentDate,
 		},
 	);
+	const {
+		data: activeRoutine,
+		isLoading: activeRoutineIsLoading,
+		isFetching: isActiveRoutineFetching,
+		isFetched: isactiveRoutineFetched,
+	} = api.routine.getActiveRoutine.useQuery({
+		userId: user.id,
+	});
 	const {
 		data: workoutsForActiveSession,
 		isLoading: workoutsForActiveSessionIsLoading,
@@ -203,7 +212,10 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			!isworkoutsForActiveSessionFetched ||
 			isActiveSessionDataFetching ||
 			isPossibleSessionsToStartFetching ||
-			isListOfCompletedSessionIdsForActiveRoutineFetching
+			isListOfCompletedSessionIdsForActiveRoutineFetching ||
+			activeRoutineIsLoading ||
+			isActiveRoutineFetching ||
+			!isactiveRoutineFetched
 		);
 	};
 
@@ -261,12 +273,33 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		return <SmallSpinner />;
 	}
 
+	if (!activeRoutine) {
+		return (
+			<div className="flex h-full items-center justify-center">
+				<h1 className="m-12 text-lg font-medium text-gray-700">
+					No active routine, please go to manage routines to create
+					one and start it
+				</h1>
+			</div>
+		);
+	}
+
 	return (
 		<>
 			{possibleSessionsToStart && possibleSessionsToStart.length === 0 ? (
-				<h1 className="flex justify-center font-medium">
-					No sessions for today 🎉
-				</h1>
+				<div className="flex h-full items-center justify-center">
+					<h1 className="m-12 pb-10 text-lg font-medium text-gray-700">
+						{/* how to addd a gif here */}
+						<Image
+							src="/gifs/bunnyRunner.gif"
+							alt="Animated running rabbit"
+							width={300}
+							height={300}
+						/>
+						Your active routine, {activeRoutine.name}, has no
+						sessions for today!
+					</h1>
+				</div>
 			) : (
 				<>
 					{activeSessionData === null &&

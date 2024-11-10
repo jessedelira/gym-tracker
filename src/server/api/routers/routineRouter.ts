@@ -48,6 +48,22 @@ export const routineRouter = createTRPCRouter({
 			return routine;
 		}),
 
+	removeActiveRoutine: protectedProcedure
+		.input(z.object({ userId: z.string() }))
+		.mutation(async ({ input }) => {
+			const routine = await prisma.routine.updateMany({
+				where: {
+					userId: input.userId,
+					isActive: true,
+				},
+				data: {
+					isActive: false,
+				},
+			});
+
+			return routine;
+		}),
+
 	setActiveRoutine: protectedProcedure
 		.input(z.object({ routineId: z.string() }))
 		.mutation(async ({ input }) => {

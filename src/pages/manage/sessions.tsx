@@ -49,9 +49,8 @@ const Sessions: NextPage = () => {
 				</Link>
 			</div>
 			{allSessionData && allSessionData.length === 0 ? (
-				<h2 className="ml-2">
-					You have not created a session yet, press the blue plus
-					button to create one!
+				<h2 className="flex justify-center">
+					You have not created a session yet!
 				</h2>
 			) : (
 				<div className="mx-2 rounded-md shadow-md sm:rounded-lg">

@@ -1,12 +1,12 @@
-import React, { type FormEvent } from 'react';
+import React, { useState, type FormEvent } from 'react';
 import XIcon from './icons/xIcon';
 import {
-	getExerciseInputElement,
 	getRepsInputElement,
 	getSetsInputElement,
 	getWeightInputElement,
 } from '~/utils/documentUtils';
 import { type Exercise } from '@prisma/client';
+import SearchableDropdown from './searchableDropdown';
 
 interface CreateWorkoutModalProps {
 	onXClick: () => void;
@@ -24,15 +24,22 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 	onSaveClick,
 	exercises,
 }) => {
+	const [exerciseSelectedId, setExerciseSelectedId] = useState('');
+
+	const hanldeSearchableDropdownSelect = (
+		e: React.ChangeEvent<HTMLInputElement>,
+	) => {
+		setExerciseSelectedId(e.target.value);
+	};
+
 	const handleSaveButtonClicked = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const exerciseId = getExerciseInputElement(document).value;
 		const weightLbs = Number(getWeightInputElement(document).value);
 		const sets = Number(getSetsInputElement(document).value);
 		const reps = Number(getRepsInputElement(document).value);
 
-		onSaveClick(exerciseId, weightLbs, sets, reps);
+		onSaveClick(exerciseSelectedId, weightLbs, sets, reps);
 	};
 
 	return (
@@ -54,22 +61,12 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 								<label className="block font-bold">
 									Exercise
 								</label>
-								<select
-									id="exerciseId"
-									required
-									className="rounded-md bg-gray-300  py-2 text-black"
-								>
-									{exercises
-										? exercises?.map((exercise) => (
-												<option
-													key={exercise.id}
-													value={exercise.id}
-												>
-													{exercise.name}
-												</option>
-										  ))
-										: null}
-								</select>
+								<SearchableDropdown
+									exercises={exercises}
+									onInputSelect={
+										hanldeSearchableDropdownSelect
+									}
+								></SearchableDropdown>
 							</div>
 							<div className=" grid grid-cols-1">
 								<label className="block pl-2 font-bold">

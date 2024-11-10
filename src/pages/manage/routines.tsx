@@ -22,8 +22,18 @@ const Routines: NextPage = () => {
 		userId: sessionData?.user.id || '',
 	});
 	const setActiveRoutineMutation = api.routine.setActiveRoutine.useMutation();
+	const removeActiveRoutineMutation =
+		api.routine.removeActiveRoutine.useMutation();
 
 	const onStarClick = (routineId: string) => {
+		if (activeRoutine && activeRoutine.id === routineId) {
+			removeActiveRoutineMutation.mutate({
+				userId: sessionData?.user.id || '',
+			});
+			setActiveRoutine(null);
+			return;
+		}
+
 		setActiveRoutineMutation.mutate({
 			routineId: routineId,
 		});
@@ -58,7 +68,7 @@ const Routines: NextPage = () => {
 				</h1>
 				<div className="flex justify-between ">
 					{activeRoutine ? (
-						<p className="w-120 text-s w-96 flex-initial pl-2 pt-1">
+						<p className="w-120 w-96 flex-initial pl-2 pt-1 text-xl">
 							Active Routine:{' '}
 							{activeRoutine.name &&
 								(activeRoutine.name.length > 30
@@ -138,7 +148,12 @@ const Routines: NextPage = () => {
 										<td className="grid grid-cols-2 px-6 py-4 text-right">
 											{activeRoutine &&
 											routine.id === activeRoutine.id ? (
-												<button className="font-medium text-yellow-400 hover:underline">
+												<button
+													className="font-medium text-yellow-400 hover:underline"
+													onClick={() =>
+														onStarClick(routine.id)
+													}
+												>
 													<GoldStar />
 												</button>
 											) : (
