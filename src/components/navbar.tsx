@@ -5,7 +5,7 @@ import ClockIcon from './icons/clockIcon';
 const NavBar: React.FC = () => {
 	return (
 		<>
-			<div className="mb-3 flex flex-row items-center ">
+			<div id="home" className="mb-4 flex flex-row items-center ">
 				<Link href="/home" className="ml-3 rounded-full text-5xl">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +23,7 @@ const NavBar: React.FC = () => {
 					</svg>
 				</Link>
 			</div>
-			<div className="mb-3 flex flex-row items-center">
+			<div id="manage" className="mb-4 flex flex-row items-center">
 				<Link href="/manage" className="ml-3 rounded-full text-5xl">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +41,7 @@ const NavBar: React.FC = () => {
 					</svg>
 				</Link>
 			</div>
-			<div className="mb-3 flex flex-row items-center ">
+			<div id="settings" className="mb-4 flex flex-row items-center ">
 				<Link href="/settings" className="ml-3 rounded-full text-5xl">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -64,12 +64,12 @@ const NavBar: React.FC = () => {
 					</svg>
 				</Link>
 			</div>
-			<div className="mb-3 flex flex-row items-center ">
+			<div id="clock" className="mb-4 flex flex-row items-center ">
 				<Link href="/clock" className="ml-3 rounded-full text-5xl">
 					<ClockIcon />
 				</Link>
 			</div>
-			<div className="mb-3 flex flex-row items-center">
+			<div id="signout" className="mb-4 flex flex-row items-center">
 				<button
 					className=" mr-3 rounded-full text-5xl"
 					onClick={() => void signOut()}

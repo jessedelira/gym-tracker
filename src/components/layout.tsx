@@ -7,8 +7,8 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
 	return (
 		<div className="flex h-screen flex-col">
-			<main className="h-[88%] flex-grow bg-white">{children}</main>
-			<nav className="flex h-[12%] justify-between bg-black">
+			<main className="h-[10%] flex-grow bg-white">{children}</main>
+			<nav className="flex h-[10%] justify-between bg-black">
 				<NavBar />
 			</nav>
 		</div>
