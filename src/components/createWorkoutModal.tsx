@@ -44,7 +44,7 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 
 	return (
 		<>
-			<div className="fixed inset-0 z-10 flex items-center justify-center mb-5">
+			<div className="fixed inset-0 z-10 flex items-center justify-center mb-32">
 				<div className="absolute inset-0 bg-black opacity-50"></div>
 				<div className="z-10 max-w-[23rem] rounded-lg bg-white p-2">
 					<div className="flex flex-col justify-start">
