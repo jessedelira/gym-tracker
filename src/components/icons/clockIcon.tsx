@@ -1,12 +1,20 @@
-const ClockIcon = () => {
+import { type IconProps } from "./iconProps";
+
+const ClockIcon: React.FC<IconProps> = ({
+	heightValue,
+	widthValue,
+	fill: f = "none",
+	strokeColor: sc = "black",
+	strokeWidth: st = 1.5,
+}) => {
 	return (
 		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			fill="none"
-			viewBox="0 0 24 24"
-			strokeWidth={1.5}
-			stroke="black"
-			className="h-8 w-8"
+		xmlns="http://www.w3.org/2000/svg"
+		fill={f}
+		viewBox="0 0 24 24"
+		strokeWidth={st}
+		stroke={sc}
+		className={`h-${heightValue} w-${widthValue}`}
 		>
 			<path
 				strokeLinecap="round"
