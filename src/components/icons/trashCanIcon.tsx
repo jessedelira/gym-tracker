@@ -1,21 +1,19 @@
-interface TrashCanIconProps {
-	heightValue: string;
-	widthValue: string;
-	strokeWidth?: number;
-}
+import { type IconProps } from './iconProps';
 
-const TrashCanIcon: React.FC<TrashCanIconProps> = ({
+const TrashCanIcon: React.FC<IconProps> = ({
 	heightValue,
 	widthValue,
+	fill: f = 'none',
+	strokeColor: sc = 'black',
 	strokeWidth: st = 1.5,
 }) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
-			fill="none"
+			fill={f}
 			viewBox="0 0 24 24"
 			strokeWidth={st}
-			stroke="red"
+			stroke={sc}
 			className={`h-${heightValue} w-${widthValue}`}
 		>
 			<path

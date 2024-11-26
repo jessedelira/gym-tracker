@@ -383,6 +383,7 @@ const Session: NextPage = () => {
 														<TrashCanIcon
 															heightValue={'6'}
 															widthValue={'6'}
+															strokeColor="red"
 														></TrashCanIcon>
 													</button>
 												</td>
