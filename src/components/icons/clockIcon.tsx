@@ -5,7 +5,7 @@ const ClockIcon = () => {
 			fill="none"
 			viewBox="0 0 24 24"
 			strokeWidth={1.5}
-			stroke="white"
+			stroke="black"
 			className="h-8 w-8"
 		>
 			<path

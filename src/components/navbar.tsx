@@ -3,16 +3,20 @@ import Link from 'next/link';
 import ClockIcon from './icons/clockIcon';
 
 const NavBar: React.FC = () => {
+	const getCurrentURL = (): string => {
+		return window.location.href;
+	};
+
 	return (
 		<>
-			<div id="home" className="mb-4 flex flex-row items-center ">
+			<div id="home" className="mb-8 flex flex-row items-center ">
 				<Link href="/home" className="ml-3 rounded-full text-5xl">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
 						viewBox="0 0 24 24"
 						strokeWidth="1.5"
-						stroke="white"
+						stroke="black"
 						className="h-8 w-8"
 					>
 						<path
@@ -23,14 +27,14 @@ const NavBar: React.FC = () => {
 					</svg>
 				</Link>
 			</div>
-			<div id="manage" className="mb-4 flex flex-row items-center">
+			<div id="manage" className="mb-8 flex flex-row items-center">
 				<Link href="/manage" className="ml-3 rounded-full text-5xl">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
 						viewBox="0 0 24 24"
 						strokeWidth="1.5"
-						stroke="white"
+						stroke="black"
 						className="h-8 w-8"
 					>
 						<path
@@ -41,14 +45,14 @@ const NavBar: React.FC = () => {
 					</svg>
 				</Link>
 			</div>
-			<div id="settings" className="mb-4 flex flex-row items-center ">
+			<div id="settings" className="mb-8 flex flex-row items-center ">
 				<Link href="/settings" className="ml-3 rounded-full text-5xl">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
 						viewBox="0 0 24 24"
 						strokeWidth="1.5"
-						stroke="white"
+						stroke="black"
 						className="h-8 w-8"
 					>
 						<path
@@ -64,12 +68,12 @@ const NavBar: React.FC = () => {
 					</svg>
 				</Link>
 			</div>
-			<div id="clock" className="mb-4 flex flex-row items-center ">
+			<div id="clock" className="mb-8 flex flex-row items-center ">
 				<Link href="/clock" className="ml-3 rounded-full text-5xl">
 					<ClockIcon />
 				</Link>
 			</div>
-			<div id="signout" className="mb-4 flex flex-row items-center">
+			<div id="signout" className="mb-8 flex flex-row items-center">
 				<button
 					className=" mr-3 rounded-full text-5xl"
 					onClick={() => void signOut()}
@@ -79,7 +83,7 @@ const NavBar: React.FC = () => {
 						fill="none"
 						viewBox="0 0 24 24"
 						strokeWidth="1.5"
-						stroke="white"
+						stroke="black"
 						className="h-8 w-8"
 					>
 						<path
