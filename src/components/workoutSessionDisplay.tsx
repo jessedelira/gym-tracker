@@ -42,7 +42,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		isLoading: isListOfCompletedSessionIdsForActiveRoutineLoading,
 		isFetching: isListOfCompletedSessionIdsForActiveRoutineFetching,
 		refetch: refetchListOfCompletedSessionIdsForActiveRoutine,
-	} = api.completedSession.getListOfÇompletedSessionIdsForActiveRoutine.useQuery(
+	} = api.completedSession.getListOfCompletedSessionIdsForActiveRoutine.useQuery(
 		{
 			userId: user.id,
 			currentDate: currentDate,

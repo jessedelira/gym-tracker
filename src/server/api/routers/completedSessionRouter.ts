@@ -56,7 +56,7 @@ export const completedSessionRouter = createTRPCRouter({
 			return createdCompletedSession;
 		}),
 
-	getListOfÇompletedSessionIdsForActiveRoutine: protectedProcedure
+	getListOfCompletedSessionIdsForActiveRoutine: protectedProcedure
 		.input(z.object({ userId: z.string(), currentDate: z.date() }))
 		.query(async ({ input }) => {
 			// find all session for active routine
