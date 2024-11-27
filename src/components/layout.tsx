@@ -8,7 +8,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 	return (
 		<div className="flex h-screen flex-col">
 			<main className="h-[90%] flex-grow bg-white">{children}</main>
-			<nav className="flex h-[10%] justify-between bg-black">
+			<nav className="border-gray-200-400 flex h-[10%] justify-center gap-9 border-t bg-white">
 				<NavBar />
 			</nav>
 		</div>
