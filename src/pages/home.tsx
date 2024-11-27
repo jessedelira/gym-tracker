@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import Spinner from '~/components/Spinner';
 import WorkoutSessionDisplay from '~/components/workoutSessionDisplay';
 import Layout from '~/components/layout';
+import ScrollUpRefresh from '~/components/scrollUpToRefresh';
 
 const Home: NextPage = () => {
 	const { data: sessionData, status } = useSession();
@@ -24,7 +25,7 @@ const Home: NextPage = () => {
 	return (
 		<Layout>
 			<div className="flex h-full flex-col items-center bg-white">
-				<WorkoutSessionDisplay
+					<WorkoutSessionDisplay
 					user={sessionData.user}
 					currentDate={currentDate}
 				></WorkoutSessionDisplay>

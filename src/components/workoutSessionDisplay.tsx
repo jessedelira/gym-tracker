@@ -8,6 +8,7 @@ import { type User } from 'next-auth';
 import { Preference } from '@prisma/client';
 import CurrentSessionElapsedTimer from './currentSessionElapsedTimer';
 import WorkoutCard from './icons/workoutCard';
+import ScrollUpRefresh from './scrollUpToRefresh';
 
 interface CurrentWorkoutDisplayProps {
 	user: User;
@@ -219,6 +220,15 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		);
 	};
 
+	const refetchAll = async () => {
+		await Promise.all([
+			refetchActiveSessionData(),
+			refetchWorkoutsForActiveSession(),
+			refetchListOfCompletedSessionIdsForActiveRoutine(),
+		]);
+	}
+
+
 	useEffect(() => {
 		if (workoutsForActiveSession) {
 			if (workoutsForActiveSession.length > 0) {
@@ -286,6 +296,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 
 	return (
 		<>
+				<ScrollUpRefresh onRefresh={refetchAll}></ScrollUpRefresh>		
 			{possibleSessionsToStart && possibleSessionsToStart.length === 0 ? (
 				<div className="flex h-full items-center justify-center">
 					<h1 className="m-12 pb-10 text-lg font-medium text-gray-700">
