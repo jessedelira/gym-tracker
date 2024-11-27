@@ -80,13 +80,8 @@ const NavBar: React.FC = () => {
 				</Link>
 			</div>
 			<div id="settings" className="mb-8 flex flex-row items-center ">
-				<Link
-					href="/settings"
-					className="ml-3 rounded-full text-5xl"
-				>
-
-
-{currentURL === 'settings' ? (
+				<Link href="/settings" className="ml-3 rounded-full text-5xl">
+					{currentURL === 'settings' ? (
 						<SettingsIcon
 							heightValue="8"
 							widthValue="8"
@@ -101,18 +96,11 @@ const NavBar: React.FC = () => {
 							strokeColor="gray"
 						/>
 					)}
-
-
-
-
-
-
-					
 				</Link>
 			</div>
 			<div id="clock" className="mb-8 flex flex-row items-center ">
 				<Link href="/clock" className="ml-3 rounded-full text-5xl">
-				{currentURL === 'clock' ? (
+					{currentURL === 'clock' ? (
 						<ClockIcon
 							heightValue="8"
 							widthValue="8"

@@ -9,12 +9,12 @@ const SettingsIcon: React.FC<IconProps> = ({
 }) => {
 	return (
 		<svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill={f}
-        viewBox="0 0 24 24"
-        strokeWidth={st}
-        stroke={sc}
-        className={`h-${heightValue} w-${widthValue}`}
+			xmlns="http://www.w3.org/2000/svg"
+			fill={f}
+			viewBox="0 0 24 24"
+			strokeWidth={st}
+			stroke={sc}
+			className={`h-${heightValue} w-${widthValue}`}
 		>
 			<path
 				strokeLinecap="round"
