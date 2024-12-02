@@ -12,27 +12,6 @@
   - The column name `userId` on the `workout` table would be renamed to `user_id`
 */
 
--- DropForeignKey
-ALTER TABLE `routine` DROP FOREIGN KEY `routine_userId_fkey`;
-
--- DropForeignKey
-ALTER TABLE `session` DROP FOREIGN KEY `session_routineId_fkey`;
-
--- DropForeignKey
-ALTER TABLE `session` DROP FOREIGN KEY `session_userId_fkey`;
-
--- DropForeignKey
-ALTER TABLE `session_days_active` DROP FOREIGN KEY `session_days_active_sessionId_fkey`;
-
--- DropForeignKey
-ALTER TABLE `workout` DROP FOREIGN KEY `workout_exerciseId_fkey`;
-
--- DropForeignKey
-ALTER TABLE `workout` DROP FOREIGN KEY `workout_sessionId_fkey`;
-
--- DropForeignKey
-ALTER TABLE `workout` DROP FOREIGN KEY `workout_userId_fkey`;
-
 -- AlterTable
 ALTER TABLE `routine` RENAME COLUMN `createdAt` TO `created_at`,
     RENAME COLUMN `isActive` TO `is_active`,
