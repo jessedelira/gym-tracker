@@ -81,15 +81,16 @@ export const completedSessionRouter = createTRPCRouter({
 					sessionId: true,
 				},
 				where: {
+					userId: input.userId,
 					sessionId: {
 						in: sessionsOnActiveRoutine.map(
 							(session) => session.id,
 						),
 					},
-					AND: [
-						{ completedAt: { gte: startOfDayCurrentDate } },
-						{ completedAt: { lte: endOfDayCurrentDate } },
-					],
+					completedAt: {
+						gte: startOfDayCurrentDate,
+						lte: endOfDayCurrentDate,
+					},
 				},
 			});
 
