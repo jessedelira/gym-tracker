@@ -94,27 +94,6 @@ export const completedSessionRouter = createTRPCRouter({
 				},
 			});
 
-			// const oneMinuteAgo = new Date(input.currentDate);
-			// oneMinuteAgo.setMinutes(oneMinuteAgo.getMinutes() - 1);
-
-			// const completedSessionIds = await prisma.completedSession.findMany({
-			// 	select: {
-			// 		sessionId: true,
-			// 	},
-			// 	where: {
-			// 		userId: input.userId,
-			// 		sessionId: {
-			// 			in: sessionsOnActiveRoutine.map(
-			// 				(session) => session.id,
-			// 			),
-			// 		},
-			// 		completedAt: {
-			// 			gte: oneMinuteAgo,
-			// 			lte: input.currentDate,
-			// 		},
-			// 	},
-			// });
-
 			if (completedSessionIds.length === 0) {
 				return null;
 			}
