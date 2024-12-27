@@ -21,7 +21,7 @@ model User {
   completedSession CompletedSession[]
   activeSession    ActiveSession[]
   userPreferences  UserPreference[]
-  userSetting      UserSetting[]
+  userSetting      UserSetting?
 
   @@map("user")
 }
@@ -125,11 +125,12 @@ model UserPreference {
 }
 
 model UserSetting {
-  id       String @id @default(cuid())
-  timezone TimezoneMap @relation(fields: [timezoneId], references: [id], onDelete: Cascade)
-  timezoneId String @map("timezone_map_id")
-  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String @map("user_id")
+  id         String     @id @default(cuid())
+  timezone   TimezoneMap @relation(fields: [timezoneId], references: [id], onDelete: Cascade)
+  timezoneId String     @map("timezone_map_id")
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String     @unique @map("user_id")
+
   @@map("user_setting")
 }
 
