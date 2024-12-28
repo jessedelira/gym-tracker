@@ -9,12 +9,15 @@ import {
 	getFirstNameInputElement,
 	getLastNameInputElement,
 	getPasswordInputElement,
+	getTimezoneInputElement,
 	getUsernameInputElement,
 } from '~/utils/documentUtils';
 
 const SignUp: NextPage = () => {
 	const createUserMutation = api.user.createUser.useMutation();
 	const [showModal, setShowModal] = useState(false);
+
+	const { data: timezones } = api.timezoneMap.getListOfTimezones.useQuery();
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -23,6 +26,7 @@ const SignUp: NextPage = () => {
 		const password = getPasswordInputElement(document).value;
 		const firstName = getFirstNameInputElement(document).value;
 		const lastName = getLastNameInputElement(document).value;
+		const timezoneId = getTimezoneInputElement(document).value;
 
 		createUserMutation.mutate(
 			{
@@ -30,6 +34,7 @@ const SignUp: NextPage = () => {
 				password: password,
 				firstName: firstName,
 				lastName: lastName,
+				timezoneId: timezoneId,
 			},
 			{
 				onSuccess: () => {
@@ -74,6 +79,20 @@ const SignUp: NextPage = () => {
 							id="lastName"
 							className="rounded-lg bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
 						/>
+
+						<select
+							id="timezone"
+							className="max-w-xs rounded-lg bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+						>
+							{timezones?.map((timezone) => (
+								<option
+									key={timezone.display}
+									value={timezone.id}
+								>
+									{timezone.display}
+								</option>
+							))}
+						</select>
 
 						<button
 							className="rounded-lg bg-primaryButton p-3 font-semibold text-black no-underline transition hover:bg-black/20"

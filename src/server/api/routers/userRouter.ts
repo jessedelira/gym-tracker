@@ -23,6 +23,7 @@ export const userRouter = createTRPCRouter({
 				password: z.string(),
 				firstName: z.string(),
 				lastName: z.string(),
+				timezoneId: z.string(),
 			}),
 		)
 		.mutation(async ({ input }) => {
@@ -37,6 +38,8 @@ export const userRouter = createTRPCRouter({
 				},
 			});
 
+			console.log(input);
+
 			await prisma.userPreference.create({
 				data: {
 					preference: Preference.CONFETTI_ON_SESSION_COMPLETION,
@@ -44,14 +47,12 @@ export const userRouter = createTRPCRouter({
 				},
 			});
 
-			const userDto: UserDto = {
-				id: createdUser.id,
-				username: createdUser.username,
-				firstName: createdUser.firstName,
-				lastName: createdUser.lastName,
-			};
-
-			return userDto;
+			await prisma.userSetting.create({
+				data: {
+					timezoneId: input.timezoneId,
+					userId: createdUser.id,
+				},
+			});
 		}),
 
 	getUser: protectedProcedure

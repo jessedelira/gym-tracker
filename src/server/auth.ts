@@ -9,7 +9,11 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { prisma } from '~/server/db';
 import bcrypt from 'bcrypt';
 import Credentials from 'next-auth/providers/credentials';
-import { type UserPreference } from '@prisma/client';
+import {
+	type UserSetting,
+	type UserPreference,
+	type TimezoneMap,
+} from '@prisma/client';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -31,6 +35,11 @@ declare module 'next-auth' {
 		lastName?: string | null;
 		dateCreated?: Date | null;
 		userPreferences?: UserPreference[] | null;
+		userSetting?:
+			| (UserSetting & {
+					timezone: TimezoneMap;
+			  })
+			| null;
 		// ...other properties
 		// role: UserRole;
 	}
@@ -46,6 +55,11 @@ declare module 'next-auth/jwt' {
 			lastName?: string | null;
 			dateCreated?: Date | null;
 			userPreferences?: UserPreference[] | null;
+			userSetting?:
+				| (UserSetting & {
+						timezone: TimezoneMap;
+				  })
+				| null;
 			// ...other properties
 			// role: UserRole;
 		};
@@ -109,8 +123,15 @@ export const authOptions: NextAuthOptions = {
 					},
 					include: {
 						userPreferences: true,
+						userSetting: {
+							include: {
+								timezone: true,
+							},
+						},
 					},
 				});
+
+				console.log('userFoundByUsername', userFoundByUsername);
 
 				if (!userFoundByUsername) {
 					throw new Error('Incorrect username or password');
@@ -131,7 +152,10 @@ export const authOptions: NextAuthOptions = {
 							dateCreated: userFoundByUsername.dateCreated,
 							userPreferences:
 								userFoundByUsername.userPreferences,
+							userSetting: userFoundByUsername.userSetting,
 						};
+
+						console.log('returnUser', returnUser.userSetting);
 
 						return returnUser;
 					}

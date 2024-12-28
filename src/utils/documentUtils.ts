@@ -19,6 +19,11 @@ export const getPasswordInputElement = (doc: Document): HTMLInputElement => {
 	return password as HTMLInputElement;
 };
 
+export const getTimezoneInputElement = (doc: Document): HTMLInputElement => {
+	const timezone = doc.getElementById('timezone');
+	return timezone as HTMLInputElement;
+};
+
 // Create Routine Utils
 export const getRoutineNameInputElement = (doc: Document): HTMLInputElement => {
 	const routineName = doc.getElementById('routineName');
