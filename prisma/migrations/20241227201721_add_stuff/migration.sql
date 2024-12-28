@@ -1,9 +1,10 @@
 -- CreateTable
 CREATE TABLE `user_setting` (
     `id` VARCHAR(191) NOT NULL,
-    `timezone_map_id` VARCHAR(191) NOT NULL,
+    `timezone_id` VARCHAR(191) NOT NULL,
     `user_id` VARCHAR(191) NOT NULL,
 
+    UNIQUE INDEX `user_setting_user_id_key`(`user_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -17,7 +18,7 @@ CREATE TABLE `timezone_map` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `user_setting` ADD CONSTRAINT `user_setting_timezone_map_id_fkey` FOREIGN KEY (`timezone_map_id`) REFERENCES `timezone_map`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `user_setting` ADD CONSTRAINT `user_setting_timezone_id_fkey` FOREIGN KEY (`timezone_id`) REFERENCES `timezone_map`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `user_setting` ADD CONSTRAINT `user_setting_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

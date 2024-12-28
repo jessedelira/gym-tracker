@@ -127,7 +127,7 @@ model UserPreference {
 model UserSetting {
   id         String     @id @default(cuid())
   timezone   TimezoneMap @relation(fields: [timezoneId], references: [id], onDelete: Cascade)
-  timezoneId String     @map("timezone_map_id")
+  timezoneId String     @map("timezone_id")
   user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String     @unique @map("user_id")
 
