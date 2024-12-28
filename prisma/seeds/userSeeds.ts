@@ -41,9 +41,9 @@ const seedUsers = async () => {
 			},
 		});
 
-		const estTimezone = await prisma.timezoneMap.findUnique({
+		const estTimezone = await prisma.timezoneMap.findFirst({
 			where: {
-				timezone: 'Eastern Standard Time (EST)',
+				display: 'Eastern Standard Time (EST)',
 			},
 		});
 

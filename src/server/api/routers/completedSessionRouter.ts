@@ -59,7 +59,7 @@ export const completedSessionRouter = createTRPCRouter({
 	getListOfCompletedSessionIdsForActiveRoutine: protectedProcedure
 		.input(z.object({currentDate: z.date() }))
 		.query(async ({ input, ctx }) => {
-			const userTimezone = ctx.session.user.userSetting?.timezone.timezone ?? 'UTC';
+			const userTimezone = ctx.session.user.userSetting?.timezone.iana ?? 'UTC';
 
 			const startOfDayCurrentDate = new Date(input.currentDate);
 			startOfDayCurrentDate.setHours(0, 0, 0, 0);
@@ -111,3 +111,5 @@ export const completedSessionRouter = createTRPCRouter({
 			return completedSessionIds.map((session) => session.sessionId);
 		}),
 });
+
+

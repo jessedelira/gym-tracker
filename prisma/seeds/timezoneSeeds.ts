@@ -14,14 +14,14 @@ const seedTimezones = async () => {
 		await prisma.timezoneMap.deleteMany();
 
 		const timezones = [
-			{ timezone: 'Eastern Standard Time (EST)' },
-			{ timezone: 'Central Standard Time (CST)' },
-			{ timezone: 'Mountain Standard Time (MST)' },
-			{ timezone: 'Pacific Standard Time (PST)' },
-			{ timezone: 'Indian Standard Time (IST)' },
-			{ timezone: 'Central European Time (CET)' },
-			{ timezone: 'Eastern European Time (EET)' },
-			{ timezone: 'Japan Standard Time (JST)' },
+			{ iana: 'America/New_York', display: 'Eastern Standard Time (EST)' },
+			{ iana: 'America/Chicago', display: 'Central Standard Time (CST)' },
+			{ iana: 'America/Denver', display: 'Mountain Standard Time (MST)' },
+			{ iana: 'America/Los_Angeles', display: 'Pacific Standard Time (PST)' },
+			{ iana: 'Asia/Kolkata', display: 'Indian Standard Time (IST)' },
+			{ iana: 'Europe/Paris', display: 'Central European Time (CET)' },
+			{ iana: 'Europe/Istanbul', display: 'Eastern European Time (EET)' },
+			{ iana: 'Asia/Tokyo', display: 'Japan Standard Time (JST)' },
 			// Add more timezones as needed
 		];
 
