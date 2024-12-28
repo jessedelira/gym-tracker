@@ -11,9 +11,10 @@ CREATE TABLE `user_setting` (
 -- CreateTable
 CREATE TABLE `timezone_map` (
     `id` VARCHAR(191) NOT NULL,
-    `timezone` VARCHAR(191) NOT NULL,
+    `iana` VARCHAR(191) NOT NULL,
+    `display` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `timezone_map_timezone_key`(`timezone`),
+    UNIQUE INDEX `timezone_map_iana_key`(`iana`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
