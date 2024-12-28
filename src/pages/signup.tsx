@@ -86,10 +86,10 @@ const SignUp: NextPage = () => {
 						>
 							{timezones?.map((timezone) => (
 								<option
-									key={timezone.timezone}
+									key={timezone.display}
 									value={timezone.id}
 								>
-									{timezone.timezone}
+									{timezone.display}
 								</option>
 							))}
 						</select>
