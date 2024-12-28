@@ -8,6 +8,7 @@ import { accountDeletionRouter } from './routers/accountDeletionRouter';
 import { activeSessionRouter } from './routers/activeSessionRouter';
 import { completedSessionRouter } from './routers/completedSessionRouter';
 import { preferenceRouter } from './routers/preferenceRouter';
+import { timezoneMapRouter } from './routers/timezoneMapRouter';
 
 /**
  * This is the primary router for your server.
@@ -25,6 +26,7 @@ export const appRouter = createTRPCRouter({
 	activeWorkout: workoutRouter,
 	completedSession: completedSessionRouter,
 	preference: preferenceRouter,
+	timezoneMap: timezoneMapRouter,
 });
 
 // export type definition of API
