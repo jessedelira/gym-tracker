@@ -58,55 +58,42 @@ export const completedSessionRouter = createTRPCRouter({
 
 	getListOfCompletedSessionIdsForActiveRoutine: protectedProcedure
 		.input(z.object({ userId: z.string(), currentDate: z.date() }))
-		.query(async ({ input }) => {
-			// find all session for active routine
-			// find all completed sessions
+		.query(async ({ input, ctx }) => {
+			const timezoneMap = {
+				'Eastern Standard Time (EST)': 'America/New_York',
+				'Central Standard Time (CST)': 'America/Chicago',
+				'Mountain Standard Time (MST)': 'America/Denver',
+				'Pacific Standard Time (PST)': 'America/Los_Angeles',
+				'Indian Standard Time (IST)': 'Asia/Kolkata',
+				'Central European Time (CET)': 'Europe/Paris',
+				'Eastern European Time (EET)': 'Europe/Bucharest',
+				'Japan Standard Time (JST)': 'Asia/Tokyo',
+				// Add more mappings as needed
+			};
 
-			console.log('--------------------------------');
-			console.log('input.currentDate', input.currentDate);
-			console.log(
-				'input.currentDate.toISOString()',
-				input.currentDate.toISOString(),
-			);
-			console.log(
-				'input.currentDate in EST',
-				input.currentDate.toLocaleString('en-US', {
-					timeZone: 'America/New_York',
-				}),
-			);
-			console.log('--------------------------------');
+			const userTimezone: string | undefined =
+				ctx.session.user.userSetting?.timezone.timezone;
+
+			const ianaTimezone =
+				timezoneMap[userTimezone as keyof typeof timezoneMap] || 'UTC';
 
 			const startOfDayCurrentDate = new Date(input.currentDate);
 			startOfDayCurrentDate.setHours(0, 0, 0, 0);
 
-			console.log('startOfDayCurrentDate', startOfDayCurrentDate);
-			console.log(
-				'startOfDayCurrentDate.toISOString()',
-				startOfDayCurrentDate.toISOString(),
-			);
-			console.log(
-				'startOfDayCurrentDate in EST',
-				startOfDayCurrentDate.toLocaleString('en-US', {
-					timeZone: 'America/New_York',
-				}),
-			);
-			console.log('--------------------------------');
-
 			const endOfDayCurrentDate = new Date(input.currentDate);
 			endOfDayCurrentDate.setHours(23, 59, 59, 999);
 
-			console.log('endOfDayCurrentDate', endOfDayCurrentDate);
-			console.log(
-				'endOfDayCurrentDate.toISOString()',
-				endOfDayCurrentDate.toISOString(),
-			);
-			console.log(
-				'endOfDayCurrentDate in EST',
-				endOfDayCurrentDate.toLocaleString('en-US', {
-					timeZone: 'America/New_York',
+			// Convert to user's timezone
+			const startOfDayInUserTimezone = new Date(
+				startOfDayCurrentDate.toLocaleString('en-US', {
+					timeZone: ianaTimezone,
 				}),
 			);
-			console.log('--------------------------------');
+			const endOfDayInUserTimezone = new Date(
+				endOfDayCurrentDate.toLocaleString('en-US', {
+					timeZone: ianaTimezone,
+				}),
+			);
 
 			const sessionsOnActiveRoutine = await prisma.session.findMany({
 				where: {
