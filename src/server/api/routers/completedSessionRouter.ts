@@ -57,25 +57,9 @@ export const completedSessionRouter = createTRPCRouter({
 		}),
 
 	getListOfCompletedSessionIdsForActiveRoutine: protectedProcedure
-		.input(z.object({ userId: z.string(), currentDate: z.date() }))
+		.input(z.object({currentDate: z.date() }))
 		.query(async ({ input, ctx }) => {
-			const timezoneMap = {
-				'Eastern Standard Time (EST)': 'America/New_York',
-				'Central Standard Time (CST)': 'America/Chicago',
-				'Mountain Standard Time (MST)': 'America/Denver',
-				'Pacific Standard Time (PST)': 'America/Los_Angeles',
-				'Indian Standard Time (IST)': 'Asia/Kolkata',
-				'Central European Time (CET)': 'Europe/Paris',
-				'Eastern European Time (EET)': 'Europe/Bucharest',
-				'Japan Standard Time (JST)': 'Asia/Tokyo',
-				// Add more mappings as needed
-			};
-
-			const userTimezone: string | undefined =
-				ctx.session.user.userSetting?.timezone.timezone;
-
-			const ianaTimezone =
-				timezoneMap[userTimezone as keyof typeof timezoneMap] || 'UTC';
+			const userTimezone = ctx.session.user.userSetting?.timezone.timezone ?? 'UTC';
 
 			const startOfDayCurrentDate = new Date(input.currentDate);
 			startOfDayCurrentDate.setHours(0, 0, 0, 0);
@@ -83,21 +67,19 @@ export const completedSessionRouter = createTRPCRouter({
 			const endOfDayCurrentDate = new Date(input.currentDate);
 			endOfDayCurrentDate.setHours(23, 59, 59, 999);
 
-			// Convert to user's timezone
-			const startOfDayInUserTimezone = new Date(
+			// Convert UTC times to user's timezone for database query
+			const startOfDayUTC = new Date(
 				startOfDayCurrentDate.toLocaleString('en-US', {
-					timeZone: ianaTimezone,
+					timeZone: userTimezone,
 				}),
 			);
-			const endOfDayInUserTimezone = new Date(
-				endOfDayCurrentDate.toLocaleString('en-US', {
-					timeZone: ianaTimezone,
-				}),
-			);
+			const endOfDayUTC = new Date(endOfDayCurrentDate.toLocaleString('en-US', {
+				timeZone: userTimezone,
+			}));
 
 			const sessionsOnActiveRoutine = await prisma.session.findMany({
 				where: {
-					userId: input.userId,
+					userId: ctx.session.user.id,
 					routine: {
 						isActive: true,
 					},
@@ -109,15 +91,15 @@ export const completedSessionRouter = createTRPCRouter({
 					sessionId: true,
 				},
 				where: {
-					userId: input.userId,
+					userId: ctx.session.user.id,
 					sessionId: {
 						in: sessionsOnActiveRoutine.map(
 							(session) => session.id,
 						),
 					},
 					completedAt: {
-						gte: startOfDayCurrentDate,
-						lte: endOfDayCurrentDate,
+						gte: startOfDayUTC,
+						lte: endOfDayUTC,
 					},
 				},
 			});
@@ -125,15 +107,7 @@ export const completedSessionRouter = createTRPCRouter({
 			if (completedSessionIds.length === 0) {
 				return null;
 			}
-			// make the array just the ids and no object
-			const completedSessionIdsArray = completedSessionIds.map(
-				(session) => session.sessionId,
-			);
 
-			if (completedSessionIdsArray.length === 0) {
-				return null;
-			}
-
-			return completedSessionIdsArray;
+			return completedSessionIds.map((session) => session.sessionId);
 		}),
 });
