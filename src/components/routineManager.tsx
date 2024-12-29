@@ -327,30 +327,26 @@ const RoutineManagerComponent: React.FC<RoutineManagerProps> = ({
 				</div>
 
 				<p className="flex justify-center">Active Sessions</p>
-				{sessionsOnAR?.map(
-					(session) => (
-						<div
-							key={session.id}
-							className="flex-col-2 mb-2 flex justify-center "
-						>
-							<div className="justify-left flex w-40">
-								<p>Session: {session.name}</p>
-							</div>
-							<div className="justify-right flex">
-								<button
-									className="ml-4 h-6 w-6  rounded-full bg-red-300 pl-1"
-									onClick={() =>
-										void handleTrashCanClicked(
-											session.id,
-										)
-									}
-								>
-									<MiniTrashCanIcon></MiniTrashCanIcon>
-								</button>
-							</div>
+				{sessionsOnAR?.map((session) => (
+					<div
+						key={session.id}
+						className="flex-col-2 mb-2 flex justify-center "
+					>
+						<div className="justify-left flex w-40">
+							<p>Session: {session.name}</p>
 						</div>
-					),
-				)}
+						<div className="justify-right flex">
+							<button
+								className="ml-4 h-6 w-6  rounded-full bg-red-300 pl-1"
+								onClick={() =>
+									void handleTrashCanClicked(session.id)
+								}
+							>
+								<MiniTrashCanIcon></MiniTrashCanIcon>
+							</button>
+						</div>
+					</div>
+				))}
 			</div>
 		</>
 	);

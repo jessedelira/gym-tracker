@@ -57,25 +57,24 @@ export const completedSessionRouter = createTRPCRouter({
 		}),
 
 	getListOfCompletedSessionIdsForActiveRoutine: protectedProcedure
-		.input(z.object({currentDate: z.date() }))
+		.input(z.object({ currentDate: z.date() }))
 		.query(async ({ input, ctx }) => {
 			const userTimezone = ctx.session.user.userSetting?.timezone.iana ?? 'UTC';
 
-			const startOfDayCurrentDate = new Date(input.currentDate);
+			// Create dates in user's timezone
+			const startOfDayCurrentDate = new Date(input.currentDate.toLocaleString('en-US', {
+				timeZone: userTimezone
+			}));
 			startOfDayCurrentDate.setHours(0, 0, 0, 0);
 
-			const endOfDayCurrentDate = new Date(input.currentDate);
+			const endOfDayCurrentDate = new Date(input.currentDate.toLocaleString('en-US', {
+				timeZone: userTimezone
+			}));
 			endOfDayCurrentDate.setHours(23, 59, 59, 999);
 
-			// Convert UTC times to user's timezone for database query
-			const startOfDayUTC = new Date(
-				startOfDayCurrentDate.toLocaleString('en-US', {
-					timeZone: userTimezone,
-				}),
-			);
-			const endOfDayUTC = new Date(endOfDayCurrentDate.toLocaleString('en-US', {
-				timeZone: userTimezone,
-			}));
+			// Convert to UTC for database query
+			const startOfDayUTC = new Date(startOfDayCurrentDate.getTime() - (startOfDayCurrentDate.getTimezoneOffset() * 60000));
+			const endOfDayUTC = new Date(endOfDayCurrentDate.getTime() - (endOfDayCurrentDate.getTimezoneOffset() * 60000));
 
 			const sessionsOnActiveRoutine = await prisma.session.findMany({
 				where: {
@@ -104,12 +103,6 @@ export const completedSessionRouter = createTRPCRouter({
 				},
 			});
 
-			if (completedSessionIds.length === 0) {
-				return null;
-			}
-
 			return completedSessionIds.map((session) => session.sessionId);
 		}),
 });
-
-
