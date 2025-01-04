@@ -21,45 +21,39 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	//#region Queries
 	const {
 		data: possibleSessionsToStart,
-		isFetched: isPossibleSessionsToStartFetched,
-		isLoading: isPossibleSessionsToStartLoading,
-		isFetching: isPossibleSessionsToStartFetching,
+		isLoading: isPossibleSessionsLoading,
 	} = api.session.getSessionsThatAreActiveOnDate.useQuery({
 		userId: user.id,
 		date: currentDate,
 	});
+
 	const {
 		data: activeSessionData,
-		isLoading: activeSessionDataIsLoading,
-		isFetching: isActiveSessionDataFetching,
+		isLoading: isActiveSessionLoading,
 		refetch: refetchActiveSessionData,
 	} = api.activeSesssion.getActiveSession.useQuery({
 		userId: user.id,
 	});
+
 	const {
-		data: listOfCompletedSessionIdsForActiveRoutine,
-		isFetched: isListOfCompletedSessionIdsForActiveRoutineLoadingFetched,
-		isLoading: isListOfCompletedSessionIdsForActiveRoutineLoading,
-		isFetching: isListOfCompletedSessionIdsForActiveRoutineFetching,
-		refetch: refetchListOfCompletedSessionIdsForActiveRoutine,
+		data: listOfCompletedSessionIds,
+		isLoading: isCompletedSessionsLoading,
+		refetch: refetchCompletedSessions,
 	} = api.completedSession.getListOfCompletedSessionIdsForActiveRoutine.useQuery(
 		{
-			currentDate: currentDate,
+			currentDate,
 		},
 	);
-	const {
-		data: activeRoutine,
-		isLoading: activeRoutineIsLoading,
-		isFetching: isActiveRoutineFetching,
-		isFetched: isactiveRoutineFetched,
-	} = api.routine.getActiveRoutine.useQuery({
-		userId: user.id,
-	});
+
+	const { data: activeRoutine, isLoading: isActiveRoutineLoading } =
+		api.routine.getActiveRoutine.useQuery({
+			userId: user.id,
+		});
+
 	const {
 		data: workoutsForActiveSession,
-		isLoading: workoutsForActiveSessionIsLoading,
-		isFetched: isworkoutsForActiveSessionFetched,
-		refetch: refetchWorkoutsForActiveSession,
+		isLoading: isWorkoutsLoading,
+		refetch: refetchWorkouts,
 	} = api.workout.getWorkoutsForActiveSession.useQuery({
 		userId: user.id,
 		clientCurrentDate: currentDate,
@@ -67,12 +61,19 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	});
 	//#endregion
 
-	//#region Mutations
-	const {
-		mutateAsync: addActiveSessionMutationAsync,
-		isLoading: isLoadingActiveSessionMutationAsync,
-	} = api.activeSesssion.addActiveSession.useMutation();
-	const createCompletedSessionMutation =
+	// Simplified loading state
+	const isLoading =
+		isPossibleSessionsLoading ||
+		isActiveSessionLoading ||
+		isCompletedSessionsLoading ||
+		isActiveRoutineLoading ||
+		isWorkoutsLoading;
+
+	//#region Mutations with simplified names
+	const { mutateAsync: startSession } =
+		api.activeSesssion.addActiveSession.useMutation();
+
+	const { mutateAsync: completeSession } =
 		api.completedSession.createCompletedSession.useMutation();
 	//#endregion
 
@@ -139,11 +140,8 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	};
 
 	const handleStartSessionClick = async (sessionId: string) => {
-		await addActiveSessionMutationAsync(
-			{
-				userId: user.id,
-				sessionId: sessionId,
-			},
+		await startSession(
+			{ userId: user.id, sessionId },
 			{
 				onSuccess: () => {
 					setSessionHasStarted(true);
@@ -156,8 +154,10 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	};
 
 	const handleCompleteSessionClick = async () => {
-		const jsConfetti = new JSConfetti();
+		if (!activeSessionData) return;
+
 		if (userHasConfettiPreferenceEnabled) {
+			const jsConfetti = new JSConfetti();
 			void jsConfetti.addConfetti({
 				confettiRadius: 10,
 				confettiNumber: 20,
@@ -165,16 +165,17 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				emojiSize: 50,
 			});
 		}
-		if (!activeSessionData) return;
 
-		await createCompletedSessionMutation.mutateAsync({
+		await completeSession({
 			userId: user.id,
 			sessionId: activeSessionData.session.id,
 		});
+
+		// Refetch all necessary data
 		await Promise.all([
 			refetchActiveSessionData(),
-			refetchWorkoutsForActiveSession(),
-			refetchListOfCompletedSessionIdsForActiveRoutine(),
+			refetchWorkouts(),
+			refetchCompletedSessions(),
 		]);
 
 		localStorage.removeItem('workoutCompletionMap');
@@ -198,25 +199,6 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				Preference.CONFETTI_ON_SESSION_COMPLETION &&
 			preference.enabled === true,
 	);
-
-	const isDataLoading = (): boolean => {
-		return (
-			activeSessionDataIsLoading ||
-			workoutsForActiveSessionIsLoading ||
-			isPossibleSessionsToStartLoading ||
-			isListOfCompletedSessionIdsForActiveRoutineLoading ||
-			isLoadingActiveSessionMutationAsync ||
-			!isListOfCompletedSessionIdsForActiveRoutineLoadingFetched ||
-			!isPossibleSessionsToStartFetched ||
-			!isworkoutsForActiveSessionFetched ||
-			isActiveSessionDataFetching ||
-			isPossibleSessionsToStartFetching ||
-			isListOfCompletedSessionIdsForActiveRoutineFetching ||
-			activeRoutineIsLoading ||
-			isActiveRoutineFetching ||
-			!isactiveRoutineFetched
-		);
-	};
 
 	useEffect(() => {
 		if (workoutsForActiveSession) {
@@ -268,7 +250,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		}
 	}, [activeSessionData, workoutsForActiveSession]);
 
-	if (isDataLoading()) {
+	if (isLoading) {
 		return <SmallSpinner />;
 	}
 
@@ -315,7 +297,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 										handleStartButtonClick={() =>
 											handleStartSessionClick(session.id)
 										}
-										isCompleted={listOfCompletedSessionIdsForActiveRoutine?.includes(
+										isCompleted={listOfCompletedSessionIds?.includes(
 											session.id,
 										)}
 									></HomePageSessionCard>
