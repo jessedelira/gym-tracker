@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { api } from '~/utils/api';
 import HomePageSessionCard from './homePageSessionCard';
 import SmallSpinner from './smallSpinner';
-import JSConfetti from 'js-confetti';
 import Image from 'next/image';
 import { type User } from 'next-auth';
 import { Preference } from '@prisma/client';
 import CurrentSessionElapsedTimer from './currentSessionElapsedTimer';
 import WorkoutCard from './icons/workoutCard';
+import { showConfetti } from '~/utils/confetti';
 
 interface CurrentWorkoutDisplayProps {
 	user: User;
@@ -78,65 +78,27 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	//#endregion
 
 	//#region UI Handlers
-	const handleCheckboxChange = (
-		event: React.ChangeEvent<HTMLInputElement>,
-	) => {
+	const refetchAll = () => Promise.all([
+		refetchActiveSessionData(),
+		refetchWorkouts(),
+		refetchCompletedSessions(),
+	]);
+
+	const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const workoutId = event.target.id;
 		const isNowChecked = event.target.checked;
-
-		if (isNowChecked) {
-			const workoutCompletionMap = JSON.parse(
-				localStorage.getItem('workoutCompletionMap') || '[]',
-			) as [string, boolean][];
-			const updatedWorkoutCompletionMap = workoutCompletionMap.map(
-				([id, isCompleted]) => {
-					if (id === workoutId) {
-						return [id, true];
-					}
-					return [id, isCompleted];
-				},
-			);
-
-			localStorage.setItem(
-				'workoutCompletionMap',
-				JSON.stringify(updatedWorkoutCompletionMap),
-			);
-		} else {
-			const workoutCompletionMap = JSON.parse(
-				localStorage.getItem('workoutCompletionMap') || '[]',
-			) as [string, boolean][];
-
-			const updatedWorkoutCompletionMap = workoutCompletionMap.map(
-				([id, isCompleted]) => {
-					if (id === workoutId) {
-						return [id, false];
-					}
-					return [id, isCompleted];
-				},
-			);
-
-			localStorage.setItem(
-				'workoutCompletionMap',
-				JSON.stringify(updatedWorkoutCompletionMap),
-			);
-			event.target.removeAttribute('checked');
-		}
-
+		
 		const workoutCompletionMap = JSON.parse(
-			localStorage.getItem('workoutCompletionMap') || '[]',
+			localStorage.getItem('workoutCompletionMap') || '[]'
 		) as [string, boolean][];
+		
+		const updatedWorkoutCompletionMap = workoutCompletionMap.map(([id, isCompleted]) => 
+			id === workoutId ? [id, isNowChecked] : [id, isCompleted]
+		);
 
-		const areAllWorkoutsChecked = workoutCompletionMap.every((element) => {
-			return element[1] === true;
-		});
-
-		setAllWorkoutsCompleted(areAllWorkoutsChecked);
-	};
-
-	const handleCheckboxChangeWrapper = (
-		event: React.ChangeEvent<HTMLInputElement>,
-	) => {
-		void handleCheckboxChange(event);
+		localStorage.setItem('workoutCompletionMap', JSON.stringify(updatedWorkoutCompletionMap));
+		
+		setAllWorkoutsCompleted(updatedWorkoutCompletionMap.every(([, isCompleted]) => isCompleted));
 	};
 
 	const handleStartSessionClick = async (sessionId: string) => {
@@ -156,35 +118,30 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	const handleCompleteSessionClick = async () => {
 		if (!activeSessionData) return;
 
-		if (userHasConfettiPreferenceEnabled) {
-			const jsConfetti = new JSConfetti();
-			void jsConfetti.addConfetti({
-				confettiRadius: 10,
-				confettiNumber: 20,
-				emojis: ['🎉', '🎊'],
-				emojiSize: 50,
+		try {
+			// Update UI state immediately for better user experience
+			setSessionHasStarted(false);
+			setAllWorkoutsCompleted(false);
+			localStorage.removeItem('workoutCompletionMap');
+
+			// Show confetti without waiting
+			if (userHasConfettiPreferenceEnabled) {
+				void showConfetti();
+			}
+
+			// Complete session
+			await completeSession({
+				userId: user.id,
+				sessionId: activeSessionData.session.id,
 			});
+
+			// Refetch data after completion
+			void refetchAll();
+		} catch (error) {
+			console.error('Error completing session:', error);
+			// Revert UI state if there's an error
+			setSessionHasStarted(true);
 		}
-
-		await completeSession({
-			userId: user.id,
-			sessionId: activeSessionData.session.id,
-		});
-
-		// Refetch all necessary data
-		await Promise.all([
-			refetchActiveSessionData(),
-			refetchWorkouts(),
-			refetchCompletedSessions(),
-		]);
-
-		localStorage.removeItem('workoutCompletionMap');
-		setSessionHasStarted(false);
-		setAllWorkoutsCompleted(false);
-	};
-
-	const handleCompleteSessionClickWrapper = () => {
-		void handleCompleteSessionClick();
 	};
 	//#endregion
 
@@ -327,7 +284,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 														workout.exercise.name
 													}
 													onChangeHanlder={
-														handleCheckboxChangeWrapper
+														handleCheckboxChange
 													}
 													sets={workout.sets}
 													weightInLbs={
@@ -347,7 +304,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 								<button
 									className="my-2 rounded-md bg-primaryButton p-3 font-medium  disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-500 disabled:shadow-none"
 									disabled={!allWorkoutsCompleted}
-									onClick={handleCompleteSessionClickWrapper}
+									onClick={() => void handleCompleteSessionClick()}
 								>
 									Complete Session
 								</button>

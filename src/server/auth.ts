@@ -3,17 +3,27 @@ import {
 	getServerSession,
 	type NextAuthOptions,
 	type DefaultSession,
-	type User,
+	type User as NextAuthUser,
 } from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { prisma } from '~/server/db';
 import bcrypt from 'bcrypt';
 import Credentials from 'next-auth/providers/credentials';
-import {
-	type UserSetting,
-	type UserPreference,
-	type TimezoneMap,
-} from '@prisma/client';
+import { type Prisma, type UserPreference } from '@prisma/client';
+
+// Define a custom User type that extends NextAuth's User
+interface User extends NextAuthUser {
+	id: string;
+	name?: string | null;
+	username?: string | null;
+	firstName?: string | null;
+	lastName?: string | null;
+	dateCreated?: Date | null;
+	userPreferences?: UserPreference[] | null;
+	userSetting?: Prisma.UserSettingGetPayload<{
+		include: { timezone: true }
+	}> | null;
+}
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -35,11 +45,9 @@ declare module 'next-auth' {
 		lastName?: string | null;
 		dateCreated?: Date | null;
 		userPreferences?: UserPreference[] | null;
-		userSetting?:
-			| (UserSetting & {
-					timezone: TimezoneMap;
-			  })
-			| null;
+		userSetting?: Prisma.UserSettingGetPayload<{
+			include: { timezone: true }
+		}> | null;
 		// ...other properties
 		// role: UserRole;
 	}
@@ -55,11 +63,9 @@ declare module 'next-auth/jwt' {
 			lastName?: string | null;
 			dateCreated?: Date | null;
 			userPreferences?: UserPreference[] | null;
-			userSetting?:
-				| (UserSetting & {
-						timezone: TimezoneMap;
-				  })
-				| null;
+			userSetting?: Prisma.UserSettingGetPayload<{
+				include: { timezone: true }
+			}> | null;
 			// ...other properties
 			// role: UserRole;
 		};
@@ -117,6 +123,10 @@ export const authOptions: NextAuthOptions = {
 				password: { label: 'Password', type: 'password' },
 			},
 			async authorize(credentials): Promise<User | null> {
+				if (!credentials?.username || !credentials?.password) {
+					throw new Error('Missing credentials');
+				}
+
 				const userFoundByUsername = await prisma.user.findUnique({
 					where: {
 						username: credentials?.username,
@@ -131,7 +141,6 @@ export const authOptions: NextAuthOptions = {
 					},
 				});
 
-				console.log('userFoundByUsername', userFoundByUsername);
 
 				if (!userFoundByUsername) {
 					throw new Error('Incorrect username or password');
@@ -139,8 +148,8 @@ export const authOptions: NextAuthOptions = {
 
 				try {
 					const doesInputPwMatchEncryptedPw = bcrypt.compareSync(
-						credentials?.password as 'string | Buffer',
-						userFoundByUsername?.password as 'string',
+						credentials?.password ?? '',
+						userFoundByUsername?.password ?? ''
 					);
 
 					if (doesInputPwMatchEncryptedPw) {
