@@ -54,11 +54,17 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		data: workoutsForActiveSession,
 		isLoading: isWorkoutsLoading,
 		refetch: refetchWorkouts,
-	} = api.workout.getWorkoutsForActiveSession.useQuery({
-		userId: user.id,
-		clientCurrentDate: currentDate,
-		sessionId: activeSessionData?.session.id ?? '',
-	});
+	} = api.workout.getWorkoutsForActiveSession.useQuery(
+		{
+			userId: user.id,
+			clientCurrentDate: currentDate,
+			sessionId: activeSessionData?.session.id ?? '',
+		},
+		{
+			// Only fetch if we have an active session
+			enabled: !!activeSessionData?.session.id,
+		}
+	);
 	//#endregion
 
 	// Simplified loading state
@@ -67,7 +73,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		isActiveSessionLoading ||
 		isCompletedSessionsLoading ||
 		isActiveRoutineLoading ||
-		isWorkoutsLoading;
+		(!!activeSessionData && isWorkoutsLoading); // Only consider workout loading when there's an active session
 
 	//#region Mutations with simplified names
 	const { mutateAsync: startSession } =
