@@ -36,109 +36,103 @@ const NavBar: React.FC = () => {
 	}, []);
 
 	return (
-		<>
-			<div id="home" className="mb-8 flex flex-row items-center ">
-				<Link
-					href="/home"
-					className="ml-3 rounded-full text-5xl"
-					onClick={getCurrentURL}
-				>
-					{currentURL === 'home' ? (
-						<HomeIcon
-							heightValue="8"
-							widthValue="8"
-							fill="none"
-							strokeColor="black"
-						/>
-					) : (
-						<HomeIcon
-							heightValue="8"
-							widthValue="8"
-							fill="none"
-							strokeColor="gray"
-						/>
-					)}
-				</Link>
-			</div>
-			<div id="manage" className="mb-8 flex flex-row items-center">
-				<Link href="/manage" className="ml-3 rounded-full text-5xl">
-					{currentURL === 'manage' ? (
-						<ManageIcon
-							heightValue="8"
-							widthValue="8"
-							fill="none"
-							strokeColor="black"
-						/>
-					) : (
-						<ManageIcon
-							heightValue="8"
-							widthValue="8"
-							fill="none"
-							strokeColor="gray"
-						/>
-					)}
-				</Link>
-			</div>
-			<div id="settings" className="mb-8 flex flex-row items-center ">
-				<Link href="/settings" className="ml-3 rounded-full text-5xl">
-					{currentURL === 'settings' ? (
-						<SettingsIcon
-							heightValue="8"
-							widthValue="8"
-							fill="none"
-							strokeColor="black"
-						/>
-					) : (
-						<SettingsIcon
-							heightValue="8"
-							widthValue="8"
-							fill="none"
-							strokeColor="gray"
-						/>
-					)}
-				</Link>
-			</div>
-			<div id="clock" className="mb-8 flex flex-row items-center ">
-				<Link href="/clock" className="ml-3 rounded-full text-5xl">
-					{currentURL === 'clock' ? (
-						<ClockIcon
-							heightValue="8"
-							widthValue="8"
-							fill="none"
-							strokeColor="black"
-						/>
-					) : (
-						<ClockIcon
-							heightValue="8"
-							widthValue="8"
-							fill="none"
-							strokeColor="gray"
-						/>
-					)}
-				</Link>
-			</div>
-			<div id="signout" className="mb-8 flex flex-row items-center">
-				<button
-					className=" mr-3 rounded-full text-5xl"
-					onClick={() => void signOut()}
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
+		<div className="fixed bottom-0 left-0 right-0 flex justify-around items-center bg-white pb-8 pt-2 border-t border-gray-200">
+			<Link
+				href="/home"
+				className="rounded-full text-5xl"
+				onClick={getCurrentURL}
+			>
+				{currentURL === 'home' ? (
+					<HomeIcon
+						heightValue="8"
+						widthValue="8"
 						fill="none"
-						viewBox="0 0 24 24"
-						strokeWidth="1.5"
-						stroke="red"
-						className="h-8 w-8"
-					>
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
-						/>
-					</svg>
-				</button>
-			</div>
-		</>
+						strokeColor="black"
+					/>
+				) : (
+					<HomeIcon
+						heightValue="8"
+						widthValue="8"
+						fill="none"
+						strokeColor="gray"
+					/>
+				)}
+			</Link>
+
+			<Link href="/manage" className="rounded-full text-5xl">
+				{currentURL === 'manage' ? (
+					<ManageIcon
+						heightValue="8"
+						widthValue="8"
+						fill="none"
+						strokeColor="black"
+					/>
+				) : (
+					<ManageIcon
+						heightValue="8"
+						widthValue="8"
+						fill="none"
+						strokeColor="gray"
+					/>
+				)}
+			</Link>
+
+			<Link href="/settings" className="rounded-full text-5xl">
+				{currentURL === 'settings' ? (
+					<SettingsIcon
+						heightValue="8"
+						widthValue="8"
+						fill="none"
+						strokeColor="black"
+					/>
+				) : (
+					<SettingsIcon
+						heightValue="8"
+						widthValue="8"
+						fill="none"
+						strokeColor="gray"
+					/>
+				)}
+			</Link>
+
+			<Link href="/clock" className="rounded-full text-5xl">
+				{currentURL === 'clock' ? (
+					<ClockIcon
+						heightValue="8"
+						widthValue="8"
+						fill="none"
+						strokeColor="black"
+					/>
+				) : (
+					<ClockIcon
+						heightValue="8"
+						widthValue="8"
+						fill="none"
+						strokeColor="gray"
+					/>
+				)}
+			</Link>
+
+			<button
+				className="rounded-full text-5xl"
+				onClick={() => void signOut()}
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					strokeWidth="1.5"
+					stroke="red"
+					className="h-8 w-8"
+				>
+					<path
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+					/>
+				</svg>
+			</button>
+		</div>
 	);
 };
 
