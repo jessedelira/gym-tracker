@@ -36,7 +36,7 @@ const NavBar: React.FC = () => {
 	}, []);
 
 	return (
-		<>
+		<div className="flex flex-row justify-around items-center h-16 bg-white border-t">
 			<div id="home" className="mb-8 flex flex-row items-center ">
 				<Link
 					href="/home"
@@ -138,7 +138,7 @@ const NavBar: React.FC = () => {
 					</svg>
 				</button>
 			</div>
-		</>
+		</div>
 	);
 };
 
