@@ -104,8 +104,14 @@ const MyApp: AppType<{ session: Session | null }> = ({
 					sizes="640x1136"
 				/>
 				<meta name="apple-mobile-web-app-capable" content="yes" />
-				<meta name="viewport" content="initial-scale=1, viewport-fit=cover, user-scalable=no" />
-				<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+				<meta
+					name="viewport"
+					content="initial-scale=1, viewport-fit=cover, user-scalable=no"
+				/>
+				<meta
+					name="apple-mobile-web-app-status-bar-style"
+					content="black-translucent"
+				/>
 			</Head>
 			<SpeedInsights />
 			<Component {...pageProps} />

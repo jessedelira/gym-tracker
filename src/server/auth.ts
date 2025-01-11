@@ -21,7 +21,7 @@ interface User extends NextAuthUser {
 	dateCreated?: Date | null;
 	userPreferences?: UserPreference[] | null;
 	userSetting?: Prisma.UserSettingGetPayload<{
-		include: { timezone: true }
+		include: { timezone: true };
 	}> | null;
 }
 
@@ -46,7 +46,7 @@ declare module 'next-auth' {
 		dateCreated?: Date | null;
 		userPreferences?: UserPreference[] | null;
 		userSetting?: Prisma.UserSettingGetPayload<{
-			include: { timezone: true }
+			include: { timezone: true };
 		}> | null;
 		// ...other properties
 		// role: UserRole;
@@ -64,7 +64,7 @@ declare module 'next-auth/jwt' {
 			dateCreated?: Date | null;
 			userPreferences?: UserPreference[] | null;
 			userSetting?: Prisma.UserSettingGetPayload<{
-				include: { timezone: true }
+				include: { timezone: true };
 			}> | null;
 			// ...other properties
 			// role: UserRole;
@@ -141,7 +141,6 @@ export const authOptions: NextAuthOptions = {
 					},
 				});
 
-
 				if (!userFoundByUsername) {
 					throw new Error('Incorrect username or password');
 				}
@@ -149,7 +148,7 @@ export const authOptions: NextAuthOptions = {
 				try {
 					const doesInputPwMatchEncryptedPw = bcrypt.compareSync(
 						credentials?.password ?? '',
-						userFoundByUsername?.password ?? ''
+						userFoundByUsername?.password ?? '',
 					);
 
 					if (doesInputPwMatchEncryptedPw) {

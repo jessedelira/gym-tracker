@@ -63,7 +63,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		{
 			// Only fetch if we have an active session
 			enabled: !!activeSessionData?.session.id,
-		}
+		},
 	);
 	//#endregion
 
@@ -84,27 +84,36 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	//#endregion
 
 	//#region UI Handlers
-	const refetchAll = () => Promise.all([
-		refetchActiveSessionData(),
-		refetchWorkouts(),
-		refetchCompletedSessions(),
-	]);
+	const refetchAll = () =>
+		Promise.all([
+			refetchActiveSessionData(),
+			refetchWorkouts(),
+			refetchCompletedSessions(),
+		]);
 
-	const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleCheckboxChange = (
+		event: React.ChangeEvent<HTMLInputElement>,
+	) => {
 		const workoutId = event.target.id;
 		const isNowChecked = event.target.checked;
-		
+
 		const workoutCompletionMap = JSON.parse(
-			localStorage.getItem('workoutCompletionMap') || '[]'
+			localStorage.getItem('workoutCompletionMap') || '[]',
 		) as [string, boolean][];
-		
-		const updatedWorkoutCompletionMap = workoutCompletionMap.map(([id, isCompleted]) => 
-			id === workoutId ? [id, isNowChecked] : [id, isCompleted]
+
+		const updatedWorkoutCompletionMap = workoutCompletionMap.map(
+			([id, isCompleted]) =>
+				id === workoutId ? [id, isNowChecked] : [id, isCompleted],
 		);
 
-		localStorage.setItem('workoutCompletionMap', JSON.stringify(updatedWorkoutCompletionMap));
-		
-		setAllWorkoutsCompleted(updatedWorkoutCompletionMap.every(([, isCompleted]) => isCompleted));
+		localStorage.setItem(
+			'workoutCompletionMap',
+			JSON.stringify(updatedWorkoutCompletionMap),
+		);
+
+		setAllWorkoutsCompleted(
+			updatedWorkoutCompletionMap.every(([, isCompleted]) => isCompleted),
+		);
 	};
 
 	const handleStartSessionClick = async (sessionId: string) => {
@@ -310,7 +319,9 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 								<button
 									className="my-2 rounded-md bg-primaryButton p-3 font-medium  disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-500 disabled:shadow-none"
 									disabled={!allWorkoutsCompleted}
-									onClick={() => void handleCompleteSessionClick()}
+									onClick={() =>
+										void handleCompleteSessionClick()
+									}
 								>
 									Complete Session
 								</button>

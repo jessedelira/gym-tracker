@@ -12,9 +12,8 @@
         -ms-overflow-style: none;  /* IE and Edge */
         scrollbar-width: none;  /* Firefox */
     }
-}
 
-/* Prevent overscroll behavior */
+    /* Prevent overscroll behavior */
 body {
   position: fixed;
   width: 100%;
@@ -35,3 +34,5 @@ html {
   position: fixed;
   width: 100%;
 }
+}
+
