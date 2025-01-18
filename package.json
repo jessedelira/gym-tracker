@@ -11,6 +11,7 @@
 		"postinstall": "prisma generate & prisma migrate deploy && prisma db seed",
 		"seed": "prisma db seed",
 		"lint": "next lint",
+		"db:push": "prisma db push",
 		"start": "next start",
 		"format": "prettier --write \"./!(.next)/**/*.{js,jsx,ts,tsx,json}\""
 	},
