@@ -41,6 +41,14 @@ const seedUsers = async () => {
 			},
 		});
 
+		await prisma.userPreference.create({
+			data: {
+				userId: user.id,
+				preference: 'SHOW_ELAPSED_SECONDS_IN_ACTIVE_SESSION',
+				enabled: true,
+			},
+		});
+
 		const estTimezone = await prisma.timezoneMap.findFirst({
 			where: {
 				display: 'Eastern Standard Time (EST)',
