@@ -5,43 +5,30 @@ import { useEffect, useState } from 'react';
 import HomeIcon from './icons/homeIcon';
 import ManageIcon from './icons/manageIcon';
 import SettingsIcon from './icons/settingsIcon';
+import { usePathname } from 'next/navigation';
+
+type ValidRoutes = 'home' | 'manage' | 'settings' | 'clock' | '';
+
+const isValidRoute = (route: string): route is ValidRoutes => {
+	return ['home', 'manage', 'settings', 'clock', ''].includes(route);
+};
 
 const NavBar: React.FC = () => {
-	const [currentURL, setCurrentURL] = useState<string>('');
-
-	const getCurrentURL = (): string => {
-		const url = window.location.href;
-		switch (true) {
-			case url.includes('home'):
-				setCurrentURL('home');
-				break;
-			case url.includes('manage'):
-				setCurrentURL('manage');
-				break;
-			case url.includes('settings'):
-				setCurrentURL('settings');
-				break;
-			case url.includes('clock'):
-				setCurrentURL('clock');
-				break;
-			default:
-				break;
-		}
-
-		return window.location.href;
-	};
+	const [currentURL, setCurrentURL] = useState<ValidRoutes>('');
+	const pathname = usePathname();
 
 	useEffect(() => {
-		getCurrentURL();
-	}, []);
+		const path = pathname?.split('/')[1] || '';
+		if (isValidRoute(path)) {
+			setCurrentURL(path);
+		} else {
+			setCurrentURL('');
+		}
+	}, [pathname]);
 
 	return (
-		<div className="fixed bottom-0 left-0 right-0 flex justify-around items-center bg-white pb-8 pt-2 border-t border-gray-200">
-			<Link
-				href="/home"
-				className="rounded-full text-5xl"
-				onClick={getCurrentURL}
-			>
+		<div className="fixed bottom-0 left-0 right-0 flex items-center justify-around border-t border-gray-200 bg-white pb-8 pt-2">
+			<Link href="/home" className="rounded-full text-5xl">
 				{currentURL === 'home' ? (
 					<HomeIcon
 						heightValue="8"
