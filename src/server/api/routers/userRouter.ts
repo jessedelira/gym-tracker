@@ -38,8 +38,6 @@ export const userRouter = createTRPCRouter({
 				},
 			});
 
-			console.log(input);
-
 			await prisma.userPreference.create({
 				data: {
 					preference: Preference.CONFETTI_ON_SESSION_COMPLETION,
