@@ -27,7 +27,7 @@ const NavBar: React.FC = () => {
 	}, [pathname]);
 
 	return (
-		<div className="fixed bottom-0 left-0 right-0 flex items-center justify-around border-t border-gray-200 bg-white pb-8 pt-2">
+		<nav className="fixed bottom-0 left-0 right-0 z-50 flex h-[4.5rem] items-center justify-around border-t border-gray-200 bg-white pb-[env(safe-area-inset-bottom)]">
 			<Link href="/home" className="rounded-full text-5xl">
 				{currentURL === 'home' ? (
 					<HomeIcon
@@ -119,7 +119,7 @@ const NavBar: React.FC = () => {
 					/>
 				</svg>
 			</button>
-		</div>
+		</nav>
 	);
 };
 
