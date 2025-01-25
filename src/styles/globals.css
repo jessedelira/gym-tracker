@@ -13,26 +13,15 @@
         scrollbar-width: none;  /* Firefox */
     }
 
-    /* Prevent overscroll behavior */
-body {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  -webkit-overflow-scrolling: touch;
-}
+    /* Use dvh for dynamic viewport height */
+    :root {
+        height: 100dvh;
+        overflow: hidden;
+    }
 
-/* Use dvh for dynamic viewport height */
-:root {
-  height: 100dvh;
-  overflow: hidden;
-}
-
-/* Prevent pull-to-refresh */
-html {
-  overscroll-behavior-y: none;
-  position: fixed;
-  width: 100%;
-}
+    /* Prevent pull-to-refresh but allow content to scroll naturally */
+    html {
+        overscroll-behavior-y: none;
+    }
 }
 
