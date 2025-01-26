@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { api } from '~/utils/api';
 import HomePageSessionCard from './homePageSessionCard';
 import SmallSpinner from './smallSpinner';
-import JSConfetti from 'js-confetti';
 import Image from 'next/image';
 import { type User } from 'next-auth';
 import { Preference } from '@prisma/client';
 import CurrentSessionElapsedTimer from './currentSessionElapsedTimer';
 import WorkoutCard from './icons/workoutCard';
+import { showConfetti } from '~/utils/confetti';
 
 interface CurrentWorkoutDisplayProps {
 	user: User;
@@ -21,129 +21,104 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	//#region Queries
 	const {
 		data: possibleSessionsToStart,
-		isFetched: isPossibleSessionsToStartFetched,
-		isLoading: isPossibleSessionsToStartLoading,
-		isFetching: isPossibleSessionsToStartFetching,
+		isLoading: isPossibleSessionsLoading,
 	} = api.session.getSessionsThatAreActiveOnDate.useQuery({
 		userId: user.id,
 		date: currentDate,
 	});
+
 	const {
 		data: activeSessionData,
-		isLoading: activeSessionDataIsLoading,
-		isFetching: isActiveSessionDataFetching,
+		isLoading: isActiveSessionLoading,
 		refetch: refetchActiveSessionData,
 	} = api.activeSesssion.getActiveSession.useQuery({
 		userId: user.id,
 	});
+
 	const {
-		data: listOfCompletedSessionIdsForActiveRoutine,
-		isFetched: isListOfCompletedSessionIdsForActiveRoutineLoadingFetched,
-		isLoading: isListOfCompletedSessionIdsForActiveRoutineLoading,
-		isFetching: isListOfCompletedSessionIdsForActiveRoutineFetching,
-		refetch: refetchListOfCompletedSessionIdsForActiveRoutine,
+		data: listOfCompletedSessionIds,
+		isLoading: isCompletedSessionsLoading,
+		refetch: refetchCompletedSessions,
 	} = api.completedSession.getListOfCompletedSessionIdsForActiveRoutine.useQuery(
 		{
-			currentDate: currentDate,
+			currentDate,
 		},
 	);
-	const {
-		data: activeRoutine,
-		isLoading: activeRoutineIsLoading,
-		isFetching: isActiveRoutineFetching,
-		isFetched: isactiveRoutineFetched,
-	} = api.routine.getActiveRoutine.useQuery({
-		userId: user.id,
-	});
+
+	const { data: activeRoutine, isLoading: isActiveRoutineLoading } =
+		api.routine.getActiveRoutine.useQuery({
+			userId: user.id,
+		});
+
 	const {
 		data: workoutsForActiveSession,
-		isLoading: workoutsForActiveSessionIsLoading,
-		isFetched: isworkoutsForActiveSessionFetched,
-		refetch: refetchWorkoutsForActiveSession,
-	} = api.workout.getWorkoutsForActiveSession.useQuery({
-		userId: user.id,
-		clientCurrentDate: currentDate,
-		sessionId: activeSessionData?.session.id ?? '',
-	});
+		isLoading: isWorkoutsLoading,
+		refetch: refetchWorkouts,
+	} = api.workout.getWorkoutsForActiveSession.useQuery(
+		{
+			userId: user.id,
+			clientCurrentDate: currentDate,
+			sessionId: activeSessionData?.session.id ?? '',
+		},
+		{
+			// Only fetch if we have an active session
+			enabled: !!activeSessionData?.session.id,
+		},
+	);
 	//#endregion
 
-	//#region Mutations
-	const {
-		mutateAsync: addActiveSessionMutationAsync,
-		isLoading: isLoadingActiveSessionMutationAsync,
-	} = api.activeSesssion.addActiveSession.useMutation();
-	const createCompletedSessionMutation =
+	// Simplified loading state
+	const isLoading =
+		isPossibleSessionsLoading ||
+		isActiveSessionLoading ||
+		isCompletedSessionsLoading ||
+		isActiveRoutineLoading ||
+		(!!activeSessionData && isWorkoutsLoading); // Only consider workout loading when there's an active session
+
+	//#region Mutations with simplified names
+	const { mutateAsync: startSession } =
+		api.activeSesssion.addActiveSession.useMutation();
+
+	const { mutateAsync: completeSession } =
 		api.completedSession.createCompletedSession.useMutation();
 	//#endregion
 
 	//#region UI Handlers
+	const refetchAll = () =>
+		Promise.all([
+			refetchActiveSessionData(),
+			refetchWorkouts(),
+			refetchCompletedSessions(),
+		]);
+
 	const handleCheckboxChange = (
 		event: React.ChangeEvent<HTMLInputElement>,
 	) => {
 		const workoutId = event.target.id;
 		const isNowChecked = event.target.checked;
 
-		if (isNowChecked) {
-			const workoutCompletionMap = JSON.parse(
-				localStorage.getItem('workoutCompletionMap') || '[]',
-			) as [string, boolean][];
-			const updatedWorkoutCompletionMap = workoutCompletionMap.map(
-				([id, isCompleted]) => {
-					if (id === workoutId) {
-						return [id, true];
-					}
-					return [id, isCompleted];
-				},
-			);
-
-			localStorage.setItem(
-				'workoutCompletionMap',
-				JSON.stringify(updatedWorkoutCompletionMap),
-			);
-		} else {
-			const workoutCompletionMap = JSON.parse(
-				localStorage.getItem('workoutCompletionMap') || '[]',
-			) as [string, boolean][];
-
-			const updatedWorkoutCompletionMap = workoutCompletionMap.map(
-				([id, isCompleted]) => {
-					if (id === workoutId) {
-						return [id, false];
-					}
-					return [id, isCompleted];
-				},
-			);
-
-			localStorage.setItem(
-				'workoutCompletionMap',
-				JSON.stringify(updatedWorkoutCompletionMap),
-			);
-			event.target.removeAttribute('checked');
-		}
-
 		const workoutCompletionMap = JSON.parse(
 			localStorage.getItem('workoutCompletionMap') || '[]',
 		) as [string, boolean][];
 
-		const areAllWorkoutsChecked = workoutCompletionMap.every((element) => {
-			return element[1] === true;
-		});
+		const updatedWorkoutCompletionMap = workoutCompletionMap.map(
+			([id, isCompleted]) =>
+				id === workoutId ? [id, isNowChecked] : [id, isCompleted],
+		);
 
-		setAllWorkoutsCompleted(areAllWorkoutsChecked);
-	};
+		localStorage.setItem(
+			'workoutCompletionMap',
+			JSON.stringify(updatedWorkoutCompletionMap),
+		);
 
-	const handleCheckboxChangeWrapper = (
-		event: React.ChangeEvent<HTMLInputElement>,
-	) => {
-		void handleCheckboxChange(event);
+		setAllWorkoutsCompleted(
+			updatedWorkoutCompletionMap.every(([, isCompleted]) => isCompleted),
+		);
 	};
 
 	const handleStartSessionClick = async (sessionId: string) => {
-		await addActiveSessionMutationAsync(
-			{
-				userId: user.id,
-				sessionId: sessionId,
-			},
+		await startSession(
+			{ userId: user.id, sessionId },
 			{
 				onSuccess: () => {
 					setSessionHasStarted(true);
@@ -156,34 +131,32 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	};
 
 	const handleCompleteSessionClick = async () => {
-		const jsConfetti = new JSConfetti();
-		if (userHasConfettiPreferenceEnabled) {
-			void jsConfetti.addConfetti({
-				confettiRadius: 10,
-				confettiNumber: 20,
-				emojis: ['🎉', '🎊'],
-				emojiSize: 50,
-			});
-		}
 		if (!activeSessionData) return;
 
-		await createCompletedSessionMutation.mutateAsync({
-			userId: user.id,
-			sessionId: activeSessionData.session.id,
-		});
-		await Promise.all([
-			refetchActiveSessionData(),
-			refetchWorkoutsForActiveSession(),
-			refetchListOfCompletedSessionIdsForActiveRoutine(),
-		]);
+		try {
+			// Update UI state immediately for better user experience
+			setSessionHasStarted(false);
+			setAllWorkoutsCompleted(false);
+			localStorage.removeItem('workoutCompletionMap');
 
-		localStorage.removeItem('workoutCompletionMap');
-		setSessionHasStarted(false);
-		setAllWorkoutsCompleted(false);
-	};
+			// Show confetti without waiting
+			if (userHasConfettiPreferenceEnabled) {
+				void showConfetti();
+			}
 
-	const handleCompleteSessionClickWrapper = () => {
-		void handleCompleteSessionClick();
+			// Complete session
+			await completeSession({
+				userId: user.id,
+				sessionId: activeSessionData.session.id,
+			});
+
+			// Refetch data after completion
+			void refetchAll();
+		} catch (error) {
+			console.error('Error completing session:', error);
+			// Revert UI state if there's an error
+			setSessionHasStarted(true);
+		}
 	};
 	//#endregion
 
@@ -198,25 +171,6 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				Preference.CONFETTI_ON_SESSION_COMPLETION &&
 			preference.enabled === true,
 	);
-
-	const isDataLoading = (): boolean => {
-		return (
-			activeSessionDataIsLoading ||
-			workoutsForActiveSessionIsLoading ||
-			isPossibleSessionsToStartLoading ||
-			isListOfCompletedSessionIdsForActiveRoutineLoading ||
-			isLoadingActiveSessionMutationAsync ||
-			!isListOfCompletedSessionIdsForActiveRoutineLoadingFetched ||
-			!isPossibleSessionsToStartFetched ||
-			!isworkoutsForActiveSessionFetched ||
-			isActiveSessionDataFetching ||
-			isPossibleSessionsToStartFetching ||
-			isListOfCompletedSessionIdsForActiveRoutineFetching ||
-			activeRoutineIsLoading ||
-			isActiveRoutineFetching ||
-			!isactiveRoutineFetched
-		);
-	};
 
 	useEffect(() => {
 		if (workoutsForActiveSession) {
@@ -268,7 +222,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		}
 	}, [activeSessionData, workoutsForActiveSession]);
 
-	if (isDataLoading()) {
+	if (isLoading) {
 		return <SmallSpinner />;
 	}
 
@@ -288,7 +242,6 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			{possibleSessionsToStart && possibleSessionsToStart.length === 0 ? (
 				<div className="flex h-full items-center justify-center">
 					<h1 className="m-12 pb-10 text-lg font-medium text-gray-700">
-						{/* how to addd a gif here */}
 						<Image
 							src="/gifs/bunnyRunner.gif"
 							alt="Animated running rabbit"
@@ -315,7 +268,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 										handleStartButtonClick={() =>
 											handleStartSessionClick(session.id)
 										}
-										isCompleted={listOfCompletedSessionIdsForActiveRoutine?.includes(
+										isCompleted={listOfCompletedSessionIds?.includes(
 											session.id,
 										)}
 									></HomePageSessionCard>
@@ -335,7 +288,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 										}
 									/>
 
-									<div className="hide-scrollbar overflow-auto rounded-md pb-4">
+									<div className="hide-scrollbar overflow-auto rounded-md">
 										{workoutsForActiveSession.map(
 											(workout) => (
 												<WorkoutCard
@@ -345,7 +298,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 														workout.exercise.name
 													}
 													onChangeHanlder={
-														handleCheckboxChangeWrapper
+														handleCheckboxChange
 													}
 													sets={workout.sets}
 													weightInLbs={
@@ -365,7 +318,9 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 								<button
 									className="my-2 rounded-md bg-primaryButton p-3 font-medium  disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-500 disabled:shadow-none"
 									disabled={!allWorkoutsCompleted}
-									onClick={handleCompleteSessionClickWrapper}
+									onClick={() =>
+										void handleCompleteSessionClick()
+									}
 								>
 									Complete Session
 								</button>

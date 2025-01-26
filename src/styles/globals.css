@@ -12,4 +12,16 @@
         -ms-overflow-style: none;  /* IE and Edge */
         scrollbar-width: none;  /* Firefox */
     }
+
+    /* Use dvh for dynamic viewport height */
+    :root {
+        height: 100dvh;
+        overflow: hidden;
+    }
+
+    /* Prevent pull-to-refresh but allow content to scroll naturally */
+    html {
+        overscroll-behavior-y: none;
+    }
 }
+

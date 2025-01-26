@@ -104,7 +104,7 @@ This is a list things you need to use the Gym Tracker.
     ```
 2. Create MySQL container
     ```sh
-    $ docker-compose up -d
+    $ docker compose up -d
     ```
 
 4. Create .env at root of project and add the following:

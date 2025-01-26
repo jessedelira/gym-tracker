@@ -56,9 +56,7 @@ const Account: NextPage = () => {
 	};
 
 	const changeSession = async () => {
-		await update({}).then(() => {
-			console.log('Session updated');
-		});
+		await update({});
 	};
 
 	useEffect(() => {
