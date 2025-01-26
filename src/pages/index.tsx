@@ -25,31 +25,70 @@ const Home: NextPage = () => {
 	} else {
 		return (
 			<>
-				<main className="flex min-h-screen flex-col items-center justify-center bg-white">
-					<div className="mb-16">
-						<h1 className="mb-10 text-center text-4xl text-black">
+				<main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-white to-gray-100">
+					<div className="mb-12 text-center">
+						<h1 className="mb-4 text-5xl font-bold tracking-tight text-gray-900">
 							Gym Tracker
 						</h1>
+						<p className="mb-8 text-lg text-gray-600">
+							Track your workouts. Monitor your progress. Achieve your goals.
+						</p>
 						<div className="flex flex-col items-center justify-center gap-4">
 							<button
-								className="mb-1 rounded-lg bg-primaryButton px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+								className="group relative mb-2 inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 p-0.5 text-sm font-medium text-gray-900 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300"
 								onClick={() => void signIn('credential')}
 							>
-								Sign In
+								<span className="relative rounded-md bg-white px-10 py-3.5 transition-all duration-75 ease-in group-hover:bg-opacity-0">
+									Sign In
+								</span>
 							</button>
 						</div>
-						<div className="inline-flex">
-							<div>Don&apos;t have an account? </div>
-
+						<div className="mt-4 inline-flex items-center text-gray-600">
+							<div>Don&apos;t have an account?</div>
 							<Link
 								href="/signup"
-								className="ml-1 cursor-pointer text-blue-500 hover:underline"
+								className="ml-2 font-medium text-blue-600 transition-colors hover:text-blue-700"
 							>
 								Sign up
 							</Link>
 						</div>
 					</div>
-					<div className="absolute bottom-8">
+
+					{/* Features Section */}
+					<div className="mb-12 grid grid-cols-1 gap-4 px-4 sm:grid-cols-3 sm:gap-4">
+						<div className="rounded-lg bg-white p-4 shadow-sm transition-all hover:shadow-md">
+							<div className="mb-3 text-black">
+								<svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+								</svg>
+							</div>
+							<h3 className="mb-1 text-base font-semibold">Track Workouts</h3>
+							<p className="text-sm text-gray-600">Log your exercises, sets, and reps with ease</p>
+						</div>
+
+						<div className="rounded-lg bg-white p-4 shadow-sm transition-all hover:shadow-md">
+							<div className="mb-3 text-black">
+								<svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+								</svg>
+							</div>
+							<h3 className="mb-1 text-base font-semibold">Monitor Progress</h3>
+							<p className="text-sm text-gray-600">View your improvement over time</p>
+						</div>
+
+						<div className="rounded-lg bg-white p-4 shadow-sm transition-all hover:shadow-md">
+							<div className="mb-3 text-black">
+								<svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+								</svg>
+							</div>
+							<h3 className="mb-1 text-base font-semibold">Achieve Goals</h3>
+							<p className="text-sm text-gray-600">Set and reach your fitness targets</p>
+						</div>
+					</div>
+
+					{/* Footer Links */}
+					<div className="absolute bottom-8 flex gap-6">
 						<Link
 							href="https://github.com/jessedelira/gym-tracker.app"
 							target="_blank"
