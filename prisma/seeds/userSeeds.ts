@@ -94,25 +94,25 @@ const seedSuperuserData = async (createdUser: User) => {
 			days: {
 				create: [
 					{
-						day: 'Monday',
+						day: 'monday',
 					},
 					{
-						day: 'Tuesday',
+						day: 'tuesday',
 					},
 					{
-						day: 'Wednesday',
+						day: 'wednesday',
 					},
 					{
-						day: 'Thursday',
+						day: 'thursday',
 					},
 					{
-						day: 'Friday',
+						day: 'friday',
 					},
 					{
-						day: 'Saturday',
+						day: 'saturday',
 					},
 					{
-						day: 'Sunday',
+						day: 'sunday',
 					},
 				],
 			},
