@@ -28,7 +28,7 @@ const NavBar: React.FC = () => {
 
 	return (
 		<nav className="fixed bottom-0 left-0 right-0 z-50 flex h-20 items-center justify-around border-t border-gray-200 bg-white">
-			<Link href="/home" className="rounded-full text-5xl pb-4">
+			<Link href="/home" className="rounded-full pb-4 text-5xl">
 				{currentURL === 'home' ? (
 					<HomeIcon
 						heightValue="8"
@@ -46,7 +46,7 @@ const NavBar: React.FC = () => {
 				)}
 			</Link>
 
-			<Link href="/manage" className="rounded-full text-5xl pb-4">
+			<Link href="/manage" className="rounded-full pb-4 text-5xl">
 				{currentURL === 'manage' ? (
 					<ManageIcon
 						heightValue="8"
@@ -64,7 +64,7 @@ const NavBar: React.FC = () => {
 				)}
 			</Link>
 
-			<Link href="/settings" className="rounded-full text-5xl pb-4">
+			<Link href="/settings" className="rounded-full pb-4 text-5xl">
 				{currentURL === 'settings' ? (
 					<SettingsIcon
 						heightValue="8"
@@ -82,7 +82,7 @@ const NavBar: React.FC = () => {
 				)}
 			</Link>
 
-			<Link href="/clock" className="rounded-full text-5xl pb-4">	
+			<Link href="/clock" className="rounded-full pb-4 text-5xl">
 				{currentURL === 'clock' ? (
 					<ClockIcon
 						heightValue="8"
@@ -101,7 +101,7 @@ const NavBar: React.FC = () => {
 			</Link>
 
 			<button
-				className="rounded-full text-5xl pb-4"
+				className="rounded-full pb-4 text-5xl"
 				onClick={() => void signOut()}
 			>
 				<svg
