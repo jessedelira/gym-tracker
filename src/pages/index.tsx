@@ -25,7 +25,7 @@ const Home: NextPage = () => {
 	} else {
 		return (
 			<>
-				<main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-white to-gray-100">
+				<main className="relative flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-white to-gray-100 pb-20">
 					<div className="mb-12 text-center">
 						<h1 className="mb-4 text-5xl font-bold tracking-tight text-gray-900">
 							Gym Tracker
@@ -55,7 +55,7 @@ const Home: NextPage = () => {
 					</div>
 
 					{/* Features Section */}
-					<div className="mb-12 grid grid-cols-1 gap-4 px-4 sm:grid-cols-3 sm:gap-4">
+					<div className="mb-8 grid grid-cols-1 gap-4 px-4 sm:grid-cols-3 sm:gap-4">
 						<div className="rounded-lg bg-white p-4 shadow-sm transition-all hover:shadow-md">
 							<div className="mb-3 text-black">
 								<svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -88,7 +88,7 @@ const Home: NextPage = () => {
 					</div>
 
 					{/* Footer Links */}
-					<div className="absolute bottom-8 flex gap-6">
+					<div className="absolute bottom-6 flex gap-6 p-4">
 						<Link
 							href="https://github.com/jessedelira/gym-tracker.app"
 							target="_blank"
