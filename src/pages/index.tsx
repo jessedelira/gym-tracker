@@ -35,7 +35,7 @@ const Home: NextPage = () => {
 						</p>
 						<div className="flex flex-col items-center justify-center gap-4">
 							<button
-								className="mb-1 rounded-lg bg-primaryButton px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
+								className="mb-1 rounded-lg bg-primaryButton px-10 py-3 font-bold text-black no-underline transition hover:bg-black/20"
 								onClick={() => void signIn('credential')}
 							>
 								Sign In
