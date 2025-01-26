@@ -9,8 +9,8 @@ import seedTimezones from './seeds/timezoneSeeds';
  */
 const main = async () => {
 	await seedTimezones();
-	await seedUsers();
 	await seedExercises();
+	await seedUsers();
 };
 
 main().catch((e) => {
