@@ -4,11 +4,11 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import Layout from '~/components/layout';
-import PreferenceToggle, { type PreferenceOption } from '~/components/perferenceToggle';
+import PreferenceToggle, {
+	type PreferenceOption,
+} from '~/components/perferenceToggle';
 import Spinner from '~/components/Spinner';
 import { api } from '~/utils/api';
-
-
 
 const preferenceOptions: PreferenceOption[] = [
 	{
@@ -40,7 +40,7 @@ const Preferences: NextPage = () => {
 		const target = event.target as HTMLInputElement;
 		const preferenceEnumValue = target.id;
 		const isNowChecked = target.checked;
-		
+
 		const preference = sessionData.user.userPreferences.find(
 			(pref) => pref.preference === preferenceEnumValue,
 		);
@@ -75,7 +75,8 @@ const Preferences: NextPage = () => {
 						Preferences
 					</h1>
 					<p className="text-muted-foreground mt-2">
-						Customize your experience by toggling features on or off.
+						Customize your experience by toggling features on or
+						off.
 					</p>
 				</div>
 				<div className="grid gap-6">

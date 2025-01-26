@@ -31,7 +31,8 @@ const Home: NextPage = () => {
 							Gym Tracker
 						</h1>
 						<p className="mb-8 text-gray-600">
-							Track your workouts. Monitor your progress. Achieve your goals.
+							Track your workouts. Monitor your progress. Achieve
+							your goals.
 						</p>
 						<div className="flex flex-col items-center justify-center gap-4">
 							<button
@@ -56,32 +57,74 @@ const Home: NextPage = () => {
 					<div className="mb-8 grid grid-cols-1 gap-4 px-4 sm:grid-cols-3 sm:gap-4">
 						<div className="rounded-lg border border-gray-200 bg-white p-4 transition-all hover:bg-gray-50">
 							<div className="mb-3 text-black">
-								<svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+								<svg
+									className="h-6 w-6"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+								>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										strokeWidth={2}
+										d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+									/>
 								</svg>
 							</div>
-							<h3 className="mb-1 text-base font-medium text-black">Track Workouts</h3>
-							<p className="text-sm text-gray-600">Log your exercises, sets, and reps with ease</p>
+							<h3 className="mb-1 text-base font-medium text-black">
+								Track Workouts
+							</h3>
+							<p className="text-sm text-gray-600">
+								Log your exercises, sets, and reps with ease
+							</p>
 						</div>
 
 						<div className="rounded-lg border border-gray-200 bg-white p-4 transition-all hover:bg-gray-50">
 							<div className="mb-3 text-black">
-								<svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+								<svg
+									className="h-6 w-6"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+								>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										strokeWidth={2}
+										d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+									/>
 								</svg>
 							</div>
-							<h3 className="mb-1 text-base font-medium text-black">Monitor Progress</h3>
-							<p className="text-sm text-gray-600">View your improvement over time</p>
+							<h3 className="mb-1 text-base font-medium text-black">
+								Monitor Progress
+							</h3>
+							<p className="text-sm text-gray-600">
+								View your improvement over time
+							</p>
 						</div>
 
 						<div className="rounded-lg border border-gray-200 bg-white p-4 transition-all hover:bg-gray-50">
 							<div className="mb-3 text-black">
-								<svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+								<svg
+									className="h-6 w-6"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+								>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										strokeWidth={2}
+										d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+									/>
 								</svg>
 							</div>
-							<h3 className="mb-1 text-base font-medium text-black">Achieve Goals</h3>
-							<p className="text-sm text-gray-600">Set and reach your fitness targets</p>
+							<h3 className="mb-1 text-base font-medium text-black">
+								Achieve Goals
+							</h3>
+							<p className="text-sm text-gray-600">
+								Set and reach your fitness targets
+							</p>
 						</div>
 					</div>
 
