@@ -17,6 +17,11 @@ export default {
 				// Use hex colors for the best compatibility
 				primaryButton: '#4ade80',
 			},
+			spacing: {
+				'safe': 'env(safe-area-inset-top)',
+				'pb-safe': 'env(safe-area-inset-bottom)',
+				'px-safe': 'env(safe-area-inset-left)',
+			},
 		},
 		plugins: [],
 	},
