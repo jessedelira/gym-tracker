@@ -78,7 +78,7 @@ const ActivityGraph: React.FC = () => {
 	};
 
 	return (
-		<div className="mt-6 flex flex-col items-center justify-center gap-2 p-2 sm:p-10">
+		<div className=" flex flex-col items-center justify-center gap-2  sm:p-10">
 			<h1 className="mb-2 text-xl font-medium">Activity Graph</h1>
 			<div className="grid grid-cols-7 gap-2">
 				{['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, i) => (
