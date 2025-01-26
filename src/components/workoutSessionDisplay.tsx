@@ -242,7 +242,6 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			{possibleSessionsToStart && possibleSessionsToStart.length === 0 ? (
 				<div className="flex h-full items-center justify-center">
 					<h1 className="m-12 pb-10 text-lg font-medium text-gray-700">
-						{/* how to addd a gif here */}
 						<Image
 							src="/gifs/bunnyRunner.gif"
 							alt="Animated running rabbit"
@@ -289,7 +288,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 										}
 									/>
 
-									<div className="hide-scrollbar overflow-auto rounded-md pb-4">
+									<div className="hide-scrollbar overflow-auto rounded-md">
 										{workoutsForActiveSession.map(
 											(workout) => (
 												<WorkoutCard
