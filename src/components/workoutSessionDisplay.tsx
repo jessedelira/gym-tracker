@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { api } from '~/utils/api';
 import HomePageSessionCard from './homePageSessionCard';
 import SmallSpinner from './smallSpinner';
@@ -11,13 +11,14 @@ import { showConfetti } from '~/utils/confetti';
 
 interface CurrentWorkoutDisplayProps {
 	user: User;
-	currentDate: Date;
 }
 
 const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	user,
-	currentDate,
 }) => {
+	// Create a single Date object that can be reused across queries
+	const currentDate = useMemo(() => new Date(), []);
+
 	//#region Queries
 	const {
 		data: possibleSessionsToStart,
@@ -41,7 +42,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		refetch: refetchCompletedSessions,
 	} = api.completedSession.getListOfCompletedSessionIdsForActiveRoutine.useQuery(
 		{
-			currentDate,
+			userUTCDateTime: currentDate,
 		},
 	);
 
@@ -309,22 +310,22 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 											),
 										)}
 									</div>
+
+									<div className="flex-grow" />
+
+									<div className="flex w-full justify-center rounded-tl-xl rounded-tr-xl bg-black">
+										<button
+											className="my-2 rounded-md bg-primaryButton p-3 font-medium  disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-500 disabled:shadow-none"
+											disabled={!allWorkoutsCompleted}
+											onClick={() =>
+												void handleCompleteSessionClick()
+											}
+										>
+											Complete Session
+										</button>
+									</div>
 								</>
 							)}
-
-							<div className="flex-grow" />
-
-							<div className="flex w-full justify-center rounded-tl-xl rounded-tr-xl bg-black">
-								<button
-									className="my-2 rounded-md bg-primaryButton p-3 font-medium  disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-500 disabled:shadow-none"
-									disabled={!allWorkoutsCompleted}
-									onClick={() =>
-										void handleCompleteSessionClick()
-									}
-								>
-									Complete Session
-								</button>
-							</div>
 						</>
 					)}
 				</>

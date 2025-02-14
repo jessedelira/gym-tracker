@@ -57,23 +57,25 @@ export const completedSessionRouter = createTRPCRouter({
 		}),
 
 	getListOfCompletedSessionIdsForActiveRoutine: protectedProcedure
-		.input(z.object({ currentDate: z.date() }))
+		.input(z.object({ userUTCDateTime: z.date() }))
 		.query(async ({ input, ctx }) => {
 			const userTimezone =
 				ctx.session.user.userSetting?.timezone.iana ?? 'UTC';
 
-			// Create start of day in user's timezone
-			const startOfDayUTC = new Date(
-				input.currentDate.toLocaleString('en-US', {
+			// Create dates in user's timezone
+			const startOfDayUserLocalTime = new Date(
+				input.userUTCDateTime.toLocaleString('en-US', {
 					timeZone: userTimezone,
 				}),
 			);
+			startOfDayUserLocalTime.setHours(0, 0, 0, 0);
 
-			startOfDayUTC.setHours(0, 0, 0, 0);
-
-			// End of day is start of day + 24 hours
-			const endOfDayUTC = new Date(startOfDayUTC);
-			endOfDayUTC.setHours(24, 0, 0, 0);
+			const endOfDayUserLocalTime = new Date(
+				input.userUTCDateTime.toLocaleString('en-US', {
+					timeZone: userTimezone,
+				}),
+			);
+			endOfDayUserLocalTime.setHours(23, 59, 59, 999);
 
 			const completedSessionIds = await prisma.completedSession.findMany({
 				select: {
@@ -87,8 +89,8 @@ export const completedSessionRouter = createTRPCRouter({
 						},
 					},
 					completedAt: {
-						gte: startOfDayUTC,
-						lt: endOfDayUTC,
+						gte: startOfDayUserLocalTime,
+						lt: endOfDayUserLocalTime,
 					},
 				},
 			});

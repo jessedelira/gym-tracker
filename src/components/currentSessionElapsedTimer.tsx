@@ -27,7 +27,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentSessionElapsedTimerProps> = ({
 
 			setElapsedMinutes(`${elapsedMinutes}`);
 			setElapsedSeconds(`${elapsedSeconds}`);
-		}, 1);
+		}, 1000);
 
 		return () => clearInterval(interval);
 	}, [startedAtDate]);
