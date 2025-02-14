@@ -9,7 +9,6 @@ import Layout from '~/components/layout';
 const Home: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const router = useRouter();
-	const currentDate = new Date();
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -26,7 +25,6 @@ const Home: NextPage = () => {
 			<div className="flex h-full flex-col items-center bg-white">
 				<WorkoutSessionDisplay
 					user={sessionData.user}
-					currentDate={currentDate}
 				></WorkoutSessionDisplay>
 			</div>
 		</Layout>
