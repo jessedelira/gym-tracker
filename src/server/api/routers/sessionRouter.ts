@@ -133,7 +133,17 @@ export const sessionRouter = createTRPCRouter({
 				date: z.date(),
 			}),
 		)
-		.query(async ({ input }) => {
+		.query(async ({ input, ctx }) => {
+			const userTimezone =
+				ctx.session.user.userSetting?.timezone.iana ?? 'UTC';
+
+			// Convert input date to user's timezone
+			const userDate = new Date(
+				input.date.toLocaleString('en-US', {
+					timeZone: userTimezone,
+				}),
+			);
+
 			const dayMap = [
 				'sunday',
 				'monday',
@@ -154,7 +164,7 @@ export const sessionRouter = createTRPCRouter({
 					userId: input.userId,
 					days: {
 						some: {
-							day: dayMap[input.date.getDay()],
+							day: dayMap[userDate.getDay()],
 						},
 					},
 					routine: {
