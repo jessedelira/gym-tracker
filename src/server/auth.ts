@@ -101,7 +101,16 @@ export const authOptions: NextAuthOptions = {
 			return token;
 		},
 		session: ({ session, token }) => {
-			session.user = token.user;
+			// Only expose safe user data to the client
+			session.user = {
+				id: token.user.id,
+				username: token.user.username,
+				firstName: token.user.firstName,
+				lastName: token.user.lastName,
+				dateCreated: token.user.dateCreated,
+				userPreferences: token.user.userPreferences,
+				userSetting: token.user.userSetting,
+			};
 			return session;
 		},
 		redirect({ url, baseUrl }) {
