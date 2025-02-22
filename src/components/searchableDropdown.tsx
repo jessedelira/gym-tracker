@@ -47,8 +47,8 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
 				className="w-full rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
 			/>
 
-			{/* Filtered list, will show is selected exercise is null */}
-			{!selectedExercise && (
+			{/* Filtered list, will show is selected exercise is null and will NOT show when query is empty */}
+			{!selectedExercise && query !== '' && (
 				<ul className="absolute left-0 right-0 mt-2 max-h-48 overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg">
 					{searchResults.length > 0 ? (
 						searchResults.map((item, index) => (
