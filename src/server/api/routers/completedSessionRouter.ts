@@ -1,7 +1,7 @@
 import { prisma } from '~/server/db';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
-import { format, toZonedTime, getTimezoneOffset } from 'date-fns-tz';
+import { toZonedTime, getTimezoneOffset } from 'date-fns-tz';
 
 export const completedSessionRouter = createTRPCRouter({
 	createCompletedSession: protectedProcedure
