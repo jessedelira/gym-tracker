@@ -1,6 +1,7 @@
 import { prisma } from '~/server/db';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
+import { format, toZonedTime, getTimezoneOffset } from 'date-fns-tz';
 
 export const completedSessionRouter = createTRPCRouter({
 	createCompletedSession: protectedProcedure
@@ -62,20 +63,26 @@ export const completedSessionRouter = createTRPCRouter({
 			const userTimezone =
 				ctx.session.user.userSetting?.timezone.iana ?? 'UTC';
 
-			// Create dates in user's timezone
-			const startOfDayUserLocalTime = new Date(
-				input.userUTCDateTime.toLocaleString('en-US', {
-					timeZone: userTimezone,
-				}),
+			const userLocalDate = toZonedTime(
+				input.userUTCDateTime,
+				userTimezone,
 			);
-			startOfDayUserLocalTime.setHours(0, 0, 0, 0);
 
-			const endOfDayUserLocalTime = new Date(
-				input.userUTCDateTime.toLocaleString('en-US', {
-					timeZone: userTimezone,
-				}),
+			const startOfDayLocal = new Date(userLocalDate);
+			startOfDayLocal.setHours(0, 0, 0, 0);
+
+			const endOfDayLocal = new Date(userLocalDate);
+			endOfDayLocal.setHours(23, 59, 59, 999);
+
+			const tzOffset = getTimezoneOffset(
+				userTimezone,
+				input.userUTCDateTime,
 			);
-			endOfDayUserLocalTime.setHours(23, 59, 59, 999);
+
+			const startOfDayUTC = new Date(
+				startOfDayLocal.getTime() - tzOffset,
+			);
+			const endOfDayUTC = new Date(endOfDayLocal.getTime() - tzOffset);
 
 			const completedSessionIds = await prisma.completedSession.findMany({
 				select: {
@@ -88,9 +95,10 @@ export const completedSessionRouter = createTRPCRouter({
 							isActive: true,
 						},
 					},
+
 					completedAt: {
-						gte: startOfDayUserLocalTime,
-						lt: endOfDayUserLocalTime,
+						gte: startOfDayUTC,
+						lt: endOfDayUTC,
 					},
 				},
 			});

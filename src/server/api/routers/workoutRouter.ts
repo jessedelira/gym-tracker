@@ -67,7 +67,6 @@ export const workoutRouter = createTRPCRouter({
 		.input(
 			z.object({
 				userId: z.string(),
-				clientCurrentDate: z.date(),
 				sessionId: z.string(),
 			}),
 		)

@@ -101,7 +101,6 @@ export const authOptions: NextAuthOptions = {
 			return token;
 		},
 		session: ({ session, token }) => {
-			// Only expose safe user data to the client
 			session.user = {
 				id: token.user.id,
 				username: token.user.username,
@@ -171,8 +170,6 @@ export const authOptions: NextAuthOptions = {
 								userFoundByUsername.userPreferences,
 							userSetting: userFoundByUsername.userSetting,
 						};
-
-						console.log('returnUser', returnUser.userSetting);
 
 						return returnUser;
 					}

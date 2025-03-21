@@ -58,7 +58,6 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	} = api.workout.getWorkoutsForActiveSession.useQuery(
 		{
 			userId: user.id,
-			clientCurrentDate: currentDate,
 			sessionId: activeSessionData?.session.id ?? '',
 		},
 		{
