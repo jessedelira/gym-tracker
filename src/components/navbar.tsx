@@ -82,24 +82,6 @@ const NavBar: React.FC = () => {
 				)}
 			</Link>
 
-			<Link href="/clock" className="rounded-full pb-4 text-5xl">
-				{currentURL === 'clock' ? (
-					<ClockIcon
-						heightValue="8"
-						widthValue="8"
-						fill="none"
-						strokeColor="black"
-					/>
-				) : (
-					<ClockIcon
-						heightValue="8"
-						widthValue="8"
-						fill="none"
-						strokeColor="gray"
-					/>
-				)}
-			</Link>
-
 			<button
 				className="rounded-full pb-4 text-5xl"
 				onClick={() => void signOut()}
