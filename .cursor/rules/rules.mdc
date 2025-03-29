@@ -33,3 +33,17 @@ alwaysApply: true
 5. Authentication
     - JWT (JSON Web Tokens) based auth
     - Implementation details: [auth.ts](mdc:src/server/auth.ts)
+
+6. Style and Design
+    - I want to have it be a uniform feel and look
+    - I like the style to be "Modern Minimalist" or "iOS-inspired" 
+    - Clean, flat interfaces
+    - Subtle use of shadows and borders
+    - Consistent spacing and alignment
+    - Monochromatic icons
+    - Clear visual hierarchy
+    - Card-based grouping
+    - Subtle dividers and separators
+    - Meaningful whitespace
+    - Clear interactive elements (hover states)
+    - Purposeful use of color (like the red for destructive actions)
