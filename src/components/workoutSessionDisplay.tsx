@@ -91,29 +91,28 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			refetchCompletedSessions(),
 		]);
 
+	// Add state to track checked workouts
+	const [checkedWorkouts, setCheckedWorkouts] = useState<
+		Record<string, boolean>
+	>({});
+
 	const handleCheckboxChange = (
 		event: React.ChangeEvent<HTMLInputElement>,
 	) => {
 		const workoutId = event.target.id;
 		const isNowChecked = event.target.checked;
 
-		const workoutCompletionMap = JSON.parse(
-			localStorage.getItem('workoutCompletionMap') || '[]',
-		) as [string, boolean][];
+		const updatedWorkouts = {
+			...checkedWorkouts,
+			[workoutId]: isNowChecked,
+		};
 
-		const updatedWorkoutCompletionMap = workoutCompletionMap.map(
-			([id, isCompleted]) =>
-				id === workoutId ? [id, isNowChecked] : [id, isCompleted],
-		);
-
+		setCheckedWorkouts(updatedWorkouts);
 		localStorage.setItem(
 			'workoutCompletionMap',
-			JSON.stringify(updatedWorkoutCompletionMap),
+			JSON.stringify(updatedWorkouts),
 		);
-
-		setAllWorkoutsCompleted(
-			updatedWorkoutCompletionMap.every(([, isCompleted]) => isCompleted),
-		);
+		setAllWorkoutsCompleted(Object.values(updatedWorkouts).every(Boolean));
 	};
 
 	const handleStartSessionClick = async (sessionId: string) => {
@@ -180,47 +179,24 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				);
 
 				if (!workoutCompletionMap) {
-					const completionMap = workoutsForActiveSession?.map(
-						({ id }) => [id, false],
+					const initialMap = Object.fromEntries(
+						workoutsForActiveSession.map(({ id }) => [id, false]),
 					);
-
 					localStorage.setItem(
 						'workoutCompletionMap',
-						JSON.stringify(completionMap),
+						JSON.stringify(initialMap),
+					);
+					setCheckedWorkouts(initialMap);
+				} else {
+					const savedMap = JSON.parse(workoutCompletionMap);
+					setCheckedWorkouts(savedMap);
+					setAllWorkoutsCompleted(
+						Object.values(savedMap).every(Boolean),
 					);
 				}
 			}
-
-			const workoutCompletionMap = JSON.parse(
-				localStorage.getItem('workoutCompletionMap') || '[]',
-			) as [string, boolean][];
-
-			const updateCheckbox = (workoutId: string) => {
-				const checkbox = document.getElementById(workoutId);
-				if (checkbox) {
-					checkbox.setAttribute('checked', 'true');
-				}
-			};
-
-			const checkAllWorkoutsCompleted = () => {
-				return workoutCompletionMap.every(
-					([, isCompleted]) => isCompleted === true,
-				);
-			};
-
-			workoutsForActiveSession.forEach((workout) => {
-				const workoutCompletionObj = workoutCompletionMap.find(
-					([id]) => id === workout.id,
-				);
-
-				if (workoutCompletionObj?.[1]) {
-					updateCheckbox(workout.id);
-				}
-
-				setAllWorkoutsCompleted(checkAllWorkoutsCompleted());
-			});
 		}
-	}, [activeSessionData, workoutsForActiveSession]);
+	}, [workoutsForActiveSession]);
 
 	if (isLoading) {
 		return <SmallSpinner />;
@@ -313,7 +289,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 								/>
 							</div>
 
-							<div className="flex-1 space-y-3 overflow-auto">
+							<div className="flex-1 space-y-3 overflow-auto pb-24">
 								{workoutsForActiveSession?.map((workout) => (
 									<WorkoutCard
 										key={workout.id}
@@ -323,24 +299,32 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 										sets={workout.sets}
 										weightInLbs={workout.weightLbs}
 										reps={workout.reps}
+										isChecked={
+											checkedWorkouts[workout.id] || false
+										}
 									/>
 								))}
 							</div>
 
-							<div className="mt-4">
-								<button
-									onClick={() =>
-										void handleCompleteSessionClick()
-									}
-									disabled={!allWorkoutsCompleted}
-									className={`w-full rounded-lg px-4 py-3 text-sm font-medium ${
-										allWorkoutsCompleted
-											? 'bg-green-600 text-white hover:bg-green-700'
-											: 'bg-gray-100 text-gray-400'
-									}`}
-								>
-									Complete Session
-								</button>
+							<div
+								className={`fixed inset-x-0 bottom-16 z-50 transform transition-all duration-300 ${
+									allWorkoutsCompleted
+										? 'translate-y-0 opacity-100'
+										: 'pointer-events-none translate-y-full opacity-0'
+								}`}
+							>
+								<div className="bg-white px-4 pb-4 pt-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+									<div className="mx-auto w-[90%] max-w-md">
+										<button
+											onClick={() =>
+												void handleCompleteSessionClick()
+											}
+											className="w-full rounded-xl bg-green-600 px-4 py-4 text-sm font-medium text-white transition-colors hover:bg-green-700"
+										>
+											Complete Workout Session
+										</button>
+									</div>
+								</div>
 							</div>
 						</div>
 					)}
