@@ -1,17 +1,19 @@
 import { useEffect, useState, useMemo } from 'react';
 import { api } from '~/utils/api';
-import HomePageSessionCard from './homePageSessionCard';
 import SmallSpinner from './smallSpinner';
-import Image from 'next/image';
 import { type User } from 'next-auth';
 import { Preference } from '@prisma/client';
 import CurrentSessionElapsedTimer from './currentSessionElapsedTimer';
 import WorkoutCard from './icons/workoutCard';
 import { showConfetti } from '~/utils/confetti';
+import { NoActiveRoutineView } from './workout/NoActiveRoutineView';
+import { NoSessionsView } from './workout/NoSessionsView';
 
 interface CurrentWorkoutDisplayProps {
 	user: User;
 }
+
+type WorkoutCompletionMap = Record<string, boolean>;
 
 const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	user,
@@ -179,7 +181,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				);
 
 				if (!workoutCompletionMap) {
-					const initialMap = Object.fromEntries(
+					const initialMap: WorkoutCompletionMap = Object.fromEntries(
 						workoutsForActiveSession.map(({ id }) => [id, false]),
 					);
 					localStorage.setItem(
@@ -188,11 +190,60 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 					);
 					setCheckedWorkouts(initialMap);
 				} else {
-					const savedMap = JSON.parse(workoutCompletionMap);
-					setCheckedWorkouts(savedMap);
-					setAllWorkoutsCompleted(
-						Object.values(savedMap).every(Boolean),
-					);
+					try {
+						// Safely parse and validate the stored data
+						const parsedMap = JSON.parse(
+							workoutCompletionMap,
+						) as Record<string, unknown>;
+
+						// Validate the parsed data
+						const isValidMap = (
+							map: Record<string, unknown>,
+						): map is WorkoutCompletionMap => {
+							return Object.values(map).every(
+								(value) => typeof value === 'boolean',
+							);
+						};
+
+						if (isValidMap(parsedMap)) {
+							setCheckedWorkouts(parsedMap);
+							setAllWorkoutsCompleted(
+								Object.values(parsedMap).every(Boolean),
+							);
+						} else {
+							// If invalid data, reset to initial state
+							const initialMap: WorkoutCompletionMap =
+								Object.fromEntries(
+									workoutsForActiveSession.map(({ id }) => [
+										id,
+										false,
+									]),
+								);
+							localStorage.setItem(
+								'workoutCompletionMap',
+								JSON.stringify(initialMap),
+							);
+							setCheckedWorkouts(initialMap);
+						}
+					} catch (error) {
+						// Handle invalid JSON in localStorage
+						console.error(
+							'Invalid workout completion data in localStorage:',
+							error,
+						);
+						const initialMap: WorkoutCompletionMap =
+							Object.fromEntries(
+								workoutsForActiveSession.map(({ id }) => [
+									id,
+									false,
+								]),
+							);
+						localStorage.setItem(
+							'workoutCompletionMap',
+							JSON.stringify(initialMap),
+						);
+						setCheckedWorkouts(initialMap);
+					}
 				}
 			}
 		}
@@ -203,132 +254,103 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	}
 
 	if (!activeRoutine) {
-		return (
-			<div className="flex h-full items-center justify-center">
-				<h1 className="m-12 text-lg font-medium text-gray-700">
-					No active routine, please go to manage routines to create
-					one and start it
-				</h1>
-			</div>
-		);
+		return <NoActiveRoutineView />;
+	}
+
+	if (!possibleSessionsToStart || possibleSessionsToStart.length === 0) {
+		return <NoSessionsView routineName={activeRoutine.name} />;
 	}
 
 	return (
 		<div className="flex h-full w-[95%] flex-col items-center">
-			{possibleSessionsToStart && possibleSessionsToStart.length === 0 ? (
-				<div className="flex flex-col items-center justify-center p-4 text-center">
-					<Image
-						src="/gifs/bunnyRunner.gif"
-						alt="Animated running rabbit"
-						width={200}
-						height={200}
-						className="mb-4"
-					/>
-					<p className="text-base text-gray-600">
-						Your active routine,{' '}
-						<span className="font-medium">
-							{activeRoutine?.name}
-						</span>
-						, has no sessions for today!
-					</p>
-				</div>
-			) : (
-				<>
-					{activeSessionData === null &&
-					sessionHasStarted === false ? (
-						<div className="w-[90%] space-y-3 pt-4">
-							{possibleSessionsToStart?.map((session) => (
-								<div
-									key={session.id}
-									className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
-								>
-									<div className="mb-2">
-										<h2 className="text-lg font-medium text-gray-900">
-											{session.name}
-										</h2>
-										{session.description && (
-											<p className="mt-1 text-sm text-gray-500">
-												{session.description}
-											</p>
-										)}
-									</div>
-									<button
-										onClick={() =>
-											void handleStartSessionClick(
-												session.id,
-											)
-										}
-										disabled={listOfCompletedSessionIds?.includes(
-											session.id,
-										)}
-										className={`mt-3 w-full rounded-lg px-4 py-2.5 text-sm font-medium ${
-											listOfCompletedSessionIds?.includes(
-												session.id,
-											)
-												? 'bg-gray-100 text-gray-400'
-												: 'bg-blue-600 text-white hover:bg-blue-700'
-										}`}
-									>
-										{listOfCompletedSessionIds?.includes(
-											session.id,
-										)
-											? 'Completed'
-											: 'Start Session'}
-									</button>
-								</div>
-							))}
-						</div>
-					) : (
-						<div className="w-[90%] flex-1 flex-col pt-4">
-							<div className="mb-4 w-full rounded-lg bg-gray-50 p-4">
-								<h1 className="text-base font-medium text-gray-900">
-									{activeSessionData?.session.name}
-								</h1>
-								<CurrentSessionElapsedTimer
-									startedAtDate={activeSessionData?.startedAt}
-								/>
+			{activeSessionData === null && sessionHasStarted === false ? (
+				<div className="w-[90%] space-y-3 pt-4">
+					{possibleSessionsToStart?.map((session) => (
+						<div
+							key={session.id}
+							className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
+						>
+							<div className="mb-2">
+								<h2 className="text-lg font-medium text-gray-900">
+									{session.name}
+								</h2>
+								{session.description && (
+									<p className="mt-1 text-sm text-gray-500">
+										{session.description}
+									</p>
+								)}
 							</div>
-
-							<div className="flex-1 space-y-3 overflow-auto pb-24">
-								{workoutsForActiveSession?.map((workout) => (
-									<WorkoutCard
-										key={workout.id}
-										workoutId={workout.id}
-										exerciseName={workout.exercise.name}
-										onChangeHanlder={handleCheckboxChange}
-										sets={workout.sets}
-										weightInLbs={workout.weightLbs}
-										reps={workout.reps}
-										isChecked={
-											checkedWorkouts[workout.id] || false
-										}
-									/>
-								))}
-							</div>
-
-							<div
-								className={`fixed inset-x-0 bottom-16 z-50 transform transition-all duration-300 ${
-									allWorkoutsCompleted
-										? 'translate-y-0 opacity-100'
-										: 'pointer-events-none translate-y-full opacity-0'
+							<button
+								onClick={() =>
+									void handleStartSessionClick(session.id)
+								}
+								disabled={listOfCompletedSessionIds?.includes(
+									session.id,
+								)}
+								className={`mt-3 w-full rounded-lg px-4 py-2.5 text-sm font-medium ${
+									listOfCompletedSessionIds?.includes(
+										session.id,
+									)
+										? 'bg-gray-100 text-gray-400'
+										: 'bg-blue-600 text-white hover:bg-blue-700'
 								}`}
 							>
-								<div className="bg-white px-4 pb-4 pt-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
-									<div className="mx-auto w-[90%] max-w-md">
-										<button
-											onClick={() =>
-												void handleCompleteSessionClick()
-											}
-											className="w-full rounded-xl bg-green-600 px-4 py-4 text-sm font-medium text-white transition-colors hover:bg-green-700"
-										>
-											Complete Workout Session
-										</button>
-									</div>
-								</div>
+								{listOfCompletedSessionIds?.includes(session.id)
+									? 'Completed'
+									: 'Start Session'}
+							</button>
+						</div>
+					))}
+				</div>
+			) : (
+				<div className="w-[90%] flex-1 flex-col pt-4">
+					<div className="mb-4 w-full rounded-lg bg-gray-50 p-4">
+						<h1 className="text-base font-medium text-gray-900">
+							{activeSessionData?.session.name}
+						</h1>
+						{activeSessionData?.startedAt && (
+							<CurrentSessionElapsedTimer
+								startedAtDate={activeSessionData.startedAt}
+							/>
+						)}
+					</div>
+
+					<div className="flex-1 space-y-3 overflow-auto pb-24">
+						{workoutsForActiveSession?.map((workout) => (
+							<WorkoutCard
+								key={workout.id}
+								workoutId={workout.id}
+								exerciseName={workout.exercise.name}
+								onChangeHanlder={handleCheckboxChange}
+								sets={workout.sets}
+								weightInLbs={workout.weightLbs}
+								reps={workout.reps}
+								isChecked={checkedWorkouts[workout.id] || false}
+							/>
+						))}
+					</div>
+
+					<div
+						className={`fixed inset-x-0 bottom-16 z-50 transform transition-all duration-300 ${
+							allWorkoutsCompleted
+								? 'translate-y-0 opacity-100'
+								: 'pointer-events-none translate-y-full opacity-0'
+						}`}
+					>
+						<div className="bg-white px-4 pb-4 pt-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+							<div className="mx-auto w-[90%] max-w-md">
+								<button
+									onClick={() =>
+										void handleCompleteSessionClick()
+									}
+									className="w-full rounded-xl bg-green-600 px-4 py-4 text-sm font-medium text-white transition-colors hover:bg-green-700"
+								>
+									Complete Workout Session
+								</button>
 							</div>
 						</div>
-					)}
-				</>
+					</div>
+				</div>
 			)}
 		</div>
 	);
