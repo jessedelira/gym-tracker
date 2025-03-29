@@ -22,37 +22,52 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	const currentDate = useMemo(() => new Date(), []);
 
 	//#region Queries
-	const {
-		data: possibleSessionsToStart,
-		isLoading: isPossibleSessionsLoading,
-	} = api.session.getSessionsThatAreActiveOnDate.useQuery({
-		userId: user.id,
-		date: currentDate,
-	});
+	// 1. First check if there's an active routine
+	const { data: activeRoutine, isLoading: isActiveRoutineLoading } =
+		api.routine.getActiveRoutine.useQuery({
+			userId: user.id,
+		});
 
+	// 2. Check if there's an active session
 	const {
 		data: activeSessionData,
 		isLoading: isActiveSessionLoading,
 		refetch: refetchActiveSessionData,
-	} = api.activeSesssion.getActiveSession.useQuery({
-		userId: user.id,
-	});
+	} = api.activeSesssion.getActiveSession.useQuery(
+		{
+			userId: user.id,
+		},
+		{
+			enabled: !!activeRoutine,
+		},
+	);
+
+	// 3. These two queries run in parallel if there's no active session
+	const {
+		data: possibleSessionsToStart,
+		isLoading: isPossibleSessionsLoading,
+	} = api.session.getSessionsThatAreActiveOnDate.useQuery(
+		{
+			userId: user.id,
+			date: currentDate,
+		},
+		{
+			enabled: !!activeRoutine && !activeSessionData,
+		},
+	);
 
 	const {
 		data: listOfCompletedSessionIds,
 		isLoading: isCompletedSessionsLoading,
 		refetch: refetchCompletedSessions,
 	} = api.completedSession.getListOfCompletedSessionIdsForActiveRoutine.useQuery(
+		{ userUTCDateTime: currentDate },
 		{
-			userUTCDateTime: currentDate,
+			enabled: !!activeRoutine && !activeSessionData,
 		},
 	);
 
-	const { data: activeRoutine, isLoading: isActiveRoutineLoading } =
-		api.routine.getActiveRoutine.useQuery({
-			userId: user.id,
-		});
-
+	// 4. Get workouts if there's an active session
 	const {
 		data: workoutsForActiveSession,
 		isLoading: isWorkoutsLoading,
@@ -63,19 +78,18 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			sessionId: activeSessionData?.session.id ?? '',
 		},
 		{
-			// Only fetch if we have an active session
 			enabled: !!activeSessionData?.session.id,
 		},
 	);
 	//#endregion
 
-	// Simplified loading state
+	// Loading state reflects the sequential nature of the queries
 	const isLoading =
-		isPossibleSessionsLoading ||
-		isActiveSessionLoading ||
-		isCompletedSessionsLoading ||
 		isActiveRoutineLoading ||
-		(!!activeSessionData && isWorkoutsLoading); // Only consider workout loading when there's an active session
+		isActiveSessionLoading ||
+		(!!activeRoutine && !activeSessionData && isPossibleSessionsLoading) ||
+		(!!activeRoutine && !activeSessionData && isCompletedSessionsLoading) ||
+		(!!activeSessionData && isWorkoutsLoading);
 
 	//#region Mutations with simplified names
 	const { mutateAsync: startSession } =
