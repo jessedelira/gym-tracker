@@ -112,6 +112,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 					name="apple-mobile-web-app-status-bar-style"
 					content="black-translucent"
 				/>
+				<meta name="mobile-web-app-capable" content="yes" />
 			</Head>
 			<SpeedInsights />
 			<Component {...pageProps} />
