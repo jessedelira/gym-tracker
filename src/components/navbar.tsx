@@ -1,6 +1,5 @@
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
-import ClockIcon from './icons/clockIcon';
 import { useEffect, useState } from 'react';
 import HomeIcon from './icons/homeIcon';
 import ManageIcon from './icons/manageIcon';
