@@ -238,98 +238,115 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	}
 
 	return (
-		<>
+		<div className="flex h-full w-[95%] flex-col items-center">
 			{possibleSessionsToStart && possibleSessionsToStart.length === 0 ? (
-				<div className="flex h-full items-center justify-center">
-					<h1 className="m-12 pb-10 text-lg font-medium text-gray-700">
-						<Image
-							src="/gifs/bunnyRunner.gif"
-							alt="Animated running rabbit"
-							width={300}
-							height={300}
-						/>
-						Your active routine, {activeRoutine.name}, has no
-						sessions for today!
-					</h1>
+				<div className="flex flex-col items-center justify-center p-4 text-center">
+					<Image
+						src="/gifs/bunnyRunner.gif"
+						alt="Animated running rabbit"
+						width={200}
+						height={200}
+						className="mb-4"
+					/>
+					<p className="text-base text-gray-600">
+						Your active routine,{' '}
+						<span className="font-medium">
+							{activeRoutine?.name}
+						</span>
+						, has no sessions for today!
+					</p>
 				</div>
 			) : (
 				<>
 					{activeSessionData === null &&
 					sessionHasStarted === false ? (
-						<div className="hide-scrollbar overflow-auto">
-							{possibleSessionsToStart &&
-								possibleSessionsToStart.map((session) => (
-									<HomePageSessionCard
-										key={session.id}
-										sessionName={session.name}
-										sessionDescription={
-											session.description ?? ''
+						<div className="w-[90%] space-y-3 pt-4">
+							{possibleSessionsToStart?.map((session) => (
+								<div
+									key={session.id}
+									className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
+								>
+									<div className="mb-2">
+										<h2 className="text-lg font-medium text-gray-900">
+											{session.name}
+										</h2>
+										{session.description && (
+											<p className="mt-1 text-sm text-gray-500">
+												{session.description}
+											</p>
+										)}
+									</div>
+									<button
+										onClick={() =>
+											void handleStartSessionClick(
+												session.id,
+											)
 										}
-										handleStartButtonClick={() =>
-											handleStartSessionClick(session.id)
-										}
-										isCompleted={listOfCompletedSessionIds?.includes(
+										disabled={listOfCompletedSessionIds?.includes(
 											session.id,
 										)}
-									></HomePageSessionCard>
-								))}
+										className={`mt-3 w-full rounded-lg px-4 py-2.5 text-sm font-medium ${
+											listOfCompletedSessionIds?.includes(
+												session.id,
+											)
+												? 'bg-gray-100 text-gray-400'
+												: 'bg-blue-600 text-white hover:bg-blue-700'
+										}`}
+									>
+										{listOfCompletedSessionIds?.includes(
+											session.id,
+										)
+											? 'Completed'
+											: 'Start Session'}
+									</button>
+								</div>
+							))}
 						</div>
 					) : (
-						<>
-							{activeSessionData && workoutsForActiveSession && (
-								<>
-									<h1 className="font-bold">
-										Current Workout Session:{' '}
-										{activeSessionData.session.name}
-									</h1>
-									<CurrentSessionElapsedTimer
-										startedAtDate={
-											activeSessionData.startedAt
-										}
+						<div className="w-[90%] flex-1 flex-col pt-4">
+							<div className="mb-4 w-full rounded-lg bg-gray-50 p-4">
+								<h1 className="text-base font-medium text-gray-900">
+									{activeSessionData?.session.name}
+								</h1>
+								<CurrentSessionElapsedTimer
+									startedAtDate={activeSessionData?.startedAt}
+								/>
+							</div>
+
+							<div className="flex-1 space-y-3 overflow-auto">
+								{workoutsForActiveSession?.map((workout) => (
+									<WorkoutCard
+										key={workout.id}
+										workoutId={workout.id}
+										exerciseName={workout.exercise.name}
+										onChangeHanlder={handleCheckboxChange}
+										sets={workout.sets}
+										weightInLbs={workout.weightLbs}
+										reps={workout.reps}
 									/>
+								))}
+							</div>
 
-									<div className="hide-scrollbar overflow-auto rounded-md">
-										{workoutsForActiveSession.map(
-											(workout) => (
-												<WorkoutCard
-													key={workout.id}
-													workoutId={workout.id}
-													exerciseName={
-														workout.exercise.name
-													}
-													onChangeHanlder={
-														handleCheckboxChange
-													}
-													sets={workout.sets}
-													weightInLbs={
-														workout.weightLbs
-													}
-													reps={workout.reps}
-												/>
-											),
-										)}
-									</div>
-
-									<div className="flex-grow" />
-
-									<div className="flex w-full justify-center rounded-tl-xl rounded-tr-xl bg-black">
-										<button
-											className="my-2 rounded-md bg-primaryButton p-3 font-medium  disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-500 disabled:shadow-none"
-											disabled={!allWorkoutsCompleted}
-											onClick={() =>
-												void handleCompleteSessionClick()
-											}
-										>
-											Complete Session
-										</button>
-									</div>
-								</>
-							)}
-						</>
+							<div className="mt-4">
+								<button
+									onClick={() =>
+										void handleCompleteSessionClick()
+									}
+									disabled={!allWorkoutsCompleted}
+									className={`w-full rounded-lg px-4 py-3 text-sm font-medium ${
+										allWorkoutsCompleted
+											? 'bg-green-600 text-white hover:bg-green-700'
+											: 'bg-gray-100 text-gray-400'
+									}`}
+								>
+									Complete Session
+								</button>
+							</div>
+						</div>
 					)}
 				</>
 			)}
-		</>
+		</div>
 	);
 };
 

@@ -14,31 +14,28 @@ const ManagePageLink: React.FC<ManagePageLinkProps> = ({
 	return (
 		<Link
 			href={href}
-			className="rounded-md bg-black px-4 py-2 text-xl font-semibold text-white  "
+			className="flex items-center justify-between p-3 hover:bg-gray-50"
 		>
-			<div className="flex">
-				<div className="w-90">
+			<div className="flex flex-col space-y-0.5">
+				<span className="text-base font-medium text-gray-900">
 					{title}
-					<p className="text-sm font-normal">{description}</p>
-				</div>
-
-				<div className="w-5 pt-6">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-						strokeWidth="1.5"
-						stroke="currentColor"
-						className="h-6 w-6"
-					>
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							d="M8.25 4.5l7.5 7.5-7.5 7.5"
-						/>
-					</svg>
-				</div>
+				</span>
+				<span className="text-xs text-gray-500">{description}</span>
 			</div>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				className="h-5 w-5 text-gray-400"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+			>
+				<path
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					strokeWidth={2}
+					d="M9 5l7 7-7 7"
+				/>
+			</svg>
 		</Link>
 	);
 };
