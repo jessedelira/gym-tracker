@@ -12,10 +12,10 @@ interface PreferenceToggleProps {
 	isEnabled: boolean;
 }
 
-const PreferenceToggle: React.FC<PreferenceToggleProps> = ({ 
-	option, 
-	onToggle, 
-	isEnabled 
+const PreferenceToggle: React.FC<PreferenceToggleProps> = ({
+	option,
+	onToggle,
+	isEnabled,
 }: PreferenceToggleProps) => {
 	return (
 		<label className="relative inline-flex cursor-pointer items-center">
