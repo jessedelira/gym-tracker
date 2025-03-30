@@ -86,6 +86,7 @@ model Exercise {
   name        String    @unique
   description String?   @db.VarChar(300)
   workouts    Workout[]
+  type        ExerciseType
 
   @@map("exercise")
 }
@@ -146,4 +147,9 @@ model TimezoneMap {
 enum Preference {
   CONFETTI_ON_SESSION_COMPLETION
   SHOW_ELAPSED_SECONDS_IN_ACTIVE_SESSION
+}
+
+enum ExerciseType {
+  WEIGHTED
+  DURATION
 }
