@@ -29,13 +29,14 @@ model User {
 model Routine {
   id          String    @id @default(cuid())
   createdAt   DateTime  @default(now()) @map("created_at")
-  name        String    @unique
+  name        String    
   description String?
   isActive    Boolean   @default(false) @map("is_active")
   sessions    Session[]
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id])
   userId      String    @map("user_id")
 
+  @@unique([name, userId])
   @@map("routine")
 }
 

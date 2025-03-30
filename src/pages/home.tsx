@@ -22,10 +22,8 @@ const Home: NextPage = () => {
 
 	return (
 		<Layout>
-			<div className="flex h-full flex-col items-center bg-white px-4 py-6">
-				<WorkoutSessionDisplay
-					user={sessionData.user}
-				></WorkoutSessionDisplay>
+			<div className="flex h-full flex-col items-center bg-gray-50">
+				<WorkoutSessionDisplay user={sessionData.user} />
 			</div>
 		</Layout>
 	);

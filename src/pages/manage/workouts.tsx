@@ -26,65 +26,77 @@ const Workouts: NextPage = () => {
 
 	return (
 		<Layout>
-			<div className="mb-2 grid grid-cols-1">
-				<h1 className="pl-2 pt-3 text-2xl font-bold">
-					Manage Workouts
-				</h1>
-			</div>
-			<div className="mb-2 flex justify-center">
-				<Link href="/create/workout">
-					<button className="h-9 w-64 rounded-md bg-lime-300">
-						New Workout
-					</button>
-				</Link>
-			</div>
-			{allWorkouts && allWorkouts.length === 0 ? (
-				<h2 className="ml-2">
-					You have not created a routine yet, press the blue plus
-					button to create one!
-				</h2>
-			) : (
-				<div className="mx-2 rounded-md shadow-md sm:rounded-lg">
-					<table className="w-full text-left text-sm text-gray-500">
-						<thead className="bg-gray-200 text-xs uppercase text-gray-700">
-							<tr>
-								<th scope="col" className="px-6 py-3">
-									Routine
-								</th>
-								<th scope="col" className="px-6 py-3">
-									<span className="sr-only">Edit</span>
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							{allWorkouts &&
-								allWorkouts.map((workout) => (
-									<tr
-										key={workout.id}
-										className="bg-white hover:bg-gray-50"
-									>
-										<th
-											scope="row"
-											className="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
-										>
-											{workout.id}
-										</th>
-										<td className="grid grid-cols-2 px-6 py-4 text-right">
-											<svg
-												xmlns="http://www.w3.org/2000/svg"
-												viewBox="0 0 24 24"
-												fill="currentColor"
-												className="ml-4 h-6 w-6"
-											>
-												<path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
-											</svg>
-										</td>
-									</tr>
-								))}
-						</tbody>
-					</table>
+			<div className="flex h-full flex-col bg-gray-50 px-4 py-6">
+				{/* Header */}
+				<div className="mb-6">
+					<h1 className="text-2xl font-semibold tracking-tight text-gray-900">
+						Manage Workouts
+					</h1>
+					<p className="mt-2 text-gray-600">
+						Create and manage your workout exercises
+					</p>
 				</div>
-			)}
+
+				{/* New Workout Button */}
+				<div className="mb-6">
+					<Link
+						href="/create/workout"
+						className="block w-full rounded-xl bg-blue-600 px-8 py-4 text-center text-base font-medium text-white shadow-md transition-all hover:bg-blue-700 hover:shadow-lg"
+					>
+						Create New Workout
+					</Link>
+				</div>
+
+				{/* Workouts List */}
+				<div className="space-y-4">
+					{allWorkouts?.map((workout) => (
+						<div
+							key={workout.id}
+							className="rounded-xl border-2 border-gray-200 bg-white p-4 shadow-sm transition-all hover:border-gray-300"
+						>
+							<h3 className="text-lg font-medium text-gray-900">
+								{workout.exercise.name}
+							</h3>
+							<div className="mt-2 flex items-center gap-4 text-gray-600">
+								<span>{workout.sets} sets</span>
+								<span>•</span>
+								<span>{workout.reps} reps</span>
+								{workout.weightLbs && (
+									<>
+										<span>•</span>
+										<span>{workout.weightLbs} lbs</span>
+									</>
+								)}
+							</div>
+						</div>
+					))}
+				</div>
+
+				{/* Empty State */}
+				{(!allWorkouts || allWorkouts.length === 0) && (
+					<div className="mt-8 text-center">
+						<div className="mb-4 inline-flex rounded-full bg-blue-100 p-4">
+							<svg
+								className="h-6 w-6 text-blue-600"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									strokeWidth={2}
+									d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+								/>
+							</svg>
+						</div>
+						<p className="text-gray-600">
+							No workouts yet. Create your first workout to get
+							started.
+						</p>
+					</div>
+				)}
+			</div>
 		</Layout>
 	);
 };

@@ -8,6 +8,7 @@ import WorkoutCard from './icons/workoutCard';
 import { showConfetti } from '~/utils/confetti';
 import { NoActiveRoutineView } from './workout/NoActiveRoutineView';
 import { NoSessionsView } from './workout/NoSessionsView';
+import { WelcomeNewUserView } from './workout/WelcomeNewUserView';
 
 interface CurrentWorkoutDisplayProps {
 	user: User;
@@ -18,42 +19,35 @@ type WorkoutCompletionMap = Record<string, boolean>;
 const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	user,
 }) => {
-	// Create a single Date object that can be reused across queries
+	// Move ALL hooks to the top
 	const currentDate = useMemo(() => new Date(), []);
+	const [allWorkoutsCompleted, setAllWorkoutsCompleted] = useState(false);
+	const [sessionHasStarted, setSessionHasStarted] = useState(false);
+	const [checkedWorkouts, setCheckedWorkouts] = useState<
+		Record<string, boolean>
+	>({});
 
-	//#region Queries
-	// 1. First check if there's an active routine
+	// All queries
 	const { data: activeRoutine, isLoading: isActiveRoutineLoading } =
 		api.routine.getActiveRoutine.useQuery({
 			userId: user.id,
 		});
 
-	// 2. Check if there's an active session
 	const {
 		data: activeSessionData,
 		isLoading: isActiveSessionLoading,
 		refetch: refetchActiveSessionData,
 	} = api.activeSesssion.getActiveSession.useQuery(
-		{
-			userId: user.id,
-		},
-		{
-			enabled: !!activeRoutine,
-		},
+		{ userId: user.id },
+		{ enabled: !!activeRoutine },
 	);
 
-	// 3. These two queries run in parallel if there's no active session
 	const {
 		data: possibleSessionsToStart,
 		isLoading: isPossibleSessionsLoading,
 	} = api.session.getSessionsThatAreActiveOnDate.useQuery(
-		{
-			userId: user.id,
-			date: currentDate,
-		},
-		{
-			enabled: !!activeRoutine && !activeSessionData,
-		},
+		{ userId: user.id, date: currentDate },
+		{ enabled: !!activeRoutine && !activeSessionData },
 	);
 
 	const {
@@ -62,12 +56,9 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		refetch: refetchCompletedSessions,
 	} = api.completedSession.getListOfCompletedSessionIdsForActiveRoutine.useQuery(
 		{ userUTCDateTime: currentDate },
-		{
-			enabled: !!activeRoutine && !activeSessionData,
-		},
+		{ enabled: !!activeRoutine && !activeSessionData },
 	);
 
-	// 4. Get workouts if there's an active session
 	const {
 		data: workoutsForActiveSession,
 		isLoading: isWorkoutsLoading,
@@ -77,116 +68,17 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			userId: user.id,
 			sessionId: activeSessionData?.session.id ?? '',
 		},
-		{
-			enabled: !!activeSessionData?.session.id,
-		},
+		{ enabled: !!activeSessionData?.session.id },
 	);
-	//#endregion
 
-	// Loading state reflects the sequential nature of the queries
-	const isLoading =
-		isActiveRoutineLoading ||
-		isActiveSessionLoading ||
-		(!!activeRoutine && !activeSessionData && isPossibleSessionsLoading) ||
-		(!!activeRoutine && !activeSessionData && isCompletedSessionsLoading) ||
-		(!!activeSessionData && isWorkoutsLoading);
-
-	//#region Mutations with simplified names
+	// All mutations
 	const { mutateAsync: startSession } =
 		api.activeSesssion.addActiveSession.useMutation();
 
 	const { mutateAsync: completeSession } =
 		api.completedSession.createCompletedSession.useMutation();
-	//#endregion
 
-	//#region UI Handlers
-	const refetchAll = () =>
-		Promise.all([
-			refetchActiveSessionData(),
-			refetchWorkouts(),
-			refetchCompletedSessions(),
-		]);
-
-	// Add state to track checked workouts
-	const [checkedWorkouts, setCheckedWorkouts] = useState<
-		Record<string, boolean>
-	>({});
-
-	const handleCheckboxChange = (
-		event: React.ChangeEvent<HTMLInputElement>,
-	) => {
-		const workoutId = event.target.id;
-		const isNowChecked = event.target.checked;
-
-		const updatedWorkouts = {
-			...checkedWorkouts,
-			[workoutId]: isNowChecked,
-		};
-
-		setCheckedWorkouts(updatedWorkouts);
-		localStorage.setItem(
-			'workoutCompletionMap',
-			JSON.stringify(updatedWorkouts),
-		);
-		setAllWorkoutsCompleted(Object.values(updatedWorkouts).every(Boolean));
-	};
-
-	const handleStartSessionClick = async (sessionId: string) => {
-		await startSession(
-			{ userId: user.id, sessionId },
-			{
-				onSuccess: () => {
-					setSessionHasStarted(true);
-					setAllWorkoutsCompleted(false);
-				},
-			},
-		);
-		localStorage.removeItem('workoutCompletionMap');
-		await refetchActiveSessionData();
-	};
-
-	const handleCompleteSessionClick = async () => {
-		if (!activeSessionData) return;
-
-		try {
-			// Update UI state immediately for better user experience
-			setSessionHasStarted(false);
-			setAllWorkoutsCompleted(false);
-			localStorage.removeItem('workoutCompletionMap');
-
-			// Show confetti without waiting
-			if (userHasConfettiPreferenceEnabled) {
-				void showConfetti();
-			}
-
-			// Complete session
-			await completeSession({
-				userId: user.id,
-				sessionId: activeSessionData.session.id,
-			});
-
-			// Refetch data after completion
-			void refetchAll();
-		} catch (error) {
-			console.error('Error completing session:', error);
-			// Revert UI state if there's an error
-			setSessionHasStarted(true);
-		}
-	};
-	//#endregion
-
-	//#region State
-	const [allWorkoutsCompleted, setAllWorkoutsCompleted] = useState(false);
-	const [sessionHasStarted, setSessionHasStarted] = useState(false);
-	//#endregion
-
-	const userHasConfettiPreferenceEnabled = user.userPreferences?.some(
-		(preference) =>
-			preference.preference ===
-				Preference.CONFETTI_ON_SESSION_COMPLETION &&
-			preference.enabled === true,
-	);
-
+	// Effects
 	useEffect(() => {
 		if (workoutsForActiveSession) {
 			if (workoutsForActiveSession.length > 0) {
@@ -263,8 +155,109 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		}
 	}, [workoutsForActiveSession]);
 
+	// Handlers
+	const refetchAll = () =>
+		Promise.all([
+			refetchActiveSessionData(),
+			refetchWorkouts(),
+			refetchCompletedSessions(),
+		]);
+
+	const handleCheckboxChange = (
+		event: React.ChangeEvent<HTMLInputElement>,
+	) => {
+		const workoutId = event.target.id;
+		const isNowChecked = event.target.checked;
+
+		const updatedWorkouts = {
+			...checkedWorkouts,
+			[workoutId]: isNowChecked,
+		};
+
+		setCheckedWorkouts(updatedWorkouts);
+		localStorage.setItem(
+			'workoutCompletionMap',
+			JSON.stringify(updatedWorkouts),
+		);
+		setAllWorkoutsCompleted(Object.values(updatedWorkouts).every(Boolean));
+	};
+
+	const handleStartSessionClick = async (sessionId: string) => {
+		await startSession(
+			{ userId: user.id, sessionId },
+			{
+				onSuccess: () => {
+					setSessionHasStarted(true);
+					setAllWorkoutsCompleted(false);
+				},
+			},
+		);
+		localStorage.removeItem('workoutCompletionMap');
+		await refetchActiveSessionData();
+	};
+
+	const handleCompleteSessionClick = async () => {
+		if (!activeSessionData) return;
+
+		try {
+			// Update UI state immediately for better user experience
+			setSessionHasStarted(false);
+			setAllWorkoutsCompleted(false);
+			localStorage.removeItem('workoutCompletionMap');
+
+			// Show confetti without waiting
+			if (userHasConfettiPreferenceEnabled) {
+				void showConfetti();
+			}
+
+			// Complete session
+			await completeSession({
+				userId: user.id,
+				sessionId: activeSessionData.session.id,
+			});
+
+			// Refetch data after completion
+			void refetchAll();
+		} catch (error) {
+			console.error('Error completing session:', error);
+			// Revert UI state if there's an error
+			setSessionHasStarted(true);
+		}
+	};
+
+	// Computed values
+	const isLoading =
+		(isActiveRoutineLoading && !activeRoutine) ||
+		(isActiveSessionLoading && !!activeRoutine) ||
+		(!!activeRoutine && !activeSessionData && isPossibleSessionsLoading) ||
+		(!!activeRoutine && !activeSessionData && isCompletedSessionsLoading) ||
+		(!!activeSessionData && isWorkoutsLoading);
+
+	const isNewUser = !activeRoutine;
+	const hasNoActiveRoutine =
+		!isActiveRoutineLoading &&
+		!activeRoutine &&
+		!activeSessionData &&
+		(!possibleSessionsToStart || possibleSessionsToStart.length === 0);
+
+	const userHasConfettiPreferenceEnabled = user.userPreferences?.some(
+		(preference) =>
+			preference.preference ===
+				Preference.CONFETTI_ON_SESSION_COMPLETION &&
+			preference.enabled === true,
+	);
+
+	// Render logic
 	if (isLoading) {
 		return <SmallSpinner />;
+	}
+
+	if (isNewUser) {
+		return <WelcomeNewUserView />;
+	}
+
+	if (hasNoActiveRoutine) {
+		return <NoActiveRoutineView />;
 	}
 
 	if (!activeRoutine) {
@@ -275,6 +268,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		return <NoSessionsView routineName={activeRoutine.name} />;
 	}
 
+	// Main render
 	return (
 		<div className="flex h-full w-[95%] flex-col items-center">
 			{activeSessionData === null && sessionHasStarted === false ? (
