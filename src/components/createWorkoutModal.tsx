@@ -1,21 +1,17 @@
 import React, { useState, type FormEvent } from 'react';
 import XIcon from './icons/xIcon';
-import {
-	getRepsInputElement,
-	getSetsInputElement,
-	getWeightInputElement,
-} from '~/utils/documentUtils';
-import { type Exercise } from '@prisma/client';
+import { type Exercise, ExerciseType } from '@prisma/client';
 import SearchableDropdown from './searchableDropdown';
 
 interface CreateWorkoutModalProps {
 	onXClick: () => void;
-	onSaveClick: (
-		exerciseId: string,
-		weightLbs: number,
-		sets: number,
-		reps: number,
-	) => void;
+	onSaveClick: (workoutData: {
+		exerciseId: string;
+		weightLbs?: number;
+		sets?: number;
+		reps?: number;
+		durationSeconds?: number;
+	}) => void;
 	exercises: Exercise[];
 }
 
@@ -25,21 +21,36 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 	exercises,
 }) => {
 	const [exerciseSelectedId, setExerciseSelectedId] = useState('');
+	const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(
+		null,
+	);
 
-	const hanldeSearchableDropdownSelect = (
+	const handleSearchableDropdownSelect = (
 		e: React.ChangeEvent<HTMLInputElement>,
 	) => {
 		setExerciseSelectedId(e.target.value);
+		const exercise = exercises.find((ex) => ex.id === e.target.value);
+		console.log('exercise', exercise);
+		setSelectedExercise(exercise ?? null);
 	};
 
 	const handleSaveButtonClicked = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
 
-		const weightLbs = Number(getWeightInputElement(document).value);
-		const sets = Number(getSetsInputElement(document).value);
-		const reps = Number(getRepsInputElement(document).value);
-
-		onSaveClick(exerciseSelectedId, weightLbs, sets, reps);
+		if (selectedExercise?.type === ExerciseType.WEIGHTED) {
+			onSaveClick({
+				exerciseId: exerciseSelectedId,
+				weightLbs: Number(formData.get('weightLbs')),
+				sets: Number(formData.get('sets')),
+				reps: Number(formData.get('reps')),
+			});
+		} else {
+			onSaveClick({
+				exerciseId: exerciseSelectedId,
+				durationSeconds: Number(formData.get('duration')) * 60, // Convert minutes to seconds
+			});
+		}
 	};
 
 	return (
@@ -81,54 +92,73 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 						</label>
 						<SearchableDropdown
 							exercises={exercises}
-							onInputSelect={hanldeSearchableDropdownSelect}
+							onInputSelect={handleSearchableDropdownSelect}
 						/>
 					</div>
 
-					{/* Weight Input */}
-					<div className="mb-6">
-						<label className="mb-2 block text-sm font-medium text-gray-900">
-							Weight (lbs)*
-						</label>
-						<input
-							id="weightLbs"
-							type="number"
-							min="0"
-							className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 transition-all hover:border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-							placeholder="Enter weight"
-							required
-						/>
-					</div>
+					{selectedExercise?.type === ExerciseType.WEIGHTED ? (
+						<>
+							{/* Weight Input */}
+							<div className="mb-6">
+								<label className="mb-2 block text-sm font-medium text-gray-900">
+									Weight (lbs)*
+								</label>
+								<input
+									name="weightLbs"
+									type="number"
+									min="0"
+									className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3"
+									placeholder="Enter weight"
+									required
+								/>
+							</div>
 
-					{/* Sets and Reps */}
-					<div className="grid grid-cols-2 gap-4">
-						<div>
+							{/* Sets and Reps */}
+							<div className="grid grid-cols-2 gap-4">
+								<div>
+									<label className="mb-2 block text-sm font-medium text-gray-900">
+										Sets*
+									</label>
+									<input
+										name="sets"
+										type="number"
+										min="1"
+										className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3"
+										placeholder="Sets"
+										required
+									/>
+								</div>
+								<div>
+									<label className="mb-2 block text-sm font-medium text-gray-900">
+										Reps*
+									</label>
+									<input
+										name="reps"
+										type="number"
+										min="1"
+										className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3"
+										placeholder="Reps"
+										required
+									/>
+								</div>
+							</div>
+						</>
+					) : (
+						<div className="mb-6">
 							<label className="mb-2 block text-sm font-medium text-gray-900">
-								Sets*
+								Duration (minutes)*
 							</label>
 							<input
-								id="sets"
+								name="duration"
 								type="number"
 								min="1"
-								className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 transition-all hover:border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-								placeholder="Sets"
+								step="0.5"
+								className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3"
+								placeholder="Enter duration in minutes"
 								required
 							/>
 						</div>
-						<div>
-							<label className="mb-2 block text-sm font-medium text-gray-900">
-								Reps*
-							</label>
-							<input
-								id="reps"
-								type="number"
-								min="1"
-								className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 transition-all hover:border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
-								placeholder="Reps"
-								required
-							/>
-						</div>
-					</div>
+					)}
 
 					{/* Action Buttons */}
 					<div className="mt-8 flex space-x-4">

@@ -68,9 +68,10 @@ model SessionDaysActive {
 
 model Workout {
   id         String   @id @default(cuid())
-  reps       Int
-  sets       Int
-  weightLbs  Int      @map("weight_lbs")
+  reps       Int?
+  sets       Int?
+  weightLbs  Int?     @map("weight_lbs")
+  durationSeconds Int?     @map("duration_seconds")
   exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
   exerciseId String   @map("exercise_id")
   session    Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)

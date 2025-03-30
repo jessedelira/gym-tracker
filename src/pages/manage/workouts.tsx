@@ -10,9 +10,8 @@ import { api } from '~/utils/api';
 const Workouts: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const router = useRouter();
-	const { data: allWorkouts } = api.workout.getAllWorkouts.useQuery({
-		userId: sessionData?.user.id ?? '',
-	});
+	const { data: allWorkouts } =
+		api.workout.getAllWorkouts.useQuery(undefined);
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {

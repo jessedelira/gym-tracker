@@ -25,7 +25,7 @@ export const WelcomeNewUserView = () => {
 			</h2>
 
 			<p className="mb-8 text-gray-600">
-				Let's get started by creating your first workout routine
+				Let&apos;s get started by creating your first workout routine
 			</p>
 
 			<Link

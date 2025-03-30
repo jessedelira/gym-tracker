@@ -15,9 +15,10 @@ import TrashCanIcon from '~/components/icons/trashCanIcon';
 
 interface CreateWorkoutData {
 	exerciseId: string;
-	weightLbs: number;
-	reps: number;
-	sets: number;
+	weightLbs?: number;
+	reps?: number;
+	sets?: number;
+	durationSeconds?: number;
 	id: number;
 }
 
@@ -206,22 +207,23 @@ const Session: NextPage = () => {
 		setNewWorkoutData(newWorkoutDataFiltered);
 	};
 
-	const handleModalSaveClicked = (
-		exerciseId: string,
-		weightLbs: number,
-		sets: number,
-		reps: number,
-	): void => {
+	const handleModalSaveClicked = (workoutData: {
+		exerciseId: string;
+		weightLbs?: number;
+		sets?: number;
+		reps?: number;
+		durationSeconds?: number;
+	}): void => {
 		const newWorkout: CreateWorkoutData = {
-			exerciseId: exerciseId,
-			weightLbs: weightLbs,
-			sets: sets,
-			reps: reps,
+			exerciseId: workoutData.exerciseId,
+			weightLbs: workoutData.weightLbs,
+			sets: workoutData.sets,
+			reps: workoutData.reps,
+			durationSeconds: workoutData.durationSeconds,
 			id: workoutId,
 		};
 
 		setNewWorkoutData([...newWorkoutData, newWorkout]);
-
 		setWorkoutId(workoutId + 1);
 		setShowModal(false);
 	};
@@ -411,8 +413,14 @@ const Session: NextPage = () => {
 															workout.exerciseId,
 													)?.name
 												}{' '}
-												- {workout.sets} x{' '}
-												{workout.reps}
+												{workout.durationSeconds
+													? // Display duration in minutes
+													  `- ${Math.floor(
+															workout.durationSeconds /
+																60,
+													  )} minutes`
+													: // Display sets and reps for weighted exercises
+													  `- ${workout.sets} x ${workout.reps}`}
 											</div>
 											<button
 												type="button"
