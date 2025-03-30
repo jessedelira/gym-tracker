@@ -8,7 +8,7 @@ export interface PreferenceOption {
 
 interface PreferenceToggleProps {
 	option: PreferenceOption;
-	onToggle: (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => void;
+	onToggle: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	isEnabled: boolean;
 }
 
