@@ -16,7 +16,7 @@ const CurrentWorkoutDisplay: React.FC<CurrentSessionElapsedTimerProps> = ({
 	useEffect(() => {
 		const currentTime = new Date();
 		const elapsedMilliseconds =
-			currentTime.getTime() - startedAtDate?.getTime() || 0;
+			currentTime.getTime() - (startedAtDate?.getTime() ?? 0);
 		const initialMinutes = Math.floor(elapsedMilliseconds / 60000);
 		const initialSeconds = Math.floor((elapsedMilliseconds % 60000) / 1000);
 
@@ -25,9 +25,8 @@ const CurrentWorkoutDisplay: React.FC<CurrentSessionElapsedTimerProps> = ({
 
 		const interval = setInterval(() => {
 			const currentTime = new Date();
-
 			const elapsedMilliseconds =
-				currentTime.getTime() - startedAtDate?.getTime() || 0;
+				currentTime.getTime() - (startedAtDate?.getTime() ?? 0);
 
 			const elapsedMinutes = Math.floor(elapsedMilliseconds / 60000);
 			const elapsedSeconds = Math.floor(
