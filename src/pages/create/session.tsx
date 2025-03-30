@@ -38,6 +38,7 @@ const Session: NextPage = () => {
 	const [saturdayActive, setSaturdayActive] = useState(false);
 	const [workoutId, setWorkoutId] = useState(1);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const [addToActiveRoutine, setAddToActiveRoutine] = useState(false);
 
 	const router = useRouter();
 
@@ -45,6 +46,7 @@ const Session: NextPage = () => {
 	const createWorkoutManyMutation =
 		api.workout.createManyWorkouts.useMutation();
 	const { data: exercisesData } = api.exercise.getAllExercises.useQuery();
+	const addSessionToActiveRoutineMutation = api.routine.addSessionToActiveRoutine.useMutation();
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -131,6 +133,12 @@ const Session: NextPage = () => {
 						newWorkoutDataWithSessionId,
 						{
 							onSuccess: () => {
+								if (addToActiveRoutine) {
+									void addSessionToActiveRoutineMutation.mutateAsync({
+										sessionId: createdSession.id,
+										userId: sessionData.user.id,
+									});
+								}
 								void router.push('/manage/sessions');
 							},
 							onError: (error) => {
@@ -443,6 +451,21 @@ const Session: NextPage = () => {
 							)}
 						</div>
 					)}
+
+					{/* Add to Active Routine Option */}
+					<div className="rounded-2xl bg-white p-6 shadow-sm">
+						<label className="flex items-center space-x-3">
+							<input
+								type="checkbox"
+								checked={addToActiveRoutine}
+								onChange={(e) => setAddToActiveRoutine(e.target.checked)}
+								className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+							/>
+							<span className="text-sm font-medium text-gray-900">
+								Add this session to your active routine
+							</span>
+						</label>
+					</div>
 
 					{/* Action Buttons */}
 					{dataChangeInForm && (
