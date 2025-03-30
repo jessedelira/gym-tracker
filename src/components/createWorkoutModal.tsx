@@ -43,80 +43,112 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 	};
 
 	return (
-		<>
-			<div className="fixed inset-0 z-10 flex items-center justify-center">
-				<div className="absolute inset-0 bg-black opacity-50"></div>
-				<div className="z-10 max-w-[23rem] rounded-lg bg-white p-2">
-					<div className="flex flex-col justify-start">
-						<button onClick={() => onXClick()}>
-							<XIcon></XIcon>
+		<div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+			{/* Overlay */}
+			<div className="fixed inset-0 bg-gray-900/50 backdrop-blur-sm"></div>
+
+			{/* Modal */}
+			<div className="relative z-50 w-full max-w-lg rounded-3xl bg-white shadow-xl">
+				{/* Header */}
+				<div className="px-6 pt-6">
+					<div className="flex items-center justify-between">
+						<div>
+							<h2 className="text-2xl font-semibold tracking-tight text-gray-900">
+								Add Workout
+							</h2>
+							<p className="mt-2 text-gray-600">
+								Configure your workout details
+							</p>
+						</div>
+						<button
+							onClick={onXClick}
+							className="rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-500"
+						>
+							<XIcon />
 						</button>
 					</div>
-					<h1 className="text-center text-2xl text-black">
-						Create Workout
-					</h1>
-					<form onSubmit={(e) => void handleSaveButtonClicked(e)}>
-						<div className="flex">
-							<div className=" mr-2 grid grid-cols-1 pl-2">
-								<label className="block font-bold">
-									Exercise
-								</label>
-								<SearchableDropdown
-									exercises={exercises}
-									onInputSelect={
-										hanldeSearchableDropdownSelect
-									}
-								></SearchableDropdown>
-							</div>
-							<div className=" grid grid-cols-1">
-								<label className="block pl-2 font-bold">
-									Weight (lbs)
-								</label>
-								<input
-									id="weightLbs"
-									className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-black"
-									placeholder="75"
-									required
-								></input>
-							</div>
-						</div>
-						<div className="flex">
-							<div className="grid grid-cols-1">
-								<label className="block pl-2 font-bold">
-									Sets
-								</label>
-								<input
-									id="sets"
-									className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-black"
-									placeholder="3"
-									required
-								></input>
-							</div>
-							<div className="grid grid-cols-1">
-								<label className="block pl-2 font-bold">
-									Reps
-								</label>
-								<input
-									id="reps"
-									className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-black"
-									placeholder="10"
-									required
-								></input>
-							</div>
-						</div>
-
-						<div className="mt-2 flex justify-center">
-							<button
-								type="submit"
-								className="rounded-md bg-green-400 px-4 py-2 text-black"
-							>
-								Save
-							</button>
-						</div>
-					</form>
 				</div>
+
+				{/* Form */}
+				<form
+					onSubmit={(e) => void handleSaveButtonClicked(e)}
+					className="p-6"
+				>
+					{/* Exercise Selection */}
+					<div className="mb-6">
+						<label className="mb-2 block text-sm font-medium text-gray-900">
+							Exercise*
+						</label>
+						<SearchableDropdown
+							exercises={exercises}
+							onInputSelect={hanldeSearchableDropdownSelect}
+						/>
+					</div>
+
+					{/* Weight Input */}
+					<div className="mb-6">
+						<label className="mb-2 block text-sm font-medium text-gray-900">
+							Weight (lbs)*
+						</label>
+						<input
+							id="weightLbs"
+							type="number"
+							min="0"
+							className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 transition-all hover:border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+							placeholder="Enter weight"
+							required
+						/>
+					</div>
+
+					{/* Sets and Reps */}
+					<div className="grid grid-cols-2 gap-4">
+						<div>
+							<label className="mb-2 block text-sm font-medium text-gray-900">
+								Sets*
+							</label>
+							<input
+								id="sets"
+								type="number"
+								min="1"
+								className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 transition-all hover:border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+								placeholder="Sets"
+								required
+							/>
+						</div>
+						<div>
+							<label className="mb-2 block text-sm font-medium text-gray-900">
+								Reps*
+							</label>
+							<input
+								id="reps"
+								type="number"
+								min="1"
+								className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 transition-all hover:border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+								placeholder="Reps"
+								required
+							/>
+						</div>
+					</div>
+
+					{/* Action Buttons */}
+					<div className="mt-8 flex space-x-4">
+						<button
+							type="submit"
+							className="flex-1 rounded-xl bg-blue-600 px-8 py-4 text-base font-medium text-white shadow-md transition-all hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+						>
+							Add Workout
+						</button>
+						<button
+							type="button"
+							onClick={onXClick}
+							className="flex-1 rounded-xl border-2 border-gray-200 bg-white px-8 py-4 text-base font-medium text-gray-700 shadow-sm transition-all hover:border-gray-300 hover:bg-gray-50"
+						>
+							Cancel
+						</button>
+					</div>
+				</form>
 			</div>
-		</>
+		</div>
 	);
 };
 
