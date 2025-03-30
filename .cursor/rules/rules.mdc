@@ -34,16 +34,15 @@ alwaysApply: true
     - JWT (JSON Web Tokens) based auth
     - Implementation details: [auth.ts](mdc:src/server/auth.ts)
 
-6. Style and Design
-    - I want to have it be a uniform feel and look
-    - I like the style to be "Modern Minimalist" or "iOS-inspired" 
-    - Clean, flat interfaces
-    - Subtle use of shadows and borders
-    - Consistent spacing and alignment
-    - Monochromatic icons
-    - Clear visual hierarchy
-    - Card-based grouping
-    - Subtle dividers and separators
-    - Meaningful whitespace
-    - Clear interactive elements (hover states)
-    - Purposeful use of color (like the red for destructive actions)
+7. Mobile-First Design & PWA
+    - This is primarily a Progressive Web App (PWA) designed for mobile users
+    - The landing page (index.tsx) should be responsive and look good on both mobile and desktop
+    - All other pages should prioritize mobile UI/UX as they will primarily be accessed through the PWA
+    - Design considerations:
+        - Use mobile-friendly touch targets (min 44px height)
+        - Ensure comfortable thumb-reachable interactions
+        - Avoid hover-dependent interactions except on landing page
+        - Maintain fixed viewport to prevent address bar issues
+        - Support iOS safe areas and notches
+        - Design for portrait orientation primarily
+        - Keep navigation within thumb-friendly bottom area
