@@ -153,4 +153,83 @@ export const routineRouter = createTRPCRouter({
 
 			return removedSession;
 		}),
+
+	getRoutineById: protectedProcedure
+		.input(
+			z.object({
+				routineId: z.string(),
+			}),
+		)
+		.query(async ({ input, ctx }) => {
+			const routine = await ctx.prisma.routine.findUnique({
+				where: { id: input.routineId },
+				include: {
+					sessions: {
+						include: {
+							days: true,
+						},
+					},
+				},
+			});
+
+			if (!routine || routine.userId !== ctx.session.user.id) {
+				throw new Error('Routine not found or unauthorized');
+			}
+
+			return routine;
+		}),
+
+	updateRoutine: protectedProcedure
+		.input(
+			z.object({
+				routineId: z.string(),
+				name: z.string(),
+				description: z.string(),
+			}),
+		)
+		.mutation(async ({ input, ctx }) => {
+			return ctx.prisma.routine.update({
+				where: { id: input.routineId },
+				data: {
+					name: input.name,
+					description: input.description,
+				},
+			});
+		}),
+
+	addSessionToRoutine: protectedProcedure
+		.input(
+			z.object({
+				routineId: z.string(),
+				sessionId: z.string(),
+			}),
+		)
+		.mutation(async ({ input, ctx }) => {
+			return ctx.prisma.routine.update({
+				where: { id: input.routineId },
+				data: {
+					sessions: {
+						connect: { id: input.sessionId },
+					},
+				},
+			});
+		}),
+
+	removeSessionFromRoutine: protectedProcedure
+		.input(
+			z.object({
+				routineId: z.string(),
+				sessionId: z.string(),
+			}),
+		)
+		.mutation(async ({ input, ctx }) => {
+			return ctx.prisma.routine.update({
+				where: { id: input.routineId },
+				data: {
+					sessions: {
+						disconnect: { id: input.sessionId },
+					},
+				},
+			});
+		}),
 });

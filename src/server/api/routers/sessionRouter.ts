@@ -266,4 +266,18 @@ export const sessionRouter = createTRPCRouter({
 
 			return updatedSession;
 		}),
+
+	getSessionsThatAreNotAddedToRoutine: protectedProcedure.query(
+		async ({ ctx }) => {
+			return ctx.prisma.session.findMany({
+				where: {
+					userId: ctx.session.user.id,
+					routineId: null,
+				},
+				include: {
+					days: true,
+				},
+			});
+		},
+	),
 });
