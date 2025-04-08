@@ -9,6 +9,7 @@ import { showConfetti } from '~/utils/confetti';
 import { NoActiveRoutineView } from './workout/NoActiveRoutineView';
 import { NoSessionsView } from './workout/NoSessionsView';
 import { WelcomeNewUserView } from './workout/WelcomeNewUserView';
+import WorkoutSessionCard from './workoutSessionCard';
 
 interface CurrentWorkoutDisplayProps {
 	user: User;
@@ -94,10 +95,12 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	const { mutateAsync: completeSession } =
 		api.completedSession.createCompletedSession.useMutation();
 
+
+	
+
 	// Effects
 	useEffect(() => {
 		if (workoutsForActiveSession) {
-			if (workoutsForActiveSession.length > 0) {
 				const workoutCompletionMap = localStorage.getItem(
 					'workoutCompletionMap',
 				);
@@ -117,15 +120,6 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 						const parsedMap = JSON.parse(
 							workoutCompletionMap,
 						) as Record<string, unknown>;
-
-						// Validate the parsed data
-						const isValidMap = (
-							map: Record<string, unknown>,
-						): map is WorkoutCompletionMap => {
-							return Object.values(map).every(
-								(value) => typeof value === 'boolean',
-							);
-						};
 
 						if (isValidMap(parsedMap)) {
 							setCheckedWorkouts(parsedMap);
@@ -167,7 +161,6 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 						setCheckedWorkouts(initialMap);
 					}
 				}
-			}
 		}
 	}, [workoutsForActiveSession]);
 
@@ -196,6 +189,15 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			JSON.stringify(updatedWorkouts),
 		);
 		setAllWorkoutsCompleted(Object.values(updatedWorkouts).every(Boolean));
+	};
+
+	// Validate the parsed data
+	const isValidMap = (
+		map: Record<string, unknown>,
+	): map is WorkoutCompletionMap => {
+		return Object.values(map).every(
+			(value) => typeof value === 'boolean',
+		);
 	};
 
 	const handleStartSessionClick = async (sessionId: string) => {
@@ -269,7 +271,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		return <NoActiveRoutineView />;
 	}
 
-	if (activeSessionData) {
+	if (activeSessionData !== null && activeSessionData !== undefined) {
 		return (
 			<div className="flex h-full w-[95%] flex-col items-center">
 				<div className="w-[90%] flex-1 flex-col pt-4">
@@ -337,38 +339,12 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		<div className="flex h-full w-[95%] flex-col items-center">
 			<div className="w-[90%] space-y-3 pt-4">
 				{possibleSessionsToStart?.map((session) => (
-					<div
+					<WorkoutSessionCard
 						key={session.id}
-						className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
-					>
-						<div className="mb-2">
-							<h2 className="text-lg font-medium text-gray-900">
-								{session.name}
-							</h2>
-							{session.description && (
-								<p className="mt-1 text-sm text-gray-500">
-									{session.description}
-								</p>
-							)}
-						</div>
-						<button
-							onClick={() =>
-								void handleStartSessionClick(session.id)
-							}
-							disabled={listOfCompletedSessionIds?.includes(
-								session.id,
-							)}
-							className={`mt-3 w-full rounded-lg px-4 py-2.5 text-sm font-medium ${
-								listOfCompletedSessionIds?.includes(session.id)
-									? 'bg-gray-100 text-gray-400'
-									: 'bg-blue-600 text-white hover:bg-blue-700'
-							}`}
-						>
-							{listOfCompletedSessionIds?.includes(session.id)
-								? 'Completed'
-								: 'Start Session'}
-						</button>
-					</div>
+						session={session}
+						listOfCompletedSessionIds={listOfCompletedSessionIds}
+						onStartSession={() => void handleStartSessionClick(session.id)}
+					/>
 				))}
 			</div>
 		</div>
