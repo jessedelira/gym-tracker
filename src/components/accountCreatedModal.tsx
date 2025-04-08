@@ -30,8 +30,8 @@ const AccountCreatedModal: React.FC = () => {
 				</h2>
 
 				<p className="mb-6 text-gray-600">
-					Your account has been created successfully. Sign in to start
-					your fitness journey.
+					Your account has been created successfully. You will be
+					signed in automatically.
 				</p>
 
 				<Link

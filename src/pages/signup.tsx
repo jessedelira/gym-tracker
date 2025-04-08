@@ -1,6 +1,8 @@
 import { type NextPage } from 'next';
 import Link from 'next/link';
 import { useState, type FormEvent } from 'react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import AccountCreatedModal from '~/components/accountCreatedModal';
 import PasswordInput from '~/components/passwordInput';
 
@@ -16,6 +18,7 @@ import {
 const SignUp: NextPage = () => {
 	const createUserMutation = api.user.createUser.useMutation();
 	const [showModal, setShowModal] = useState(false);
+	const router = useRouter();
 
 	const { data: timezones } = api.timezoneMap.getListOfTimezones.useQuery();
 
@@ -39,6 +42,18 @@ const SignUp: NextPage = () => {
 			{
 				onSuccess: () => {
 					setShowModal(true);
+					// Wait for 1 second to show the modal, then sign in
+					setTimeout(() => {
+						void signIn('credentials', {
+							username,
+							password,
+							redirect: false,
+						}).then((result) => {
+							if (result?.ok) {
+								void router.push('/');
+							}
+						});
+					}, 1500);
 				},
 			},
 		);
