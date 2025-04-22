@@ -1,7 +1,7 @@
-import { type WorkoutSession } from '@prisma/client';
+import  { type Session } from '@prisma/client';
 
 interface WorkoutSessionCardProps {
-    session: WorkoutSession;
+    session: Session;
     listOfCompletedSessionIds?: string[];
     onStartSession: (sessionId: string) => void;
 }
