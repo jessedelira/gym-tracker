@@ -25,10 +25,8 @@ const Home: NextPage = () => {
 	return (
 		<main className="landing-page bg-gray-50">
 			<div className="mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
-				{/* Hero Section - Removed min-h-screen and adjusted padding */}
-				<div className="flex flex-col items-center justify-center py-24">
+				<div className="flex flex-col items-center justify-center pb-12 pt-24">
 					<div className="w-full max-w-md">
-						{/* Logo and Title */}
 						<div className="text-center">
 							<h1 className="text-5xl font-semibold tracking-tight text-gray-900">
 								Gym Tracker
@@ -38,7 +36,6 @@ const Home: NextPage = () => {
 							</p>
 						</div>
 
-						{/* Auth Buttons */}
 						<div className="mt-12 space-y-4">
 							<button
 								onClick={() => void signIn('credential')}
@@ -56,10 +53,8 @@ const Home: NextPage = () => {
 					</div>
 				</div>
 
-				{/* Features Section - Reduced top padding */}
 				<div className="">
 					<div className="mx-auto max-w-3xl space-y-12">
-						{/* Track Workouts */}
 						<div className="transform-gpu rounded-3xl bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
 							<div className="mb-6 inline-flex rounded-2xl bg-blue-50 p-4 transition-all group-hover:bg-blue-100">
 								<svg
@@ -110,7 +105,6 @@ const Home: NextPage = () => {
 							</p>
 						</div>
 
-						{/* Achieve Goals */}
 						<div className="transform-gpu rounded-3xl bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
 							<div className="mb-6 inline-flex rounded-2xl bg-purple-50 p-4 transition-all group-hover:bg-purple-100">
 								<svg
@@ -138,7 +132,6 @@ const Home: NextPage = () => {
 					</div>
 				</div>
 
-				{/* Footer */}
 				<div className="py-16 text-center">
 					<Link
 						href="https://github.com/jessedelira/gym-tracker.app"

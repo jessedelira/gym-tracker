@@ -95,58 +95,36 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	const { mutateAsync: completeSession } =
 		api.completedSession.createCompletedSession.useMutation();
 
-
-	
-
 	// Effects
 	useEffect(() => {
 		if (workoutsForActiveSession) {
-				const workoutCompletionMap = localStorage.getItem(
-					'workoutCompletionMap',
+			const workoutCompletionMap = localStorage.getItem(
+				'workoutCompletionMap',
+			);
+
+			if (!workoutCompletionMap) {
+				const initialMap: WorkoutCompletionMap = Object.fromEntries(
+					workoutsForActiveSession.map(({ id }) => [id, false]),
 				);
+				localStorage.setItem(
+					'workoutCompletionMap',
+					JSON.stringify(initialMap),
+				);
+				setCheckedWorkouts(initialMap);
+			} else {
+				try {
+					// Safely parse and validate the stored data
+					const parsedMap = JSON.parse(
+						workoutCompletionMap,
+					) as Record<string, unknown>;
 
-				if (!workoutCompletionMap) {
-					const initialMap: WorkoutCompletionMap = Object.fromEntries(
-						workoutsForActiveSession.map(({ id }) => [id, false]),
-					);
-					localStorage.setItem(
-						'workoutCompletionMap',
-						JSON.stringify(initialMap),
-					);
-					setCheckedWorkouts(initialMap);
-				} else {
-					try {
-						// Safely parse and validate the stored data
-						const parsedMap = JSON.parse(
-							workoutCompletionMap,
-						) as Record<string, unknown>;
-
-						if (isValidMap(parsedMap)) {
-							setCheckedWorkouts(parsedMap);
-							setAllWorkoutsCompleted(
-								Object.values(parsedMap).every(Boolean),
-							);
-						} else {
-							// If invalid data, reset to initial state
-							const initialMap: WorkoutCompletionMap =
-								Object.fromEntries(
-									workoutsForActiveSession.map(({ id }) => [
-										id,
-										false,
-									]),
-								);
-							localStorage.setItem(
-								'workoutCompletionMap',
-								JSON.stringify(initialMap),
-							);
-							setCheckedWorkouts(initialMap);
-						}
-					} catch (error) {
-						// Handle invalid JSON in localStorage
-						console.error(
-							'Invalid workout completion data in localStorage:',
-							error,
+					if (isValidMap(parsedMap)) {
+						setCheckedWorkouts(parsedMap);
+						setAllWorkoutsCompleted(
+							Object.values(parsedMap).every(Boolean),
 						);
+					} else {
+						// If invalid data, reset to initial state
 						const initialMap: WorkoutCompletionMap =
 							Object.fromEntries(
 								workoutsForActiveSession.map(({ id }) => [
@@ -160,7 +138,22 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 						);
 						setCheckedWorkouts(initialMap);
 					}
+				} catch (error) {
+					// Handle invalid JSON in localStorage
+					console.error(
+						'Invalid workout completion data in localStorage:',
+						error,
+					);
+					const initialMap: WorkoutCompletionMap = Object.fromEntries(
+						workoutsForActiveSession.map(({ id }) => [id, false]),
+					);
+					localStorage.setItem(
+						'workoutCompletionMap',
+						JSON.stringify(initialMap),
+					);
+					setCheckedWorkouts(initialMap);
 				}
+			}
 		}
 	}, [workoutsForActiveSession]);
 
@@ -195,9 +188,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	const isValidMap = (
 		map: Record<string, unknown>,
 	): map is WorkoutCompletionMap => {
-		return Object.values(map).every(
-			(value) => typeof value === 'boolean',
-		);
+		return Object.values(map).every((value) => typeof value === 'boolean');
 	};
 
 	const handleStartSessionClick = async (sessionId: string) => {
@@ -343,7 +334,9 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 						key={session.id}
 						session={session}
 						listOfCompletedSessionIds={listOfCompletedSessionIds}
-						onStartSession={() => void handleStartSessionClick(session.id)}
+						onStartSession={() =>
+							void handleStartSessionClick(session.id)
+						}
 					/>
 				))}
 			</div>
