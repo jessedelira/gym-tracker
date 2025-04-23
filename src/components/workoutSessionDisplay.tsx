@@ -10,6 +10,7 @@ import { NoActiveRoutineView } from './workout/NoActiveRoutineView';
 import { NoSessionsView } from './workout/NoSessionsView';
 import { WelcomeNewUserView } from './workout/WelcomeNewUserView';
 import WorkoutSessionCard from './workoutSessionCard';
+import { type Session } from '@prisma/client';
 
 interface CurrentWorkoutDisplayProps {
 	user: User;
@@ -332,7 +333,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 				{possibleSessionsToStart?.map((session) => (
 					<WorkoutSessionCard
 						key={session.id}
-						session={session}
+						session={session as Session}
 						listOfCompletedSessionIds={listOfCompletedSessionIds}
 						onStartSession={() =>
 							void handleStartSessionClick(session.id)

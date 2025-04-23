@@ -145,7 +145,7 @@ export const authOptions: NextAuthOptions = {
 							userSetting: {
 								include: {
 									timezone: true,
-								},	
+								},
 							},
 						},
 					});
@@ -166,7 +166,8 @@ export const authOptions: NextAuthOptions = {
 							firstName: userFoundByUsername.firstName,
 							lastName: userFoundByUsername.lastName,
 							dateCreated: userFoundByUsername.dateCreated,
-							userPreferences: userFoundByUsername.userPreferences,
+							userPreferences:
+								userFoundByUsername.userPreferences,
 							userSetting: userFoundByUsername.userSetting,
 						};
 
@@ -175,9 +176,11 @@ export const authOptions: NextAuthOptions = {
 				} catch (error) {
 					// Log the actual error internally for debugging (you might want to use proper logging)
 					console.error('Authentication error:', error);
-					
+
 					// Return a generic error message to the client
-					throw new Error('An error occurred during authentication. Please try again later.');
+					throw new Error(
+						'An error occurred during authentication. Please try again later.',
+					);
 				}
 
 				return null;

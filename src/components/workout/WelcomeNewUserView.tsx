@@ -29,7 +29,7 @@ export const WelcomeNewUserView = () => {
 			</p>
 
 			<Link
-				href="/routines"
+				href="/manage/routines"
 				className="w-full rounded-xl bg-blue-600 px-8 py-4 text-center text-base font-medium text-white shadow-md transition-all hover:bg-blue-700 hover:shadow-lg"
 			>
 				Create Routine
