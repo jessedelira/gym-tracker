@@ -135,25 +135,25 @@ export const authOptions: NextAuthOptions = {
 					throw new Error('Missing credentials');
 				}
 
-				const userFoundByUsername = await prisma.user.findUnique({
-					where: {
-						username: credentials?.username,
-					},
-					include: {
-						userPreferences: true,
-						userSetting: {
-							include: {
-								timezone: true,
+				try {
+					const userFoundByUsername = await prisma.user.findUnique({
+						where: {
+							username: credentials?.username,
+						},
+						include: {
+							userPreferences: true,
+							userSetting: {
+								include: {
+									timezone: true,
+								},	
 							},
 						},
-					},
-				});
+					});
 
-				if (!userFoundByUsername) {
-					throw new Error('Incorrect username or password');
-				}
+					if (!userFoundByUsername) {
+						throw new Error('Incorrect username or password');
+					}
 
-				try {
 					const doesInputPwMatchEncryptedPw = bcrypt.compareSync(
 						credentials?.password ?? '',
 						userFoundByUsername?.password ?? '',
@@ -166,15 +166,18 @@ export const authOptions: NextAuthOptions = {
 							firstName: userFoundByUsername.firstName,
 							lastName: userFoundByUsername.lastName,
 							dateCreated: userFoundByUsername.dateCreated,
-							userPreferences:
-								userFoundByUsername.userPreferences,
+							userPreferences: userFoundByUsername.userPreferences,
 							userSetting: userFoundByUsername.userSetting,
 						};
 
 						return returnUser;
 					}
 				} catch (error) {
-					throw new Error('Incorrect username or password');
+					// Log the actual error internally for debugging (you might want to use proper logging)
+					console.error('Authentication error:', error);
+					
+					// Return a generic error message to the client
+					throw new Error('An error occurred during authentication. Please try again later.');
 				}
 
 				return null;
