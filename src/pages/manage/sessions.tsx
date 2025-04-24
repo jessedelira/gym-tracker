@@ -60,21 +60,6 @@ const Sessions: NextPage = () => {
 				{/* Sessions List */}
 				{allSessionData && allSessionData.length === 0 ? (
 					<div className="mt-8 text-center">
-						<div className="mb-4 inline-flex rounded-full bg-blue-100 p-4">
-							<svg
-								className="h-6 w-6 text-blue-600"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke="currentColor"
-							>
-								<path
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									strokeWidth={2}
-									d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-								/>
-							</svg>
-						</div>
 						<p className="text-gray-600">
 							No sessions yet. Create your first session to get
 							started.
