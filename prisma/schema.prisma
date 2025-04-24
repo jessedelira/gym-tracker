@@ -15,6 +15,7 @@ model User {
   password         String
   firstName        String             @map("first_name")
   lastName         String             @map("last_name")
+  hasSeenLatestChangelog Boolean      @default(false) @map("has_seen_latest_changelog")
   routines         Routine[]
   sessions         Session[]
   workouts         Workout[]

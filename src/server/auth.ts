@@ -23,6 +23,7 @@ interface User extends NextAuthUser {
 	userSetting?: Prisma.UserSettingGetPayload<{
 		include: { timezone: true };
 	}> | null;
+	hasSeenLatestChangelog: boolean | null;
 }
 
 /**
@@ -48,6 +49,7 @@ declare module 'next-auth' {
 		userSetting?: Prisma.UserSettingGetPayload<{
 			include: { timezone: true };
 		}> | null;
+		hasSeenLatestChangelog: boolean | null;
 		// ...other properties
 		// role: UserRole;
 	}
@@ -66,6 +68,7 @@ declare module 'next-auth/jwt' {
 			userSetting?: Prisma.UserSettingGetPayload<{
 				include: { timezone: true };
 			}> | null;
+			hasSeenLatestChangelog: boolean | null;
 			// ...other properties
 			// role: UserRole;
 		};
@@ -109,6 +112,7 @@ export const authOptions: NextAuthOptions = {
 				dateCreated: token.user.dateCreated,
 				userPreferences: token.user.userPreferences,
 				userSetting: token.user.userSetting,
+				hasSeenLatestChangelog: token.user.hasSeenLatestChangelog,
 			};
 			return session;
 		},
@@ -169,6 +173,8 @@ export const authOptions: NextAuthOptions = {
 							userPreferences:
 								userFoundByUsername.userPreferences,
 							userSetting: userFoundByUsername.userSetting,
+							hasSeenLatestChangelog:
+								userFoundByUsername.hasSeenLatestChangelog,
 						};
 
 						return returnUser;
