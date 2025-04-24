@@ -14,6 +14,7 @@ import {
 const Account: NextPage = () => {
 	const { data: sessionData, status, update } = useSession();
 	const [dataChangeInForm, setDataChangeInForm] = useState(false);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const router = useRouter();
 	const updateUserMutation = api.user.updateUser.useMutation();
 
@@ -23,6 +24,7 @@ const Account: NextPage = () => {
 
 	const handleCancelClicked = () => {
 		setDataChangeInForm(false);
+		setErrorMessage(null);
 		getFirstNameInputElement(document).value =
 			sessionData?.user.firstName ?? 'Loading...';
 		getLastNameInputElement(document).value =
@@ -34,6 +36,7 @@ const Account: NextPage = () => {
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		if (sessionData) {
 			e.preventDefault();
+			setErrorMessage(null);
 
 			const newUsername = getUsernameInputElement(document).value;
 			const newFirstName = getFirstNameInputElement(document).value;
@@ -46,13 +49,25 @@ const Account: NextPage = () => {
 				newLastName: newLastName,
 			};
 
-			await updateUserMutation.mutateAsync(updatedUserData, {
-				onSuccess: () => {
-					setDataChangeInForm(false);
-				},
-			});
+			try {
+				await updateUserMutation.mutateAsync(updatedUserData, {
+					onSuccess: () => {
+						setDataChangeInForm(false);
+					},
+				});
+				await changeSession();
+			} catch (error) {
+				if (error instanceof Error) {
+					if (error.message.includes('Unique constraint')) {
+						setErrorMessage('This username is already taken');
+					} else {
+						setErrorMessage(
+							'An error occurred while updating your information',
+						);
+					}
+				}
+			}
 		}
-		await changeSession();
 	};
 
 	const changeSession = async () => {
@@ -71,72 +86,130 @@ const Account: NextPage = () => {
 
 	return (
 		<Layout>
-			<div className="flex flex-col">
-				<h1 className="pl-2 text-3xl font-bold">Settings</h1>
+			<div className="flex h-full flex-col bg-gray-50 px-4 py-6">
+				{/* Header */}
+				<div className="mb-6">
+					<h1 className="text-2xl font-semibold tracking-tight text-gray-900">
+						Account Settings
+					</h1>
+					<p className="mt-2 text-gray-600">
+						Update your personal information
+					</p>
+				</div>
 
-				<h2 className="pl-2 text-2xl font-bold">
-					Personal Information
-				</h2>
-				<form onSubmit={(e) => void handleSubmit(e)}>
-					<div className="mat-4 grid grid-cols-2 gap-5 ">
-						<div className="mat-4 grid grid-cols-1 pl-2">
-							<label className="block font-bold">
-								First Name
+				{/* Form */}
+				<form
+					onSubmit={(e) => void handleSubmit(e)}
+					className="space-y-6"
+				>
+					<div className="rounded-2xl bg-white p-6 shadow-sm">
+						{/* Error Message */}
+						{errorMessage && (
+							<div className="mb-6 flex items-center justify-between rounded-xl bg-red-50 px-4 py-3 text-red-700">
+								<p className="text-sm font-medium">
+									{errorMessage}
+								</p>
+							</div>
+						)}
+
+						{/* Name Fields */}
+						<div className="mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+							<div>
+								<label
+									htmlFor="firstName"
+									className="mb-2 block text-sm font-medium text-gray-900"
+								>
+									First Name
+								</label>
+								<input
+									id="firstName"
+									className={`w-full rounded-xl border-2 ${
+										errorMessage
+											? 'border-red-500'
+											: 'border-gray-200'
+									} bg-white px-4 py-3 text-gray-900 placeholder-gray-500 transition-all hover:border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200`}
+									placeholder="First Name"
+									defaultValue={
+										sessionData.user.firstName ??
+										'Loading...'
+									}
+									onChange={handleInputChange}
+								/>
+							</div>
+
+							<div>
+								<label
+									htmlFor="lastName"
+									className="mb-2 block text-sm font-medium text-gray-900"
+								>
+									Last Name
+								</label>
+								<input
+									id="lastName"
+									className={`w-full rounded-xl border-2 ${
+										errorMessage
+											? 'border-red-500'
+											: 'border-gray-200'
+									} bg-white px-4 py-3 text-gray-900 placeholder-gray-500 transition-all hover:border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200`}
+									placeholder="Last Name"
+									defaultValue={
+										sessionData.user.lastName ??
+										'Loading...'
+									}
+									onChange={handleInputChange}
+								/>
+							</div>
+						</div>
+
+						{/* Username Field */}
+						<div>
+							<label
+								htmlFor="username"
+								className="mb-2 block text-sm font-medium text-gray-900"
+							>
+								Username
 							</label>
 							<input
-								id="firstName"
-								className=" rounded-md bg-gray-300 px-4 py-2 text-white"
-								placeholder="First Name"
+								id="username"
+								className={`w-full rounded-xl border-2 ${
+									errorMessage
+										? 'border-red-500'
+										: 'border-gray-200'
+								} bg-white px-4 py-3 text-gray-900 placeholder-gray-500 transition-all hover:border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200`}
+								placeholder="Username"
 								defaultValue={
-									sessionData?.user.firstName ?? 'Loading...'
+									sessionData.user.username ?? 'Loading...'
 								}
 								onChange={handleInputChange}
-							></input>
-						</div>
-
-						<div className="mat-4 grid grid-cols-1 gap-1 pr-2">
-							<label className="block font-bold">Last Name</label>
-
-							<input
-								id="lastName"
-								className=" rounded-md bg-gray-300 px-4 py-2 text-white"
-								placeholder="Last Name"
-								defaultValue={
-									sessionData?.user.lastName ?? 'Loading...'
-								}
-								onChange={handleInputChange}
-							></input>
+							/>
 						</div>
 					</div>
-					<div className="mat-4 grid grid-cols-1">
-						<label className="block pl-2 font-bold">Username</label>
-						<input
-							id="username"
-							className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-white"
-							placeholder="Username"
-							defaultValue={
-								sessionData?.user.username ?? 'Loading...'
-							}
-							onChange={handleInputChange}
-						></input>
-					</div>
 
-					{dataChangeInForm ? (
-						<div className="mt-4 grid grid-cols-2 gap-1">
+					{/* Action Buttons */}
+					{dataChangeInForm && (
+						<div className="space-y-3">
 							<button
-								className="ml-2 rounded-md bg-green-700 px-4 py-2 text-white"
 								type="submit"
+								className="w-full rounded-xl bg-blue-600 px-8 py-4 text-base font-medium text-white shadow-md transition-all hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
 							>
-								Save
+								Save Changes
 							</button>
 							<button
-								className="mr-2 rounded-md bg-red-700 px-4 py-2 text-white"
+								type="button"
 								onClick={handleCancelClicked}
+								className="w-full rounded-xl border-2 border-gray-200 bg-white px-8 py-4 text-base font-medium text-gray-700 shadow-sm transition-all hover:border-gray-300 hover:bg-gray-50"
 							>
 								Cancel
 							</button>
 						</div>
-					) : null}
+					)}
+
+					{/* Helper Text */}
+					{!dataChangeInForm && (
+						<div className="text-center text-sm text-gray-500">
+							Make changes to update your information
+						</div>
+					)}
 				</form>
 			</div>
 		</Layout>
