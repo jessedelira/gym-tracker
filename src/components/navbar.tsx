@@ -25,7 +25,7 @@ const NavBar: React.FC = () => {
 	}, [pathname]);
 
 	return (
-		<div className="mx-auto flex h-full max-w-md items-center justify-around border-t border-gray-200 bg-white/90 pb-4">
+		<div className="mx-auto flex h-full max-w-md items-center justify-around border-t border-gray-200 bg-white pb-4">
 			<Link
 				href="/home"
 				className={`flex flex-col items-center px-6 py-2 ${

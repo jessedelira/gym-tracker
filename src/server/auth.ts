@@ -11,20 +11,22 @@ import bcrypt from 'bcrypt';
 import Credentials from 'next-auth/providers/credentials';
 import { type Prisma, type UserPreference } from '@prisma/client';
 
-// Define a custom User type that extends NextAuth's User
-interface User extends NextAuthUser {
+// Define the base user type that will be reused
+interface BaseUser {
 	id: string;
-	name?: string | null;
-	username?: string | null;
-	firstName?: string | null;
-	lastName?: string | null;
-	dateCreated?: Date | null;
-	userPreferences?: UserPreference[] | null;
-	userSetting?: Prisma.UserSettingGetPayload<{
+	username: string;
+	firstName: string;
+	lastName: string;
+	dateCreated: Date;
+	userPreferences: UserPreference[];
+	userSetting: Prisma.UserSettingGetPayload<{
 		include: { timezone: true };
-	}> | null;
-	hasSeenLatestChangelog: boolean | null;
+	}> | null; // This can be null based on the schema
+	hasSeenLatestChangelog: boolean;
 }
+
+// Extend NextAuthUser with our base type
+interface User extends NextAuthUser, BaseUser {}
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -34,44 +36,15 @@ interface User extends NextAuthUser {
  */
 declare module 'next-auth' {
 	interface Session extends DefaultSession {
-		user: User;
-		// expires: ISODateString;
+		user: BaseUser;
 	}
 
-	interface User {
-		id: string;
-		name?: string | null;
-		username?: string | null;
-		firstName?: string | null;
-		lastName?: string | null;
-		dateCreated?: Date | null;
-		userPreferences?: UserPreference[] | null;
-		userSetting?: Prisma.UserSettingGetPayload<{
-			include: { timezone: true };
-		}> | null;
-		hasSeenLatestChangelog: boolean | null;
-		// ...other properties
-		// role: UserRole;
-	}
+	interface User extends BaseUser {}
 }
 
 declare module 'next-auth/jwt' {
 	interface JWT {
-		user: {
-			id: string;
-			name?: string | null;
-			username?: string | null;
-			firstName?: string | null;
-			lastName?: string | null;
-			dateCreated?: Date | null;
-			userPreferences?: UserPreference[] | null;
-			userSetting?: Prisma.UserSettingGetPayload<{
-				include: { timezone: true };
-			}> | null;
-			hasSeenLatestChangelog: boolean | null;
-			// ...other properties
-			// role: UserRole;
-		};
+		user: BaseUser;
 	}
 }
 
@@ -87,13 +60,17 @@ export const authOptions: NextAuthOptions = {
 				token.user = user;
 			}
 			if (trigger === 'update') {
-				// Note: Prisma calls must always be awaited.
 				const updatedUser = await prisma.user.findUnique({
 					where: {
 						id: token.user.id,
 					},
 					include: {
 						userPreferences: true,
+						userSetting: {
+							include: {
+								timezone: true,
+							},
+						},
 					},
 				});
 
@@ -104,6 +81,7 @@ export const authOptions: NextAuthOptions = {
 			return token;
 		},
 		session: ({ session, token }) => {
+			// Only expose safe user data to the client
 			session.user = {
 				id: token.user.id,
 				username: token.user.username,
@@ -127,37 +105,33 @@ export const authOptions: NextAuthOptions = {
 		Credentials({
 			name: 'Credentials',
 			credentials: {
-				username: {
-					label: 'Username',
-					type: 'text',
-					placeholder: 'jsmith',
-				},
-				password: { label: 'Password', type: 'password' },
+				username: {},
+				password: {},
 			},
 			async authorize(credentials): Promise<User | null> {
 				if (!credentials?.username || !credentials?.password) {
 					throw new Error('Missing credentials');
 				}
 
-				try {
-					const userFoundByUsername = await prisma.user.findUnique({
-						where: {
-							username: credentials?.username,
-						},
-						include: {
-							userPreferences: true,
-							userSetting: {
-								include: {
-									timezone: true,
-								},
+				const userFoundByUsername = await prisma.user.findUnique({
+					where: {
+						username: credentials?.username,
+					},
+					include: {
+						userPreferences: true,
+						userSetting: {
+							include: {
+								timezone: true,
 							},
 						},
-					});
+					},
+				});
 
-					if (!userFoundByUsername) {
-						throw new Error('Incorrect username or password');
-					}
+				if (!userFoundByUsername) {
+					throw new Error('Incorrect username or password');
+				}
 
+				try {
 					const doesInputPwMatchEncryptedPw = bcrypt.compareSync(
 						credentials?.password ?? '',
 						userFoundByUsername?.password ?? '',
@@ -177,16 +151,12 @@ export const authOptions: NextAuthOptions = {
 								userFoundByUsername.hasSeenLatestChangelog,
 						};
 
+						console.log('returnUser', returnUser.userSetting);
+
 						return returnUser;
 					}
 				} catch (error) {
-					// Log the actual error internally for debugging (you might want to use proper logging)
-					console.error('Authentication error:', error);
-
-					// Return a generic error message to the client
-					throw new Error(
-						'An error occurred during authentication. Please try again later.',
-					);
+					throw new Error('Incorrect username or password');
 				}
 
 				return null;

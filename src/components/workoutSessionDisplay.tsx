@@ -298,13 +298,13 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 					</div>
 
 					<div
-						className={`fixed inset-x-0 bottom-16 z-50 transform transition-all duration-300 ${
+						className={`fixed inset-x-0 bottom-0 z-20 transform transition-all duration-300 ${
 							allWorkoutsCompleted
 								? 'translate-y-0 opacity-100'
 								: 'pointer-events-none translate-y-full opacity-0'
 						}`}
 					>
-						<div className="bg-white px-4 pb-4 pt-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+						<div className="z-20 mb-20 p-4 ">
 							<div className="mx-auto w-[90%] max-w-md">
 								<button
 									onClick={() =>
