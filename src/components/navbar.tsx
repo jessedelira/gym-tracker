@@ -74,9 +74,10 @@ const NavBar: React.FC = () => {
 						: 'text-gray-500 hover:text-gray-800'
 				}`}
 			>
-				{sessionData?.user && !sessionData.user.hasSeenLatestChangelog && (
-					<div className="absolute right-4 top-1 h-2 w-2 rounded-full bg-red-500" />
-				)}
+				{sessionData?.user &&
+					!sessionData.user.hasSeenLatestChangelog && (
+						<div className="absolute right-4 top-1 h-2 w-2 rounded-full bg-red-500" />
+					)}
 				<SettingsIcon
 					heightValue="6"
 					widthValue="6"
