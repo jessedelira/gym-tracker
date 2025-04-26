@@ -81,16 +81,8 @@ export const authOptions: NextAuthOptions = {
 			return token;
 		},
 		session: ({ session, token }) => {
-			// Only expose safe user data to the client
 			session.user = {
-				id: token.user.id,
-				username: token.user.username,
-				firstName: token.user.firstName,
-				lastName: token.user.lastName,
-				dateCreated: token.user.dateCreated,
-				userPreferences: token.user.userPreferences,
-				userSetting: token.user.userSetting,
-				hasSeenLatestChangelog: token.user.hasSeenLatestChangelog,
+				...token.user,
 			};
 			return session;
 		},
@@ -107,6 +99,7 @@ export const authOptions: NextAuthOptions = {
 			credentials: {
 				username: {},
 				password: {},
+				boop: {},
 			},
 			async authorize(credentials): Promise<User | null> {
 				if (!credentials?.username || !credentials?.password) {
@@ -115,7 +108,7 @@ export const authOptions: NextAuthOptions = {
 
 				const userFoundByUsername = await prisma.user.findUnique({
 					where: {
-						username: credentials?.username,
+						username: credentials.username,
 					},
 					include: {
 						userPreferences: true,
@@ -133,8 +126,8 @@ export const authOptions: NextAuthOptions = {
 
 				try {
 					const doesInputPwMatchEncryptedPw = bcrypt.compareSync(
-						credentials?.password ?? '',
-						userFoundByUsername?.password ?? '',
+						credentials.password,
+						userFoundByUsername.password,
 					);
 
 					if (doesInputPwMatchEncryptedPw) {
@@ -151,8 +144,6 @@ export const authOptions: NextAuthOptions = {
 								userFoundByUsername.hasSeenLatestChangelog,
 						};
 
-						console.log('returnUser', returnUser.userSetting);
-
 						return returnUser;
 					}
 				} catch (error) {
@@ -162,15 +153,6 @@ export const authOptions: NextAuthOptions = {
 				return null;
 			},
 		}),
-		/**
-		 * ...add more providers here.
-		 *
-		 * Most other providers require a bit more work than the Discord provider. For example, the
-		 * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
-		 * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
-		 *
-		 * @see https://next-auth.js.org/providers/github
-		 */
 	],
 	session: {
 		maxAge: 60 * 60 * 24 * 365, // session, jwt will last for 1 year
