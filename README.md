@@ -108,7 +108,8 @@ This is a list things you need to use the Gym Tracker.
 
 3. Create .env at root of project and add the following:
 
-    - Use this command: `$ openssl rand -base64 32` to create a NEXTAUTH_SECRET env var
+    - Use this command: `$ openssl rand -base64 32` to create a NEXTAUTH_SECRET env var, if you are using **Bash/ZSH**
+    - Use this command : `$ [Convert]::ToBase64String((1..32|%{Get-Random -Maximum 256}))` to create a NEXTAUTH_SECRET env var, if you are using **PowerShell**
 
     ```sh
       DATABASE_URL="mysql://root:password@localhost:3306/gym_tracker"
