@@ -175,4 +175,109 @@ export const sessionRouter = createTRPCRouter({
 
 			return sessions;
 		}),
+
+	getSessionById: protectedProcedure
+		.input(
+			z.object({
+				sessionId: z.string(),
+			}),
+		)
+		.query(async ({ input, ctx }) => {
+			const session = await prisma.session.findUnique({
+				where: {
+					id: input.sessionId,
+				},
+				include: {
+					days: true,
+					workouts: {
+						include: {
+							exercise: true,
+						},
+					},
+				},
+			});
+
+			if (!session) {
+				throw new Error('Session not found');
+			}
+
+			// Verify user owns this session
+			if (session.userId !== ctx.session.user.id) {
+				throw new Error('Unauthorized');
+			}
+
+			return session;
+		}),
+
+	updateSession: protectedProcedure
+		.input(
+			z.object({
+				sessionId: z.string(),
+				name: z.string(),
+				description: z.string(),
+				days: z.string().array(),
+				workouts: z.array(
+					z.object({
+						exerciseId: z.string(),
+						weightLbs: z.number().optional(),
+						reps: z.number().optional(),
+						sets: z.number().optional(),
+						durationSeconds: z.number().optional(),
+					}),
+				),
+			}),
+		)
+		.mutation(async ({ input, ctx }) => {
+			// Delete existing days and workouts
+			await prisma.sessionDaysActive.deleteMany({
+				where: { sessionId: input.sessionId },
+			});
+			await prisma.workout.deleteMany({
+				where: { sessionId: input.sessionId },
+			});
+
+			// Update session
+			const updatedSession = await prisma.session.update({
+				where: { id: input.sessionId },
+				data: {
+					name: input.name,
+					description: input.description,
+					days: {
+						create: input.days.map((day) => ({
+							day: day,
+						})),
+					},
+					workouts: {
+						create: input.workouts.map((workout) => ({
+							exerciseId: workout.exerciseId,
+							weightLbs: workout.weightLbs,
+							reps: workout.reps,
+							sets: workout.sets,
+							durationSeconds: workout.durationSeconds,
+							userId: ctx.session.user.id,
+						})),
+					},
+				},
+				include: {
+					days: true,
+					workouts: true,
+				},
+			});
+
+			return updatedSession;
+		}),
+
+	getSessionsThatAreNotAddedToRoutine: protectedProcedure.query(
+		async ({ ctx }) => {
+			return ctx.prisma.session.findMany({
+				where: {
+					userId: ctx.session.user.id,
+					routineId: null,
+				},
+				include: {
+					days: true,
+				},
+			});
+		},
+	),
 });

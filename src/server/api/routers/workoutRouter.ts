@@ -1,56 +1,74 @@
 import { prisma } from '~/server/db';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
+import { ExerciseType } from '@prisma/client';
 
 export const workoutRouter = createTRPCRouter({
 	createWorkout: protectedProcedure
 		.input(
 			z.object({
 				exerciseId: z.string(),
-				weight: z.number(),
-				reps: z.number(),
-				sets: z.number(),
+				weight: z.number().optional(),
+				reps: z.number().optional(),
+				sets: z.number().optional(),
+				durationSeconds: z.number().optional(),
 				sessionId: z.string(),
-				userId: z.string(),
 			}),
 		)
-		.mutation(({ input }) => {
-			const createdWorkout = prisma.workout.create({
-				data: {
-					exerciseId: input.exerciseId,
+		.mutation(async ({ input, ctx }) => {
+			const exercise = await ctx.prisma.exercise.findUnique({
+				where: { id: input.exerciseId },
+			});
+
+			if (!exercise) {
+				throw new Error('Exercise not found');
+			}
+
+			const workoutData = {
+				exerciseId: input.exerciseId,
+				sessionId: input.sessionId,
+				userId: ctx.session?.user.id,
+			};
+
+			if (exercise.type === ExerciseType.WEIGHTED) {
+				Object.assign(workoutData, {
 					weightLbs: input.weight,
 					reps: input.reps,
 					sets: input.sets,
-					sessionId: input.sessionId,
-					userId: input.userId,
-				},
+				});
+			} else {
+				Object.assign(workoutData, {
+					durationSeconds: input.durationSeconds,
+				});
+			}
+
+			const createdWorkout = await ctx.prisma.workout.create({
+				data: workoutData,
 			});
 			return createdWorkout;
 		}),
 
-	getAllWorkouts: protectedProcedure
-		.input(
-			z.object({
-				userId: z.string(),
-			}),
-		)
-		.query(async ({ input }) => {
-			const workouts = await prisma.workout.findMany({
-				where: {
-					userId: input.userId,
-				},
-			});
-			return workouts;
-		}),
+	getAllWorkouts: protectedProcedure.query(async ({ ctx }) => {
+		const workouts = await prisma.workout.findMany({
+			where: {
+				userId: ctx.session?.user.id,
+			},
+			include: {
+				exercise: true,
+			},
+		});
+		return workouts;
+	}),
 
 	createManyWorkouts: protectedProcedure
 		.input(
 			z.array(
 				z.object({
 					exerciseId: z.string(),
-					weightLbs: z.number(),
-					reps: z.number(),
-					sets: z.number(),
+					weightLbs: z.number().optional(),
+					reps: z.number().optional(),
+					sets: z.number().optional(),
+					durationSeconds: z.number().optional(),
 					sessionId: z.string(),
 					userId: z.string(),
 				}),
@@ -67,7 +85,6 @@ export const workoutRouter = createTRPCRouter({
 		.input(
 			z.object({
 				userId: z.string(),
-				clientCurrentDate: z.date(),
 				sessionId: z.string(),
 			}),
 		)

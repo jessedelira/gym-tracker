@@ -106,4 +106,17 @@ export const userRouter = createTRPCRouter({
 
 			return userDto;
 		}),
+
+	updateHasSeenLatestChangelog: protectedProcedure
+		.input(z.object({ userId: z.string() }))
+		.mutation(async ({ input }) => {
+			await prisma.user.update({
+				where: {
+					id: input.userId,
+				},
+				data: {
+					hasSeenLatestChangelog: true,
+				},
+			});
+		}),
 });

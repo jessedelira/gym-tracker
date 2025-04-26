@@ -3,22 +3,30 @@ import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 
 interface CurrentSessionElapsedTimerProps {
-	startedAtDate: Date;
+	startedAtDate?: Date;
 }
 
 const CurrentWorkoutDisplay: React.FC<CurrentSessionElapsedTimerProps> = ({
 	startedAtDate,
 }) => {
-	const [elapsedMinutes, setElapsedMinutes] = useState<string | null>();
-	const [elapsedSeconds, setElapsedSeconds] = useState<string | null>();
+	const [elapsedMinutes, setElapsedMinutes] = useState<string>('0');
+	const [elapsedSeconds, setElapsedSeconds] = useState<string>('0');
 	const { data: sessionData } = useSession();
 
 	useEffect(() => {
+		const currentTime = new Date();
+		const elapsedMilliseconds =
+			currentTime.getTime() - (startedAtDate?.getTime() ?? 0);
+		const initialMinutes = Math.floor(elapsedMilliseconds / 60000);
+		const initialSeconds = Math.floor((elapsedMilliseconds % 60000) / 1000);
+
+		setElapsedMinutes(`${initialMinutes}`);
+		setElapsedSeconds(`${initialSeconds}`);
+
 		const interval = setInterval(() => {
 			const currentTime = new Date();
-
 			const elapsedMilliseconds =
-				currentTime.getTime() - startedAtDate.getTime();
+				currentTime.getTime() - (startedAtDate?.getTime() ?? 0);
 
 			const elapsedMinutes = Math.floor(elapsedMilliseconds / 60000);
 			const elapsedSeconds = Math.floor(

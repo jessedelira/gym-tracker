@@ -49,55 +49,73 @@ const SignIn: NextPage<SignInProps> = ({ csrfToken }) => {
 	};
 
 	return (
-		<div className="flex h-screen flex-col items-center justify-center">
-			<div className="flex flex-col items-center justify-center gap-4">
-				<h1 className="mb-4 text-2xl text-black">
-					Sign in to Gym Tracker
-				</h1>
+		<main className="min-h-screen bg-gray-50 px-4">
+			<div className="mx-auto flex min-h-screen max-w-md flex-col justify-center py-16">
+				{/* Header */}
+				<div className="mb-8 text-center">
+					<h1 className="text-3xl font-semibold tracking-tight text-gray-900">
+						Welcome Back
+					</h1>
+					<p className="mt-3 text-gray-600">
+						Sign in to continue your fitness journey
+					</p>
+				</div>
+
+				{/* Form Card */}
 				<form
-					className="flex flex-col items-center justify-center gap-4"
+					className="space-y-6"
 					onSubmit={(e) => void handleSignInSubmit(e)}
 				>
+					{/* Error Message */}
 					{showErrorMessage && (
-						<div className="flex justify-center rounded-full border-2 border-red-300 bg-red-200 p-3">
-							<p className=" text-sm">
-								Incorrect username or password.
+						<div className="flex items-center justify-between rounded-xl bg-red-50 px-4 py-3 text-red-700">
+							<p className="text-sm font-medium">
+								Incorrect username or password
 							</p>
 							<button
-								className="ml-1"
 								onClick={handleCloseErrorMessage}
+								className="ml-3 rounded-full p-1 hover:bg-red-100"
+								type="button"
 							>
-								<XIcon />
+								<XIcon className="h-4 w-4" />
 							</button>
 						</div>
 					)}
-					<input
-						type="text"
-						placeholder="Username"
-						id="username"
-						className="rounded-lg bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
-						required
-					/>
-					<PasswordInput
-						id="password"
-						placeholder="Password"
-						isRequired
-					/>
-					<button
-						className="rounded-lg bg-primaryButton px-16 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
-						type="submit"
-					>
-						Sign In
-					</button>
-					<Link
-						href="/"
-						className="rounded-lg bg-black/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-black/20"
-					>
-						Back
-					</Link>
+
+					{/* Input Fields */}
+					<div className="space-y-4 rounded-2xl bg-white p-8 shadow-sm">
+						<input
+							type="text"
+							placeholder="Username"
+							id="username"
+							className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 transition-all hover:border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+							required
+						/>
+						<PasswordInput
+							id="password"
+							placeholder="Password"
+							isRequired
+						/>
+					</div>
+
+					{/* Action Buttons */}
+					<div className="space-y-4">
+						<button
+							className="w-full rounded-2xl bg-blue-600 px-8 py-4 text-base font-medium text-white shadow-md transition-all hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+							type="submit"
+						>
+							Sign In
+						</button>
+						<Link
+							href="/"
+							className="block w-full rounded-2xl border-2 border-gray-200 bg-white px-8 py-4 text-center text-base font-medium text-gray-700 shadow-sm transition-all hover:border-gray-300 hover:bg-gray-50"
+						>
+							Back to Home
+						</Link>
+					</div>
 				</form>
 			</div>
-		</div>
+		</main>
 	);
 };
 

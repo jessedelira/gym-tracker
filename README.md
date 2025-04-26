@@ -19,7 +19,6 @@
 ![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen?logo=github) ![Website](https://img.shields.io/website?url=https%3A%2F%2Fgym-tracker.app&logo)
 ![stars](https://img.shields.io/github/stars/jessedelira/gym-tracker)
 
-
   </p>
   <p>
     <sub>
@@ -56,7 +55,6 @@ All deployments using vercel are given multiple deployment URLs that are automat
 [![Docker][Docker]][Docker-url]
 [![Vercel][Vercel]][Vercel-url]
 [![Node][node]][node-url]
-[![AWS][AWS]][AWS-url]
 
 ## Contributing
 
@@ -103,13 +101,15 @@ This is a list things you need to use the Gym Tracker.
     $ git clone https://github.com/jessedelira/gym-tracker.git
     ```
 2. Create MySQL container
+
     ```sh
     $ docker compose up -d
     ```
 
-4. Create .env at root of project and add the following:
+3. Create .env at root of project and add the following:
 
-    - Use this command: `$ openssl rand -base64 32` to create a NEXTAUTH_SECRET env var
+    - Use this command: `$ openssl rand -base64 32` to create a NEXTAUTH_SECRET env var, if you are using **Bash/ZSH**
+    - Use this command : `$ [Convert]::ToBase64String((1..32|%{Get-Random -Maximum 256}))` to create a NEXTAUTH_SECRET env var, if you are using **PowerShell**
 
     ```sh
       DATABASE_URL="mysql://root:password@localhost:3306/gym_tracker"
@@ -118,8 +118,9 @@ This is a list things you need to use the Gym Tracker.
       NODE_ENV="development"
     ```
 
-5. Run `$ npm install` at root of project to install the dependencies
+4. Run `$ npm install` at root of project to install the dependencies
     - This will kick off the postinstall script, which will run `$ npx prisma migrate dev` to create the database tables and populate the database with seed data
+5. Make sure you have an environment variable for `NODE_ENV` set to `development` in your `.zshrc` file or `.bashrc` file
 6. Finally, run `$ npm run dev` to start the server
 
 ### Warnings
@@ -169,5 +170,3 @@ Jesse De Lira - jessedelira1@gmail.com
 [Vercel-url]: https://vercel.com/
 [node]: https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=nodedotjs&logoColor=white
 [node-url]: https://nodejs.org/en/
-[AWS]: https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white
-[AWS-url]: https://aws.amazon.com/

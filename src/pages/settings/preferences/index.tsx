@@ -70,28 +70,51 @@ const Preferences: NextPage = () => {
 	return (
 		<Layout>
 			<div className="container mx-auto px-4 md:px-6 lg:px-8">
-				<div className="mb-8">
-					<h1 className="text-3xl font-bold tracking-tight">
+				{/* Header */}
+				<div className="mb-6">
+					<h1 className="text-2xl font-semibold text-gray-900">
 						Preferences
 					</h1>
-					<p className="text-muted-foreground mt-2">
-						Customize your experience by toggling features on or
-						off.
+					<p className="mt-2 text-gray-600">
+						Customize your experience by toggling features on or off
 					</p>
 				</div>
-				<div className="grid gap-6">
+
+				{/* Preferences List */}
+				<div className="space-y-4">
 					{preferenceOptions.map((option) => (
-						<PreferenceToggle
+						<div
 							key={option.id}
-							option={option}
-							onToggle={(e) => void handlePreferenceToggle(e)}
-							isEnabled={
-								sessionData?.user.userPreferences?.find(
-									(pref) => pref.preference === option.id,
-								)?.enabled ?? false
-							}
-						/>
+							className="rounded-2xl bg-white p-6 shadow-sm"
+						>
+							<div className="flex items-center justify-between">
+								<PreferenceToggle
+									option={option}
+									onToggle={(e) =>
+										void handlePreferenceToggle(e)
+									}
+									isEnabled={
+										sessionData?.user.userPreferences?.find(
+											(pref) =>
+												pref.preference === option.id,
+										)?.enabled ?? false
+									}
+								/>
+							</div>
+						</div>
 					))}
+				</div>
+
+				{/* Additional Settings */}
+				<div className="mt-8">
+					<h2 className="mb-4 text-xl font-semibold text-gray-900">
+						Additional Settings
+					</h2>
+					<div className="rounded-2xl bg-blue-50/50 p-6">
+						<p className="text-blue-600">
+							More customization options coming soon. Stay tuned!
+						</p>
+					</div>
 				</div>
 			</div>
 		</Layout>

@@ -1,41 +1,61 @@
+import { ExerciseType } from '@prisma/client';
+
 interface WorkoutCardProps {
 	workoutId: string;
 	exerciseName: string;
-	onChangeHanlder: (event: React.ChangeEvent<HTMLInputElement>) => void;
-	sets: number;
-	weightInLbs: number;
-	reps: number;
+	onChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	sets?: number | null;
+	weightInLbs?: number | null;
+	reps?: number | null;
+	durationSeconds?: number | null;
+	exerciseType: ExerciseType;
+	isChecked: boolean;
 }
 
 const WorkoutCard: React.FC<WorkoutCardProps> = ({
 	workoutId,
 	exerciseName,
-	onChangeHanlder,
+	onChangeHandler,
 	sets,
 	weightInLbs,
 	reps,
+	durationSeconds,
+	exerciseType,
+	isChecked,
 }) => {
+	const formatDuration = (seconds: number) => {
+		const minutes = Math.floor(seconds / 60);
+		const remainingSeconds = seconds % 60;
+		return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+	};
+
 	return (
-		<div
-			key={workoutId}
-			className="mt-6 w-80 overflow-hidden rounded-lg bg-[#f5f5f5]"
-		>
-			<div className="p-6 md:p-8">
-				<div className="mb-4 flex items-center justify-between">
-					<h3 className="text-lg font-semibold">{exerciseName}</h3>
-					<div className="flex items-center">
-						<input
-							type="checkbox"
-							id={workoutId}
-							className="text-primary h-4 w-4 rounded border-gray-300"
-							onChange={onChangeHanlder}
-						/>
+		<div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+			<div className="flex items-center justify-between">
+				<div className="flex-1">
+					<h3 className="text-base font-medium text-gray-900">
+						{exerciseName}
+					</h3>
+					<div className="mt-2 flex items-center space-x-4 text-sm text-gray-500">
+						{exerciseType === ExerciseType.WEIGHTED ? (
+							<>
+								<span>{sets} sets</span>
+								<span>{reps} reps</span>
+								<span>{weightInLbs} lbs</span>
+							</>
+						) : (
+							<span>{formatDuration(durationSeconds ?? 0)}</span>
+						)}
 					</div>
 				</div>
-				<div className="grid grid-cols-2 gap-3 text-sm text-[#666666]">
-					<div>Reps: {reps}</div>
-					<div className="text-right">Sets: {sets}</div>
-					<div>Weight: {weightInLbs} lbs</div>
+				<div className="ml-4">
+					<input
+						type="checkbox"
+						id={workoutId}
+						checked={isChecked}
+						className="h-5 w-5 rounded-md border-gray-300 text-blue-600 focus:ring-blue-500"
+						onChange={onChangeHandler}
+					/>
 				</div>
 			</div>
 		</div>

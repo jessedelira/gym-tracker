@@ -16,7 +16,13 @@
     /* Use static viewport height to prevent keyboard shifts */
     :root {
         height: 100vh;
-        overflow: hidden;
+    }
+    
+    /* Allow scrolling on landing page */
+    .landing-page {
+        height: auto;
+        min-height: 100vh;
+        overflow: auto;
     }
 
     /* Prevent pull-to-refresh but allow content to scroll naturally */

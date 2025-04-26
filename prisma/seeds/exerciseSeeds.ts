@@ -17,6 +17,7 @@ const seedExercises = async () => {
 				name: 'Bench Press',
 				description:
 					'The bench press is an upper-body weight training exercise in which the trainee presses a weight upwards while lying on a weight training bench.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -25,6 +26,7 @@ const seedExercises = async () => {
 				name: 'Squat',
 				description:
 					'The squat is a compound, full-body exercise that works more than one muscle group. This powerful exercise helps tone your glutes, strengthen your body and burn a lot of calories.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -33,6 +35,7 @@ const seedExercises = async () => {
 				name: 'Deadlift',
 				description:
 					'The deadlift is a weight training exercise in which a loaded barbell or bar is lifted off the ground to the level of the hips, torso perpendicular to the floor, before being placed back on the ground.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -41,6 +44,7 @@ const seedExercises = async () => {
 				name: 'Overhead Press',
 				description:
 					'The overhead press is a compound movement that targets a number of muscles in the upper body. The overhead press is a great exercise to build strength and muscle in the shoulders, upper back, and arms.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -49,6 +53,7 @@ const seedExercises = async () => {
 				name: 'Barbell Row',
 				description:
 					'The barbell row is a compound exercise that targets a number of muscles in the back, most notably the latissimus dorsi (or “lats”).',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -57,6 +62,7 @@ const seedExercises = async () => {
 				name: 'Pull Up',
 				description:
 					'A pull-up is an upper-body strength exercise. The pull-up is a closed-chain movement where the body is suspended by the hands and pulls up.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -65,6 +71,7 @@ const seedExercises = async () => {
 				name: 'Dumbbell Curl',
 				description:
 					'The dumbbell curl is a classic biceps-building exercise. Gripping a dumbbell in each hand, stand up straight with your knees slightly bent and your elbows locked at your sides.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -73,6 +80,7 @@ const seedExercises = async () => {
 				name: 'Tricep Extension',
 				description:
 					'The triceps extension is an isolation exercise that targets your triceps brachii, the muscle that runs along the back of your upper arm. This exercise is commonly performed with a dumbbell, but you can also use a barbell, EZ bar, or machine.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -81,6 +89,7 @@ const seedExercises = async () => {
 				name: 'Dumbbell Fly',
 				description:
 					'The dumbbell fly is a popular exercise for the pectoral muscles. It is performed by holding lightweight dumbbells in both hands and lying on a bench or exercise ball.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -89,6 +98,7 @@ const seedExercises = async () => {
 				name: 'Dumbbell Lateral Raise',
 				description:
 					'The dumbbell lateral raise is a great exercise for building strength and size in your lateral deltoids, which are the muscles on the sides of your shoulders.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -97,6 +107,7 @@ const seedExercises = async () => {
 				name: 'Dumbbell Front Raise',
 				description:
 					'The dumbbell front raise is a great exercise for building strength and size in your front deltoids, which are the muscles on the front of your shoulders.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -105,6 +116,7 @@ const seedExercises = async () => {
 				name: 'Dumbbell Shoulder Press',
 				description:
 					'The dumbbell shoulder press is a great exercise for building strength and size in your shoulders.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -113,6 +125,7 @@ const seedExercises = async () => {
 				name: 'Dumbbell Shrug',
 				description:
 					'The dumbbell shrug is a great exercise for building strength and size in your traps.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -121,6 +134,7 @@ const seedExercises = async () => {
 				name: 'Dumbbell Squat',
 				description:
 					'The dumbbell squat is a great exercise for building strength and size in your legs.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -129,6 +143,7 @@ const seedExercises = async () => {
 				name: 'Dumbbell Lunge',
 				description:
 					'The dumbbell lunge is a great exercise for building strength and size in your legs.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -137,6 +152,7 @@ const seedExercises = async () => {
 				name: 'Dumbbell Calf Raise',
 				description:
 					'The dumbbell calf raise is a great exercise for building strength and size in your calves.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -145,6 +161,7 @@ const seedExercises = async () => {
 				name: 'Dumbbell Crunch',
 				description:
 					'The dumbbell crunch is a great exercise for building strength and size in your abs.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -153,6 +170,7 @@ const seedExercises = async () => {
 				name: 'Dumbbell Russian Twist',
 				description:
 					'The dumbbell russian twist is a great exercise for building strength and size in your obliques.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -161,6 +179,7 @@ const seedExercises = async () => {
 				name: 'Dumbbell Side Bend',
 				description:
 					'The dumbbell side bend is a great exercise for building strength and size in your obliques.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -169,6 +188,7 @@ const seedExercises = async () => {
 				name: 'Arnolds',
 				description:
 					'Arnolds are a great exercise for building strength and size in your shoulders.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -177,6 +197,7 @@ const seedExercises = async () => {
 				name: 'Hip Flexor Curl',
 				description:
 					'Hip flexor curls are a great exercise for building strength and size in your hip flexors.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -185,6 +206,7 @@ const seedExercises = async () => {
 				name: 'Lat Pulldown',
 				description:
 					'Lat pulldowns are a great exercise for building strength and size in your back.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -193,6 +215,7 @@ const seedExercises = async () => {
 				name: 'Dumbbell Bench Press',
 				description:
 					'The dumbbell bench press is a great exercise for building strength and size in your chest.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -201,6 +224,7 @@ const seedExercises = async () => {
 				name: 'Dumbbell Incline Bench Press',
 				description:
 					'The dumbbell incline bench press is a great exercise for building strength and size in your chest.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -209,6 +233,7 @@ const seedExercises = async () => {
 				name: 'Run',
 				description:
 					'Running is a great exercise for building strength and size in your legs.',
+				type: 'DURATION',
 			},
 		});
 
@@ -217,6 +242,7 @@ const seedExercises = async () => {
 				name: 'Sprint',
 				description:
 					'Sprinting is a great exercise for building strength and size in your legs.',
+				type: 'DURATION',
 			},
 		});
 
@@ -225,6 +251,7 @@ const seedExercises = async () => {
 				name: 'Jump Rope',
 				description:
 					'Jumping rope is a great exercise for building strength and size in your legs.',
+				type: 'DURATION',
 			},
 		});
 
@@ -233,6 +260,7 @@ const seedExercises = async () => {
 				name: 'Swim',
 				description:
 					'Swimming is a great exercise for building strength and size in your arms and legs.',
+				type: 'DURATION',
 			},
 		});
 
@@ -241,6 +269,7 @@ const seedExercises = async () => {
 				name: 'Bike',
 				description:
 					'Biking is a great exercise for building strength and size in your legs.',
+				type: 'DURATION',
 			},
 		});
 
@@ -249,6 +278,7 @@ const seedExercises = async () => {
 				name: 'Row',
 				description:
 					'Rowing is a great exercise for building strength and size in your arms and legs.',
+				type: 'DURATION',
 			},
 		});
 
@@ -257,6 +287,7 @@ const seedExercises = async () => {
 				name: 'Climb',
 				description:
 					'Climbing is a great exercise for building strength and size in your arms and legs.',
+				type: 'DURATION',
 			},
 		});
 
@@ -265,6 +296,7 @@ const seedExercises = async () => {
 				name: 'Hike',
 				description:
 					'Hiking is a great exercise for building strength and size in your legs.',
+				type: 'DURATION',
 			},
 		});
 
@@ -273,6 +305,7 @@ const seedExercises = async () => {
 				name: 'Walk',
 				description:
 					'Walking is a great exercise for building strength and size in your legs.',
+				type: 'DURATION',
 			},
 		});
 
@@ -281,6 +314,7 @@ const seedExercises = async () => {
 				name: 'Pullup',
 				description:
 					'Pullups are a great exercise for building strength and size in your back and arms.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -289,6 +323,7 @@ const seedExercises = async () => {
 				name: 'Dip',
 				description:
 					'Dips are a great exercise for building strength and size in your chest and arms.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -297,6 +332,7 @@ const seedExercises = async () => {
 				name: 'Pushup',
 				description:
 					'Pushups are a great exercise for building strength and size in your chest and arms.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -305,6 +341,7 @@ const seedExercises = async () => {
 				name: 'Situp',
 				description:
 					'Situps are a great exercise for building strength and size in your abs.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -313,6 +350,7 @@ const seedExercises = async () => {
 				name: 'Plank',
 				description:
 					'Planks are a great exercise for building strength and size in your abs.',
+				type: 'DURATION',
 			},
 		});
 
@@ -321,6 +359,7 @@ const seedExercises = async () => {
 				name: 'Crunch',
 				description:
 					'Crunches are a great exercise for building strength and size in your abs.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -329,6 +368,7 @@ const seedExercises = async () => {
 				name: 'Leg Raise',
 				description:
 					'Leg raises are a great exercise for building strength and size in your abs.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -337,6 +377,7 @@ const seedExercises = async () => {
 				name: 'Flutter Kick',
 				description:
 					'Flutter kicks are a great exercise for building strength and size in your abs.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -345,6 +386,7 @@ const seedExercises = async () => {
 				name: 'Bicycle Crunch',
 				description:
 					'Bicycle crunches are a great exercise for building strength and size in your abs.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -353,6 +395,7 @@ const seedExercises = async () => {
 				name: 'Russian Twist',
 				description:
 					'Russian twists are a great exercise for building strength and size in your abs.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -361,6 +404,7 @@ const seedExercises = async () => {
 				name: 'Mountain Climber',
 				description:
 					'Mountain climbers are a great exercise for building strength and size in your abs.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -369,6 +413,7 @@ const seedExercises = async () => {
 				name: 'Burpee',
 				description:
 					'Burpees are a great exercise for building strength and size in your entire body.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -377,6 +422,7 @@ const seedExercises = async () => {
 				name: 'Jumping Jack',
 				description:
 					'Jumping jacks are a great exercise for building strength and size in your entire body.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -385,6 +431,7 @@ const seedExercises = async () => {
 				name: 'High Knees',
 				description:
 					'High knees are a great exercise for building strength and size in your legs.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -395,6 +442,7 @@ const seedExercises = async () => {
 				name: 'Jump Squat',
 				description:
 					'Jump squats are a great exercise for building strength and size in your legs.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -403,6 +451,7 @@ const seedExercises = async () => {
 				name: 'Lunge',
 				description:
 					'Weight Lunge are a great exercise for building strength and size in your legs.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -411,6 +460,7 @@ const seedExercises = async () => {
 				name: 'Leg Press',
 				description:
 					'Leg Press are a great exercise for building strength and size in your legs.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -419,6 +469,7 @@ const seedExercises = async () => {
 				name: 'Leg Curl',
 				description:
 					'Leg Curl are a great exercise for building strength and size in your legs.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -427,6 +478,7 @@ const seedExercises = async () => {
 				name: 'Leg Extension',
 				description:
 					'Leg Extension are a great exercise for building strength and size in your legs.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -435,6 +487,7 @@ const seedExercises = async () => {
 				name: 'Skull Crusher',
 				description:
 					'Skull Crusher are a great exercise for building strength and size in your arms.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -443,6 +496,7 @@ const seedExercises = async () => {
 				name: 'Hammer Curl',
 				description:
 					'Hammer Curl are a great exercise for building strength and size in your arms.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -451,6 +505,7 @@ const seedExercises = async () => {
 				name: 'Reverse Curl',
 				description:
 					'Reverse Curl are a great exercise for building strength and size in your arms.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -459,6 +514,7 @@ const seedExercises = async () => {
 				name: 'Preacher Curl',
 				description:
 					'Preacher Curl are a great exercise for building strength and size in your arms.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -467,6 +523,7 @@ const seedExercises = async () => {
 				name: 'Tricep Pull Down',
 				description:
 					'Tricep Pull Downs are a great exercise for building strength and size in your arms.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -475,6 +532,7 @@ const seedExercises = async () => {
 				name: 'Bulgarian Split Squat',
 				description:
 					'Bulgarian Split Squats are a great exercise for building strength and size in your legs.',
+				type: 'WEIGHTED',
 			},
 		});
 
@@ -483,6 +541,7 @@ const seedExercises = async () => {
 				name: 'Horizontal Row',
 				description:
 					'Horizontal Rows are a great exercise for building strength and size in your back.',
+				type: 'WEIGHTED',
 			},
 		});
 	}

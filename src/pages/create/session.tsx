@@ -9,15 +9,16 @@ import {
 	getSessionNameInputElement,
 } from '~/utils/documentUtils';
 import Spinner from '~/components/Spinner';
-import PlusIcon from '~/components/icons/plusIcon';
+// import PlusIcon from '~/components/icons/plusIcon';
 import CreateWorkoutModal from '~/components/createWorkoutModal';
 import TrashCanIcon from '~/components/icons/trashCanIcon';
 
 interface CreateWorkoutData {
 	exerciseId: string;
-	weightLbs: number;
-	reps: number;
-	sets: number;
+	weightLbs?: number;
+	reps?: number;
+	sets?: number;
+	durationSeconds?: number;
 	id: number;
 }
 
@@ -36,6 +37,8 @@ const Session: NextPage = () => {
 	const [fridayActive, setFridayActive] = useState(false);
 	const [saturdayActive, setSaturdayActive] = useState(false);
 	const [workoutId, setWorkoutId] = useState(1);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
+	const [addToActiveRoutine, setAddToActiveRoutine] = useState(false);
 
 	const router = useRouter();
 
@@ -43,6 +46,8 @@ const Session: NextPage = () => {
 	const createWorkoutManyMutation =
 		api.workout.createManyWorkouts.useMutation();
 	const { data: exercisesData } = api.exercise.getAllExercises.useQuery();
+	const addSessionToActiveRoutineMutation =
+		api.routine.addSessionToActiveRoutine.useMutation();
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -53,6 +58,31 @@ const Session: NextPage = () => {
 	const handleSaveClicked = async (e: FormEvent<HTMLFormElement>) => {
 		if (sessionData) {
 			e.preventDefault();
+			setErrorMessage(null);
+
+			// Validate at least one day is selected
+			const hasSelectedDay = [
+				sundayActive,
+				mondayActive,
+				tuesdayActive,
+				wednesdayActive,
+				thursdayActive,
+				fridayActive,
+				saturdayActive,
+			].some((day) => day);
+
+			if (!hasSelectedDay) {
+				setErrorMessage('Please select at least one day of the week');
+				return;
+			}
+
+			// Validate at least one workout is added when days are selected
+			if (hasSelectedDay && newWorkoutData.length === 0) {
+				setErrorMessage(
+					'Please add at least one workout to your session',
+				);
+				return;
+			}
 
 			const newSessionName = getSessionNameInputElement(document).value;
 			const newSessionDescription =
@@ -77,32 +107,66 @@ const Session: NextPage = () => {
 				days: activeDays,
 			};
 
-			const createdSession = await createSessionMutation.mutateAsync(
-				createSessionData,
-			);
-
-			// get the workouts that are in state and save them to the database
-
-			// create object for new creation
-			const createdSessionId = createdSession.id;
-			const newWorkoutDataWithSessionId = newWorkoutData.map(
-				(workout) => {
-					return {
-						...workout,
-						sessionId: createdSessionId,
-						userId: sessionData.user.id,
-					};
-				},
-			);
-
-			await createWorkoutManyMutation.mutateAsync(
-				newWorkoutDataWithSessionId,
-				{
-					onSuccess: () => {
-						void router.push('/manage/sessions');
+			try {
+				const createdSession = await createSessionMutation.mutateAsync(
+					createSessionData,
+					{
+						onError: (error) => {
+							console.error('Session creation error:', error);
+							setErrorMessage(
+								'Failed to create session. Please try again.',
+							);
+						},
 					},
-				},
-			);
+				);
+
+				// Create workouts only if session was created successfully
+				if (createdSession) {
+					const newWorkoutDataWithSessionId = newWorkoutData.map(
+						(workout) => ({
+							...workout,
+							sessionId: createdSession.id,
+							userId: sessionData.user.id,
+						}),
+					);
+
+					await createWorkoutManyMutation.mutateAsync(
+						newWorkoutDataWithSessionId,
+						{
+							onSuccess: () => {
+								if (addToActiveRoutine) {
+									void addSessionToActiveRoutineMutation.mutateAsync(
+										{
+											sessionId: createdSession.id,
+											userId: sessionData.user.id,
+										},
+									);
+								}
+								void router.push('/manage/sessions');
+							},
+							onError: (error) => {
+								console.error('Workout creation error:', error);
+								setErrorMessage(
+									'Failed to create workouts. Please try again.',
+								);
+							},
+						},
+					);
+				}
+			} catch (error) {
+				if (error instanceof Error) {
+					if (error.message.includes('Unique constraint')) {
+						setErrorMessage(
+							'A session with this name already exists',
+						);
+					} else {
+						setErrorMessage(
+							'An error occurred while creating the session',
+						);
+						console.error('Detailed error:', error);
+					}
+				}
+			}
 		}
 	};
 
@@ -120,32 +184,31 @@ const Session: NextPage = () => {
 		setShowModal(true);
 	};
 
-	const handleButtonClicked = (elementId: string) => {
-		const element = document.getElementById(elementId);
-		if (element?.id === 'sunday') {
-			setSundayActive(!sundayActive);
+	const handleButtonClicked = (dayId: string) => {
+		setDataChangeInForm(true);
+		switch (dayId) {
+			case 'sunday':
+				setSundayActive(!sundayActive);
+				break;
+			case 'monday':
+				setMondayActive(!mondayActive);
+				break;
+			case 'tuesday':
+				setTuesdayActive(!tuesdayActive);
+				break;
+			case 'wednesday':
+				setWednesdayActive(!wednesdayActive);
+				break;
+			case 'thursday':
+				setThursdayActive(!thursdayActive);
+				break;
+			case 'friday':
+				setFridayActive(!fridayActive);
+				break;
+			case 'saturday':
+				setSaturdayActive(!saturdayActive);
+				break;
 		}
-		if (element?.id === 'monday') {
-			setMondayActive(!mondayActive);
-		}
-		if (element?.id === 'tuesday') {
-			setTuesdayActive(!tuesdayActive);
-		}
-		if (element?.id === 'wednesday') {
-			setWednesdayActive(!wednesdayActive);
-		}
-		if (element?.id === 'thursday') {
-			setThursdayActive(!thursdayActive);
-		}
-		if (element?.id === 'friday') {
-			setFridayActive(!fridayActive);
-		}
-		if (element?.id === 'saturday') {
-			setSaturdayActive(!saturdayActive);
-		}
-
-		element?.classList.toggle('bg-green-500');
-		element?.classList.toggle('text-white');
 	};
 
 	const handleTrashCanClicked = (id: number) => {
@@ -155,22 +218,23 @@ const Session: NextPage = () => {
 		setNewWorkoutData(newWorkoutDataFiltered);
 	};
 
-	const handleModalSaveClicked = (
-		exerciseId: string,
-		weightLbs: number,
-		sets: number,
-		reps: number,
-	): void => {
+	const handleModalSaveClicked = (workoutData: {
+		exerciseId: string;
+		weightLbs?: number;
+		sets?: number;
+		reps?: number;
+		durationSeconds?: number;
+	}): void => {
 		const newWorkout: CreateWorkoutData = {
-			exerciseId: exerciseId,
-			weightLbs: weightLbs,
-			sets: sets,
-			reps: reps,
+			exerciseId: workoutData.exerciseId,
+			weightLbs: workoutData.weightLbs,
+			sets: workoutData.sets,
+			reps: workoutData.reps,
+			durationSeconds: workoutData.durationSeconds,
 			id: workoutId,
 		};
 
 		setNewWorkoutData([...newWorkoutData, newWorkout]);
-
 		setWorkoutId(workoutId + 1);
 		setShowModal(false);
 	};
@@ -186,141 +250,144 @@ const Session: NextPage = () => {
 					onXClick={() => setShowModal(false)}
 					onSaveClick={handleModalSaveClicked}
 					exercises={exercisesData ?? []}
-				></CreateWorkoutModal>
+				/>
 			)}
-			<div className="flex flex-col">
-				<div className="flex flex-row">
-					<h1 className="pl-2 text-3xl font-bold">Create</h1>
+			<div className="flex h-full flex-col bg-gray-50 px-4 py-6">
+				{/* Header */}
+				<div className="mb-6">
+					<h1 className="text-2xl font-semibold tracking-tight text-gray-900">
+						Create New Session
+					</h1>
+					<p className="mt-2 text-gray-600">
+						Set up your workout session and schedule
+					</p>
 				</div>
-				<h2 className="pl-2 text-2xl font-bold">Session Information</h2>
-				<form onSubmit={(e) => void handleSaveClicked(e)}>
-					<div className="mat-4 flex">
-						<div className="mat-4 w-18 mr-2 grid grid-cols-1 pl-2">
-							<label className="block font-bold">
+
+				<form
+					onSubmit={(e) => void handleSaveClicked(e)}
+					className="space-y-6"
+				>
+					{/* Error Message Banner */}
+					{errorMessage && (
+						<div className="rounded-xl border border-red-200 bg-red-50 p-4">
+							<div className="flex">
+								<div className="ml-3">
+									<h3 className="text-sm font-medium text-red-800">
+										{errorMessage}
+									</h3>
+								</div>
+							</div>
+						</div>
+					)}
+
+					{/* Main Form Content */}
+					<div className="rounded-2xl bg-white p-6 shadow-sm">
+						{/* Session Name */}
+						<div className="mb-6">
+							<label
+								htmlFor="sessionName"
+								className="mb-2 block text-sm font-medium text-gray-900"
+							>
 								Session Name*
 							</label>
 							<input
 								id="sessionName"
-								className=" rounded-md bg-gray-300 px-4 py-2 text-white"
-								placeholder="Name"
-								onChange={handleInputChange}
+								className={`w-full rounded-xl border-2 ${
+									errorMessage
+										? 'border-red-300 bg-red-50'
+										: 'border-gray-200 bg-white'
+								} px-4 py-3 text-gray-900 placeholder-gray-500 transition-all hover:border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200`}
+								placeholder="Enter session name"
+								onChange={() => {
+									handleInputChange();
+									if (errorMessage) setErrorMessage(null);
+								}}
 								required
-							></input>
+							/>
 						</div>
-					</div>
-					<div className="mat-4 grid grid-cols-1">
-						<label className="block pl-2 font-bold">
-							Description (optional)
-						</label>
-						<textarea
-							id="sessionDescription"
-							className="mx-2 rounded-md bg-gray-300 px-4 py-2 text-white"
-							placeholder="Description"
-							onChange={handleInputChange}
-						></textarea>
-					</div>
 
-					{/* Select Date Section */}
-					<div className="mat-4 grid grid-cols-1">
-						<label className="block pl-2 font-bold">
-							Day of the Week
-						</label>
-						<div className="mt-2 grid grid-cols-7">
-							<label className="pl-2">
-								<button
-									id="sunday"
-									type="button"
-									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500"
-									onChange={handleInputChange}
-									onClick={(e) =>
-										handleButtonClicked(e.currentTarget.id)
-									}
-								>
-									S
-								</button>
+						{/* Description */}
+						<div className="mb-6">
+							<label
+								htmlFor="sessionDescription"
+								className="mb-2 block text-sm font-medium text-gray-900"
+							>
+								Description (optional)
 							</label>
-							<label className=" pl-2">
-								<button
-									id="monday"
-									type="button"
-									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500"
-									onChange={handleInputChange}
-									onClick={(e) =>
-										handleButtonClicked(e.currentTarget.id)
-									}
-								>
-									M
-								</button>
+							<textarea
+								id="sessionDescription"
+								className="w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 transition-all hover:border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+								placeholder="Describe your session"
+								rows={3}
+								onChange={handleInputChange}
+							/>
+						</div>
+
+						{/* Days Selection */}
+						<div>
+							<label className="mb-2 block text-sm font-medium text-gray-900">
+								Days of the Week*
 							</label>
-							<label className=" pl-2">
-								<button
-									id="tuesday"
-									type="button"
-									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500"
-									onChange={handleInputChange}
-									onClick={(e) =>
-										handleButtonClicked(e.currentTarget.id)
-									}
-								>
-									T
-								</button>
-							</label>
-							<label className=" pl-2">
-								<button
-									id="wednesday"
-									type="button"
-									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500"
-									onChange={handleInputChange}
-									onClick={(e) =>
-										handleButtonClicked(e.currentTarget.id)
-									}
-								>
-									W
-								</button>
-							</label>
-							<label className=" pl-2">
-								<button
-									id="thursday"
-									type="button"
-									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500"
-									onChange={handleInputChange}
-									onClick={(e) =>
-										handleButtonClicked(e.currentTarget.id)
-									}
-								>
-									T
-								</button>
-							</label>
-							<label className=" pl-2">
-								<button
-									id="friday"
-									type="button"
-									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500"
-									onChange={handleInputChange}
-									onClick={(e) =>
-										handleButtonClicked(e.currentTarget.id)
-									}
-								>
-									F
-								</button>
-							</label>
-							<label className=" pl-2">
-								<button
-									id="saturday"
-									type="button"
-									className="flex h-8 w-9 items-center justify-center rounded-md bg-gray-100 font-medium text-gray-500"
-									onChange={handleInputChange}
-									onClick={(e) =>
-										handleButtonClicked(e.currentTarget.id)
-									}
-								>
-									S
-								</button>
-							</label>
+							<div className="grid grid-cols-7 gap-2">
+								{[
+									{
+										id: 'sunday',
+										label: 'S',
+										isActive: sundayActive,
+									},
+									{
+										id: 'monday',
+										label: 'M',
+										isActive: mondayActive,
+									},
+									{
+										id: 'tuesday',
+										label: 'T',
+										isActive: tuesdayActive,
+									},
+									{
+										id: 'wednesday',
+										label: 'W',
+										isActive: wednesdayActive,
+									},
+									{
+										id: 'thursday',
+										label: 'T',
+										isActive: thursdayActive,
+									},
+									{
+										id: 'friday',
+										label: 'F',
+										isActive: fridayActive,
+									},
+									{
+										id: 'saturday',
+										label: 'S',
+										isActive: saturdayActive,
+									},
+								].map((day) => (
+									<button
+										key={day.id}
+										id={day.id}
+										type="button"
+										onClick={() =>
+											handleButtonClicked(day.id)
+										}
+										className={`h-10 w-full rounded-lg font-medium transition-all focus:outline-none focus:ring-2 focus:ring-blue-200
+											${
+												day.isActive
+													? 'bg-green-500 text-white'
+													: 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+											}`}
+									>
+										{day.label}
+									</button>
+								))}
+							</div>
 						</div>
 					</div>
 
-					{/* Create Workout Section */}
+					{/* Workouts Section */}
 					{(sundayActive ||
 						mondayActive ||
 						tuesdayActive ||
@@ -328,88 +395,102 @@ const Session: NextPage = () => {
 						thursdayActive ||
 						fridayActive ||
 						saturdayActive) && (
-						<div className="mt-4">
-							<h2 className="flex justify-center text-xl font-medium">
+						<div className="rounded-2xl bg-white p-6 shadow-sm">
+							<h2 className="mb-4 text-lg font-medium text-gray-900">
 								Workouts
 							</h2>
-							<div className="m-2 flex justify-center rounded-md bg-lime-300 ">
-								<button
-									className="flex w-full justify-center"
-									type="button"
-									onClick={() =>
-										void handlePlusButtonClicked()
-									}
-								>
-									<PlusIcon />
-								</button>
-							</div>
-						</div>
-					)}
-
-					{/* Workouts set to be saved Section */}
-					{newWorkoutData.length !== 0 && (
-						<div className="mx-2 max-h-64 overflow-y-auto rounded-md shadow-md sm:rounded-lg">
-							<table className="w-full text-left text-sm text-gray-500">
-								<tbody>
-									{newWorkoutData &&
-										newWorkoutData.map((workout) => (
-											<tr
-												key={workout.exerciseId}
-												className="bg-white hover:bg-gray-50"
-											>
-												<th
-													scope="row"
-													className="whitespace-nowrap px-6 py-4 font-medium text-gray-900"
-												>
-													{
-														exercisesData?.find(
-															(exercise) =>
-																exercise.id ===
-																workout.exerciseId,
-														)?.name
-													}{' '}
-													- {workout.sets} x{' '}
-													{workout.reps}
-												</th>
-												<td className="grid grid-cols-2 px-6 py-4 text-right">
-													<button
-														className="ml-4 h-6 w-6  rounded-full pl-1"
-														onClick={() =>
-															handleTrashCanClicked(
-																workout.id,
-															)
-														}
-													>
-														<TrashCanIcon
-															heightValue={'6'}
-															widthValue={'6'}
-															strokeColor="red"
-														></TrashCanIcon>
-													</button>
-												</td>
-											</tr>
-										))}
-								</tbody>
-							</table>
-						</div>
-					)}
-
-					{dataChangeInForm ? (
-						<div className="mt-4 grid grid-cols-2 gap-1">
 							<button
-								className="ml-2 rounded-md bg-green-700 px-4 py-2 text-white"
-								type="submit"
+								type="button"
+								onClick={() => void handlePlusButtonClicked()}
+								className="mb-4 w-full rounded-xl border-2 border-dashed border-gray-300 bg-white py-4 text-center text-sm font-medium text-gray-600 transition-all hover:border-gray-400 hover:bg-gray-50"
 							>
-								Save
+								{/* <PlusIcon className="mx-auto h-6 w-6" /> */}
+								<span className="mt-2 block">Add Workout</span>
+							</button>
+
+							{/* Workouts List */}
+							{newWorkoutData.length > 0 && (
+								<div className="mt-4 space-y-2">
+									{newWorkoutData.map((workout) => (
+										<div
+											key={workout.id}
+											className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-4"
+										>
+											<div className="font-medium text-gray-900">
+												{
+													exercisesData?.find(
+														(exercise) =>
+															exercise.id ===
+															workout.exerciseId,
+													)?.name
+												}{' '}
+												{workout.durationSeconds
+													? // Display duration in minutes
+													  `- ${Math.floor(
+															workout.durationSeconds /
+																60,
+													  )} minutes`
+													: // Display sets and reps for weighted exercises
+													  `- ${workout.sets} x ${workout.reps}`}
+											</div>
+											<button
+												type="button"
+												onClick={() =>
+													handleTrashCanClicked(
+														workout.id,
+													)
+												}
+												className="rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-red-500"
+											>
+												<TrashCanIcon
+													heightValue="5"
+													widthValue="5"
+													strokeColor="currentColor"
+												/>
+											</button>
+										</div>
+									))}
+								</div>
+							)}
+						</div>
+					)}
+
+					{/* Add to Active Routine Option */}
+					<div className="rounded-2xl bg-white p-6 shadow-sm">
+						<label className="flex items-center space-x-3">
+							<input
+								type="checkbox"
+								checked={addToActiveRoutine}
+								onChange={(e) =>
+									setAddToActiveRoutine(e.target.checked)
+								}
+								className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+							/>
+							<span className="text-sm font-medium text-gray-900">
+								Add this session to your active routine
+							</span>
+						</label>
+					</div>
+
+					{/* Action Buttons */}
+					{dataChangeInForm && (
+						<div className="flex space-x-4">
+							<button
+								type="submit"
+								disabled={!!errorMessage}
+								className="flex-1 rounded-xl bg-blue-600 px-8 py-4 text-base font-medium text-white shadow-md transition-all hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-400"
+							>
+								Save Session
 							</button>
 							<button
-								className="mr-2 rounded-md bg-red-700 px-4 py-2 text-white"
+								type="button"
 								onClick={handleCancelClicked}
+								className="flex-1 rounded-xl border-2 border-gray-200 bg-white px-8 py-4 text-base font-medium text-gray-700 shadow-sm transition-all hover:border-gray-300 hover:bg-gray-50"
 							>
 								Cancel
 							</button>
 						</div>
-					) : null}
+					)}
 				</form>
 			</div>
 		</Layout>

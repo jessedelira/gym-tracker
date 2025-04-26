@@ -1,90 +1,164 @@
 import { useEffect, useState, useMemo } from 'react';
 import { api } from '~/utils/api';
-import HomePageSessionCard from './homePageSessionCard';
 import SmallSpinner from './smallSpinner';
-import Image from 'next/image';
 import { type User } from 'next-auth';
-import { Preference } from '@prisma/client';
+import { type ExerciseType, Preference } from '@prisma/client';
 import CurrentSessionElapsedTimer from './currentSessionElapsedTimer';
 import WorkoutCard from './icons/workoutCard';
 import { showConfetti } from '~/utils/confetti';
+import { NoActiveRoutineView } from './workout/NoActiveRoutineView';
+import { NoSessionsView } from './workout/NoSessionsView';
+import { WelcomeNewUserView } from './workout/WelcomeNewUserView';
+import WorkoutSessionCard from './workoutSessionCard';
+import { type Session } from '@prisma/client';
 
 interface CurrentWorkoutDisplayProps {
 	user: User;
 }
 
+type WorkoutCompletionMap = Record<string, boolean>;
+
+type WorkoutWithExercise = {
+	id: string;
+	userId: string;
+	sessionId: string;
+	exerciseId: string;
+	sets: number | null;
+	reps: number | null;
+	weightLbs: number | null;
+	durationSeconds: number | null;
+	exercise: {
+		id: string;
+		name: string;
+		type: ExerciseType;
+		description: string | null;
+	};
+};
+
 const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	user,
 }) => {
-	// Create a single Date object that can be reused across queries
+	// Move ALL hooks to the top
 	const currentDate = useMemo(() => new Date(), []);
+	const [allWorkoutsCompleted, setAllWorkoutsCompleted] = useState(false);
+	const [checkedWorkouts, setCheckedWorkouts] = useState<
+		Record<string, boolean>
+	>({});
 
-	//#region Queries
-	const {
-		data: possibleSessionsToStart,
-		isLoading: isPossibleSessionsLoading,
-	} = api.session.getSessionsThatAreActiveOnDate.useQuery({
-		userId: user.id,
-		date: currentDate,
-	});
-
-	const {
-		data: activeSessionData,
-		isLoading: isActiveSessionLoading,
-		refetch: refetchActiveSessionData,
-	} = api.activeSesssion.getActiveSession.useQuery({
-		userId: user.id,
-	});
-
-	const {
-		data: listOfCompletedSessionIds,
-		isLoading: isCompletedSessionsLoading,
-		refetch: refetchCompletedSessions,
-	} = api.completedSession.getListOfCompletedSessionIdsForActiveRoutine.useQuery(
-		{
-			userUTCDateTime: currentDate,
-		},
-	);
-
+	// All queries
 	const { data: activeRoutine, isLoading: isActiveRoutineLoading } =
 		api.routine.getActiveRoutine.useQuery({
 			userId: user.id,
 		});
 
 	const {
+		data: activeSessionData,
+		isLoading: isActiveSessionLoading,
+		refetch: refetchActiveSessionData,
+	} = api.activeSesssion.getActiveSession.useQuery(
+		{ userId: user.id },
+		{ enabled: !!activeRoutine },
+	);
+
+	const {
+		data: possibleSessionsToStart,
+		isLoading: isPossibleSessionsLoading,
+	} = api.session.getSessionsThatAreActiveOnDate.useQuery(
+		{ userId: user.id, date: currentDate },
+		{ enabled: !!activeRoutine && !activeSessionData },
+	);
+
+	const {
+		data: listOfCompletedSessionIds,
+		isLoading: isCompletedSessionsLoading,
+		refetch: refetchCompletedSessions,
+	} = api.completedSession.getListOfCompletedSessionIdsForActiveRoutine.useQuery(
+		{ userUTCDateTime: currentDate },
+		{ enabled: !!activeRoutine && !activeSessionData },
+	);
+
+	const {
 		data: workoutsForActiveSession,
 		isLoading: isWorkoutsLoading,
 		refetch: refetchWorkouts,
-	} = api.workout.getWorkoutsForActiveSession.useQuery(
+	} = api.workout.getWorkoutsForActiveSession.useQuery<WorkoutWithExercise[]>(
 		{
 			userId: user.id,
-			clientCurrentDate: currentDate,
 			sessionId: activeSessionData?.session.id ?? '',
 		},
-		{
-			// Only fetch if we have an active session
-			enabled: !!activeSessionData?.session.id,
-		},
+		{ enabled: !!activeSessionData?.session.id },
 	);
-	//#endregion
 
-	// Simplified loading state
-	const isLoading =
-		isPossibleSessionsLoading ||
-		isActiveSessionLoading ||
-		isCompletedSessionsLoading ||
-		isActiveRoutineLoading ||
-		(!!activeSessionData && isWorkoutsLoading); // Only consider workout loading when there's an active session
-
-	//#region Mutations with simplified names
+	// All mutations
 	const { mutateAsync: startSession } =
 		api.activeSesssion.addActiveSession.useMutation();
 
 	const { mutateAsync: completeSession } =
 		api.completedSession.createCompletedSession.useMutation();
-	//#endregion
 
-	//#region UI Handlers
+	// Effects
+	useEffect(() => {
+		if (workoutsForActiveSession) {
+			const workoutCompletionMap = localStorage.getItem(
+				'workoutCompletionMap',
+			);
+
+			if (!workoutCompletionMap) {
+				const initialMap: WorkoutCompletionMap = Object.fromEntries(
+					workoutsForActiveSession.map(({ id }) => [id, false]),
+				);
+				localStorage.setItem(
+					'workoutCompletionMap',
+					JSON.stringify(initialMap),
+				);
+				setCheckedWorkouts(initialMap);
+			} else {
+				try {
+					// Safely parse and validate the stored data
+					const parsedMap = JSON.parse(
+						workoutCompletionMap,
+					) as Record<string, unknown>;
+
+					if (isValidMap(parsedMap)) {
+						setCheckedWorkouts(parsedMap);
+						setAllWorkoutsCompleted(
+							Object.values(parsedMap).every(Boolean),
+						);
+					} else {
+						// If invalid data, reset to initial state
+						const initialMap: WorkoutCompletionMap =
+							Object.fromEntries(
+								workoutsForActiveSession.map(({ id }) => [
+									id,
+									false,
+								]),
+							);
+						localStorage.setItem(
+							'workoutCompletionMap',
+							JSON.stringify(initialMap),
+						);
+						setCheckedWorkouts(initialMap);
+					}
+				} catch (error) {
+					// Handle invalid JSON in localStorage
+					console.error(
+						'Invalid workout completion data in localStorage:',
+						error,
+					);
+					const initialMap: WorkoutCompletionMap = Object.fromEntries(
+						workoutsForActiveSession.map(({ id }) => [id, false]),
+					);
+					localStorage.setItem(
+						'workoutCompletionMap',
+						JSON.stringify(initialMap),
+					);
+					setCheckedWorkouts(initialMap);
+				}
+			}
+		}
+	}, [workoutsForActiveSession]);
+
+	// Handlers
 	const refetchAll = () =>
 		Promise.all([
 			refetchActiveSessionData(),
@@ -98,23 +172,24 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		const workoutId = event.target.id;
 		const isNowChecked = event.target.checked;
 
-		const workoutCompletionMap = JSON.parse(
-			localStorage.getItem('workoutCompletionMap') || '[]',
-		) as [string, boolean][];
+		const updatedWorkouts = {
+			...checkedWorkouts,
+			[workoutId]: isNowChecked,
+		};
 
-		const updatedWorkoutCompletionMap = workoutCompletionMap.map(
-			([id, isCompleted]) =>
-				id === workoutId ? [id, isNowChecked] : [id, isCompleted],
-		);
-
+		setCheckedWorkouts(updatedWorkouts);
 		localStorage.setItem(
 			'workoutCompletionMap',
-			JSON.stringify(updatedWorkoutCompletionMap),
+			JSON.stringify(updatedWorkouts),
 		);
+		setAllWorkoutsCompleted(Object.values(updatedWorkouts).every(Boolean));
+	};
 
-		setAllWorkoutsCompleted(
-			updatedWorkoutCompletionMap.every(([, isCompleted]) => isCompleted),
-		);
+	// Validate the parsed data
+	const isValidMap = (
+		map: Record<string, unknown>,
+	): map is WorkoutCompletionMap => {
+		return Object.values(map).every((value) => typeof value === 'boolean');
 	};
 
 	const handleStartSessionClick = async (sessionId: string) => {
@@ -122,7 +197,6 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			{ userId: user.id, sessionId },
 			{
 				onSuccess: () => {
-					setSessionHasStarted(true);
 					setAllWorkoutsCompleted(false);
 				},
 			},
@@ -135,36 +209,39 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		if (!activeSessionData) return;
 
 		try {
-			// Update UI state immediately for better user experience
-			setSessionHasStarted(false);
 			setAllWorkoutsCompleted(false);
 			localStorage.removeItem('workoutCompletionMap');
 
-			// Show confetti without waiting
 			if (userHasConfettiPreferenceEnabled) {
 				void showConfetti();
 			}
 
-			// Complete session
 			await completeSession({
 				userId: user.id,
 				sessionId: activeSessionData.session.id,
 			});
 
-			// Refetch data after completion
 			void refetchAll();
 		} catch (error) {
 			console.error('Error completing session:', error);
-			// Revert UI state if there's an error
-			setSessionHasStarted(true);
 		}
 	};
-	//#endregion
 
-	//#region State
-	const [allWorkoutsCompleted, setAllWorkoutsCompleted] = useState(false);
-	const [sessionHasStarted, setSessionHasStarted] = useState(false);
-	//#endregion
+	// Computed values
+	const isLoading =
+		(isActiveRoutineLoading && !activeRoutine) ||
+		(isActiveSessionLoading && !!activeRoutine) ||
+		(!!activeRoutine && !activeSessionData && isPossibleSessionsLoading) ||
+		(!!activeRoutine && !activeSessionData && isCompletedSessionsLoading) ||
+		(!!activeSessionData && isWorkoutsLoading);
+
+	const isNewUser = !activeRoutine;
+	const hasNoActiveRoutine = !isActiveRoutineLoading && !activeRoutine;
+	const hasNoSessions =
+		!!activeRoutine &&
+		!activeSessionData &&
+		!isPossibleSessionsLoading &&
+		(!possibleSessionsToStart || possibleSessionsToStart.length === 0);
 
 	const userHasConfettiPreferenceEnabled = user.userPreferences?.some(
 		(preference) =>
@@ -173,164 +250,98 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			preference.enabled === true,
 	);
 
-	useEffect(() => {
-		if (workoutsForActiveSession) {
-			if (workoutsForActiveSession.length > 0) {
-				const workoutCompletionMap = localStorage.getItem(
-					'workoutCompletionMap',
-				);
-
-				if (!workoutCompletionMap) {
-					const completionMap = workoutsForActiveSession?.map(
-						({ id }) => [id, false],
-					);
-
-					localStorage.setItem(
-						'workoutCompletionMap',
-						JSON.stringify(completionMap),
-					);
-				}
-			}
-
-			const workoutCompletionMap = JSON.parse(
-				localStorage.getItem('workoutCompletionMap') || '[]',
-			) as [string, boolean][];
-
-			const updateCheckbox = (workoutId: string) => {
-				const checkbox = document.getElementById(workoutId);
-				if (checkbox) {
-					checkbox.setAttribute('checked', 'true');
-				}
-			};
-
-			const checkAllWorkoutsCompleted = () => {
-				return workoutCompletionMap.every(
-					([, isCompleted]) => isCompleted === true,
-				);
-			};
-
-			workoutsForActiveSession.forEach((workout) => {
-				const workoutCompletionObj = workoutCompletionMap.find(
-					([id]) => id === workout.id,
-				);
-
-				if (workoutCompletionObj?.[1]) {
-					updateCheckbox(workout.id);
-				}
-
-				setAllWorkoutsCompleted(checkAllWorkoutsCompleted());
-			});
-		}
-	}, [activeSessionData, workoutsForActiveSession]);
-
+	// Render logic
 	if (isLoading) {
 		return <SmallSpinner />;
 	}
 
-	if (!activeRoutine) {
+	if (isNewUser) {
+		return <WelcomeNewUserView />;
+	}
+
+	if (hasNoActiveRoutine) {
+		return <NoActiveRoutineView />;
+	}
+
+	if (activeSessionData !== null && activeSessionData !== undefined) {
 		return (
-			<div className="flex h-full items-center justify-center">
-				<h1 className="m-12 text-lg font-medium text-gray-700">
-					No active routine, please go to manage routines to create
-					one and start it
-				</h1>
+			<div className="flex h-full w-[95%] flex-col items-center">
+				<div className="w-[90%] flex-1 flex-col pt-4">
+					<div className="mb-4 w-full rounded-lg bg-gray-50 p-4">
+						<h1 className="text-base font-medium text-gray-900">
+							{activeSessionData.session.name}
+						</h1>
+						{activeSessionData.startedAt && (
+							<CurrentSessionElapsedTimer
+								startedAtDate={activeSessionData.startedAt}
+							/>
+						)}
+					</div>
+
+					<div className="flex-1 space-y-3 overflow-auto pb-24">
+						{workoutsForActiveSession?.map((workout) => (
+							<WorkoutCard
+								key={workout.id}
+								workoutId={workout.id}
+								exerciseName={workout.exercise.name}
+								onChangeHandler={handleCheckboxChange}
+								sets={workout.sets ?? null}
+								weightInLbs={workout.weightLbs ?? null}
+								reps={workout.reps ?? null}
+								durationSeconds={
+									workout.durationSeconds ?? null
+								}
+								exerciseType={workout.exercise.type}
+								isChecked={checkedWorkouts[workout.id] || false}
+							/>
+						))}
+					</div>
+
+					<div
+						className={`fixed inset-x-0 bottom-0 z-20 transform transition-all duration-300 ${
+							allWorkoutsCompleted
+								? 'translate-y-0 opacity-100'
+								: 'pointer-events-none translate-y-full opacity-0'
+						}`}
+					>
+						<div className="z-20 mb-20 p-4 ">
+							<div className="mx-auto w-[90%] max-w-md">
+								<button
+									onClick={() =>
+										void handleCompleteSessionClick()
+									}
+									className="w-full rounded-xl bg-green-600 px-4 py-4 text-sm font-medium text-white transition-colors hover:bg-green-700"
+								>
+									Complete Workout Session
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		);
 	}
 
+	if (hasNoSessions) {
+		return <NoSessionsView routineName={activeRoutine?.name ?? ''} />;
+	}
+
+	// Show available sessions to start
 	return (
-		<>
-			{possibleSessionsToStart && possibleSessionsToStart.length === 0 ? (
-				<div className="flex h-full items-center justify-center">
-					<h1 className="m-12 pb-10 text-lg font-medium text-gray-700">
-						<Image
-							src="/gifs/bunnyRunner.gif"
-							alt="Animated running rabbit"
-							width={300}
-							height={300}
-						/>
-						Your active routine, {activeRoutine.name}, has no
-						sessions for today!
-					</h1>
-				</div>
-			) : (
-				<>
-					{activeSessionData === null &&
-					sessionHasStarted === false ? (
-						<div className="hide-scrollbar overflow-auto">
-							{possibleSessionsToStart &&
-								possibleSessionsToStart.map((session) => (
-									<HomePageSessionCard
-										key={session.id}
-										sessionName={session.name}
-										sessionDescription={
-											session.description ?? ''
-										}
-										handleStartButtonClick={() =>
-											handleStartSessionClick(session.id)
-										}
-										isCompleted={listOfCompletedSessionIds?.includes(
-											session.id,
-										)}
-									></HomePageSessionCard>
-								))}
-						</div>
-					) : (
-						<>
-							{activeSessionData && workoutsForActiveSession && (
-								<>
-									<h1 className="font-bold">
-										Current Workout Session:{' '}
-										{activeSessionData.session.name}
-									</h1>
-									<CurrentSessionElapsedTimer
-										startedAtDate={
-											activeSessionData.startedAt
-										}
-									/>
-
-									<div className="hide-scrollbar overflow-auto rounded-md">
-										{workoutsForActiveSession.map(
-											(workout) => (
-												<WorkoutCard
-													key={workout.id}
-													workoutId={workout.id}
-													exerciseName={
-														workout.exercise.name
-													}
-													onChangeHanlder={
-														handleCheckboxChange
-													}
-													sets={workout.sets}
-													weightInLbs={
-														workout.weightLbs
-													}
-													reps={workout.reps}
-												/>
-											),
-										)}
-									</div>
-
-									<div className="flex-grow" />
-
-									<div className="flex w-full justify-center rounded-tl-xl rounded-tr-xl bg-black">
-										<button
-											className="my-2 rounded-md bg-primaryButton p-3 font-medium  disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-500 disabled:shadow-none"
-											disabled={!allWorkoutsCompleted}
-											onClick={() =>
-												void handleCompleteSessionClick()
-											}
-										>
-											Complete Session
-										</button>
-									</div>
-								</>
-							)}
-						</>
-					)}
-				</>
-			)}
-		</>
+		<div className="flex h-full w-[95%] flex-col items-center">
+			<div className="w-[90%] space-y-3 pt-4">
+				{possibleSessionsToStart?.map((session) => (
+					<WorkoutSessionCard
+						key={session.id}
+						session={session as Session}
+						listOfCompletedSessionIds={listOfCompletedSessionIds}
+						onStartSession={() =>
+							void handleStartSessionClick(session.id)
+						}
+					/>
+				))}
+			</div>
+		</div>
 	);
 };
 
