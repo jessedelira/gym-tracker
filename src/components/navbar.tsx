@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import HomeIcon from './icons/homeIcon';
 import ManageIcon from './icons/manageIcon';
 import SettingsIcon from './icons/settingsIcon';
@@ -14,6 +15,7 @@ const isValidRoute = (route: string): route is ValidRoutes => {
 const NavBar: React.FC = () => {
 	const [currentURL, setCurrentURL] = useState<ValidRoutes>('');
 	const pathname = usePathname();
+	const { data: sessionData } = useSession();
 
 	useEffect(() => {
 		const path = pathname?.split('/')[1] || '';
@@ -66,12 +68,15 @@ const NavBar: React.FC = () => {
 
 			<Link
 				href="/settings"
-				className={`flex flex-col items-center px-6 py-2 ${
+				className={`relative flex flex-col items-center px-6 py-2 ${
 					currentURL === 'settings'
 						? 'text-black'
 						: 'text-gray-500 hover:text-gray-800'
 				}`}
 			>
+				{sessionData?.user && !sessionData.user.hasSeenLatestChangelog && (
+					<div className="absolute right-4 top-1 h-2 w-2 rounded-full bg-red-500" />
+				)}
 				<SettingsIcon
 					heightValue="6"
 					widthValue="6"

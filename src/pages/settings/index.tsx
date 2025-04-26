@@ -163,6 +163,9 @@ const Settings: NextPage = () => {
 							/>
 						</svg>
 						<span className="text-base">Changelog</span>
+						{!sessionData.user.hasSeenLatestChangelog && (
+							<div className="h-2 w-2 rounded-full bg-red-500" />
+						)}
 					</div>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
