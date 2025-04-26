@@ -1,7 +1,7 @@
 import { type NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Layout from '~/components/layout';
 import Spinner from '~/components/Spinner';
 import { api } from '~/utils/api';
@@ -9,6 +9,8 @@ import { api } from '~/utils/api';
 const Changelog: NextPage = () => {
 	const { data: sessionData, status, update } = useSession();
 	const router = useRouter();
+	const [hasUpdated, setHasUpdated] = useState(false);
+
 	const updateHasSeenLatestChangelogMutation =
 		api.user.updateHasSeenLatestChangelog.useMutation();
 
@@ -19,13 +21,26 @@ const Changelog: NextPage = () => {
 	}, [status, router]);
 
 	useEffect(() => {
-		if (sessionData?.user && !sessionData.user.hasSeenLatestChangelog) {
-			void updateHasSeenLatestChangelogMutation.mutateAsync({
-				userId: sessionData.user.id,
-			});
-			void update();
+		if (
+			sessionData?.user &&
+			!sessionData.user.hasSeenLatestChangelog &&
+			!hasUpdated
+		) {
+			setHasUpdated(true);
+			void updateHasSeenLatestChangelogMutation
+				.mutateAsync({
+					userId: sessionData.user.id,
+				})
+				.then(() => {
+					void update();
+				});
 		}
-	}, [sessionData?.user, updateHasSeenLatestChangelogMutation, update]);
+	}, [
+		sessionData?.user,
+		updateHasSeenLatestChangelogMutation,
+		update,
+		hasUpdated,
+	]);
 
 	if (!sessionData) {
 		return <Spinner />;
