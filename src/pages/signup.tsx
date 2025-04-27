@@ -14,13 +14,14 @@ import {
 	getTimezoneInputElement,
 	getUsernameInputElement,
 } from '~/utils/documentUtils';
+import { useFetchListOfTimezones } from '~/hooks/useListOfTimezones';
 
 const SignUp: NextPage = () => {
 	const createUserMutation = api.user.createUser.useMutation();
 	const [showModal, setShowModal] = useState(false);
 	const router = useRouter();
 
-	const { data: timezones } = api.timezoneMap.getListOfTimezones.useQuery();
+	const timezones = useFetchListOfTimezones();
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
