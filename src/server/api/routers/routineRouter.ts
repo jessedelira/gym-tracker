@@ -36,7 +36,7 @@ export const routineRouter = createTRPCRouter({
 		}),
 
 	getRoutineCountByUserId: protectedProcedure.query(async ({ ctx }) => {
-		const count = await prisma.session.count({
+		const count = await prisma.routine.count({
 			where: {
 				userId: ctx.session.user.id,
 			},
@@ -45,18 +45,16 @@ export const routineRouter = createTRPCRouter({
 		return count;
 	}),
 
-	getActiveRoutine: protectedProcedure
-		.input(z.object({ userId: z.string() }))
-		.query(async ({ input }) => {
-			const routine = await prisma.routine.findFirst({
-				where: {
-					userId: input.userId,
-					isActive: true,
-				},
-			});
+	getActiveRoutine: protectedProcedure.query(async ({ ctx }) => {
+		const routine = await prisma.routine.findFirst({
+			where: {
+				userId: ctx.session.user.id,
+				isActive: true,
+			},
+		});
 
-			return routine;
-		}),
+		return routine;
+	}),
 
 	removeActiveRoutine: protectedProcedure
 		.input(z.object({ userId: z.string() }))

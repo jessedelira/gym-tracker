@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { api } from '~/utils/api';
 import SmallSpinner from './smallSpinner';
 import { type User } from 'next-auth';
-import { type ExerciseType, Preference } from '@prisma/client';
+import { type ExerciseType } from '@prisma/client';
 import CurrentSessionElapsedTimer from './currentSessionElapsedTimer';
 import WorkoutCard from './icons/workoutCard';
 import { showConfetti } from '~/utils/confetti';
@@ -48,29 +48,34 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	const userHasConfettiPreferenceEnabled = useEnableConfetti(user);
 
 	// All queries
-	const { data: activeRoutine, isLoading: isActiveRoutineLoading } =
-		api.routine.getActiveRoutine.useQuery({
-			userId: user.id,
-		});
-
 	const { data: routineCount, isLoading: isRoutineCountLoading } =
 		api.routine.getRoutineCountByUserId.useQuery();
 
+	const { data: activeRoutine, isLoading: isActiveRoutineLoading } =
+		api.routine.getActiveRoutine.useQuery(undefined, {
+			enabled: isRoutineCountLoading === false,
+		});
+
 	const {
-		data: activeSessionData,
+		data: activeSession,
 		isLoading: isActiveSessionLoading,
-		refetch: refetchActiveSessionData,
+		refetch: refetchActiveSession,
 	} = api.activeSesssion.getActiveSession.useQuery(
 		{ userId: user.id },
 		{ enabled: !!activeRoutine },
 	);
 
 	const {
-		data: possibleSessionsToStart,
-		isLoading: isPossibleSessionsLoading,
+		data: listOfSessionsOnCurrentDate,
+		isLoading: isListOfSessionsOnCurrentDateLoading,
 	} = api.session.getSessionsThatAreActiveOnDate.useQuery(
 		{ userId: user.id, date: currentDate },
-		{ enabled: !!activeRoutine && !activeSessionData },
+		{
+			enabled:
+				!!activeRoutine &&
+				!activeSession &&
+				isActiveSessionLoading === false,
+		},
 	);
 
 	const {
@@ -79,7 +84,12 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		refetch: refetchCompletedSessions,
 	} = api.completedSession.getListOfCompletedSessionIdsForActiveRoutine.useQuery(
 		{ userUTCDateTime: currentDate },
-		{ enabled: !!activeRoutine && !activeSessionData },
+		{
+			enabled:
+				!!activeRoutine &&
+				!activeSession &&
+				isActiveSessionLoading === false,
+		},
 	);
 
 	const {
@@ -89,9 +99,9 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	} = api.workout.getWorkoutsForActiveSession.useQuery<WorkoutWithExercise[]>(
 		{
 			userId: user.id,
-			sessionId: activeSessionData?.session.id ?? '',
+			sessionId: activeSession?.session.id ?? '',
 		},
-		{ enabled: !!activeSessionData?.session.id },
+		{ enabled: !!activeSession?.session.id },
 	);
 
 	// All mutations
@@ -147,7 +157,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	// Handlers
 	const refetchAll = () =>
 		Promise.all([
-			refetchActiveSessionData(),
+			refetchActiveSession(),
 			refetchWorkouts(),
 			refetchCompletedSessions(),
 		]);
@@ -190,11 +200,11 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			},
 		);
 		localStorage.removeItem('workoutCompletionMap');
-		await refetchActiveSessionData();
+		await refetchActiveSession();
 	};
 
 	const handleCompleteSessionClick = async () => {
-		if (!activeSessionData) return;
+		if (!activeSession) return;
 		setIsEveryWorkoutComplete(false);
 		localStorage.removeItem('workoutCompletionMap');
 
@@ -204,34 +214,45 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 
 		await completeSession({
 			userId: user.id,
-			sessionId: activeSessionData.session.id,
+			sessionId: activeSession.session.id,
 		});
 
 		void refetchAll();
 	};
 
-	// Computed values
-	const isLoading =
-		(isActiveRoutineLoading && !activeRoutine) ||
-		(isActiveSessionLoading && !!activeRoutine) ||
-		(!!activeRoutine && !activeSessionData && isPossibleSessionsLoading) ||
-		(!!activeRoutine && !activeSessionData && isCompletedSessionsLoading) ||
-		(!!activeSessionData && isWorkoutsLoading);
+	const isLoadingInitialData = isRoutineCountLoading;
+	const isLoadingActiveSession = isActiveSessionLoading && !!activeRoutine;
+	const isLoadingPossibleSessions =
+		!!activeRoutine &&
+		!activeSession &&
+		isListOfSessionsOnCurrentDateLoading;
+	const isLoadingCompletedSessions =
+		!!activeRoutine && !activeSession && isCompletedSessionsLoading;
+	const isLoadingWorkouts = !!activeSession && isWorkoutsLoading;
 
-	const isNewUser = !activeRoutine && routineCount === 0;
-	const hasNoActiveRoutine = !isActiveRoutineLoading && !activeRoutine;
+	const isLoading =
+		isLoadingInitialData ||
+		isLoadingActiveSession ||
+		isLoadingPossibleSessions ||
+		isLoadingCompletedSessions ||
+		isLoadingWorkouts;
+
+	const isUserWithoutRoutines = routineCount === 0;
+	const hasNoActiveRoutine =
+		!isActiveRoutineLoading && !activeRoutine && routineCount !== 0;
 	const hasNoSessions =
 		!!activeRoutine &&
-		!activeSessionData &&
-		!isPossibleSessionsLoading &&
-		(!possibleSessionsToStart || possibleSessionsToStart.length === 0);
+		!activeSession &&
+		!isListOfSessionsOnCurrentDateLoading &&
+		(!listOfSessionsOnCurrentDate ||
+			listOfSessionsOnCurrentDate.length === 0);
 
 	// Render logic
 	if (isLoading) {
 		return <SmallSpinner />;
 	}
 
-	if (isNewUser) {
+	if (isUserWithoutRoutines) {
 		return <WelcomeNewUserView />;
 	}
 
@@ -239,17 +260,17 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		return <NoActiveRoutineView />;
 	}
 
-	if (activeSessionData && workoutsForActiveSession) {
+	if (activeSession && workoutsForActiveSession) {
 		return (
 			<div className="flex h-full w-[95%] flex-col items-center">
 				<div className="w-[90%] flex-1 flex-col pt-4">
 					<div className="mb-4 w-full rounded-lg bg-gray-50 p-4">
 						<h1 className="text-base font-medium text-gray-900">
-							{activeSessionData.session.name}
+							{activeSession.session.name}
 						</h1>
-						{activeSessionData.startedAt && (
+						{activeSession.startedAt && (
 							<CurrentSessionElapsedTimer
-								startedAtDate={activeSessionData.startedAt}
+								startedAtDate={activeSession.startedAt}
 							/>
 						)}
 					</div>
@@ -299,14 +320,14 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	}
 
 	if (hasNoSessions) {
-		return <NoSessionsView routineName={activeRoutine?.name ?? ''} />;
+		return <NoSessionsView routineName={activeRoutine.name} />;
 	}
 
 	// Show available sessions to start
 	return (
 		<div className="flex h-full w-[95%] flex-col items-center">
 			<div className="w-[90%] space-y-3 pt-4">
-				{possibleSessionsToStart?.map((session) => (
+				{listOfSessionsOnCurrentDate?.map((session) => (
 					<WorkoutSessionCard
 						key={session.id}
 						session={session as Session}
