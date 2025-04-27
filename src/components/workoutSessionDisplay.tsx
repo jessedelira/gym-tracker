@@ -111,49 +111,6 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	const { mutateAsync: completeSession } =
 		api.completedSession.createCompletedSession.useMutation();
 
-	// Effects
-	useEffect(() => {
-		if (workoutsForActiveSession) {
-			const workoutCompletionMap = localStorage.getItem(
-				'workoutCompletionMap',
-			);
-
-			if (!workoutCompletionMap) {
-				const initialMap: WorkoutCompletionMap = Object.fromEntries(
-					workoutsForActiveSession.map(({ id }) => [id, false]),
-				);
-				localStorage.setItem(
-					'workoutCompletionMap',
-					JSON.stringify(initialMap),
-				);
-				setWorkoutProgressMap(initialMap);
-			} else {
-				// Safely parse and validate the stored data
-				const parsedMap = JSON.parse(workoutCompletionMap) as Record<
-					string,
-					unknown
-				>;
-
-				if (isValidMap(parsedMap)) {
-					setWorkoutProgressMap(parsedMap);
-					setIsEveryWorkoutComplete(
-						Object.values(parsedMap).every(Boolean),
-					);
-				} else {
-					// If invalid data, reset to initial state
-					const initialMap: WorkoutCompletionMap = Object.fromEntries(
-						workoutsForActiveSession.map(({ id }) => [id, false]),
-					);
-					localStorage.setItem(
-						'workoutCompletionMap',
-						JSON.stringify(initialMap),
-					);
-					setWorkoutProgressMap(initialMap);
-				}
-			}
-		}
-	}, [workoutsForActiveSession]);
-
 	// Handlers
 	const refetchAll = () =>
 		Promise.all([
@@ -246,6 +203,49 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		!isListOfSessionsOnCurrentDateLoading &&
 		(!listOfSessionsOnCurrentDate ||
 			listOfSessionsOnCurrentDate.length === 0);
+
+	// Effects
+	useEffect(() => {
+		if (workoutsForActiveSession) {
+			const workoutCompletionMap = localStorage.getItem(
+				'workoutCompletionMap',
+			);
+
+			if (!workoutCompletionMap) {
+				const initialMap: WorkoutCompletionMap = Object.fromEntries(
+					workoutsForActiveSession.map(({ id }) => [id, false]),
+				);
+				localStorage.setItem(
+					'workoutCompletionMap',
+					JSON.stringify(initialMap),
+				);
+				setWorkoutProgressMap(initialMap);
+			} else {
+				// Safely parse and validate the stored data
+				const parsedMap = JSON.parse(workoutCompletionMap) as Record<
+					string,
+					unknown
+				>;
+
+				if (isValidMap(parsedMap)) {
+					setWorkoutProgressMap(parsedMap);
+					setIsEveryWorkoutComplete(
+						Object.values(parsedMap).every(Boolean),
+					);
+				} else {
+					// If invalid data, reset to initial state
+					const initialMap: WorkoutCompletionMap = Object.fromEntries(
+						workoutsForActiveSession.map(({ id }) => [id, false]),
+					);
+					localStorage.setItem(
+						'workoutCompletionMap',
+						JSON.stringify(initialMap),
+					);
+					setWorkoutProgressMap(initialMap);
+				}
+			}
+		}
+	}, [workoutsForActiveSession]);
 
 	// Render logic
 	if (isLoading) {
