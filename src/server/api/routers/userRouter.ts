@@ -47,10 +47,11 @@ export const userRouter = createTRPCRouter({
 
 			await prisma.userPreference.create({
 				data: {
-					preference: Preference.SHOW_ELAPSED_SECONDS_IN_ACTIVE_SESSION,
-					userId: createdUser.id
-				}
-			})
+					preference:
+						Preference.SHOW_ELAPSED_SECONDS_IN_ACTIVE_SESSION,
+					userId: createdUser.id,
+				},
+			});
 
 			await prisma.userSetting.create({
 				data: {
