@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { api } from '~/utils/api';
 import SmallSpinner from './smallSpinner';
 import { type User } from 'next-auth';
@@ -12,12 +12,11 @@ import { WelcomeNewUserView } from './workout/WelcomeNewUserView';
 import WorkoutSessionCard from './workoutSessionCard';
 import { type Session } from '@prisma/client';
 import { useEnableConfetti } from '~/hooks/useEnableConfetti';
+import { useWorkoutProgress } from '~/hooks/useWorkoutProgress';
 
 interface CurrentWorkoutDisplayProps {
 	user: User;
 }
-
-type WorkoutCompletionMap = Record<string, boolean>;
 
 type WorkoutWithExercise = {
 	id: string;
@@ -41,10 +40,6 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 }) => {
 	// Move ALL hooks to the top
 	const currentDate = useMemo(() => new Date(), []);
-	const [isEveryWorkoutComplete, setIsEveryWorkoutComplete] = useState(false);
-	const [workoutProgressMap, setWorkoutProgressMap] = useState<
-		Record<string, boolean>
-	>({});
 	const userHasConfettiPreferenceEnabled = useEnableConfetti(user);
 
 	// All queries
@@ -104,6 +99,14 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		{ enabled: !!activeSession?.session.id },
 	);
 
+	// Use custom hook for workout progress
+	const {
+		workoutProgressMap,
+		isEveryWorkoutComplete,
+		updateWorkoutProgress,
+		resetWorkoutProgress,
+	} = useWorkoutProgress(workoutsForActiveSession);
+
 	// All mutations
 	const { mutateAsync: startSession } =
 		api.activeSesssion.addActiveSession.useMutation();
@@ -124,27 +127,7 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 	) => {
 		const workoutId = event.target.id;
 		const isNowChecked = event.target.checked;
-
-		const updatedWorkouts = {
-			...workoutProgressMap,
-			[workoutId]: isNowChecked,
-		};
-
-		setWorkoutProgressMap(updatedWorkouts);
-		localStorage.setItem(
-			'workoutCompletionMap',
-			JSON.stringify(updatedWorkouts),
-		);
-		setIsEveryWorkoutComplete(
-			Object.values(updatedWorkouts).every(Boolean),
-		);
-	};
-
-	// Validate the parsed data
-	const isValidMap = (
-		map: Record<string, unknown>,
-	): map is WorkoutCompletionMap => {
-		return Object.values(map).every((value) => typeof value === 'boolean');
+		updateWorkoutProgress(workoutId, isNowChecked);
 	};
 
 	const handleStartSessionClick = async (sessionId: string) => {
@@ -152,18 +135,16 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 			{ userId: user.id, sessionId },
 			{
 				onSuccess: () => {
-					setIsEveryWorkoutComplete(false);
+					resetWorkoutProgress();
 				},
 			},
 		);
-		localStorage.removeItem('workoutCompletionMap');
 		await refetchActiveSession();
 	};
 
 	const handleCompleteSessionClick = async () => {
 		if (!activeSession) return;
-		setIsEveryWorkoutComplete(false);
-		localStorage.removeItem('workoutCompletionMap');
+		resetWorkoutProgress();
 
 		if (userHasConfettiPreferenceEnabled) {
 			void showConfetti();
@@ -203,49 +184,6 @@ const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
 		!isListOfSessionsOnCurrentDateLoading &&
 		(!listOfSessionsOnCurrentDate ||
 			listOfSessionsOnCurrentDate.length === 0);
-
-	// Effects
-	useEffect(() => {
-		if (workoutsForActiveSession) {
-			const workoutCompletionMap = localStorage.getItem(
-				'workoutCompletionMap',
-			);
-
-			if (!workoutCompletionMap) {
-				const initialMap: WorkoutCompletionMap = Object.fromEntries(
-					workoutsForActiveSession.map(({ id }) => [id, false]),
-				);
-				localStorage.setItem(
-					'workoutCompletionMap',
-					JSON.stringify(initialMap),
-				);
-				setWorkoutProgressMap(initialMap);
-			} else {
-				// Safely parse and validate the stored data
-				const parsedMap = JSON.parse(workoutCompletionMap) as Record<
-					string,
-					unknown
-				>;
-
-				if (isValidMap(parsedMap)) {
-					setWorkoutProgressMap(parsedMap);
-					setIsEveryWorkoutComplete(
-						Object.values(parsedMap).every(Boolean),
-					);
-				} else {
-					// If invalid data, reset to initial state
-					const initialMap: WorkoutCompletionMap = Object.fromEntries(
-						workoutsForActiveSession.map(({ id }) => [id, false]),
-					);
-					localStorage.setItem(
-						'workoutCompletionMap',
-						JSON.stringify(initialMap),
-					);
-					setWorkoutProgressMap(initialMap);
-				}
-			}
-		}
-	}, [workoutsForActiveSession]);
 
 	// Render logic
 	if (isLoading) {
