@@ -7,7 +7,8 @@ type Workout = { id: string };
 export const useWorkoutProgress = (workouts: Workout[] | undefined) => {
 	const [workoutProgressMap, setWorkoutProgressMap] =
 		useState<WorkoutCompletionMap>({});
-	const [isEveryWorkoutComplete, setIsEveryWorkoutComplete] = useState(false);
+	const [isEveryWorkoutComplete, setIsEveryWorkoutComplete] =
+		useState<boolean>(false);
 
 	// Validate the parsed data
 	const isValidMap = useCallback(
@@ -38,35 +39,18 @@ export const useWorkoutProgress = (workouts: Workout[] | undefined) => {
 			setWorkoutProgressMap(initialMap);
 			setIsEveryWorkoutComplete(false); // Ensure initial state is correct
 		} else {
-			try {
-				const parsedMap = JSON.parse(workoutCompletionMap) as Record<
-					string,
-					unknown
-				>;
+			const parsedMap = JSON.parse(workoutCompletionMap) as Record<
+				string,
+				unknown
+			>;
 
-				if (isValidMap(parsedMap)) {
-					setWorkoutProgressMap(parsedMap);
-					setIsEveryWorkoutComplete(
-						Object.values(parsedMap).every(Boolean),
-					);
-				} else {
-					// If invalid data, reset to initial state
-					const initialMap: WorkoutCompletionMap = Object.fromEntries(
-						workouts.map(({ id }) => [id, false]),
-					);
-					localStorage.setItem(
-						'workoutCompletionMap',
-						JSON.stringify(initialMap),
-					);
-					setWorkoutProgressMap(initialMap);
-					setIsEveryWorkoutComplete(false); // Ensure initial state is correct
-				}
-			} catch (error) {
-				// Handle JSON parsing error
-				console.error(
-					'Error parsing workoutCompletionMap from localStorage:',
-					error,
+			if (isValidMap(parsedMap)) {
+				setWorkoutProgressMap(parsedMap);
+				setIsEveryWorkoutComplete(
+					Object.values(parsedMap).every(Boolean),
 				);
+			} else {
+				// If invalid data, reset to initial state
 				const initialMap: WorkoutCompletionMap = Object.fromEntries(
 					workouts.map(({ id }) => [id, false]),
 				);
@@ -78,7 +62,7 @@ export const useWorkoutProgress = (workouts: Workout[] | undefined) => {
 				setIsEveryWorkoutComplete(false); // Ensure initial state is correct
 			}
 		}
-	}, [workouts, isValidMap]);
+	}, [isValidMap, workouts]);
 
 	// Update workout progress
 	const updateWorkoutProgress = useCallback(

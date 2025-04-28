@@ -5,18 +5,13 @@ import { type User } from 'next-auth';
 import { type ExerciseType } from '@prisma/client';
 import CurrentSessionElapsedTimer from './currentSessionElapsedTimer';
 import WorkoutCard from './icons/workoutCard';
-import { showConfetti } from '~/utils/confetti';
+import { isConfettiEnabled, showConfetti } from '~/utils/confetti';
 import { NoActiveRoutineView } from './workout/NoActiveRoutineView';
 import { NoSessionsView } from './workout/NoSessionsView';
 import { WelcomeNewUserView } from './workout/WelcomeNewUserView';
 import WorkoutSessionCard from './workoutSessionCard';
 import { type Session } from '@prisma/client';
-import { useEnableConfetti } from '~/hooks/useEnableConfetti';
 import { useWorkoutProgress } from '~/hooks/useWorkoutProgress';
-
-interface CurrentWorkoutDisplayProps {
-	user: User;
-}
 
 type WorkoutWithExercise = {
 	id: string;
@@ -35,12 +30,10 @@ type WorkoutWithExercise = {
 	};
 };
 
-const WorkoutSessionDisplay: React.FC<CurrentWorkoutDisplayProps> = ({
-	user,
-}) => {
+const WorkoutSessionDisplay: React.FC<{ user: User }> = ({ user }) => {
 	// Move ALL hooks to the top
 	const currentDate = useMemo(() => new Date(), []);
-	const userHasConfettiPreferenceEnabled = useEnableConfetti(user);
+	const userHasConfettiPreferenceEnabled = isConfettiEnabled(user);
 
 	// All queries
 	const { data: routineCount, isLoading: isRoutineCountLoading } =
