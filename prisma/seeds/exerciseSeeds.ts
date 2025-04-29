@@ -1,6 +1,5 @@
 import { ExerciseType, PrismaClient } from '@prisma/client';
 
-
 const prisma = new PrismaClient();
 const seedExercises = async () => {
 	const result = await prisma.exercise.findMany();
@@ -370,12 +369,14 @@ const seedExercises = async () => {
 			},
 			{
 				name: 'Chest Press Machine',
-				description: 'A machine-based exercise targeting the chest muscles.',
+				description:
+					'A machine-based exercise targeting the chest muscles.',
 				type: ExerciseType.WEIGHTED,
 			},
 			{
 				name: 'Incline Chest Press Machine',
-				description: 'A machine-based incline press targeting the upper chest.',
+				description:
+					'A machine-based incline press targeting the upper chest.',
 				type: ExerciseType.WEIGHTED,
 			},
 			{
@@ -385,7 +386,8 @@ const seedExercises = async () => {
 			},
 			{
 				name: 'Incline Dumbbell Flys',
-				description: 'A dumbbell fly exercise performed on an incline bench.',
+				description:
+					'A dumbbell fly exercise performed on an incline bench.',
 				type: ExerciseType.WEIGHTED,
 			},
 			{
@@ -395,7 +397,8 @@ const seedExercises = async () => {
 			},
 			{
 				name: 'Triceps Rope Pushdowns',
-				description: 'A cable-based triceps pushdown using a rope attachment.',
+				description:
+					'A cable-based triceps pushdown using a rope attachment.',
 				type: ExerciseType.WEIGHTED,
 			},
 			{
@@ -410,12 +413,14 @@ const seedExercises = async () => {
 			},
 			{
 				name: 'One-arm Dumbbell Row',
-				description: 'A single-arm dumbbell row performed with bench support.',
+				description:
+					'A single-arm dumbbell row performed with bench support.',
 				type: ExerciseType.WEIGHTED,
 			},
 			{
 				name: 'Dumbbell Deadlifts (light/moderate)',
-				description: 'A deadlift variation using dumbbells with light to moderate weight.',
+				description:
+					'A deadlift variation using dumbbells with light to moderate weight.',
 				type: ExerciseType.WEIGHTED,
 			},
 			{
@@ -430,7 +435,8 @@ const seedExercises = async () => {
 			},
 			{
 				name: 'Goblet Squats (Dumbbell)',
-				description: 'A squat variation holding a dumbbell close to the chest.',
+				description:
+					'A squat variation holding a dumbbell close to the chest.',
 				type: ExerciseType.WEIGHTED,
 			},
 			{
@@ -440,7 +446,8 @@ const seedExercises = async () => {
 			},
 			{
 				name: 'Lying Leg Curl Machine',
-				description: 'A machine-based exercise targeting the hamstrings.',
+				description:
+					'A machine-based exercise targeting the hamstrings.',
 				type: ExerciseType.WEIGHTED,
 			},
 			{
@@ -450,7 +457,8 @@ const seedExercises = async () => {
 			},
 			{
 				name: 'Hanging Leg Raises',
-				description: 'A core exercise performed while hanging from a bar.',
+				description:
+					'A core exercise performed while hanging from a bar.',
 				type: ExerciseType.WEIGHTED,
 			},
 			{
@@ -460,7 +468,8 @@ const seedExercises = async () => {
 			},
 			{
 				name: 'Reverse Pec Deck',
-				description: 'A machine-based exercise targeting the rear delts.',
+				description:
+					'A machine-based exercise targeting the rear delts.',
 				type: ExerciseType.WEIGHTED,
 			},
 			{
@@ -470,12 +479,14 @@ const seedExercises = async () => {
 			},
 			{
 				name: 'Dumbbell Clean & Press',
-				description: 'A full-body exercise combining a clean and press with dumbbells.',
+				description:
+					'A full-body exercise combining a clean and press with dumbbells.',
 				type: ExerciseType.WEIGHTED,
 			},
 			{
 				name: 'Cable Woodchoppers',
-				description: 'A cable-based core exercise mimicking a woodchopping motion.',
+				description:
+					'A cable-based core exercise mimicking a woodchopping motion.',
 				type: ExerciseType.WEIGHTED,
 			},
 			{
@@ -488,14 +499,14 @@ const seedExercises = async () => {
 		for (const exercise of exercises) {
 			await prisma.exercise.upsert({
 				where: {
-					name: exercise.name
+					name: exercise.name,
 				},
 				update: {},
 				create: {
 					name: exercise.name,
 					description: exercise.description,
 					type: exercise.type,
-				}
+				},
 			});
 		}
 	}
