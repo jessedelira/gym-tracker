@@ -474,7 +474,7 @@ const Session: NextPage = () => {
 
 					{/* Action Buttons */}
 					{dataChangeInForm && (
-						<div className="flex space-x-4">
+						<div className="flex space-x-4 mb-2">
 							<button
 								type="submit"
 								disabled={!!errorMessage}
