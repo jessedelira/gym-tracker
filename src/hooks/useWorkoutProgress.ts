@@ -1,24 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
+import { type Workout } from '@prisma/client';
 
-type WorkoutCompletionMap = Record<string, boolean>;
+type WorkoutCompletionMap = Record<string, boolean> | null;
 
-type Workout = { id: string };
-
-export const useWorkoutProgress = (workouts: Workout[] | undefined) => {
+export const useWorkoutProgress = (workouts: Workout[] | null | undefined) => {
 	const [workoutProgressMap, setWorkoutProgressMap] =
 		useState<WorkoutCompletionMap>({});
 	const [isEveryWorkoutComplete, setIsEveryWorkoutComplete] =
 		useState<boolean>(false);
-
-	// Validate the parsed data
-	const isValidMap = useCallback(
-		(map: Record<string, unknown>): map is WorkoutCompletionMap => {
-			return Object.values(map).every(
-				(value) => typeof value === 'boolean',
-			);
-		},
-		[],
-	);
 
 	// Load from localStorage when workouts change
 	useEffect(() => {
@@ -28,7 +17,18 @@ export const useWorkoutProgress = (workouts: Workout[] | undefined) => {
 			'workoutCompletionMap',
 		);
 
-		if (!workoutCompletionMap) {
+		if (workoutCompletionMap) {
+			const parsedMap = JSON.parse(
+				workoutCompletionMap,
+			) as WorkoutCompletionMap;
+
+			if (parsedMap) {
+				setWorkoutProgressMap(parsedMap);
+				setIsEveryWorkoutComplete(
+					Object.values(parsedMap).every(Boolean),
+				);
+			}
+		} else {
 			const initialMap: WorkoutCompletionMap = Object.fromEntries(
 				workouts.map(({ id }) => [id, false]),
 			);
@@ -37,32 +37,9 @@ export const useWorkoutProgress = (workouts: Workout[] | undefined) => {
 				JSON.stringify(initialMap),
 			);
 			setWorkoutProgressMap(initialMap);
-			setIsEveryWorkoutComplete(false); // Ensure initial state is correct
-		} else {
-			const parsedMap = JSON.parse(workoutCompletionMap) as Record<
-				string,
-				unknown
-			>;
-
-			if (isValidMap(parsedMap)) {
-				setWorkoutProgressMap(parsedMap);
-				setIsEveryWorkoutComplete(
-					Object.values(parsedMap).every(Boolean),
-				);
-			} else {
-				// If invalid data, reset to initial state
-				const initialMap: WorkoutCompletionMap = Object.fromEntries(
-					workouts.map(({ id }) => [id, false]),
-				);
-				localStorage.setItem(
-					'workoutCompletionMap',
-					JSON.stringify(initialMap),
-				);
-				setWorkoutProgressMap(initialMap);
-				setIsEveryWorkoutComplete(false); // Ensure initial state is correct
-			}
+			setIsEveryWorkoutComplete(false);
 		}
-	}, [isValidMap, workouts]);
+	}, [workouts]);
 
 	// Update workout progress
 	const updateWorkoutProgress = useCallback(

@@ -124,14 +124,7 @@ const WorkoutSessionDisplay: React.FC<{ user: User }> = ({ user }) => {
 	};
 
 	const handleStartSessionClick = async (sessionId: string) => {
-		await startSession(
-			{ userId: user.id, sessionId },
-			{
-				onSuccess: () => {
-					resetWorkoutProgress();
-				},
-			},
-		);
+		await startSession({ userId: user.id, sessionId });
 		await refetchActiveSession();
 	};
 
@@ -191,7 +184,7 @@ const WorkoutSessionDisplay: React.FC<{ user: User }> = ({ user }) => {
 		return <NoActiveRoutineView />;
 	}
 
-	if (activeSession && workoutsForActiveSession) {
+	if (activeSession && workoutsForActiveSession && workoutProgressMap) {
 		return (
 			<div className="flex h-full w-[95%] flex-col items-center">
 				<div className="w-[90%] flex-1 flex-col pt-4">
