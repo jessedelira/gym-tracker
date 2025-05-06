@@ -30,7 +30,6 @@ const CreateWorkoutModal: React.FC<CreateWorkoutModalProps> = ({
 	) => {
 		setExerciseSelectedId(e.target.value);
 		const exercise = exercises.find((ex) => ex.id === e.target.value);
-		console.log('exercise', exercise);
 		setSelectedExercise(exercise ?? null);
 	};
 
