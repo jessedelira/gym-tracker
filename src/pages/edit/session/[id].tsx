@@ -188,6 +188,7 @@ const EditSession: NextPage = () => {
 						]);
 						setWorkoutId(workoutId + 1);
 						setShowModal(false);
+						setDataChangeInForm(true);
 					}}
 					exercises={exercisesData ?? []}
 				/>
@@ -392,7 +393,7 @@ const EditSession: NextPage = () => {
 
 					{/* Action Buttons */}
 					{dataChangeInForm && (
-						<div className="flex space-x-4">
+						<div className="!mb-2 flex space-x-4">
 							<button
 								type="submit"
 								disabled={!!errorMessage}
