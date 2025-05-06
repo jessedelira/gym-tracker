@@ -5,15 +5,12 @@ import { useRouter } from 'next/router';
 import Layout from '~/components/layout';
 import { api } from '~/utils/api';
 import ManagePageLink from '~/components/managePageLink';
-import ActivityGraph from '~/components/activityGraph';
 import Spinner from '~/components/Spinner';
 
 const Manage: NextPage = () => {
 	const { data: sessionData, status } = useSession();
 	const router = useRouter();
-	const { data: activeRoutineData } = api.routine.getActiveRoutine.useQuery({
-		userId: sessionData?.user.id || '',
-	});
+	const { data: activeRoutineData } = api.routine.getActiveRoutine.useQuery();
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -85,12 +82,12 @@ const Manage: NextPage = () => {
 				</div>
 
 				{/* Activity Graph */}
-				<div className="flex-1 rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
+				{/* <div className="flex-1 rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
 					<h2 className="mb-4 text-lg font-semibold text-gray-900">
-						Activity Overview
+						Activity Graph
 					</h2>
 					<ActivityGraph />
-				</div>
+				</div> */}
 			</div>
 		</Layout>
 	);

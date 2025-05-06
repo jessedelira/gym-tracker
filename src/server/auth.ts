@@ -12,7 +12,7 @@ import Credentials from 'next-auth/providers/credentials';
 import { type Prisma, type UserPreference } from '@prisma/client';
 
 // Define the base user type that will be reused
-interface BaseUser {
+export interface BaseUser {
 	id: string;
 	username: string;
 	firstName: string;

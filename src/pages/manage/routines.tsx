@@ -20,9 +20,7 @@ const Routines: NextPage = () => {
 	const { data: routineData } = api.routine.getRoutines.useQuery({
 		userId: sessionData?.user.id || '',
 	});
-	const { data: activeRoutineData } = api.routine.getActiveRoutine.useQuery({
-		userId: sessionData?.user.id || '',
-	});
+	const { data: activeRoutineData } = api.routine.getActiveRoutine.useQuery();
 	const setActiveRoutineMutation = api.routine.setActiveRoutine.useMutation();
 	const removeActiveRoutineMutation =
 		api.routine.removeActiveRoutine.useMutation();

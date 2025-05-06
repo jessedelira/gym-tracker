@@ -12,6 +12,7 @@
 		"lint": "next lint",
 		"db:push": "prisma db push",
 		"start": "next start",
+		"test": "vitest",
 		"format": "prettier --write \"./!(.next)/**/*.{js,jsx,ts,tsx,json}\""
 	},
 	"overrides": {
@@ -40,25 +41,31 @@
 		"react-dom": "^18.2.0",
 		"serwist": "^9.0.2",
 		"superjson": "1.12.2",
-		"tsx": "^3.12.10",
+		"tsx": "^4.19.3",
 		"typescript": "^5.7",
-		"zod": "^3.22.3"
+		"zod": "^3.22.3"	
 	},
 	"devDependencies": {
 		"@prisma/client": "^6.0.1",
+		"@testing-library/dom": "^10.4.0",
+		"@testing-library/react": "^16.3.0",
 		"@types/eslint": "^8.44.2",
 		"@types/prettier": "^2.7.3",
 		"@types/react": "^18.2.22",
 		"@types/react-dom": "^18.2.7",
 		"@typescript-eslint/eslint-plugin": "^6.21.0",
 		"@typescript-eslint/parser": "^6.21.0",
+		"@vitejs/plugin-react": "^4.4.1",
 		"autoprefixer": "^10.4.16",
 		"eslint": "^8.49.0",
 		"eslint-config-next": "^13.5.2",
+		"jsdom": "^26.1.0",
 		"postcss": "^8.4.31",
 		"prettier": "^2.8.8",
 		"prettier-plugin-tailwindcss": "^0.2.8",
-		"tailwindcss": "^3.4.0"
+		"tailwindcss": "^3.4.0",
+		"vite-tsconfig-paths": "^5.1.4",
+		"vitest": "^3.1.2"
 	},
 	"ct3aMetadata": {
 		"initVersion": "7.12.1"
