@@ -30,7 +30,6 @@ type WorkoutWithExercise = {
 };
 
 const WorkoutSessionDisplay: React.FC<{ user: User }> = ({ user }) => {
-	// Move ALL hooks to the top
 	const currentDate = useMemo(() => new Date(), []);
 	const userHasConfettiPreferenceEnabled = isConfettiEnabled(user);
 
