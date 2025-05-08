@@ -3,6 +3,24 @@ import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
 import { ExerciseType } from '@prisma/client';
 
+export type WorkoutWithExercise = ({
+	exercise: {
+		name: string;
+		id: string;
+		type: ExerciseType;
+		description: string | null;
+	};
+} & {
+	id: string;
+	userId: string;
+	sessionId: string;
+	exerciseId: string;
+	weightLbs: number | null;
+	reps: number | null;
+	sets: number | null;
+	durationSeconds: number | null;
+})[];
+
 export const workoutRouter = createTRPCRouter({
 	createWorkout: protectedProcedure
 		.input(
@@ -102,6 +120,6 @@ export const workoutRouter = createTRPCRouter({
 				return null;
 			}
 
-			return workoutsOnActiveSession;
+			return workoutsOnActiveSession as WorkoutWithExercise;
 		}),
 });

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { type Workout } from '@prisma/client';
 
-type WorkoutCompletionMap = Record<string, boolean>;
+export type WorkoutCompletionMap = Record<string, boolean>;
 
 export const useWorkoutProgress = (workouts: Workout[] | undefined) => {
 	const [workoutProgressMap, setWorkoutProgressMap] =
