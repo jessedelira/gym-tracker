@@ -481,6 +481,315 @@ const seedExercises = async () => {
 			description: 'A sit-up exercise performed with added weight.',
 			type: ExerciseType.WEIGHTED,
 		},
+		{
+			name: 'Kettlebell Swing',
+			description:
+				'A dynamic exercise using a kettlebell that targets the hips, glutes, hamstrings, lats, abs, shoulders, and grip.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Turkish Get-Up',
+			description:
+				'A complex kettlebell exercise that builds total-body strength, stability, and mobility.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Kettlebell Clean',
+			description:
+				'A kettlebell exercise where you explosively pull the weight from the floor to the rack position.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Kettlebell Press',
+			description:
+				'An overhead pressing exercise performed with a kettlebell to build shoulder strength and stability.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Kettlebell Snatch',
+			description:
+				'An explosive full-body exercise where a kettlebell is pulled from the floor to overhead in one fluid motion.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Goblet Squat (Kettlebell)',
+			description:
+				'A squat variation where you hold a kettlebell close to your chest, great for building lower body strength.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Kettlebell Windmill',
+			description:
+				'A mobility exercise where you hold a kettlebell overhead while hinging to the side.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Kettlebell Row',
+			description:
+				'A rowing exercise performed with a kettlebell to build back strength.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: "Kettlebell Farmer's Carry",
+			description:
+				'A functional exercise where you walk while holding kettlebells at your sides to build grip and core strength.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Kettlebell Lunge',
+			description:
+				'A lunge exercise while holding kettlebells to increase difficulty and build leg strength.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Kettlebell Russian Twist',
+			description:
+				'A rotational core exercise performed with a kettlebell.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Kettlebell Figure 8',
+			description:
+				'A dynamic exercise where you pass a kettlebell through and around your legs in a figure 8 pattern.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Kettlebell Halo',
+			description:
+				'A shoulder mobility exercise where you move a kettlebell in a circle around your head.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Kettlebell High Pull',
+			description:
+				'An explosive exercise where you pull the kettlebell up to shoulder height with force.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Battle Ropes',
+			description:
+				'A high-intensity exercise using heavy ropes to build cardio, strength, and power.',
+			type: ExerciseType.DURATION,
+		},
+		{
+			name: 'Medicine Ball Slam',
+			description:
+				'An explosive full-body exercise where you slam a medicine ball into the ground.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Box Jumps',
+			description:
+				'A plyometric exercise where you jump onto an elevated platform or box.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Sandbag Carry',
+			description:
+				'A functional exercise where you carry a heavy sandbag to build grip, core, and overall strength.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Renegade Row',
+			description:
+				'A plank position exercise with weights where you perform rows while stabilizing your body.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: "Farmer's Walk",
+			description:
+				'A functional exercise where you walk while holding heavy weights at your sides.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Kettlebell Deadlift',
+			description:
+				'A deadlift variation performed with one or two kettlebells.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Kettlebell Front Squat',
+			description:
+				'A squat performed with kettlebells held in the front rack position.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Kettlebell Racked Carry',
+			description:
+				'A loaded carry with kettlebells held in the front rack position to build core and shoulder stability.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Kettlebell Bottoms-Up Press',
+			description:
+				'A challenging press where the kettlebell is held upside down by the handle, requiring extreme grip and shoulder stability.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Sled Push',
+			description:
+				'A full-body strength and conditioning exercise involving pushing a weighted sled.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Sled Pull',
+			description:
+				'A strength and conditioning exercise involving pulling a weighted sled.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'TRX Row',
+			description:
+				'A suspension trainer exercise targeting the back and arms.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'TRX Chest Press',
+			description:
+				'A suspension trainer exercise targeting the chest and triceps.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'TRX Pike',
+			description: 'A core-focused suspension trainer exercise.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Wall Ball',
+			description:
+				'A functional exercise involving throwing a medicine ball at a wall.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Assault Bike',
+			description: 'A high-intensity cardio exercise using a fan bike.',
+			type: ExerciseType.DURATION,
+		},
+		{
+			name: 'Ski Erg',
+			description: 'A cardio machine simulating Nordic skiing.',
+			type: ExerciseType.DURATION,
+		},
+		{
+			name: 'Stair Climber',
+			description: 'A cardio machine simulating stair climbing.',
+			type: ExerciseType.DURATION,
+		},
+		{
+			name: 'Glute Bridge',
+			description:
+				'A bodyweight exercise targeting the glutes and hamstrings.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Hip Thrust',
+			description:
+				'A glute-focused exercise performed with a barbell or bodyweight.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Donkey Kick',
+			description: 'A bodyweight exercise targeting the glutes.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Fire Hydrant',
+			description:
+				'A bodyweight exercise for hip mobility and glute activation.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Bird Dog',
+			description:
+				'A core and stability exercise performed on hands and knees.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Superman',
+			description:
+				'A bodyweight exercise for lower back and glute strength.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Inchworm',
+			description:
+				'A dynamic warm-up exercise improving flexibility and core strength.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Bear Crawl',
+			description:
+				'A full-body movement exercise performed crawling on hands and feet.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Crab Walk',
+			description:
+				'A bodyweight exercise performed walking on hands and feet facing upward.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Handstand Hold',
+			description: 'A gymnastic isometric hold in a handstand position.',
+			type: ExerciseType.DURATION,
+		},
+		{
+			name: 'Wall Sit',
+			description:
+				'A lower body isometric hold performed against a wall.',
+			type: ExerciseType.DURATION,
+		},
+		{
+			name: 'Pistol Squat',
+			description:
+				'A challenging single-leg squat performed with one leg extended forward.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Box Step-Up',
+			description:
+				'A lower body exercise stepping onto a box or platform.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Reverse Lunge',
+			description:
+				'A lunge variation stepping backward instead of forward.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Curtsy Lunge',
+			description:
+				'A lunge variation stepping the leg behind and across the body.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Side Lunge',
+			description: 'A lunge variation stepping out to the side.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Good Morning',
+			description:
+				'A hip hinge exercise performed with a barbell or bodyweight.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Seated Row Machine',
+			description: 'A machine-based exercise for the back and arms.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Pec Deck Reverse Fly',
+			description:
+				'A machine-based exercise targeting the rear delts and upper back.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Cable Face Pull',
+			description: 'A cable exercise for rear delts and upper back.',
+			type: ExerciseType.WEIGHTED,
+		},
 	];
 
 	for (const exercise of exercises) {
