@@ -750,7 +750,7 @@ const seedExercises = async () => {
 			description:
 				'A lower body exercise stepping onto a box or platform.',
 			type: ExerciseType.WEIGHTED,
-		},
+		},q
 		{
 			name: 'Reverse Lunge',
 			description:
