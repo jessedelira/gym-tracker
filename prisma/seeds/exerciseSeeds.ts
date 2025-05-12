@@ -790,6 +790,96 @@ const seedExercises = async () => {
 			description: 'A cable exercise for rear delts and upper back.',
 			type: ExerciseType.WEIGHTED,
 		},
+			{
+			name: 'Scapular Pull-Up',
+			description:
+				'A pull-up variation focusing on scapular movement for shoulder health and strength.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Archer Push-Up',
+			description:
+				'A push-up variation with one arm extended to the side, increasing unilateral strength.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Planche Lean',
+			description:
+				'A bodyweight exercise to build planche strength by leaning forward in a push-up position.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Nordic Hamstring Curl',
+			description:
+				'A hamstring exercise performed by lowering the body from a kneeling position, focusing on eccentric strength.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Jefferson Curl',
+			description:
+				'A mobility and strength exercise for the posterior chain, performed with a rounded back.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Sissy Squat',
+			description:
+				'A challenging squat variation emphasizing knee extension and quad strength.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Reverse Hyperextension',
+			description:
+				'A posterior chain exercise performed on a reverse hyper machine or bench.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Landmine Press',
+			description:
+				'A pressing exercise using a barbell anchored at one end, great for shoulders and core.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Landmine Row',
+			description:
+				'A rowing exercise using a landmine setup for back and arm strength.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Zercher Squat',
+			description:
+				'A squat variation where the barbell is held in the crook of the elbows.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Copenhagen Plank',
+			description:
+				'A side plank variation with one leg elevated, targeting the adductors.',
+			type: ExerciseType.DURATION,
+		},
+		{
+			name: 'L-Sit',
+			description:
+				'A gymnastic isometric hold with legs extended straight out while supporting the body on the hands.',
+			type: ExerciseType.DURATION,
+		},
+		{
+			name: 'Tuck Planche',
+			description:
+				'A gymnastic hold with knees tucked, building planche strength.',
+			type: ExerciseType.DURATION,
+		},
+		{
+			name: 'Serratus Push-Up',
+			description:
+				'A push-up variation focusing on protracting the shoulder blades to target the serratus anterior.',
+			type: ExerciseType.WEIGHTED,
+		},
+		{
+			name: 'Isometric Dead Hang',
+			description:
+				'A grip and shoulder endurance exercise performed by hanging from a bar.',
+			type: ExerciseType.DURATION,
+		},
 	];
 
 	for (const exercise of exercises) {
