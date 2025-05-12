@@ -105,6 +105,7 @@ export const workoutRouter = createTRPCRouter({
 			if (!workoutsOnActiveSession) {
 				return null;
 			}
-			return workoutsOnActiveSession as WorkoutWithExercise;
+
+			return workoutsOnActiveSession;
 		}),
 });

@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { api } from '~/utils/api';
 import SmallSpinner from './smallSpinner';
 import { type User } from 'next-auth';
-import { type ExerciseType } from '@prisma/client';
 import { isConfettiEnabled, showConfetti } from '~/utils/confetti';
 import { NoActiveRoutineView } from './workout/NoActiveRoutineView';
 import { NoSessionsView } from './workout/NoSessionsView';
@@ -11,23 +10,7 @@ import WorkoutSessionCard from './workoutSessionCard';
 import { type Session } from '@prisma/client';
 import { useWorkoutProgress } from '~/hooks/useWorkoutProgress';
 import ActiveSessionWorkoutList from './workoutList';
-
-type WorkoutWithExercise = {
-	id: string;
-	userId: string;
-	sessionId: string;
-	exerciseId: string;
-	sets: number | null;
-	reps: number | null;
-	weightLbs: number | null;
-	durationSeconds: number | null;
-	exercise: {
-		id: string;
-		name: string;
-		type: ExerciseType;
-		description: string | null;
-	};
-};
+import { type WorkoutWithExercise } from '~/server/api/routers/workoutRouter';
 
 const WorkoutSessionDisplay: React.FC<{ user: User }> = ({ user }) => {
 	const currentDate = useMemo(() => new Date(), []);
@@ -82,7 +65,7 @@ const WorkoutSessionDisplay: React.FC<{ user: User }> = ({ user }) => {
 		data: workoutsForActiveSession,
 		isLoading: isWorkoutsLoading,
 		refetch: refetchWorkouts,
-	} = api.workout.getWorkoutsForActiveSession.useQuery<WorkoutWithExercise[]>(
+	} = api.workout.getWorkoutsForActiveSession.useQuery<WorkoutWithExercise>(
 		{
 			userId: user.id,
 			sessionId: activeSession?.session.id ?? '',
@@ -96,7 +79,7 @@ const WorkoutSessionDisplay: React.FC<{ user: User }> = ({ user }) => {
 		isEveryWorkoutComplete,
 		updateWorkoutProgress,
 		resetWorkoutProgress,
-	} = useWorkoutProgress(workoutsForActiveSession);
+	} = useWorkoutProgress(workoutsForActiveSession || []);
 
 	// All mutations
 	const { mutateAsync: startSession } =
@@ -116,7 +99,6 @@ const WorkoutSessionDisplay: React.FC<{ user: User }> = ({ user }) => {
 	const handleCheckboxChange = (
 		event: React.ChangeEvent<HTMLInputElement>,
 	) => {
-		console.log('hi');
 		const workoutId = event.target.id;
 		const isNowChecked = event.target.checked;
 		updateWorkoutProgress(workoutId, isNowChecked);
@@ -200,7 +182,6 @@ const WorkoutSessionDisplay: React.FC<{ user: User }> = ({ user }) => {
 		return <NoSessionsView routineName={activeRoutine.name} />;
 	}
 
-	// Show available sessions to start
 	return (
 		<div className="flex h-full w-[95%] flex-col items-center">
 			<div className="w-[90%] space-y-3 pt-4">

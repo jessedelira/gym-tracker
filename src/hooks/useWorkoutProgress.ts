@@ -3,7 +3,7 @@ import { type Workout } from '@prisma/client';
 
 export type WorkoutCompletionMap = Record<string, boolean>;
 
-export const useWorkoutProgress = (workouts: Workout[] | undefined) => {
+export const useWorkoutProgress = (workouts: Workout[]) => {
 	const [workoutProgressMap, setWorkoutProgressMap] =
 		useState<WorkoutCompletionMap>({});
 	const [isEveryWorkoutComplete, setIsEveryWorkoutComplete] =
@@ -20,7 +20,8 @@ export const useWorkoutProgress = (workouts: Workout[] | undefined) => {
 	);
 
 	useEffect(() => {
-		if (!workouts) return;
+		// In the case that nothing is returned
+		if (workouts.length === 0) return;
 
 		const workoutCompletionMap = localStorage.getItem(
 			'workoutCompletionMap',
