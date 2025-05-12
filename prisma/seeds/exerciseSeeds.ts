@@ -790,7 +790,7 @@ const seedExercises = async () => {
 			description: 'A cable exercise for rear delts and upper back.',
 			type: ExerciseType.WEIGHTED,
 		},
-			{
+		{
 			name: 'Scapular Pull-Up',
 			description:
 				'A pull-up variation focusing on scapular movement for shoulder health and strength.',
