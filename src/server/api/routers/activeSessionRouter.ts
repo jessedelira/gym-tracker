@@ -2,6 +2,14 @@ import { prisma } from '~/server/db';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
 
+export type activeSessionData = {
+	session: {
+		name: string;
+		id: string;
+	};
+	startedAt: Date;
+};
+
 export const activeSessionRouter = createTRPCRouter({
 	addActiveSession: protectedProcedure
 		.input(
@@ -53,6 +61,6 @@ export const activeSessionRouter = createTRPCRouter({
 					userId: input.userId,
 				},
 			});
-			return activeSession;
+			return activeSession as activeSessionData;
 		}),
 });

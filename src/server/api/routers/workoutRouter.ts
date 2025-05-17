@@ -1,7 +1,11 @@
 import { prisma } from '~/server/db';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
-import { ExerciseType } from '@prisma/client';
+import { type Exercise, ExerciseType, type Workout } from '@prisma/client';
+
+export type WorkoutWithExercise = (Workout & {
+	exercise: Exercise;
+})[];
 
 export const workoutRouter = createTRPCRouter({
 	createWorkout: protectedProcedure
@@ -101,7 +105,6 @@ export const workoutRouter = createTRPCRouter({
 			if (!workoutsOnActiveSession) {
 				return null;
 			}
-
-			return workoutsOnActiveSession;
+			return workoutsOnActiveSession as WorkoutWithExercise;
 		}),
 });
