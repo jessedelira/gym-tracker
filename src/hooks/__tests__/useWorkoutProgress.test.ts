@@ -8,7 +8,10 @@ describe('useWorkoutProgress', () => {
 	});
 
 	it('should update workout progress and reflect changes in state', () => {
-		const workouts = [{ id: 'workout1' }, { id: 'workout2' }];
+		const workouts = [
+			{ id: 'workout1', userId: 'user1', sessionId: 'session1', exerciseId: 'exercise1', weightLbs: null, reps: null, sets: null, durationSeconds: null },
+			{ id: 'workout2', userId: 'user2', sessionId: 'session2', exerciseId: 'exercise2', weightLbs: null, reps: null, sets: null, durationSeconds: null }
+		];
 
 		const { result } = renderHook(() => useWorkoutProgress(workouts));
 
