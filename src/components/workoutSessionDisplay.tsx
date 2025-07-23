@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { api } from '~/utils/api';
 import SmallSpinner from './smallSpinner';
 import { type User } from 'next-auth';
-import { type ExerciseType } from '@prisma/client';
+import { type Exercise } from '@prisma/client';
 import { isConfettiEnabled, showConfetti } from '~/utils/confetti';
 import { NoActiveRoutineView } from './workout/NoActiveRoutineView';
 import { NoSessionsView } from './workout/NoSessionsView';
@@ -21,12 +21,7 @@ type WorkoutWithExercise = {
 	reps: number | null;
 	weightLbs: number | null;
 	durationSeconds: number | null;
-	exercise: {
-		id: string;
-		name: string;
-		type: ExerciseType;
-		description: string | null;
-	};
+	exercise: Exercise
 };
 
 const WorkoutSessionDisplay: React.FC<{ user: User }> = ({ user }) => {

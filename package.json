@@ -31,6 +31,7 @@
 		"@types/bcrypt": "^5.0.0",
 		"@types/node": "^18.17.18",
 		"@vercel/speed-insights": "^1.2",
+		"argon2": "^0.43.0",
 		"bcrypt": "^5.1.1",
 		"date-fns-tz": "^3.2.0",
 		"js-confetti": "^0.12.0",
@@ -43,7 +44,7 @@
 		"superjson": "1.12.2",
 		"tsx": "^4.19.3",
 		"typescript": "^5.7",
-		"zod": "^3.22.3"	
+		"zod": "^3.22.3"
 	},
 	"devDependencies": {
 		"@prisma/client": "^6.0.1",
